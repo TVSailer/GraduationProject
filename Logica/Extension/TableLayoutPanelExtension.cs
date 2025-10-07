@@ -1,4 +1,7 @@
-﻿namespace Logica
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Windows.Forms;
+
+namespace Logica
 {
     public static partial class TableLayoutPanelExtension
     {
@@ -36,6 +39,34 @@
             table.Controls.Add(heading, column, row);
             if (valueColumnSpan > 1) table.SetColumnSpan(heading, valueColumnSpan);
             if (valueRowSpan > 1) table.SetRowSpan(heading, valueRowSpan);
+
+            return table;
+        }
+
+        public static TableLayoutPanel AddingColumnsStyles(this TableLayoutPanel table, params ColumnStyle[] columnStyles)
+        {
+            if (columnStyles == null)
+            {
+                table.ColumnCount = 1;
+                return table;
+            }
+
+            foreach (var columnStyle in columnStyles)
+                table.ColumnStyles.Add(columnStyle);
+
+            return table;
+        }
+        
+        public static TableLayoutPanel AddingRowsStyles(this TableLayoutPanel table, params RowStyle[] rowStyles)
+        {
+            if (rowStyles == null)
+            {
+                table.RowCount = 1;
+                return table;
+            }
+
+            foreach (var rowStyle in rowStyles)
+                table.RowStyles.Add(rowStyle);
 
             return table;
         }

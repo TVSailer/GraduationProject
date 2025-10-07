@@ -5,7 +5,6 @@ namespace Logica
     public abstract partial class BaseCreatingElements
     {
         protected virtual BaseStyle Style { get; set; }
-
         
         public virtual Button CreateButton(string text)
             => new Button() 
@@ -98,6 +97,8 @@ namespace Logica
                 Padding = Style.FormPadding,
                 Dock = Style.DockStyle,
             };
+
+
 
         public abstract TableLayoutPanel CreateTableLayoutPanel(ColumnStyle[] columns, RowStyle[] rows);
 

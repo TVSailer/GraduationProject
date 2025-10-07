@@ -8,7 +8,7 @@ namespace SimpleProfileApp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new AdvancedProfileForm());
+            Application.Run(new ViewVisitor());
         }
     }
 }

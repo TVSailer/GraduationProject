@@ -7,12 +7,14 @@ public class NewsEntity
     public int Id { get; set; }
     public string UrlImg { get; set; }
     [Required(ErrorMessage = "Отсутствует название")]
-    public required string Name { get; set; }
-    [Required(ErrorMessage = "Отсутствует описание")]
-    public required string Description { get; set; }
-    [Required(ErrorMessage = "Отсутствует дата проведения")]
+    public required string Title { get; set; }
+    [Required(ErrorMessage = "Отсутствует контента")]
+    public required string Content { get; set; }
+    [Required(ErrorMessage = "Отсутствует дата написания")]
     public required string Date { get; set; }
+    [Required(ErrorMessage = "Выберите категорию")]
+    public required string Category { get; set; }
 
     public override string ToString()
-        => $"Новость: {Name} {Date}";
+        => $"Новость: {Title} {Date}";
 }
