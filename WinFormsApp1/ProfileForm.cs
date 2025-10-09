@@ -4,6 +4,8 @@ public partial class ViewVisitor : Form
 {
     private readonly CreatingElements elementFactory;
     private readonly BaseStyle style;
+    private MenuStrip menuStrip;
+    private Panel displayItems;
 
     public ViewVisitor()
     {
@@ -15,26 +17,45 @@ public partial class ViewVisitor : Form
 
     private void InitializeForm()
     {
-        this.Text = "";
-        this.StartPosition = FormStartPosition.CenterScreen;
-        this.WindowState = FormWindowState.Maximized;
-        this.Padding = style.FormPadding;
-        this.BackColor = style.BackColor;
+        Text = "";
+        StartPosition = FormStartPosition.CenterScreen;
+        WindowState = FormWindowState.Maximized;
+        Padding = style.FormPadding;
+        BackColor = style.BackColor;
     }
 
     private void CreateMenuStrip()
     {
-        var menuStrip = elementFactory.CreateMenuStrip(
+        menuStrip = elementFactory.CreateMenuStrip(
             elementFactory.CreateToolStripMenu(
-                "Меню", 
-                new StripMenuItem("Мой профиль", LoadMyProfileMenuStrip),
-                new StripMenuItem("Мероприятия", null),
-                new StripMenuItem("Новости", LoadNewsMenuStrip)),
+                Attributes.Menu, 
+                new StripMenuItem(Attributes.MyProfile, LoadMyProfileMenuStrip),
+                new StripMenuItem(Attributes.Events, LoadEventsMenuStrip),
+                new StripMenuItem(Attributes.News, LoadNewsMenuStrip),
+                new StripMenuItem(Attributes.Lessons, LoadLessonsMenuStrip),
+                new StripMenuItem(Attributes.Visitoring, null)),
             elementFactory.CreateToolStripMenu(
-                "Действия",
-                new StripMenuItem("Закрыть", Close)));
+                Attributes.Action,
+                new StripMenuItem(Attributes.Close, Close),
+                new StripMenuItem(Attributes.Update, null)));
 
         Controls.Add(menuStrip);
+    }
+
+    private void DisplayItems<T>(T[] items, Func<T, int, TableLayoutPanel> func)
+    {
+        displayItems.Controls.Clear();
+
+        int yPosition = 10;
+
+        foreach (var eventItem in items)
+        {
+            var eventCard = func?.Invoke(eventItem, yPosition);
+            displayItems.Controls.Add(eventCard);
+            yPosition += eventCard.Height + 10;
+        }
+
+        displayItems.Height = yPosition;
     }
 }
 

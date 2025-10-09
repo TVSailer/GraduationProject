@@ -45,5 +45,10 @@
         public const string Admin = "Администратор";
         public const string Visitor = "Посетитель";
         public const string Gender = "Пол";
+        public const string MyProfile = "Мой профиль";
+        public const string Events = "Мероприятия";
+        public const string News = "Новости";
+        public const string Lessons = "Кружки";
+        public const string Menu = "Меню";
     }
 }
