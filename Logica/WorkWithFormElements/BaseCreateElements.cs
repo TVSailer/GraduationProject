@@ -19,6 +19,26 @@ namespace Logica
                 FlatStyle = Style.ButtonFlatStyle,
                 Padding = Style.ControlPadding,
             };
+        
+        public virtual Button CreateButton<T>(string text, Action<T> action, T obj)
+        {
+            var button = new Button() 
+            { 
+                Name = text.Replace(" ", "") + "Button", 
+                Text = text,
+                Dock = Style.DockStyle,
+                Font = Style.Font,
+                BackColor = Style.ButtonBackColor,
+                ForeColor = Style.ButtonForeColor,
+                Height = Style.ButtonHeight,
+                FlatStyle = Style.ButtonFlatStyle,
+                Padding = Style.ControlPadding,
+            };
+
+            button.Click += (send, e) => action.Invoke(obj);
+
+            return button;
+        }
         public virtual Label CreateLabel(string text)
             => new Label() 
             {
@@ -62,6 +82,22 @@ namespace Logica
                 BorderStyle = Style.TextBoxBorderStyle,
                 Padding = Style.ControlPadding
             };
+        
+        public virtual TextBox CreateTextBox(string attribute, Action<object> action)
+        {
+            var tb = new TextBox()
+            {
+                Name = attribute.Replace(" ", "") + "TextBox",
+                Dock = DockStyle.Fill,
+                Multiline = true,
+                ScrollBars = ScrollBars.Vertical
+            };
+
+            tb.TextChanged += (send, e) => action.Invoke(tb.Text);
+
+            return tb;
+        }
+
         public virtual CheckedListBox CreateCheckedListBox(params object[] attributes)
             => new CheckedListBox()
             {

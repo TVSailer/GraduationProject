@@ -6,10 +6,9 @@ public partial class ViewVisitor : Form
     private readonly BaseStyle style;
     private MenuStrip menuStrip;
     private Panel displayItems;
-
     public ViewVisitor()
     {
-        style = new ProfileFormStyle();
+        style = new VisitorViewStyle();
         elementFactory = new CreatingElements(style);
         InitializeForm();
         CreateMenuStrip();
@@ -57,8 +56,4 @@ public partial class ViewVisitor : Form
 
         displayItems.Height = yPosition;
     }
-}
-
-public class ProfileFormStyle : BaseStyle
-{
 }

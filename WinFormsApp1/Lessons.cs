@@ -5,6 +5,8 @@ public partial class ViewVisitor : Form
     private List<Club> clubs = new List<Club>();
     private void LoadLessonsMenuStrip()
     {
+        Controls.Clear();
+
         var titleLabel = new Label
         {
             Text = "Кружки и секции",
@@ -31,9 +33,10 @@ public partial class ViewVisitor : Form
         var mainTable = elementFactory.CreateTableLayoutPanel()
             .AddingColumnsStyles()
             .AddingRowsStyles(
-            new RowStyle(SizeType.Absolute, 10),
+            new RowStyle(SizeType.Absolute, 25),
             new RowStyle(SizeType.Absolute, 70),
             new RowStyle(SizeType.Percent, 100F))
+            .ControlsAdd(menuStrip, 0, 0)
             .ControlsAdd(headerPanel, 0, 1)
             .ControlsAdd(displayItems, 0, 2);
 
@@ -189,7 +192,7 @@ public partial class ViewVisitor : Form
         var addReviewButton = elementFactory.CreateButton("Добавить отзыв");
         addReviewButton.Size = new Size(150, 30);
         addReviewButton.Location = new Point(170, 5);
-        addReviewButton.Click += (s, e) => ShowAddReviewForm(club);
+        addReviewButton.Click += (s, e) => ShowAddingReviewForm(club);
 
         var closeButton = elementFactory.CreateButton("Закрыть");
         closeButton.Size = new Size(100, 30);
@@ -264,7 +267,7 @@ public partial class ViewVisitor : Form
         addReviewButton.Click += (s, e) =>
         {
             reviewsForm.Close();
-            ShowAddReviewForm(club);
+            ShowAddingReviewForm(club);
         };
 
         var closeButton = elementFactory.CreateButton("Закрыть");
@@ -332,188 +335,39 @@ public partial class ViewVisitor : Form
         return card;
     }
 
-    private void ShowAddReviewForm(Club club = null)
+    private void ShowAddingReviewForm(Club club)
+        => new ShowAddReviewForm(club, this).ShowDialog();
+
+    public void SubmitReview(ShowAddReviewForm showAddReviewForm)
     {
-        var reviewForm = new Form
-        {
-            Text = "Добавить отзыв",
-            Size = new Size(500, 400),
-            StartPosition = FormStartPosition.CenterParent,
-            Padding = new Padding(20),
-            FormBorderStyle = FormBorderStyle.FixedDialog,
-        };
-
-        var titleLabel = new Label
-        {
-            Text = club != null ? $"Отзыв о кружке \"{club.Name}\"" : "Новый отзыв",
-            Font = style.TitleFont,
-            Dock = DockStyle.Top,
-            Height = 30,
-            TextAlign = ContentAlignment.MiddleCenter
-        };
-
-        var clubCombo = new ComboBox
-        {
-            Dock = DockStyle.Top,
-            Height = 30,
-            DropDownStyle = ComboBoxStyle.DropDownList
-        };
-        clubCombo.Items.AddRange(clubs.Select(c => c.Name).ToArray());
-
-        if (club != null)
-            clubCombo.SelectedItem = club.Name;
-
-        var ratingPanel = new Panel
-        {
-            Dock = DockStyle.Top,
-            Height = 40
-        };
-
-        var ratingLabel = new Label
-        {
-            Text = "Оценка:",
-            Location = new Point(10, 10),
-            Size = new Size(60, 20),
-            Font = style.Font
-        };
-
-        var ratingCombo = new ComboBox
-        {
-            Location = new Point(80, 8),
-            Size = new Size(100, 20),
-            DropDownStyle = ComboBoxStyle.DropDownList
-        };
-        ratingCombo.Items.AddRange(new object[] { "1", "2", "3", "4", "5" });
-        ratingCombo.SelectedIndex = 4; // 5 по умолчанию
-
-        ratingPanel.Controls.Add(ratingLabel);
-        ratingPanel.Controls.Add(ratingCombo);
-
-        var authorLabel = new Label
-        {
-            Text = "Ваше имя:",
-            Dock = DockStyle.Top,
-            Height = 20,
-            Font = style.Font
-        };
-
-        var authorBox = new TextBox
-        {
-            Dock = DockStyle.Top,
-            Height = 30
-        };
-
-        var commentLabel = new Label
-        {
-            Text = "Комментарий:",
-            Dock = DockStyle.Top,
-            Height = 20,
-            Font = style.Font
-        };
-
-        var commentBox = new TextBox
-        {
-            Dock = DockStyle.Fill,
-            Multiline = true,
-            ScrollBars = ScrollBars.Vertical
-        };
-
-        var buttonsPanel = new Panel
-        {
-            Dock = DockStyle.Bottom,
-            Height = 40
-        };
-
-        var submitButton = elementFactory.CreateButton("Отправить");
-        submitButton.Size = new Size(100, 30);
-        submitButton.Location = new Point(10, 5);
-        submitButton.Click += (s, e) => SubmitReview(clubCombo, ratingCombo, authorBox, commentBox, reviewForm);
-
-        var cancelButton = elementFactory.CreateButton("Отмена");
-        cancelButton.Size = new Size(100, 30);
-        cancelButton.Location = new Point(120, 5);
-        cancelButton.Click += (s, e) => reviewForm.Close();
-
-        buttonsPanel.Controls.Add(submitButton);
-        buttonsPanel.Controls.Add(cancelButton);
-
-        if (club == null)
-        {
-            reviewForm.Controls.Add(clubCombo);
-        }
-
-        reviewForm.Controls.Add(commentBox);
-        reviewForm.Controls.Add(commentLabel);
-        reviewForm.Controls.Add(authorBox);
-        reviewForm.Controls.Add(authorLabel);
-        reviewForm.Controls.Add(ratingPanel);
-        reviewForm.Controls.Add(titleLabel);
-        reviewForm.Controls.Add(buttonsPanel);
-
-        reviewForm.ShowDialog();
-    }
-
-    private void SubmitReview(ComboBox clubCombo, ComboBox ratingCombo, TextBox authorBox, TextBox commentBox, Form form)
-    {
-        if (clubCombo.SelectedItem == null)
-        {
-            MessageBox.Show("Выберите кружок", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(authorBox.Text))
+        if (string.IsNullOrWhiteSpace(showAddReviewForm.UserName))
         {
             MessageBox.Show("Введите ваше имя", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(commentBox.Text))
+        if (string.IsNullOrWhiteSpace(showAddReviewForm.UserComent))
         {
             MessageBox.Show("Введите комментарий", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
-        var club = clubs.FirstOrDefault(c => c.Name == clubCombo.SelectedItem.ToString());
-        if (club != null)
+        var review = new Review
         {
-            var review = new Review
-            {
-                Author = authorBox.Text,
-                Date = DateTime.Now,
-                Rating = ratingCombo.SelectedIndex + 1,
-                Comment = commentBox.Text
-            };
+            Author = showAddReviewForm.UserName,
+            Date = DateTime.Now,
+            Rating = showAddReviewForm.UserRating + 1,
+            Comment = showAddReviewForm.UserComent
+        };
 
-            club.Reviews.Add(review);
-            club.ReviewCount = club.Reviews.Count;
-            club.Rating = club.Reviews.Average(r => r.Rating);
+        var club = clubs.FirstOrDefault(c => c.Name == showAddReviewForm.Club.Name);
 
-            MessageBox.Show("Отзыв успешно добавлен!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            form.Close();
-            DisplayItems(clubs.ToArray(), CreateClubCard); // Обновляем список кружков
-        }
+        club.Reviews.Add(review);
+        club.ReviewCount = club.Reviews.Count;
+        club.Rating = club.Reviews.Average(r => r.Rating);
+
+        MessageBox.Show("Отзыв успешно добавлен!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        showAddReviewForm.Close();
+        DisplayItems(clubs.ToArray(), CreateClubCard); // Обновляем список кружков
     }
-}
-
-public class Club
-{
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string Category { get; set; }
-    public string Leader { get; set; }
-    public string Schedule { get; set; }
-    public string Location { get; set; }
-    public int MaxParticipants { get; set; }
-    public int CurrentParticipants { get; set; }
-    public double Rating { get; set; }
-    public int ReviewCount { get; set; }
-    public List<Review> Reviews { get; set; } = new List<Review>();
-}
-
-public class Review
-{
-    public string Author { get; set; }
-    public DateTime Date { get; set; }
-    public int Rating { get; set; }
-    public string Comment { get; set; }
 }

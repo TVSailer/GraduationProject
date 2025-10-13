@@ -4,6 +4,8 @@ public partial class ViewVisitor : Form
 {
     private void LoadMyProfileMenuStrip()
     {
+        Controls.Clear();
+
         var labels = elementFactory.CreateListLabel(
             Attributes.Surname + ":",
             Attributes.Name + ":",
@@ -58,10 +60,12 @@ public partial class ViewVisitor : Form
 
         var tableMain = elementFactory.CreateTableLayoutPanel()
             .AddingRowsStyles(
+                new RowStyle(SizeType.Absolute, 25), 
                 new RowStyle(SizeType.Percent, 40), 
                 new RowStyle(SizeType.Percent, 100))
-            .ControlsAdd(tableInfo, 0, 0)
-            .ControlsAdd(tableButton, 0, 1);
+            .ControlsAdd(menuStrip, 0, 0)
+            .ControlsAdd(tableInfo, 0, 1)
+            .ControlsAdd(tableButton, 0, 2);
 
         Controls.Add(tableMain);
     }

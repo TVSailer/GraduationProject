@@ -4,6 +4,8 @@ public partial class ViewVisitor : Form
 {
     private void LoadEventsMenuStrip()
     {
+        Controls.Clear();
+
         var titleLabel = new Label
         {
             Text = "Ближайшие мероприятия",
@@ -29,82 +31,15 @@ public partial class ViewVisitor : Form
         var mainTable = elementFactory.CreateTableLayoutPanel()
             .AddingColumnsStyles()
             .AddingRowsStyles(
-            new RowStyle(SizeType.Absolute, 10),
+            new RowStyle(SizeType.Absolute, 25),
             new RowStyle(SizeType.Absolute, 70),
             new RowStyle(SizeType.Percent, 100F))
+            .ControlsAdd(menuStrip, 0, 0)
             .ControlsAdd(headerPanel, 0, 1)
             .ControlsAdd(displayItems, 0, 2);
 
         Controls.Add(mainTable);
         LoadTestEvents();
-    }
-
-    private void LoadTestEvents()
-    {
-        var eventItems = new[]
-        {
-        new EventItem
-        {
-            Title = "Хакатон по разработке ПО",
-            Description = "Примите участие в 48-часовом марафоне программирования. Создайте инновационное решение и выиграйте призы!",
-            Date = DateTime.Now.AddDays(7),
-            Location = "Главный корпус, ауд. 301",
-            Category = "Технологии",
-            RegistrationLink = "https://example.com/hackathon-register",
-            Organizer = "IT-отдел",
-            MaxParticipants = 100,
-            CurrentParticipants = 67
-        },
-        new EventItem
-        {
-            Title = "Мастер-класс по ораторскому искусству",
-            Description = "Научитесь уверенно выступать перед аудиторией. Практические упражнения и индивидуальные консультации.",
-            Date = DateTime.Now.AddDays(3),
-            Location = "Конференц-зал",
-            Category = "Личностное развитие",
-            RegistrationLink = "https://example.com/public-speaking",
-            Organizer = "Центр карьеры",
-            MaxParticipants = 30,
-            CurrentParticipants = 28
-        },
-        new EventItem
-        {
-            Title = "Научная конференция 'Инновации-2024'",
-            Description = "Ежегодная конференция с участием ведущих ученых и исследователей. Презентации, дискуссии, нетворкинг.",
-            Date = DateTime.Now.AddDays(14),
-            Location = "Актовый зал",
-            Category = "Наука",
-            RegistrationLink = "https://example.com/innovation-conference",
-            Organizer = "Научный отдел",
-            MaxParticipants = 200,
-            CurrentParticipants = 145
-        },
-        new EventItem
-        {
-            Title = "Воркшоп по проектной деятельности",
-            Description = "Практическое руководство по управлению проектами. От идеи до реализации под руководством экспертов.",
-            Date = DateTime.Now.AddDays(5),
-            Location = "Бизнес-инкубатор",
-            Category = "Образование",
-            RegistrationLink = "https://example.com/project-workshop",
-            Organizer = "Бизнес-школа",
-            MaxParticipants = 50,
-            CurrentParticipants = 32
-        },
-        new EventItem
-        {
-            Title = "Выставка современных технологий",
-            Description = "Ознакомьтесь с последними достижениями в области робототехники, VR/AR и искусственного интеллекта.",
-            Date = DateTime.Now.AddDays(10),
-            Location = "Выставочный центр",
-            Category = "Технологии",
-            RegistrationLink = "https://example.com/tech-expo",
-            Organizer = "Технопарк",
-            MaxParticipants = 500,
-            CurrentParticipants = 320
-        }};
-
-        DisplayItems(eventItems, CreateEventCard);
     }
 
     private TableLayoutPanel CreateEventCard(EventItem eventItem, int yPosition)
