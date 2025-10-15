@@ -27,18 +27,36 @@ namespace Logica
         }
 
         public static TableLayoutPanel ControlsAdd(
-            this TableLayoutPanel table, Control heading, int column, int row) 
+            this TableLayoutPanel table, Control control, int column, int row) 
         {
-            table.Controls.Add(heading, column, row);
+            table.Controls.Add(control, column, row);
             return table;
         }
 
         public static TableLayoutPanel ControlsAdd(
-           this TableLayoutPanel table, Control heading, int column, int row, int valueColumnSpan, int valueRowSpan)
+           this TableLayoutPanel table, Control control, int column, int row, int valueColumnSpan, int valueRowSpan)
         {
-            table.Controls.Add(heading, column, row);
-            if (valueColumnSpan > 1) table.SetColumnSpan(heading, valueColumnSpan);
-            if (valueRowSpan > 1) table.SetRowSpan(heading, valueRowSpan);
+            table.Controls.Add(control, column, row);
+            if (valueColumnSpan > 1) table.SetColumnSpan(control, valueColumnSpan);
+            if (valueRowSpan > 1) table.SetRowSpan(control, valueRowSpan);
+
+            return table;
+        }
+        
+        public static TableLayoutPanel ControlAddIsRowsAbsolute(
+           this TableLayoutPanel table, Control control, int heinght)
+        {
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, heinght));
+            table.Controls.Add(control, 0, table.RowStyles.Count -1);
+
+            return table;
+        }
+        
+        public static TableLayoutPanel ControlAddIsColumnAbsolute(
+           this TableLayoutPanel table, Control control, int weidht)
+        {
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, weidht));
+            table.Controls.Add(control, table.ColumnStyles.Count-1, 0);
 
             return table;
         }
@@ -57,6 +75,7 @@ namespace Logica
             return table;
         }
         
+
         public static TableLayoutPanel AddingRowsStyles(this TableLayoutPanel table, params RowStyle[] rowStyles)
         {
             if (rowStyles == null)

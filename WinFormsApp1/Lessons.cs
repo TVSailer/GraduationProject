@@ -54,7 +54,7 @@ public partial class ViewVisitor : Form
             Dock = DockStyle.Fill,
             LinkBehavior = LinkBehavior.HoverUnderline
         };
-        titleLabel.Click += (s, e) => ShowClubDetails(club);
+        titleLabel.Click += (s, e) => ShowClubDetailing(club);
 
         var ratingLabel = new LinkLabel
         {
@@ -124,91 +124,8 @@ public partial class ViewVisitor : Form
         return tableCard;
     }
 
-    private void ShowClubDetails(Club club)
-    {
-        var detailsForm = new Form
-        {
-            Text = club.Name,
-            Size = new Size(700, 600),
-            StartPosition = FormStartPosition.CenterParent,
-            Padding = new Padding(20),
-            FormBorderStyle = FormBorderStyle.FixedDialog,
-        };
-
-        var titleLabel = new Label
-        {
-            Text = club.Name,
-            Font = style.TitleFont,
-            Dock = DockStyle.Top,
-            Height = 30,
-            TextAlign = ContentAlignment.MiddleCenter
-        };
-
-        var ratingLabel = new Label
-        {
-            Text = $"★ {club.Rating:0.0} • {club.ReviewCount} отзывов • {club.CurrentParticipants}/{club.MaxParticipants} участников",
-            Font = new Font(style.Font, FontStyle.Bold),
-            Dock = DockStyle.Top,
-            Height = 25,
-            TextAlign = ContentAlignment.MiddleCenter,
-            ForeColor = Color.DarkOrange,
-        };
-
-        var infoLabel = new Label
-        {
-            Text = $"Руководитель: {club.Leader}\nРасписание: {club.Schedule}\nМесто: {club.Location}\nКатегория: {club.Category}",
-            Font = style.Font,
-            Dock = DockStyle.Top,
-            Height = 80,
-            TextAlign = ContentAlignment.MiddleLeft
-        };
-
-        var descriptionText = new TextBox
-        {
-            Font = new Font(Font.FontFamily, 11),
-            Text = club.Description,
-            Multiline = true,
-            ReadOnly = true,
-            Dock = DockStyle.Fill,
-            ScrollBars = ScrollBars.Vertical,
-            BorderStyle = BorderStyle.FixedSingle,
-            BackColor = SystemColors.Window
-        };
-
-        var buttonsPanel = new Panel
-        {
-            Dock = DockStyle.Bottom,
-            Height = 40
-        };
-
-        var reviewsButton = elementFactory.CreateButton("Посмотреть отзывы");
-        reviewsButton.Size = new Size(150, 30);
-        reviewsButton.Location = new Point(10, 5);
-        reviewsButton.Click += (s, e) =>
-        {
-            ShowClubReviews(club);
-        };
-
-        var addReviewButton = elementFactory.CreateButton("Добавить отзыв");
-        addReviewButton.Size = new Size(150, 30);
-        addReviewButton.Location = new Point(170, 5);
-        addReviewButton.Click += (s, e) => ShowAddingReviewForm(club);
-
-        var closeButton = elementFactory.CreateButton("Закрыть");
-        closeButton.Size = new Size(100, 30);
-        closeButton.Location = new Point(330, 5);
-        closeButton.Click += (s, e) => detailsForm.Close();
-
-        buttonsPanel.Controls.AddRange(new Control[] { reviewsButton, addReviewButton, closeButton });
-
-        detailsForm.Controls.Add(descriptionText);
-        detailsForm.Controls.Add(infoLabel);
-        detailsForm.Controls.Add(ratingLabel);
-        detailsForm.Controls.Add(titleLabel);
-        detailsForm.Controls.Add(buttonsPanel);
-
-        detailsForm.ShowDialog();
-    }
+    private void ShowClubDetailing(Club club)
+        => new ShowClubDetails(club, this).ShowDialog();
 
     private void ShowClubReviews(Club club)
     {
@@ -266,7 +183,6 @@ public partial class ViewVisitor : Form
         addReviewButton.Location = new Point(10, 5);
         addReviewButton.Click += (s, e) =>
         {
-            reviewsForm.Close();
             ShowAddingReviewForm(club);
         };
 

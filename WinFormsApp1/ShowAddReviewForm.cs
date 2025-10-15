@@ -46,7 +46,7 @@ public partial class ViewVisitor
             Size = new Size(600, 400);
             StartPosition = FormStartPosition.CenterParent;
             Padding = new Padding(20);
-            MaximizeBox = false;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
         }
         
         private TableLayoutPanel RatingPanel()

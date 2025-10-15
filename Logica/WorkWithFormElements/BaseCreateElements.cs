@@ -26,13 +26,10 @@ namespace Logica
             { 
                 Name = text.Replace(" ", "") + "Button", 
                 Text = text,
-                Dock = Style.DockStyle,
                 Font = Style.Font,
+                Dock = Style.DockStyle,
                 BackColor = Style.ButtonBackColor,
                 ForeColor = Style.ButtonForeColor,
-                Height = Style.ButtonHeight,
-                FlatStyle = Style.ButtonFlatStyle,
-                Padding = Style.ControlPadding,
             };
 
             button.Click += (send, e) => action.Invoke(obj);
