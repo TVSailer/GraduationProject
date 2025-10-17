@@ -2,7 +2,7 @@
 
 namespace Logica
 {
-    public abstract class BaseStyle : IDisposable
+    public class BaseStyle : IDisposable
     {
         // Виртуальные свойства с значениями по умолчанию
         public virtual DockStyle DockStyle => DockStyle.Fill;
@@ -51,3 +51,4 @@ namespace Logica
         }
     }
 }
+
