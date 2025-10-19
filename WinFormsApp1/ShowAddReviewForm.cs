@@ -1,25 +1,26 @@
 ﻿using Logica;
+using System.ComponentModel.DataAnnotations;
 
 public partial class ViewVisitor
 {
     public class ShowAddReviewForm : Form
     {
         public int UserRating { get; set; }
+
+        [Required(ErrorMessage = "Введите ваше имя!")]
         public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Введите комментарий!")]
         public string UserComent { get; set; }
         public Club Club { get; set; }
 
-        private BaseStyle style = new VisitorViewStyle();
-        private BaseCreatingElements elementFactory;
-
         public ShowAddReviewForm(Club club, ViewVisitor viewVisitor)
         {
-            elementFactory = new CreatingElements(style);
             Club = club;
 
             InitForm();
 
-            var mainTable = elementFactory.CreateTableLayoutPanel()
+            var mainTable = FactoryElements.CreateTableLayoutPanel()
                 .AddingRowsStyles(
                     new RowStyle(SizeType.Absolute, 30),
                     new RowStyle(SizeType.Absolute, 30),
@@ -28,13 +29,13 @@ public partial class ViewVisitor
                     new RowStyle(SizeType.Absolute, 40))
                 .ControlsAdd(new Label{
                     Text = club != null ? $"Отзыв о кружке \"{club.Name}\"" : "Новый отзыв",
-                    Font = style.TitleFont,
+                    Font = FactoryElements.Style.TitleFont,
                     Dock = DockStyle.Top,
                     TextAlign = ContentAlignment.MiddleCenter}, 0, 0)
                 .ControlsAdd(RatingPanel(), 0, 1)
                 .ControlsAdd(AuthorPanel(), 0, 2)
                 .ControlsAdd(ComentPanel(), 0, 3)
-                .ControlsAdd(elementFactory.CreateButton("Отправить", viewVisitor.SubmitReview, this), 0, 4)
+                .ControlsAdd(FactoryElements.CreateButton("Отправить", SubmitReview, viewVisitor), 0, 4)
                 .ControlsAdd(new Panel(), 0, 5);
 
             Controls.Add(mainTable);
@@ -62,7 +63,7 @@ public partial class ViewVisitor
                 new ColumnStyle(SizeType.Absolute, 130))
             .ControlsAdd(new Label{
                 Text = "Оценка:",
-                Font = style.Font,
+                Font = FactoryElements.Style.Font,
                 Dock = DockStyle.Bottom}, 0, 0)
             .ControlsAdd(ratingCombo, 1, 0)
             .ControlsAdd(new Panel(), 2, 1);
@@ -77,9 +78,9 @@ public partial class ViewVisitor
                 .ControlsAdd(
                     new Label{
                         Text = "Ваше имя: ",
-                        Font = style.Font,
+                        Font = FactoryElements.Style.Font,
                         Dock = DockStyle.Bottom}, 0, 0)
-                .ControlsAdd(elementFactory.CreateTextBox("", (text) => UserName = (string)text), 1, 0)
+                .ControlsAdd(FactoryElements.CreateTextBox("", (text) => UserName = (string)text), 1, 0)
                 .ControlsAdd(new Panel(), 2, 1);
         private TableLayoutPanel ComentPanel()
             => new TableLayoutPanel(){Dock = DockStyle.Fill}
@@ -87,7 +88,25 @@ public partial class ViewVisitor
                 new RowStyle(SizeType.Absolute, 20))
             .ControlsAdd(new Label{
                 Text = "Коментарий: ",
-                Font = style.Font}, 0, 0)
-            .ControlsAdd(elementFactory.CreateTextBox("", (text) => UserComent = (string)text), 0, 1);
+                Font = FactoryElements.Style.Font}, 0, 0)
+            .ControlsAdd(FactoryElements.CreateTextBox("", (text) => UserComent = (string)text), 0, 1);
+
+        private void SubmitReview(ViewVisitor viewVisitor)
+        {
+            if (!Validatoreg.TryValidObject(this)) return;
+
+            var review = new Review
+            {
+                Author = UserName,
+                Date = DateTime.Now,
+                Rating = UserRating + 1,
+                Comment = UserComent
+            };
+
+            viewVisitor.UpdateListReviewClub(review, Club.Name);
+            Close();
+        }
     }
+
+    
 }

@@ -4,6 +4,7 @@ public partial class ViewVisitor
 {
     public class ShowCLubReviews : Form
     {
+        private Panel cardsReviews;
         public ShowCLubReviews(Club club, ViewVisitor viewVisitor)
         {
             Init(club);
@@ -27,21 +28,29 @@ public partial class ViewVisitor
                 ForeColor = Color.DarkOrange
             };
 
-            var mainTable = FactoryElements.CreateTableLayoutPanel()
-                .ControlAddIsRowsAbsolute(titleLabel, 30)
-                .ControlAddIsRowsAbsolute(ratingLabel, 25)
-                .ControlAddIsRowsAbsolute(CreadCardsReviews(club), 300)
-                .ControlAddIsRowsAbsolute(FactoryElements
-                    .CreateButton("Добавить отзыв", viewVisitor.ShowAddingReviewForm, club), 40)
-                .ControlsAdd(new Panel(), 0, 4);
+            Controls.Add(CreateMainTable());
 
-            Controls.Add(mainTable);
+            TableLayoutPanel CreateMainTable()
+            {
+                Controls.Clear();
+                return FactoryElements
+                   .CreateTableLayoutPanel()
+                   .ControlAddIsRowsAbsolute(titleLabel, 30)
+                   .ControlAddIsRowsAbsolute(ratingLabel, 25)
+                   .ControlAddIsRowsAbsolute(CreadCardsReviews(club), 300)
+                   .ControlAddIsRowsAbsolute(FactoryElements
+                       .CreateButton("Добавить отзыв", viewVisitor.ShowAddingReviewForm, club), 40)
+                   .ControlsAdd(new Panel(), 0, 4);
+            }
+
+            viewVisitor.ActionUpdateReviewClub += () => Controls.Add(CreateMainTable());
         }
 
         private Panel CreadCardsReviews(Club club)
         {
             var reviewsPanel = new Panel
             {
+                Name = "reviewsPanel",
                 Dock = DockStyle.Fill,
                 AutoScroll = true
             };
@@ -57,16 +66,6 @@ public partial class ViewVisitor
 
             return reviewsPanel;
         }
-
-        public void Init(Club club)
-        {
-            Text = $"Отзывы - {club.Name}";
-            Size = new Size(600, 500);
-            StartPosition = FormStartPosition.CenterParent;
-            Padding = new Padding(20);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-        }
-
         private Panel CreateReviewCard(Review review, int yPosition)
         {
             var authorLabel = new Label
@@ -106,6 +105,14 @@ public partial class ViewVisitor
                 .ControlAddIsRowsAbsolute(dateLabel, 20)
                 .ControlAddIsRowsAbsolute(ratingLabel, 20)
                 .ControlAddIsRowsAbsolute(commentLabel, 200);
+        }
+        public void Init(Club club)
+        {
+            Text = $"Отзывы - {club.Name}";
+            Size = new Size(600, 500);
+            StartPosition = FormStartPosition.CenterParent;
+            Padding = new Padding(20);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
         }
     }
 }

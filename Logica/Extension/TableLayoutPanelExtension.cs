@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Windows.Forms;
-
-namespace Logica
+﻿namespace Logica
 {
     public static partial class TableLayoutPanelExtension
     {

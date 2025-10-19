@@ -3,6 +3,8 @@
 public partial class ViewVisitor : Form
 {
     private List<Club> clubs = new List<Club>();
+    private Action ActionUpdateReviewClub;
+
     private void LoadLessonsMenuStrip()
     {
         Controls.Clear();
@@ -107,19 +109,12 @@ public partial class ViewVisitor : Form
         };
 
         tableCard
-            .AddingRowsStyles(
-                new RowStyle(SizeType.Absolute, 25),
-                new RowStyle(SizeType.Absolute, 20),
-                new RowStyle(SizeType.Absolute, 20),
-                new RowStyle(SizeType.Absolute, 18),
-                new RowStyle(SizeType.Absolute, 70),
-                new RowStyle(SizeType.Absolute, 20))
-            .ControlsAdd(titleLabel, 0, 0)
-            .ControlsAdd(ratingLabel, 0, 1)
-            .ControlsAdd(scheduleLabel, 0, 2)
-            .ControlsAdd(leaderLabel, 0, 3)
-            .ControlsAdd(descriptionLabel, 0, 4)
-            .ControlsAdd(participantsLabel, 0, 5);
+            .ControlAddIsRowsAbsolute(titleLabel, 25)
+            .ControlAddIsRowsAbsolute(ratingLabel, 20)
+            .ControlAddIsRowsAbsolute(scheduleLabel, 20)
+            .ControlAddIsRowsAbsolute(leaderLabel, 18)
+            .ControlAddIsRowsAbsolute(descriptionLabel, 70)
+            .ControlAddIsRowsAbsolute(participantsLabel, 20);
 
         return tableCard;
     }
@@ -130,41 +125,18 @@ public partial class ViewVisitor : Form
     private void ShowClubReviews(Club club)
         => new ShowCLubReviews(club, this).ShowDialog();
 
-    
-
     private void ShowAddingReviewForm(Club club)
         => new ShowAddReviewForm(club, this).ShowDialog();
-
-    public void SubmitReview(ShowAddReviewForm showAddReviewForm)
+    private void UpdateListReviewClub(Review review, string clubName)
     {
-        if (string.IsNullOrWhiteSpace(showAddReviewForm.UserName))
-        {
-            MessageBox.Show("Введите ваше имя", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(showAddReviewForm.UserComent))
-        {
-            MessageBox.Show("Введите комментарий", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return;
-        }
-
-        var review = new Review
-        {
-            Author = showAddReviewForm.UserName,
-            Date = DateTime.Now,
-            Rating = showAddReviewForm.UserRating + 1,
-            Comment = showAddReviewForm.UserComent
-        };
-
-        var club = clubs.FirstOrDefault(c => c.Name == showAddReviewForm.Club.Name);
+        var club = clubs.FirstOrDefault(c => c.Name == clubName);
 
         club.Reviews.Add(review);
         club.ReviewCount = club.Reviews.Count;
         club.Rating = club.Reviews.Average(r => r.Rating);
 
-        MessageBox.Show("Отзыв успешно добавлен!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        showAddReviewForm.Close();
-        DisplayItems(clubs.ToArray(), CreateClubCard); // Обновляем список кружков
+        LogicaMessage.MessageInfo("Отзыв успешно добавлен!");
+
+        ActionUpdateReviewClub?.Invoke();
     }
 }

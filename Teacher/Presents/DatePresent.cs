@@ -50,24 +50,17 @@ namespace Teacher.Presents
                 LessonId = Lesson.Id,
             };
 
-            var results = new List<ValidationResult>();
-            var context = new ValidationContext(date);
+            if (Validatoreg.TryValidObject(date)) return;
 
-            if (!Validator.TryValidateObject(date, context, results, true))
-                foreach (var error in results)
-                    LogicaMessage.MessageOk(error.ErrorMessage);
-            else
-            {
-                DRepository.Add(date);
-                DRepository.AddRelationWithLesson(date, Lesson);
+            DRepository.Add(date);
+            DRepository.AddRelationWithLesson(date, Lesson);
 
-                foreach (var vis in Visitors)
-                    DRepository.AddRelationWithVisitor(date, vis);
+            foreach (var vis in Visitors)
+                DRepository.AddRelationWithVisitor(date, vis);
 
-                OnLoadData();
+            OnLoadData();
 
-                LogicaMessage.MessageOk("Данные успешно добавлены");
-            }
+            LogicaMessage.MessageOk("Данные успешно добавлены");
         }
 
         internal void OnLoadData()
@@ -131,8 +124,6 @@ namespace Teacher.Presents
 
             new FormAddingDateAttendance(this, visitors.ToArray(), gridView).Show();
         }
-
-       
 
         internal void OnDelete(ref DataGridView dataGridView)
         {
