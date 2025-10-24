@@ -12,4 +12,34 @@
     <ProjectReference Include="..\Logica\Logica.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Forms\EventsForm\EventsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\LessonsForm\LessonsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\MyProfileForm\MyProfileForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\NewsForm\NewsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\LessonsForm\ShowAddReviewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\LessonsForm\ShowClubDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\LessonsForm\ShowCLubReviewsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\ViewVisitorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\LoadTestItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

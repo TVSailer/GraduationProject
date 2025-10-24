@@ -10,7 +10,10 @@ namespace Visitor
         [STAThread]
         static void Main()
         {
-            ProgramVisitor.Run();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            Application.Run(new ViewVisitor());
         }
     }
 }

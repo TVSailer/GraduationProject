@@ -18,7 +18,7 @@ namespace DataAccess.Postgres.Repository
             Teacher = DbContext.Teachers
             .AsNoTracking()
             .Include(t => t.Lessons)
-            .FirstOrDefault(t => t.Login == login && t.Password == password);
+            .FirstOrDefault(t => t.Login == login && t.Password == password) ?? throw new ArgumentNullException();
 
             return Teacher != null;
         }

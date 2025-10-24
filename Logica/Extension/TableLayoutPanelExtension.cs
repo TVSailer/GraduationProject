@@ -49,6 +49,15 @@
             return table;
         }
         
+        public static TableLayoutPanel ControlAddIsRowsPercent(
+           this TableLayoutPanel table, Control control, int heinght)
+        {
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, heinght));
+            table.Controls.Add(control, 0, table.RowStyles.Count -1);
+
+            return table;
+        }
+        
         public static TableLayoutPanel ControlAddIsColumnAbsolute(
            this TableLayoutPanel table, Control control, int weidht)
         {

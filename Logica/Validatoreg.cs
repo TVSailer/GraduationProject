@@ -21,4 +21,21 @@ public static class Validatoreg
 
         return true;
     }
+
+    public static void OpenRegistrationLink(string url)
+    {
+        try
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Не удалось открыть ссылку: {ex.Message}", "Ошибка",
+                          MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
 }

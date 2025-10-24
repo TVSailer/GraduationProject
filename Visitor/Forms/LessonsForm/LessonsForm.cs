@@ -1,8 +1,9 @@
-﻿using Logica;
+﻿using DataAccess.Postgres.Models;
+using Logica;
 
 public partial class ViewVisitor : Form
 {
-    private List<Club> clubs = new List<Club>();
+    private List<LessonEntity> clubs = new();
     private Action ActionUpdateReviewClub;
 
     private void LoadLessonsMenuStrip()
@@ -56,7 +57,7 @@ public partial class ViewVisitor : Form
             Dock = DockStyle.Fill,
             LinkBehavior = LinkBehavior.HoverUnderline
         };
-        titleLabel.Click += (s, e) => ShowClubDetailing(club);
+        titleLabel.Click += (s, e) => new ShowClubDetails(club, this).ShowDialog();
 
         var ratingLabel = new LinkLabel
         {
@@ -119,15 +120,13 @@ public partial class ViewVisitor : Form
         return tableCard;
     }
 
-    private void ShowClubDetailing(Club club)
-        => new ShowClubDetails(club, this).ShowDialog();
-
     private void ShowClubReviews(Club club)
         => new ShowCLubReviews(club, this).ShowDialog();
 
     private void ShowAddingReviewForm(Club club)
         => new ShowAddReviewForm(club, this).ShowDialog();
-    private void UpdateListReviewClub(Review review, string clubName)
+
+    private void UpdateListReviewClub(ReviewEntity review, string clubName)
     {
         var club = clubs.FirstOrDefault(c => c.Name == clubName);
 

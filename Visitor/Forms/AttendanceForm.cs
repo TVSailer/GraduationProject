@@ -1,7 +1,7 @@
 ﻿using Logica;
 
 namespace Visitor;
-public partial class FormAttendance : Form
+public partial class AttendanceForm : Form
 {
     public BaseCreatingElements CreatingElements = new CreatingElements(new Style());
     protected override void OnLoad(EventArgs e)
@@ -12,9 +12,9 @@ public partial class FormAttendance : Form
     }
 }
 
-public partial class FormAttendance : Form
+public partial class AttendanceForm : Form
 {
-    public FormAttendance()
+    public AttendanceForm()
     {
         var dataGridView = CreatingElements.CreateDataGridView();
 

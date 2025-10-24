@@ -89,24 +89,20 @@ public static class FactoryElements
             Font = Style.Font,
             BackColor = Style.ButtonBackColor,
             ForeColor = Style.ButtonForeColor,
-            Height = Style.ButtonHeight,
-            FlatStyle = Style.ButtonFlatStyle,
-            Padding = Style.ControlPadding,
         };
 
     public static Button CreateButton<T>(string text, Action<T> action, T obj)
     {
-        var button = new Button()
-        {
-            Name = text.Replace(" ", "") + "Button",
-            Text = text,
-            Font = Style.Font,
-            Dock = Style.DockStyle,
-            BackColor = Style.ButtonBackColor,
-            ForeColor = Style.ButtonForeColor,
-        };
+        var button = CreateButton(text);
+        button.Click += (send, e) => action?.Invoke(obj);
 
-        button.Click += (send, e) => action.Invoke(obj);
+        return button;
+    }
+    
+    public static Button CreateButton(string text, Action action)
+    {
+        var button = CreateButton(text);
+        button.Click += (send, e) => action?.Invoke();
 
         return button;
     }
