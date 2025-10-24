@@ -16,11 +16,12 @@ namespace DataAccess.Postgres.Models
         public LessonEntity Lesson { get; set; }
         public List<VisitorEntity>? Visitors { get; set; } = new();
 
-
         public required ApplicationDbContext DbContext { get; set; }
         [Date(ErrorMessage = "Такая дата уже есть!")]
         public DateForValid DateForValide 
             => new DateForValid { Date = Date, DbContext = DbContext, LessonId = LessonId };
+
+        public DateAttendanceEntity() { }
 
         public override string ToString()
             => Date;

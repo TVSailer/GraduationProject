@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Postgres.Models;
 
 public class EventEntity
 {
     public int Id { get; set; }
-    public string UrlImg { get; set; }
     [Required(ErrorMessage = "Отсутствует название!")]
     public required string Title { get; set; }
     [Required(ErrorMessage = "Отсутствует описание!")]
@@ -20,9 +20,12 @@ public class EventEntity
     public required string RegistrationLink { get; set; }
     [Required(ErrorMessage = "Отсутствует организатор мероприятия!")]
     public required string Organizer { get; set; }
-    public int MaxParticipants { get; set; }
     [Required(ErrorMessage = "Отсутствует возможное количество участников!")]
+    public int MaxParticipants { get; set; }
     public int CurrentParticipants { get; set; }
+    public List<ImgEvent>? ImgsEvent { get; set; } = new();
+
+    public EventEntity() { }
 
     public override string ToString()
         => $"Мероприятие: {Title} {Date}";

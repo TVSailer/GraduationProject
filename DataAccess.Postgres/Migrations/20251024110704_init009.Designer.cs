@@ -2,6 +2,7 @@
 using DataAccess.Postgres;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251024110704_init009")]
+    partial class init009
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,24 +115,6 @@ namespace DataAccess.Postgres.Migrations
                     b.ToTable("ImgEvent");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNew", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("ImgNew");
-                });
-
             modelBuilder.Entity("DataAccess.Postgres.Models.LessonEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -201,6 +186,10 @@ namespace DataAccess.Postgres.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UrlImg")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -395,18 +384,7 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Models.ImgEvent", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Models.EventEntity", "Event")
-                        .WithMany("ImgsEvent")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-                });
-
-            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNew", b =>
-                {
-                    b.HasOne("DataAccess.Postgres.Models.NewsEntity", "Event")
-                        .WithMany("ImgsNew")
+                        .WithMany("Imgs")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -443,7 +421,7 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("ImgLesson", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Models.LessonEntity", "Lesson")
-                        .WithMany("ImgsLesson")
+                        .WithMany("Imgs")
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -487,21 +465,16 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Models.EventEntity", b =>
                 {
-                    b.Navigation("ImgsEvent");
+                    b.Navigation("Imgs");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.LessonEntity", b =>
                 {
                     b.Navigation("Dates");
 
-                    b.Navigation("ImgsLesson");
+                    b.Navigation("Imgs");
 
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("DataAccess.Postgres.Models.NewsEntity", b =>
-                {
-                    b.Navigation("ImgsNew");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.TeacherEntity", b =>

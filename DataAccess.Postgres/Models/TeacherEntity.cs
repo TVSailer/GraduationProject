@@ -9,29 +9,31 @@ namespace DataAccess.Postgres.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Пж, норм имя впиши")]
-        public required string Name { get; set; }
+        public string Name { get; set; }
 
         [Required(ErrorMessage = "Пж, норм фамилию впиши")]
-        public required string Surname { get; set; }
+        public string Surname { get; set; }
 
         [Required(ErrorMessage = "Пж, норм отчество впиши")]
-        public required string Patronymic { get; set; }
+        public string Patronymic { get; set; }
 
         [DateBirthday(ErrorMessage = "Не корректная дата рождения")]
-        public required string DateBirth { get; set; }
+        public string DateBirth { get; set; }
 
         [PhoneNumber(ErrorMessage = "Пж, норм номер телефон впиши")]
-        public required string NumberPhone { get; set; }
+        public string NumberPhone { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
         public List<LessonEntity>? Lessons { get; set; }
-        public required string Login { get; set; }
-        public required string Password { get; set; }
+
+        public TeacherEntity() { }
 
         public override string ToString()
             => $"{Surname} {Name} {Patronymic}";
 
-        public bool VerifyPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.Verify(password, Password);
-        }
+        //public bool VerifyPassword(string password)
+        //{
+        //    return BCrypt.Net.BCrypt.Verify(password, Password);
+        //}
     }
 }
