@@ -1,8 +1,9 @@
-﻿using Logica;
+﻿using DataAccess.Postgres.Models;
+using Logica;
 
 public partial class ViewVisitor : Form
 {
-    List<NewsItem> allNews = new();
+    List<NewsEntity> allNews = new();
 
     private void LoadNewsMenuStrip()
     {
@@ -44,10 +45,9 @@ public partial class ViewVisitor : Form
             .ControlsAdd(displayItems, 0, 2);
 
         Controls.Add(mainTable);
-        LoadTestNews();
     }
 
-    private TableLayoutPanel CreateNewsCard(NewsItem news, int yPosition)
+    private TableLayoutPanel CreateNewsCard(NewsEntity news, int yPosition)
     {
         var titleLabel = new LinkLabel
         {

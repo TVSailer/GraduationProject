@@ -42,17 +42,11 @@ namespace Admin.Presents
                 Password = userAuth.Password 
             };
 
-            var results = new List<ValidationResult>();
-            var context = new ValidationContext(teacher);
+            if (Validatoreg.TryValidObject(teacher))
+                return;
 
-            if (!Validator.TryValidateObject(teacher, context, results, true))
-                foreach (var error in results)
-                    Message(error.ErrorMessage);
-            else
-            {
-                Repository.Add(teacher);
-                Message("Данные успешно добавлены");
-            }
+            Repository.Add(teacher);
+            Message("Данные успешно добавлены");
         }
 
         internal void OnLoadData(ref DataGridView gridView)

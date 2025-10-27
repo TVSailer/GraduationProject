@@ -1,4 +1,6 @@
-﻿namespace Logica
+﻿using System.Windows.Forms;
+
+namespace Logica
 {
     public static partial class TableLayoutPanelExtension
     {
@@ -50,18 +52,39 @@
         }
         
         public static TableLayoutPanel ControlAddIsRowsPercent(
-           this TableLayoutPanel table, Control control, int heinght)
+           this TableLayoutPanel table, Control? control, int heinght)
         {
+            if (control == null)
+            {
+                table.RowCount = 1;
+                return table;
+            }
             table.RowStyles.Add(new RowStyle(SizeType.Percent, heinght));
             table.Controls.Add(control, 0, table.RowStyles.Count -1);
 
             return table;
         }
         
+        
         public static TableLayoutPanel ControlAddIsColumnAbsolute(
+           this TableLayoutPanel table, Control? control, int weidht)
+        {
+            if (control == null)
+            {
+                table.ColumnCount = 1;
+                return table;
+            }
+
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, weidht));
+            table.Controls.Add(control, table.ColumnStyles.Count-1, 0);
+
+            return table;
+        }
+        
+        public static TableLayoutPanel ControlAddIsColumnPercent(
            this TableLayoutPanel table, Control control, int weidht)
         {
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, weidht));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, weidht));
             table.Controls.Add(control, table.ColumnStyles.Count-1, 0);
 
             return table;
@@ -75,8 +98,7 @@
                 return table;
             }
 
-            foreach (var columnStyle in columnStyles)
-                table.ColumnStyles.Add(columnStyle);
+            columnStyles.ToList().ForEach(c => table.ColumnStyles.Add(c));
 
             return table;
         }
@@ -90,8 +112,7 @@
                 return table;
             }
 
-            foreach (var rowStyle in rowStyles)
-                table.RowStyles.Add(rowStyle);
+            rowStyles.ToList().ForEach(r => table.RowStyles.Add(r));
 
             return table;
         }

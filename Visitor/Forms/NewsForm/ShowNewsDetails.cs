@@ -1,13 +1,13 @@
-﻿using Logica;
+﻿using DataAccess.Postgres.Models;
+using Logica;
 
 public class ShowNewsDetails : Form
 {
-    private NewsItem news;
+    private NewsEntity news;
 
-    public ShowNewsDetails(NewsItem news)
+    public ShowNewsDetails(NewsEntity news)
     {
         this.news = news;
-        Init(news);
 
         var titleLabel = new Label
         {
@@ -47,7 +47,7 @@ public class ShowNewsDetails : Form
         Controls.Add(mainTable);
     }
 
-    private void Init(NewsItem news)
+    private void Init()
     {
         Text = news.Title;
         Size = new Size(600, 800);

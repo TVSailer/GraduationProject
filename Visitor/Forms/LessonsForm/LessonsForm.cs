@@ -1,129 +1,91 @@
 ﻿using DataAccess.Postgres.Models;
 using Logica;
+using Logica.Extension;
 
 public partial class ViewVisitor : Form
 {
     private List<LessonEntity> clubs = new();
-    private Action ActionUpdateReviewClub;
+    public Action ActionUpdateReviewClub;
 
     private void LoadLessonsMenuStrip()
     {
         Controls.Clear();
 
-        var titleLabel = new Label
-        {
-            Text = "Кружки и секции",
-            Font = style.TitleFont,
-            TextAlign = ContentAlignment.MiddleLeft,
-            Dock = DockStyle.Fill,
-            ForeColor = Color.DarkBlue
-        };
+        Controls.Add(elementFactory
+            .CreateTableLayoutPanel()
+            .ControlAddIsRowsAbsolute(menuStrip, 25)
+            .ControlAddIsRowsAbsolute(
+                elementFactory
+                    .CreateTableLayoutPanel()
+                    .ControlAddIsColumnPercent(
+                        new Label()
+                            .Do(l => l.Text = "Кружки и секции")
+                            .Do(l => l.Font = style.TitleFont)
+                            .Do(l => l.TextAlign = ContentAlignment.MiddleLeft)
+                            .Do(l => l.Dock = DockStyle.Fill)
+                            .Do(l => l.ForeColor = Color.DarkBlue), 100)
+            .ControlAddIsColumnAbsolute(
+                null, 120), 70)
+            .ControlAddIsRowsPercent(
+                displayItems = new Panel()
+                        .Do(p => p.Dock = DockStyle.Top)
+                        .Do(p => p.AutoSize = true)
+                        .Do(p => p.AutoScroll = true), 100));
 
-        var headerPanel = elementFactory.CreateTableLayoutPanel()
-            .AddingColumnsStyles(
-            new ColumnStyle(SizeType.Percent, 100F),
-            new ColumnStyle(SizeType.Absolute, 120))
-            .AddingRowsStyles()
-            .ControlsAdd(titleLabel, 0, 0);
-
-        displayItems = new Panel
-        {
-            Dock = DockStyle.Top,
-            AutoSize = true,
-            AutoScroll = true
-        };
-
-        var mainTable = elementFactory.CreateTableLayoutPanel()
-            .AddingColumnsStyles()
-            .AddingRowsStyles(
-            new RowStyle(SizeType.Absolute, 25),
-            new RowStyle(SizeType.Absolute, 70),
-            new RowStyle(SizeType.Percent, 100F))
-            .ControlsAdd(menuStrip, 0, 0)
-            .ControlsAdd(headerPanel, 0, 1)
-            .ControlsAdd(displayItems, 0, 2);
-
-        Controls.Add(mainTable);
         LoadTestClubs();
     }
 
-    private TableLayoutPanel CreateClubCard(Club club, int yPosition)
-    {
-        var titleLabel = new LinkLabel
-        {
-            Text = club.Name,
-            Font = style.TitleFont,
-            LinkColor = Color.DarkBlue,
-            Dock = DockStyle.Fill,
-            LinkBehavior = LinkBehavior.HoverUnderline
-        };
-        titleLabel.Click += (s, e) => new ShowClubDetails(club, this).ShowDialog();
+    private TableLayoutPanel CreateClubCard(LessonEntity club, int yPosition) 
+        => new TableLayoutPanel()
+            .Do(t => t.Location = new Point(0, yPosition))
+            .Do(t => t.Size = new Size(displayItems.Width - 25, 200))
+            .Do(t => t.BorderStyle = BorderStyle.FixedSingle)
+            .Do(t => t.Padding = new Padding(15))
+            .ControlAddIsRowsAbsolute(
+                new LinkLabel()
+                    .Do(l => l.Text = club.Name)
+                    .Do(l => l.Font = style.TitleFont)
+                    .Do(l => l.LinkColor = Color.DarkBlue)
+                    .Do(l => l.Dock = DockStyle.Fill)
+                    .Do(l => l.LinkBehavior = LinkBehavior.HoverUnderline)
+                    .Do(l => l.Click += (s, e) => new ShowClubDetails(club, this).ShowDialog()), 25)
+            .ControlAddIsRowsAbsolute(
+                new LinkLabel()
+                    .Do(l => l.Text = $"★ {club.Rating:0.0} ({club.ReviewCount} отзывов)")
+                    .Do(l => l.Font = new Font(style.Font, FontStyle.Bold))
+                    .Do(l => l.LinkColor = Color.DarkOrange)
+                    .Do(l => l.Dock = DockStyle.Fill)
+                    .Do(l => l.LinkBehavior = LinkBehavior.HoverUnderline)
+                    .Do(l => l.Click += (s, e) => ShowClubReviews(club)), 20)
+            .ControlAddIsRowsAbsolute(
+                new Label()
+                    .Do(l => l.Text = $"{club.Schedule} • {club.Location}")
+                    .Do(l => l.Font = new Font(style.Font, FontStyle.Regular))
+                    .Do(l => l.ForeColor = Color.DarkGreen)
+                    .Do(l => l.Dock = DockStyle.Fill), 20)
+            .ControlAddIsRowsAbsolute(
+                new Label()
+                    .Do(l => l.Text = $"Руководитель: {club.Teacher} • {club.Category}")
+                    .Do(l => l.Font = new Font(style.Font, FontStyle.Italic))
+                    .Do(l => l.ForeColor = Color.Gray)
+                    .Do(l => l.Dock = DockStyle.Fill), 18)
+            .ControlAddIsRowsAbsolute(
+                new Label()
+                    .Do(l => l.Text = club.Description)
+                    .Do(l => l.Font = style.Font)
+                    .Do(l => l.ForeColor = Color.Black)
+                    .Do(l => l.Dock = DockStyle.Fill), 70)
+            .ControlAddIsRowsAbsolute(
+                new Label()
+                    .Do(l => l.Text = $"Участники: {club.CurrentParticipants}/{club.MaxParticipants}")
+                    .Do(l => l.Font = new Font(style.Font, FontStyle.Regular))
+                    .Do(l => l.ForeColor = Color.DarkBlue)
+                    .Do(l => l.Dock = DockStyle.Fill), 20);
 
-        var ratingLabel = new LinkLabel
-        {
-            Text = $"★ {club.Rating:0.0} ({club.ReviewCount} отзывов)",
-            Font = new Font(style.Font, FontStyle.Bold),
-            LinkColor = Color.DarkOrange,
-            Dock = DockStyle.Fill,
-            LinkBehavior = LinkBehavior.HoverUnderline
-        };
-        ratingLabel.Click += (s, e) => ShowClubReviews(club);
-
-        var scheduleLabel = new Label
-        {
-            Text = $"{club.Schedule} • {club.Location}",
-            Font = new Font(style.Font, FontStyle.Regular),
-            ForeColor = Color.DarkGreen,
-            Dock = DockStyle.Fill
-        };
-
-        var leaderLabel = new Label
-        {
-            Text = $"Руководитель: {club.Leader} • {club.Category}",
-            Font = new Font(style.Font, FontStyle.Italic),
-            ForeColor = Color.Gray,
-            Dock = DockStyle.Fill
-        };
-
-        var descriptionLabel = new Label
-        {
-            Text = club.Description,
-            Font = style.Font,
-            ForeColor = Color.Black,
-            Dock = DockStyle.Fill
-        };
-
-        var participantsLabel = new Label
-        {
-            Text = $"Участники: {club.CurrentParticipants}/{club.MaxParticipants}",
-            Font = new Font(style.Font, FontStyle.Regular),
-            ForeColor = Color.DarkBlue,
-            Dock = DockStyle.Fill
-        };
-
-        var tableCard = new TableLayoutPanel
-        {
-            Location = new Point(0, yPosition),
-            Size = new Size(displayItems.Width - 25, 200),
-            BorderStyle = BorderStyle.FixedSingle,
-            Padding = new Padding(15),
-        };
-
-        tableCard
-            .ControlAddIsRowsAbsolute(titleLabel, 25)
-            .ControlAddIsRowsAbsolute(ratingLabel, 20)
-            .ControlAddIsRowsAbsolute(scheduleLabel, 20)
-            .ControlAddIsRowsAbsolute(leaderLabel, 18)
-            .ControlAddIsRowsAbsolute(descriptionLabel, 70)
-            .ControlAddIsRowsAbsolute(participantsLabel, 20);
-
-        return tableCard;
-    }
-
-    private void ShowClubReviews(Club club)
+    public void ShowClubReviews(LessonEntity club)
         => new ShowCLubReviews(club, this).ShowDialog();
 
-    private void ShowAddingReviewForm(Club club)
+    public void ShowAddingReviewForm(LessonEntity club)
         => new ShowAddReviewForm(club, this).ShowDialog();
 
     private void UpdateListReviewClub(ReviewEntity review, string clubName)

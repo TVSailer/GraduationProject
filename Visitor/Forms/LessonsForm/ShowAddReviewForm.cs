@@ -1,4 +1,5 @@
-﻿using Logica;
+﻿using DataAccess.Postgres.Models;
+using Logica;
 using System.ComponentModel.DataAnnotations;
 
 public partial class ViewVisitor
@@ -6,11 +7,12 @@ public partial class ViewVisitor
     public class ShowAddReviewForm : Form
     {
         private ReviewEntity ReviewEntity { get; set; }
-        private Club Club { get; set; }
+        private LessonEntity Club { get; set; }
 
-        public ShowAddReviewForm(Club club, ViewVisitor viewVisitor)
+        public ShowAddReviewForm(LessonEntity club, ViewVisitor viewVisitor)
         {
             Club = club;
+            this.ReviewEntity = new();
 
             InitForm();
 

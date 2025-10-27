@@ -1,4 +1,5 @@
-﻿using Logica;
+﻿using DataAccess.Postgres.Models;
+using Logica;
 
 public partial class ViewVisitor
 {
@@ -7,7 +8,7 @@ public partial class ViewVisitor
         private BaseCreatingElements elementFactory;
         private BaseStyle style;
 
-        public ShowClubDetails(Club club, ViewVisitor viewVisitor)
+        public ShowClubDetails(LessonEntity club, ViewVisitor viewVisitor)
         {
             Init(club);
 
@@ -33,7 +34,7 @@ public partial class ViewVisitor
 
             var infoLabel = new Label
             {
-                Text = $"Руководитель: {club.Leader}\nРасписание: {club.Schedule}\nМесто: {club.Location}\nКатегория: {club.Category}",
+                Text = $"Руководитель: {club.Name}\nРасписание: {club.Schedule}\nМесто: {club.Location}\nКатегория: {club.Category}",
                 Font = style.Font,
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
@@ -70,7 +71,7 @@ public partial class ViewVisitor
             Controls.Add(mainTable);
         }
 
-        public void Init(Club club)
+        public void Init(LessonEntity club)
         {
             Text = club.Name;
             Size = new Size(700, 600);

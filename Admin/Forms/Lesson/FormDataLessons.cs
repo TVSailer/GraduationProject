@@ -30,8 +30,8 @@ namespace Admin.Forms.Lesson
                 Attributes.Add,
                 Attributes.CompleteWork);
             
-            var toolStripMenuTeachers = CreatingElements.CreateToolStripMenu(
-                Attributes.Teachers);
+            var toolStripMenuTeachers = FactoryElements.CreateToolStripMenu(
+                Attributes.Teachers, "g");
 
             var toolStripMenuItemHelp = CreatingElements.CreateToolStripMenu(
                 Attributes.Help,

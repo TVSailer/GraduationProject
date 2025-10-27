@@ -41,7 +41,7 @@ public partial class ViewVisitor : Form
         Controls.Add(menuStrip);
     }
 
-    private void DisplayItems<T>(T[] items, Func<T, int, TableLayoutPanel> func)
+    private void DisplayItems<T>(T[] items, Func<T, int, TableLayoutPanel> func) 
     {
         displayItems.Controls.Clear();
 

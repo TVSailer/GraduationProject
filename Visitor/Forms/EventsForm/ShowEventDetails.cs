@@ -1,10 +1,11 @@
-﻿using Logica;
+﻿using DataAccess.Postgres.Models;
+using Logica;
 
 public class ShowEventDetails : Form
 {
-    private EventItem eventItem;
+    private EventEntity eventItem;
 
-    public ShowEventDetails(EventItem eventItem)
+    public ShowEventDetails(EventEntity eventItem)
     {
         this.eventItem = eventItem;
         Init(eventItem);
@@ -72,7 +73,7 @@ public class ShowEventDetails : Form
         Controls.Add(mainTable);
     }
 
-    private void Init(EventItem eventItem)
+    private void Init(EventEntity eventItem)
     {
         Text = eventItem.Title;
         Size = new Size(600, 500);

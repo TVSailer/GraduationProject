@@ -13,6 +13,8 @@ public class NewsEntity
     public string Date { get; set; }
     [Required(ErrorMessage = "Отсутствует категория")]
     public string Category { get; set; }
+    [Required(ErrorMessage = "Отсутствует автор")]
+    public string Author { get; set; }
     public List<ImgNew>? ImgsNew { get; set; } = new();
 
     public NewsEntity() { }

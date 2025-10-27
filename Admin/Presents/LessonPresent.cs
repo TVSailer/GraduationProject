@@ -3,6 +3,7 @@ using Admin.Forms.Teacher;
 using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
+using Logica;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -33,18 +34,12 @@ namespace Admin.Presents
                 Teacher = Teacher,
             };
 
-            var results = new List<ValidationResult>();
-            var context = new ValidationContext(lesson);
+            if (Validatoreg.TryValidObject(lesson))
+                return;
 
-            if (!Validator.TryValidateObject(lesson, context, results, true))
-                foreach (var error in results)
-                    Message(error.ErrorMessage);
-            else
-            {
-                Repository.Add(lesson);
-                gridView.DataSource = Repository.Get();
-                Message("Данные успешно добавлены");
-            }
+            Repository.Add(lesson);
+            gridView.DataSource = Repository.Get();
+            Message("Данные успешно добавлены");
         }
 
         internal void OnLoadData(ref DataGridView gridView)
