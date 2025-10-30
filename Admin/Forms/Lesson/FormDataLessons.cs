@@ -1,5 +1,6 @@
 ﻿using Admin.Presents;
 using Logica;
+using Logica.Extension;
 
 namespace Admin.Forms.Lesson
 {
@@ -18,9 +19,6 @@ namespace Admin.Forms.Lesson
             var listTextBox = CreatingElements.CreateListTextBox(
                 Attributes.NameCircle,
                 Attributes.SurnameTeacher);
-
-            listTextBox.ForEach(x => x.TextChanged += (send, e)
-                => present.OnSerchData(listTextBox.Select(x => x.Text).ToArray()));
 
             var dataGridView = CreatingElements.CreateDataGridView();
             present.OnLoadData(ref dataGridView);
@@ -45,35 +43,27 @@ namespace Admin.Forms.Lesson
                 toolStripMenuTeachers,
                 toolStripMenuItemHelp);
 
-            var listButton = CreatingElements.CreateListButton(
-                Attributes.Add,
-                Attributes.CompleteWork,
-                Attributes.Delete,
-                Attributes.Update);
-
-            listButton.SearchByParameter(Attributes.Add).Click += (send, e)
-                => present.OnShowFormAdding();
-            
-            listButton.SearchByParameter(Attributes.Delete).Click += (send, e)
-                => present.OnDelete();
-            
-            listButton.SearchByParameter(Attributes.Update).Click += (send, e)
-                => present.OnUpdate();
-
-            listButton.SearchByParameter(Attributes.CompleteWork).Click += (send, e)
-                => Application.Exit();
-
             var table = CreatingElements.CreateTableLayoutPanel(5, 600, 40, 40, 40, 40, 220)
                 .ControlsAdd(dataGridView, 0, 0, 5, 1)
                 .ControlsAdd(new Panel(), 0, 4)
-                .ControlsAdd(listLabel.SearchByParameter(Attributes.NameCircle), 0, 1)
-                .ControlsAdd(listTextBox.SearchByParameter(Attributes.NameCircle), 0, 2)
-                .ControlsAdd(listLabel.SearchByParameter(Attributes.SurnameTeacher), 0, 3)
-                .ControlsAdd(listTextBox.SearchByParameter(Attributes.SurnameTeacher), 0, 4)
-                .ControlsAdd(listButton.SearchByParameter(Attributes.Add), 3, 1)
-                .ControlsAdd(listButton.SearchByParameter(Attributes.Update), 4, 1)
-                .ControlsAdd(listButton.SearchByParameter(Attributes.Delete), 3, 2)
-                .ControlsAdd(listButton.SearchByParameter(Attributes.CompleteWork), 4, 2);
+                .ControlsAdd(FactoryElements.CreateLabel(Attributes.NameCircle), 0, 1)
+                .ControlsAdd(
+                    FactoryElements
+                        .CreateTextBox(Attributes.NameCircle)
+                        .Do(t => t.TextChanged += (send, e)
+                            => present
+                            .OnSerchData(listTextBox.Select(x => x.Text).ToArray())), 0, 2)
+                .ControlsAdd(FactoryElements.CreateLabel(Attributes.SurnameTeacher), 0, 3)
+                .ControlsAdd(
+                    FactoryElements
+                        .CreateTextBox(Attributes.SurnameTeacher)
+                        .Do(t => t.TextChanged += (send, e)
+                            => present
+                            .OnSerchData(listTextBox.Select(x => x.Text).ToArray())), 0, 4)
+                .ControlsAdd(FactoryElements.CreateButton(Attributes.Add, present.OnShowFormAdding), 3, 1)
+                .ControlsAdd(FactoryElements.CreateButton(Attributes.Update, present.OnUpdate), 4, 1)
+                .ControlsAdd(FactoryElements.CreateButton(Attributes.Delete, present.OnDelete), 3, 2)
+                .ControlsAdd(FactoryElements.CreateButton(Attributes.CompleteWork, Application.Exit), 4, 2);
 
             Controls.Add(table);
             Controls.Add(menuStrip);

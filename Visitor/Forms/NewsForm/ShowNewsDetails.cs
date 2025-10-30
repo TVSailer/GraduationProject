@@ -7,6 +7,7 @@ public class ShowNewsDetails : Form
 
     public ShowNewsDetails(NewsEntity news)
     {
+        Init();
         this.news = news;
 
         var titleLabel = new Label

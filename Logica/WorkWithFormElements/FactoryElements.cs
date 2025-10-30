@@ -119,6 +119,20 @@ public static class FactoryElements
             BorderStyle = Style.LabelBorderStyle,
             Padding = Style.ControlPadding
         };
+    
+    public static Label CreateLabel(string text, ContentAlignment alignment)
+        => new Label()
+        {
+            Name = text.Replace(" ", "") + "Label",
+            Text = text,
+            Dock = Style.DockStyle,
+            Font = Style.Font,
+            TextAlign = alignment,
+            Height = Style.LabelHeinght,
+            Width = Style.LabelWidth,
+            BorderStyle = Style.LabelBorderStyle,
+            Padding = Style.ControlPadding
+        };
     public static DateTimePicker CreateDateTimePicker(string attribute)
         => new DateTimePicker()
         {
@@ -191,7 +205,8 @@ public static class FactoryElements
             EditMode = DataGridViewEditMode.EditProgrammatically,
             SelectionMode = DataGridViewSelectionMode.RowHeaderSelect,
             MultiSelect = false,
-            Padding = Style.ControlPadding
+            Padding = Style.ControlPadding,
+            ScrollBars = ScrollBars.Horizontal
         };
 
     public static TableLayoutPanel CreateTableLayoutPanel()

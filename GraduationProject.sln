@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teacher", "Teacher\Teacher.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visitor", "Visitor\Visitor.csproj", "{6BE0D0EA-3A07-7E2B-CD05-D62953E568C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp1", "WinFormsApp1\WinFormsApp1.csproj", "{BC150CE2-BC7F-BB20-899B-A29BED553BB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp1", "WinFormsApp1\WinFormsApp1.csproj", "{2C77EBE4-A1B4-4045-9DCF-0473A57B3437}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{6BE0D0EA-3A07-7E2B-CD05-D62953E568C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BE0D0EA-3A07-7E2B-CD05-D62953E568C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BE0D0EA-3A07-7E2B-CD05-D62953E568C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BC150CE2-BC7F-BB20-899B-A29BED553BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC150CE2-BC7F-BB20-899B-A29BED553BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BC150CE2-BC7F-BB20-899B-A29BED553BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BC150CE2-BC7F-BB20-899B-A29BED553BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C77EBE4-A1B4-4045-9DCF-0473A57B3437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C77EBE4-A1B4-4045-9DCF-0473A57B3437}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C77EBE4-A1B4-4045-9DCF-0473A57B3437}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C77EBE4-A1B4-4045-9DCF-0473A57B3437}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

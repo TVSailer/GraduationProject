@@ -1,47 +1,33 @@
 ﻿using Admin.Presents;
 using Logica;
+using Logica.Extension;
 
 namespace Admin.Forms.Teacher
 {
     public class FormAddingTeacher : Form
     {
         public const int WIDHT = 400;
-        public const int HEINGT = 260;
-
-        public BaseCreatingElements CreatingElements { get; set; }
+        public const int HEINGT = 280;
 
         public FormAddingTeacher(TeacherPresent present)
         {
-            CreatingElements = new CreatingElements(new Style());
+            var dateBirth = FactoryElements.CreateDateTimePicker(Attributes.DateBirth)
+                .Do(d => d.TextChanged += (send, e) => present.DateBirth = d.Text);
 
-            List<Button> buttons = new();
-            List<TextBox> textBoxes = new();
+            List<TextBox> listTextBoxes = new()
+            {
+                FactoryElements.CreateTextBox(Attributes.Name)
+                    .Do(t => t.TextChanged += (send, e) => present.Name = t.Text),
+                FactoryElements.CreateTextBox(Attributes.Surname)
+                    .Do(t => t.TextChanged += (send, e) => present.Surname = t.Text),
+                FactoryElements.CreateTextBox(Attributes.Patronymic)
+                    .Do(t => t.TextChanged += (send, e) => present.Patronymic = t.Text),
+                FactoryElements.CreateTextBox(Attributes.NumberPhone)
+                    .Do(t => t.TextChanged += (send, e) => present.NumberPhone = t.Text)
 
-            var dateBirth = CreatingElements.CreateDateTimePicker(Attributes.DateBirth);
-            dateBirth.TextChanged += (send, e)
-                => present.DateBirth = dateBirth.Text;
+            };
 
-            var textBox1 = CreatingElements.CreateTextBox(Attributes.Name);
-            textBox1.TextChanged += (send, e)
-                => present.Name = textBox1.Text;
-            textBoxes.Add(textBox1);
-
-            var textBox2 = CreatingElements.CreateTextBox(Attributes.Surname);
-            textBox2.TextChanged += (send, e)
-                => present.Surname = textBox2.Text;
-            textBoxes.Add(textBox2);
-
-            var textBox3 = CreatingElements.CreateTextBox(Attributes.Patronymic);
-            textBox3.TextChanged += (send, e)
-                => present.Patronymic = textBox3.Text;
-            textBoxes.Add(textBox3);
-
-            var textBox4 = CreatingElements.CreateTextBox(Attributes.NumberPhone);
-            textBox4.TextChanged += (send, e)
-                => present.NumberPhone = textBox4.Text;
-            textBoxes.Add(textBox4);
-
-            var listLabel = CreatingElements
+            var listLabel = FactoryElements
                 .CreateListLabel(
                 Attributes.Name,
                 Attributes.Surname,
@@ -49,22 +35,19 @@ namespace Admin.Forms.Teacher
                 Attributes.NumberPhone,
                 Attributes.DateBirth);
 
-            var buttonAdd = CreatingElements.CreateButton(Attributes.Add);
-            buttonAdd.Click += (send, e)
-                => present.OnAdd();
-            buttons.Add(buttonAdd);
+            List<Button> listButtons = new()
+            {
+                FactoryElements.CreateButton(Attributes.Add)
+                    .Do(b => b.Click += (send, e) => present.OnAdd()),
+                FactoryElements.CreateButton(Attributes.Complete)
+                    .Do(b => b.Click += (send, e) => Close()),
+            };
 
-            var buttonComplete = CreatingElements.CreateButton(Attributes.Complete);
-            buttonComplete.Click += (send, e)
-                => Close();
-
-            buttons.Add(buttonComplete);
-
-            var table = CreatingElements
-                .CreateTableLayoutPanel(3, 30, 30, 30, 30, 30, 30)
+            var table = FactoryElements
+                .CreateTableLayoutPanel(3, 30, 30, 30, 30, 30, 40)
                 .ControlsAddByColumnOrRow(listLabel, 0, 0, false)
-                .ControlsAddByColumnOrRow(textBoxes, 1, 0, false)
-                .ControlsAddByColumnOrRow(buttons, 1, 6, true)
+                .ControlsAddByColumnOrRow(listTextBoxes, 1, 0, false)
+                .ControlsAddByColumnOrRow(listButtons, 1, 6, true)
                 .ControlsAdd(dateBirth, 1, 4);
 
             Controls.Add(table);

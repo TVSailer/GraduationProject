@@ -9,7 +9,7 @@ namespace Logica
         public virtual Font Font => CreateFont("Times New Roman", 11);
         public virtual DateTimePickerFormat DateTimePickerFormat => DateTimePickerFormat.Short;
         public virtual ContentAlignment ContentAlignment => ContentAlignment.MiddleLeft;
-        public virtual DataGridViewAutoSizeColumnsMode DataGridViewAutoSizeColumnsMode => DataGridViewAutoSizeColumnsMode.AllCells;
+        public virtual DataGridViewAutoSizeColumnsMode DataGridViewAutoSizeColumnsMode => DataGridViewAutoSizeColumnsMode.Fill;
 
         // Новые свойства для дополнительной гибкости
         public virtual Color BackColor => SystemColors.Control;

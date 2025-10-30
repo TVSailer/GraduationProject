@@ -27,6 +27,12 @@ namespace DataAccess.Postgres.Models
         public List<LessonEntity>? Lessons { get; set; }
 
         public TeacherEntity() { }
+        public TeacherEntity(string name, string surname, string patro) 
+        {
+            Name = name;
+            Surname = surname;
+            Patronymic = patro;
+        }
 
         public override string ToString()
             => $"{Surname} {Name} {Patronymic}";

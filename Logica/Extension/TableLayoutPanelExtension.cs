@@ -89,7 +89,8 @@ namespace Logica
 
             return table;
         }
-
+        
+        
         public static TableLayoutPanel AddingColumnsStyles(this TableLayoutPanel table, params ColumnStyle[] columnStyles)
         {
             if (columnStyles == null)

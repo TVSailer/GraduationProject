@@ -32,6 +32,16 @@ namespace DataAccess.Postgres.Models
         public List<ImgLesson>? ImgsLesson { get; set; } = new();
 
         public LessonEntity() { }
+        public LessonEntity(TeacherEntity teacher, int maxPa, int curPa, double ret, int revCo, string cate, string name) 
+        {
+            Teacher = teacher;
+            MaxParticipants = maxPa;
+            CurrentParticipants = curPa;
+            Rating = ret;
+            ReviewCount = revCo;
+            Category = cate;
+            Name = name;
+        }
 
         public override string ToString()
             => Name;
