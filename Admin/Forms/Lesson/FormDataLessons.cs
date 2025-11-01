@@ -50,14 +50,14 @@ namespace Admin.Forms.Lesson
                 .ControlsAdd(
                     FactoryElements
                         .CreateTextBox(Attributes.NameCircle)
-                        .Do(t => t.TextChanged += (send, e)
+                        .With(t => t.TextChanged += (send, e)
                             => present
                             .OnSerchData(listTextBox.Select(x => x.Text).ToArray())), 0, 2)
                 .ControlsAdd(FactoryElements.CreateLabel(Attributes.SurnameTeacher), 0, 3)
                 .ControlsAdd(
                     FactoryElements
                         .CreateTextBox(Attributes.SurnameTeacher)
-                        .Do(t => t.TextChanged += (send, e)
+                        .With(t => t.TextChanged += (send, e)
                             => present
                             .OnSerchData(listTextBox.Select(x => x.Text).ToArray())), 0, 4)
                 .ControlsAdd(FactoryElements.CreateButton(Attributes.Add, present.OnShowFormAdding), 3, 1)

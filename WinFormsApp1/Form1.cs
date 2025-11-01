@@ -55,37 +55,37 @@ namespace WinFormsApp1
 
         //private TableLayoutPanel CreateLessonCard(LessonEntity lesson)
         //    => new TableLayoutPanel()
-        //    .Do(t => t.Dock = DockStyle.Fill)
-        //    .Do(t => t.BackColor = Color.BlanchedAlmond)
-        //    .Do(t => t.Enabled = true)
-        //    .Do(t => t.BorderStyle = BorderStyle.FixedSingle)
-        //    .Do(t => t.Click += (send, e) => new Form())
+        //    .With(t => t.Dock = DockStyle.Fill)
+        //    .With(t => t.BackColor = Color.BlanchedAlmond)
+        //    .With(t => t.Enabled = true)
+        //    .With(t => t.BorderStyle = BorderStyle.FixedSingle)
+        //    .With(t => t.Click += (send, e) => new Form())
         //    .ControlAddIsColumnPercent(
         //        new LinkLabel()
-        //            .Do(l => l.Text = lesson.Name)
-        //            .Do(l => l.Dock = DockStyle.Fill)
-        //            .Do(l => l.TextAlign = ContentAlignment.TopCenter)
-        //            .Do(l => l.LinkBehavior = LinkBehavior.HoverUnderline), 20)
+        //            .With(l => l.Text = lesson.Name)
+        //            .With(l => l.Dock = DockStyle.Fill)
+        //            .With(l => l.TextAlign = ContentAlignment.TopCenter)
+        //            .With(l => l.LinkBehavior = LinkBehavior.HoverUnderline), 20)
         //    .ControlAddIsColumnPercent(
         //        new Label()
-        //            .Do(l => l.Text = $"{lesson.Teacher.Name} {lesson.Teacher.Name} {lesson.Teacher.Name}")
-        //            .Do(l => l.TextAlign = ContentAlignment.TopCenter)
-        //            .Do(l => l.Dock = DockStyle.Fill), 20)
+        //            .With(l => l.Text = $"{lesson.Teacher.Name} {lesson.Teacher.Name} {lesson.Teacher.Name}")
+        //            .With(l => l.TextAlign = ContentAlignment.TopCenter)
+        //            .With(l => l.Dock = DockStyle.Fill), 20)
         //    .ControlAddIsColumnPercent(
         //        new Label()
-        //            .Do(l => l.Text = lesson.Category)
-        //            .Do(l => l.TextAlign = ContentAlignment.TopCenter)
-        //            .Do(l => l.Dock = DockStyle.Fill), 20)
+        //            .With(l => l.Text = lesson.Category)
+        //            .With(l => l.TextAlign = ContentAlignment.TopCenter)
+        //            .With(l => l.Dock = DockStyle.Fill), 20)
         //    .ControlAddIsColumnPercent(
         //        new Label()
-        //            .Do(l => l.Text = $"{lesson.CurrentParticipants}/{lesson.MaxParticipants}")
-        //            .Do(l => l.TextAlign = ContentAlignment.TopCenter)
-        //            .Do(l => l.Dock = DockStyle.Fill), 20)
+        //            .With(l => l.Text = $"{lesson.CurrentParticipants}/{lesson.MaxParticipants}")
+        //            .With(l => l.TextAlign = ContentAlignment.TopCenter)
+        //            .With(l => l.Dock = DockStyle.Fill), 20)
         //    .ControlAddIsColumnPercent(
         //        new Label()
-        //            .Do(l => l.Text = $"{lesson.Rating:0.0} ({lesson.ReviewCount} отзывов)")
-        //            .Do(l => l.TextAlign = ContentAlignment.TopCenter)
-        //            .Do(l => l.Dock = DockStyle.Fill), 20);
+        //            .With(l => l.Text = $"{lesson.Rating:0.0} ({lesson.ReviewCount} отзывов)")
+        //            .With(l => l.TextAlign = ContentAlignment.TopCenter)
+        //            .With(l => l.Dock = DockStyle.Fill), 20);
 
         }
 }
@@ -145,23 +145,23 @@ namespace AdminApp.Controls
         public override void CreateContent()
         {
             var table = FactoryElements.CreateTableLayoutPanel(1, new[] { 25, 20, 20, 20 })
-                .Do(t => t.Dock = DockStyle.Fill);
+                .With(t => t.Dock = DockStyle.Fill);
 
             var titleLabel = FactoryElements.CreateLabel(_title)
-                .Do(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
-                .Do(l => l.ForeColor = Color.DarkBlue);
+                .With(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
+                .With(l => l.ForeColor = Color.DarkBlue);
 
             var authorLabel = FactoryElements.CreateLabel($"👤 {_author}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.Gray);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.Gray);
 
             var dateLabel = FactoryElements.CreateLabel($"📅 {_date}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.Gray);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.Gray);
 
             var categoryLabel = FactoryElements.CreateLabel($"🏷️ {_category}")
-                .Do(l => l.Font = new Font("Arial", 9, FontStyle.Italic))
-                .Do(l => l.ForeColor = Color.DarkGreen);
+                .With(l => l.Font = new Font("Arial", 9, FontStyle.Italic))
+                .With(l => l.ForeColor = Color.DarkGreen);
 
             table.Controls.Add(titleLabel, 0, 0);
             table.Controls.Add(authorLabel, 0, 1);
@@ -194,23 +194,23 @@ namespace AdminApp.Controls
         public override void CreateContent()
         {
             var table = FactoryElements.CreateTableLayoutPanel(1, new[] { 25, 20, 20, 20 })
-                .Do(t => t.Dock = DockStyle.Fill);
+                .With(t => t.Dock = DockStyle.Fill);
 
             var titleLabel = FactoryElements.CreateLabel(_title)
-                .Do(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
-                .Do(l => l.ForeColor = Color.DarkBlue);
+                .With(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
+                .With(l => l.ForeColor = Color.DarkBlue);
 
             var dateLocationLabel = FactoryElements.CreateLabel($"📅 {_date} | 📍 {_location}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.Gray);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.Gray);
 
             var organizerLabel = FactoryElements.CreateLabel($"👨‍💼 {_organizer}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.Gray);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.Gray);
 
             var participantsLabel = FactoryElements.CreateLabel($"👥 {_participants}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.DarkGreen);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.DarkGreen);
 
             table.Controls.Add(titleLabel, 0, 0);
             table.Controls.Add(dateLocationLabel, 0, 1);
@@ -243,23 +243,23 @@ namespace AdminApp.Controls
         public override void CreateContent()
         {
             var table = FactoryElements.CreateTableLayoutPanel(1, new[] { 25, 20, 20, 20 })
-                .Do(t => t.Dock = DockStyle.Fill);
+                .With(t => t.Dock = DockStyle.Fill);
 
             var titleLabel = FactoryElements.CreateLabel(_name)
-                .Do(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
-                .Do(l => l.ForeColor = Color.DarkBlue);
+                .With(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
+                .With(l => l.ForeColor = Color.DarkBlue);
 
             var categoryLabel = FactoryElements.CreateLabel($"🏷️ {_category}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.Gray);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.Gray);
 
             var teacherScheduleLabel = FactoryElements.CreateLabel($"👨‍🏫 {_teacher} | 🕒 {_schedule}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.Gray);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.Gray);
 
             var participantsLabel = FactoryElements.CreateLabel($"👥 {_participants}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.DarkGreen);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.DarkGreen);
 
             table.Controls.Add(titleLabel, 0, 0);
             table.Controls.Add(categoryLabel, 0, 1);
@@ -292,19 +292,19 @@ namespace AdminApp.Controls
         public override void CreateContent()
         {
             var table = FactoryElements.CreateTableLayoutPanel(1, new[] { 25, 20, 20, 20 })
-                .Do(t => t.Dock = DockStyle.Fill);
+                .With(t => t.Dock = DockStyle.Fill);
 
             var nameLabel = FactoryElements.CreateLabel($"{_surname} {_name} {_patronymic}")
-                .Do(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
-                .Do(l => l.ForeColor = Color.DarkBlue);
+                .With(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
+                .With(l => l.ForeColor = Color.DarkBlue);
 
             var phoneLabel = FactoryElements.CreateLabel($"📞 {_phone}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.Gray);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.Gray);
 
             var lessonsLabel = FactoryElements.CreateLabel($"🎨 Кружков: {_lessonsCount}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.DarkGreen);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.DarkGreen);
 
             table.Controls.Add(nameLabel, 0, 0);
             table.Controls.Add(phoneLabel, 0, 1);
@@ -336,19 +336,19 @@ namespace AdminApp.Controls
         public override void CreateContent()
         {
             var table = FactoryElements.CreateTableLayoutPanel(1, new[] { 25, 20, 20, 20 })
-                .Do(t => t.Dock = DockStyle.Fill);
+                .With(t => t.Dock = DockStyle.Fill);
 
             var nameLabel = FactoryElements.CreateLabel($"{_surname} {_name} {_patronymic}")
-                .Do(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
-                .Do(l => l.ForeColor = Color.DarkBlue);
+                .With(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
+                .With(l => l.ForeColor = Color.DarkBlue);
 
             var phoneLabel = FactoryElements.CreateLabel($"📞 {_phone}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.Gray);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.Gray);
 
             var lessonsLabel = FactoryElements.CreateLabel($"🎯 Посещает кружков: {_lessonsCount}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.DarkGreen);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.DarkGreen);
 
             table.Controls.Add(nameLabel, 0, 0);
             table.Controls.Add(phoneLabel, 0, 1);
@@ -378,23 +378,23 @@ namespace AdminApp.Controls
         public override void CreateContent()
         {
             var table = FactoryElements.CreateTableLayoutPanel(1, new[] { 25, 20, 20, 20 })
-                .Do(t => t.Dock = DockStyle.Fill);
+                .With(t => t.Dock = DockStyle.Fill);
 
             var lessonLabel = FactoryElements.CreateLabel(_lesson)
-                .Do(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
-                .Do(l => l.ForeColor = Color.DarkBlue);
+                .With(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
+                .With(l => l.ForeColor = Color.DarkBlue);
 
             var dateLabel = FactoryElements.CreateLabel($"📅 {_date}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.Gray);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.Gray);
 
             var visitorsLabel = FactoryElements.CreateLabel($"👥 Посетителей: {_visitorsCount}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.DarkGreen);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.DarkGreen);
 
             var teacherLabel = FactoryElements.CreateLabel($"👨‍🏫 {_teacher}")
-                .Do(l => l.Font = new Font("Arial", 9))
-                .Do(l => l.ForeColor = Color.Gray);
+                .With(l => l.Font = new Font("Arial", 9))
+                .With(l => l.ForeColor = Color.Gray);
 
             table.Controls.Add(lessonLabel, 0, 0);
             table.Controls.Add(dateLabel, 0, 1);
@@ -432,19 +432,19 @@ namespace AdminApp.Forms
         private void CreateUI()
         {
             var mainTable = FactoryElements.CreateTableLayoutPanel(1, new[] { 60, 500, 60 })
-                .Do(t => t.Padding = new Padding(15));
+                .With(t => t.Padding = new Padding(15));
 
             var titleLabel = FactoryElements.CreateLabel("📰 Управление новостями")
-                .Do(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
-                .Do(l => l.TextAlign = ContentAlignment.MiddleCenter);
+                .With(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
+                .With(l => l.TextAlign = ContentAlignment.MiddleCenter);
 
             mainTable.Controls.Add(titleLabel, 0, 0);
 
             _cardsPanel = new FlowLayoutPanel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.AutoScroll = true)
-                .Do(p => p.BackColor = Color.WhiteSmoke)
-                .Do(p => p.Padding = new Padding(10));
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.AutoScroll = true)
+                .With(p => p.BackColor = Color.WhiteSmoke)
+                .With(p => p.Padding = new Padding(10));
 
             mainTable.Controls.Add(_cardsPanel, 0, 1);
 
@@ -479,28 +479,28 @@ namespace AdminApp.Forms
         private Panel CreateButtonPanel()
         {
             var panel = new Panel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.Height = 50);
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.Height = 50);
 
             var addButton = FactoryElements.CreateButton("➕ Добавить новость")
-                .Do(b => b.Size = new Size(150, 35))
-                .Do(b => b.BackColor = Color.LightGreen)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление новой новости"));
+                .With(b => b.Size = new Size(150, 35))
+                .With(b => b.BackColor = Color.LightGreen)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление новой новости"));
 
             var editButton = FactoryElements.CreateButton("✏️ Редактировать")
-                .Do(b => b.Size = new Size(140, 35))
-                .Do(b => b.BackColor = Color.LightBlue)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование новости"));
+                .With(b => b.Size = new Size(140, 35))
+                .With(b => b.BackColor = Color.LightBlue)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование новости"));
 
             var deleteButton = FactoryElements.CreateButton("🗑️ Удалить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightCoral)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление новости"));
+                .With(b => b.Size = new Size(120, 35))
+                .With(b => b.BackColor = Color.LightCoral)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление новости"));
 
             var refreshButton = FactoryElements.CreateButton("🔄 Обновить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightYellow)
-                .Do(b => b.Click += (s, e) => {
+                .With(b => b.Size = new Size(120, 35))
+                .With(b => b.BackColor = Color.LightYellow)
+                .With(b => b.Click += (s, e) => {
                     _cardsPanel.Controls.Clear();
                     LoadNewsCards();
                     LogicaMessage.MessageSuccess("Список обновлен!");
@@ -509,7 +509,7 @@ namespace AdminApp.Forms
             int xPos = 20;
             foreach (var button in new[] { addButton, editButton, deleteButton, refreshButton })
             {
-                button.Do(b => b.Location = new Point(xPos, 10));
+                button.With(b => b.Location = new Point(xPos, 10));
                 xPos += button.Width + 10;
                 panel.Controls.Add(button);
             }
@@ -543,14 +543,14 @@ namespace AdminApp.Forms
         {
             Controls.Add(
                 FactoryElements.CreateTableLayoutPanel()
-                .Do(t => t.Padding = new Padding(30))
+                .With(t => t.Padding = new Padding(30))
                 .ControlAddIsColumnPercent(null, 25)
                 .ControlAddIsColumnAbsolute(null, 600)
                 .ControlAddIsRowsAbsoluteV2(
                     FactoryElements.CreateLabel("Панель администратора")
-                        .Do(l => l.Font = new Font("Arial", 20, FontStyle.Bold))
-                        .Do(l => l.TextAlign = ContentAlignment.MiddleCenter)
-                        .Do(l => l.ForeColor = Color.DarkBlue), 70)
+                        .With(l => l.Font = new Font("Arial", 20, FontStyle.Bold))
+                        .With(l => l.TextAlign = ContentAlignment.MiddleCenter)
+                        .With(l => l.ForeColor = Color.DarkBlue), 70)
                 .ControlAddIsRowsAbsoluteV2(
                     CreateButton("📰 Управление новостями", () => new NewsManagementForm().ShowDialog()), 50)
                 .ControlAddIsRowsAbsoluteV2(
@@ -569,8 +569,8 @@ namespace AdminApp.Forms
 
         private Button CreateButton(string text, Action action) 
             => FactoryElements.CreateButton(text, action)
-                .Do(b => b.Font = new Font("Arial", 12, FontStyle.Bold))
-                .Do(b => b.BackColor = Color.LightGray);
+                .With(b => b.Font = new Font("Arial", 12, FontStyle.Bold))
+                .With(b => b.BackColor = Color.LightGray);
     }
 }
 
@@ -599,19 +599,19 @@ namespace AdminApp.Forms
         private void CreateUI()
         {
             var mainTable = FactoryElements.CreateTableLayoutPanel(1, new[] { 60, 500, 60 })
-                .Do(t => t.Padding = new Padding(15));
+                .With(t => t.Padding = new Padding(15));
 
             var titleLabel = FactoryElements.CreateLabel("🎭 Управление мероприятиями")
-                .Do(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
-                .Do(l => l.TextAlign = ContentAlignment.MiddleCenter);
+                .With(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
+                .With(l => l.TextAlign = ContentAlignment.MiddleCenter);
 
             mainTable.Controls.Add(titleLabel, 0, 0);
 
             _cardsPanel = new FlowLayoutPanel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.AutoScroll = true)
-                .Do(p => p.BackColor = Color.WhiteSmoke)
-                .Do(p => p.Padding = new Padding(10));
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.AutoScroll = true)
+                .With(p => p.BackColor = Color.WhiteSmoke)
+                .With(p => p.Padding = new Padding(10));
 
             mainTable.Controls.Add(_cardsPanel, 0, 1);
 
@@ -645,45 +645,41 @@ namespace AdminApp.Forms
             LogicaMessage.MessageOk($"Подробная информация о мероприятии #{eventId}");
         }
 
-        private Panel CreateButtonPanel()
+        private TableLayoutPanel CreateButtonPanel()
+
         {
-            var panel = new Panel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.Height = 50);
+            var table = new TableLayoutPanel()
+                .With(t => t.Dock = DockStyle.Fill);
 
-            var addButton = FactoryElements.CreateButton("➕ Добавить мероприятие")
-                .Do(b => b.Size = new Size(180, 35))
-                .Do(b => b.BackColor = Color.LightGreen)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление мероприятия"));
+            foreach (var str in new[] { "➕ Добавить мероприятие", "✏️ Редактировать", "🗑️ Удалить", "🔄 Обновить" })
+                table.ControlAddIsColumnPercent(new Button().Button(str), 40);
 
-            var editButton = FactoryElements.CreateButton("✏️ Редактировать")
-                .Do(b => b.Size = new Size(140, 35))
-                .Do(b => b.BackColor = Color.LightBlue)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование мероприятия"));
+            return table;
+            //var addButton = FactoryElements.CreateButton("➕ Добавить мероприятие")
+            //    .With(b => b.Size = new Size(180, 35))
+            //    .With(b => b.BackColor = Color.LightGreen)
+            //    .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление мероприятия"));
 
-            var deleteButton = FactoryElements.CreateButton("🗑️ Удалить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightCoral)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление мероприятия"));
+            //var editButton = FactoryElements.CreateButton("✏️ Редактировать")
+            //    .With(b => b.Size = new Size(140, 35))
+            //    .With(b => b.BackColor = Color.LightBlue)
+            //    .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование мероприятия"));
 
-            var refreshButton = FactoryElements.CreateButton("🔄 Обновить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightYellow)
-                .Do(b => b.Click += (s, e) => {
-                    _cardsPanel.Controls.Clear();
-                    LoadEventCards();
-                    LogicaMessage.MessageSuccess("Список мероприятий обновлен!");
-                });
+            //var deleteButton = FactoryElements.CreateButton("🗑️ Удалить")
+            //    .With(b => b.Size = new Size(120, 35))
+            //    .With(b => b.BackColor = Color.LightCoral)
+            //    .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление мероприятия"));
 
-            int xPos = 20;
-            foreach (var button in new[] { addButton, editButton, deleteButton, refreshButton })
-            {
-                button.Do(b => b.Location = new Point(xPos, 10));
-                xPos += button.Width + 10;
-                panel.Controls.Add(button);
-            }
+            //var refreshButton = FactoryElements.CreateButton("🔄 Обновить")
+            //    .With(b => b.Size = new Size(120, 35))
+            //    .With(b => b.BackColor = Color.LightYellow)
+            //    .With(b => b.Click += (s, e) => {
+            //        _cardsPanel.Controls.Clear();
+            //        LoadEventCards();
+            //        LogicaMessage.MessageSuccess("Список мероприятий обновлен!");
+            //    });
 
-            return panel;
+
         }
     }
 }
@@ -713,19 +709,19 @@ namespace AdminApp.Forms
         private void CreateUI()
         {
             var mainTable = FactoryElements.CreateTableLayoutPanel(1, new[] { 60, 500, 60 })
-                .Do(t => t.Padding = new Padding(15));
+                .With(t => t.Padding = new Padding(15));
 
             var titleLabel = FactoryElements.CreateLabel("🎨 Управление кружками")
-                .Do(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
-                .Do(l => l.TextAlign = ContentAlignment.MiddleCenter);
+                .With(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
+                .With(l => l.TextAlign = ContentAlignment.MiddleCenter);
 
             mainTable.Controls.Add(titleLabel, 0, 0);
 
             _cardsPanel = new FlowLayoutPanel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.AutoScroll = true)
-                .Do(p => p.BackColor = Color.WhiteSmoke)
-                .Do(p => p.Padding = new Padding(10));
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.AutoScroll = true)
+                .With(p => p.BackColor = Color.WhiteSmoke)
+                .With(p => p.Padding = new Padding(10));
 
             mainTable.Controls.Add(_cardsPanel, 0, 1);
 
@@ -761,28 +757,28 @@ namespace AdminApp.Forms
         private Panel CreateButtonPanel()
         {
             var panel = new Panel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.Height = 50);
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.Height = 50);
 
             var addButton = FactoryElements.CreateButton("➕ Добавить кружок")
-                .Do(b => b.Size = new Size(150, 35))
-                .Do(b => b.BackColor = Color.LightGreen)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление кружка"));
+                .With(b => b.Size = new Size(150, 35))
+                .With(b => b.BackColor = Color.LightGreen)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление кружка"));
 
             var editButton = FactoryElements.CreateButton("✏️ Редактировать")
-                .Do(b => b.Size = new Size(140, 35))
-                .Do(b => b.BackColor = Color.LightBlue)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование кружка"));
+                .With(b => b.Size = new Size(140, 35))
+                .With(b => b.BackColor = Color.LightBlue)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование кружка"));
 
             var deleteButton = FactoryElements.CreateButton("🗑️ Удалить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightCoral)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление кружка"));
+                .With(b => b.Size = new Size(120, 35))
+                .With(b => b.BackColor = Color.LightCoral)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление кружка"));
 
             var refreshButton = FactoryElements.CreateButton("🔄 Обновить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightYellow)
-                .Do(b => b.Click += (s, e) => {
+                .With(b => b.Size = new Size(120, 35))
+                .With(b => b.BackColor = Color.LightYellow)
+                .With(b => b.Click += (s, e) => {
                     _cardsPanel.Controls.Clear();
                     LoadLessonCards();
                     LogicaMessage.MessageSuccess("Список кружков обновлен!");
@@ -791,7 +787,7 @@ namespace AdminApp.Forms
             int xPos = 20;
             foreach (var button in new[] { addButton, editButton, deleteButton, refreshButton })
             {
-                button.Do(b => b.Location = new Point(xPos, 10));
+                button.With(b => b.Location = new Point(xPos, 10));
                 xPos += button.Width + 10;
                 panel.Controls.Add(button);
             }
@@ -826,19 +822,19 @@ namespace AdminApp.Forms
         private void CreateUI()
         {
             var mainTable = FactoryElements.CreateTableLayoutPanel(1, new[] { 60, 500, 60 })
-                .Do(t => t.Padding = new Padding(15));
+                .With(t => t.Padding = new Padding(15));
 
             var titleLabel = FactoryElements.CreateLabel("👨‍🏫 Управление преподавателями")
-                .Do(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
-                .Do(l => l.TextAlign = ContentAlignment.MiddleCenter);
+                .With(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
+                .With(l => l.TextAlign = ContentAlignment.MiddleCenter);
 
             mainTable.Controls.Add(titleLabel, 0, 0);
 
             _cardsPanel = new FlowLayoutPanel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.AutoScroll = true)
-                .Do(p => p.BackColor = Color.WhiteSmoke)
-                .Do(p => p.Padding = new Padding(10));
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.AutoScroll = true)
+                .With(p => p.BackColor = Color.WhiteSmoke)
+                .With(p => p.Padding = new Padding(10));
 
             mainTable.Controls.Add(_cardsPanel, 0, 1);
 
@@ -874,28 +870,28 @@ namespace AdminApp.Forms
         private Panel CreateButtonPanel()
         {
             var panel = new Panel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.Height = 50);
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.Height = 50);
 
             var addButton = FactoryElements.CreateButton("➕ Добавить преподавателя")
-                .Do(b => b.Size = new Size(190, 35))
-                .Do(b => b.BackColor = Color.LightGreen)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление преподавателя"));
+                .With(b => b.Size = new Size(190, 35))
+                .With(b => b.BackColor = Color.LightGreen)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление преподавателя"));
 
             var editButton = FactoryElements.CreateButton("✏️ Редактировать")
-                .Do(b => b.Size = new Size(140, 35))
-                .Do(b => b.BackColor = Color.LightBlue)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование преподавателя"));
+                .With(b => b.Size = new Size(140, 35))
+                .With(b => b.BackColor = Color.LightBlue)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование преподавателя"));
 
             var deleteButton = FactoryElements.CreateButton("🗑️ Удалить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightCoral)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление преподавателя"));
+                .With(b => b.Size = new Size(120, 35))
+                .With(b => b.BackColor = Color.LightCoral)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление преподавателя"));
 
             var refreshButton = FactoryElements.CreateButton("🔄 Обновить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightYellow)
-                .Do(b => b.Click += (s, e) => {
+                .With(b => b.Size = new Size(120, 35))
+                .With(b => b.BackColor = Color.LightYellow)
+                .With(b => b.Click += (s, e) => {
                     _cardsPanel.Controls.Clear();
                     LoadTeacherCards();
                     LogicaMessage.MessageSuccess("Список преподавателей обновлен!");
@@ -904,7 +900,7 @@ namespace AdminApp.Forms
             int xPos = 20;
             foreach (var button in new[] { addButton, editButton, deleteButton, refreshButton })
             {
-                button.Do(b => b.Location = new Point(xPos, 10));
+                button.With(b => b.Location = new Point(xPos, 10));
                 xPos += button.Width + 10;
                 panel.Controls.Add(button);
             }
@@ -939,19 +935,19 @@ namespace AdminApp.Forms
         private void CreateUI()
         {
             var mainTable = FactoryElements.CreateTableLayoutPanel(1, new[] { 60, 500, 60 })
-                .Do(t => t.Padding = new Padding(15));
+                .With(t => t.Padding = new Padding(15));
 
             var titleLabel = FactoryElements.CreateLabel("👥 Управление пользователями")
-                .Do(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
-                .Do(l => l.TextAlign = ContentAlignment.MiddleCenter);
+                .With(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
+                .With(l => l.TextAlign = ContentAlignment.MiddleCenter);
 
             mainTable.Controls.Add(titleLabel, 0, 0);
 
             _cardsPanel = new FlowLayoutPanel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.AutoScroll = true)
-                .Do(p => p.BackColor = Color.WhiteSmoke)
-                .Do(p => p.Padding = new Padding(10));
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.AutoScroll = true)
+                .With(p => p.BackColor = Color.WhiteSmoke)
+                .With(p => p.Padding = new Padding(10));
 
             mainTable.Controls.Add(_cardsPanel, 0, 1);
 
@@ -987,28 +983,28 @@ namespace AdminApp.Forms
         private Panel CreateButtonPanel()
         {
             var panel = new Panel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.Height = 50);
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.Height = 50);
 
             var addButton = FactoryElements.CreateButton("➕ Добавить пользователя")
-                .Do(b => b.Size = new Size(180, 35))
-                .Do(b => b.BackColor = Color.LightGreen)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление пользователя"));
+                .With(b => b.Size = new Size(180, 35))
+                .With(b => b.BackColor = Color.LightGreen)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление пользователя"));
 
             var editButton = FactoryElements.CreateButton("✏️ Редактировать")
-                .Do(b => b.Size = new Size(140, 35))
-                .Do(b => b.BackColor = Color.LightBlue)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование пользователя"));
+                .With(b => b.Size = new Size(140, 35))
+                .With(b => b.BackColor = Color.LightBlue)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование пользователя"));
 
             var deleteButton = FactoryElements.CreateButton("🗑️ Удалить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightCoral)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление пользователя"));
+                .With(b => b.Size = new Size(120, 35))
+                .With(b => b.BackColor = Color.LightCoral)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление пользователя"));
 
             var refreshButton = FactoryElements.CreateButton("🔄 Обновить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightYellow)
-                .Do(b => b.Click += (s, e) => {
+                .With(b => b.Size = new Size(120, 35))
+                .With(b => b.BackColor = Color.LightYellow)
+                .With(b => b.Click += (s, e) => {
                     _cardsPanel.Controls.Clear();
                     LoadVisitorCards();
                     LogicaMessage.MessageSuccess("Список пользователей обновлен!");
@@ -1017,7 +1013,7 @@ namespace AdminApp.Forms
             int xPos = 20;
             foreach (var button in new[] { addButton, editButton, deleteButton, refreshButton })
             {
-                button.Do(b => b.Location = new Point(xPos, 10));
+                button.With(b => b.Location = new Point(xPos, 10));
                 xPos += button.Width + 10;
                 panel.Controls.Add(button);
             }
@@ -1053,19 +1049,19 @@ namespace AdminApp.Forms
         private void CreateUI()
         {
             var mainTable = FactoryElements.CreateTableLayoutPanel(1, new[] { 60, 500, 60 })
-                .Do(t => t.Padding = new Padding(15));
+                .With(t => t.Padding = new Padding(15));
 
             var titleLabel = FactoryElements.CreateLabel("📊 Управление посещаемостью")
-                .Do(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
-                .Do(l => l.TextAlign = ContentAlignment.MiddleCenter);
+                .With(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
+                .With(l => l.TextAlign = ContentAlignment.MiddleCenter);
 
             mainTable.Controls.Add(titleLabel, 0, 0);
 
             _cardsPanel = new FlowLayoutPanel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.AutoScroll = true)
-                .Do(p => p.BackColor = Color.WhiteSmoke)
-                .Do(p => p.Padding = new Padding(10));
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.AutoScroll = true)
+                .With(p => p.BackColor = Color.WhiteSmoke)
+                .With(p => p.Padding = new Padding(10));
 
             mainTable.Controls.Add(_cardsPanel, 0, 1);
 
@@ -1101,33 +1097,33 @@ namespace AdminApp.Forms
         private Panel CreateButtonPanel()
         {
             var panel = new Panel()
-                .Do(p => p.Dock = DockStyle.Fill)
-                .Do(p => p.Height = 50);
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.Height = 50);
 
             var addButton = FactoryElements.CreateButton("➕ Добавить запись")
-                .Do(b => b.Size = new Size(150, 35))
-                .Do(b => b.BackColor = Color.LightGreen)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление записи о посещаемости"));
+                .With(b => b.Size = new Size(150, 35))
+                .With(b => b.BackColor = Color.LightGreen)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление записи о посещаемости"));
 
             var editButton = FactoryElements.CreateButton("✏️ Редактировать")
-                .Do(b => b.Size = new Size(140, 35))
-                .Do(b => b.BackColor = Color.LightBlue)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование записи"));
+                .With(b => b.Size = new Size(140, 35))
+                .With(b => b.BackColor = Color.LightBlue)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование записи"));
 
             var deleteButton = FactoryElements.CreateButton("🗑️ Удалить")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightCoral)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление записи"));
+                .With(b => b.Size = new Size(120, 35))
+                .With(b => b.BackColor = Color.LightCoral)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление записи"));
 
             var statsButton = FactoryElements.CreateButton("📈 Статистика")
-                .Do(b => b.Size = new Size(120, 35))
-                .Do(b => b.BackColor = Color.LightYellow)
-                .Do(b => b.Click += (s, e) => LogicaMessage.MessageOk("Просмотр статистики посещаемости"));
+                .With(b => b.Size = new Size(120, 35))
+                .With(b => b.BackColor = Color.LightYellow)
+                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Просмотр статистики посещаемости"));
 
             int xPos = 20;
             foreach (var button in new[] { addButton, editButton, deleteButton, statsButton })
             {
-                button.Do(b => b.Location = new Point(xPos, 10));
+                button.With(b => b.Location = new Point(xPos, 10));
                 xPos += button.Width + 10;
                 panel.Controls.Add(button);
             }

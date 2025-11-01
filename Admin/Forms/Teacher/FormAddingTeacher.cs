@@ -12,18 +12,18 @@ namespace Admin.Forms.Teacher
         public FormAddingTeacher(TeacherPresent present)
         {
             var dateBirth = FactoryElements.CreateDateTimePicker(Attributes.DateBirth)
-                .Do(d => d.TextChanged += (send, e) => present.DateBirth = d.Text);
+                .With(d => d.TextChanged += (send, e) => present.DateBirth = d.Text);
 
             List<TextBox> listTextBoxes = new()
             {
                 FactoryElements.CreateTextBox(Attributes.Name)
-                    .Do(t => t.TextChanged += (send, e) => present.Name = t.Text),
+                    .With(t => t.TextChanged += (send, e) => present.Name = t.Text),
                 FactoryElements.CreateTextBox(Attributes.Surname)
-                    .Do(t => t.TextChanged += (send, e) => present.Surname = t.Text),
+                    .With(t => t.TextChanged += (send, e) => present.Surname = t.Text),
                 FactoryElements.CreateTextBox(Attributes.Patronymic)
-                    .Do(t => t.TextChanged += (send, e) => present.Patronymic = t.Text),
+                    .With(t => t.TextChanged += (send, e) => present.Patronymic = t.Text),
                 FactoryElements.CreateTextBox(Attributes.NumberPhone)
-                    .Do(t => t.TextChanged += (send, e) => present.NumberPhone = t.Text)
+                    .With(t => t.TextChanged += (send, e) => present.NumberPhone = t.Text)
 
             };
 
@@ -38,9 +38,9 @@ namespace Admin.Forms.Teacher
             List<Button> listButtons = new()
             {
                 FactoryElements.CreateButton(Attributes.Add)
-                    .Do(b => b.Click += (send, e) => present.OnAdd()),
+                    .With(b => b.Click += (send, e) => present.OnAdd()),
                 FactoryElements.CreateButton(Attributes.Complete)
-                    .Do(b => b.Click += (send, e) => Close()),
+                    .With(b => b.Click += (send, e) => Close()),
             };
 
             var table = FactoryElements
