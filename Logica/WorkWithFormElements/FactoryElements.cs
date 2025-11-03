@@ -141,6 +141,7 @@ public static class FactoryElements
             Font = Style.Font,
             Format = Style.DateTimePickerFormat,
             Padding = Style.ControlPadding
+
         };
     public static LinkLabel CreateLinkLabel(string attribute)
         => new LinkLabel()
@@ -150,7 +151,10 @@ public static class FactoryElements
             Font = Style.Font,
             Text = attribute,
             Padding = Style.ControlPadding,
-            TextAlign = Style.ContentAlignment
+            TextAlign = Style.ContentAlignment,
+            Height = Style.LabelHeinght,
+            Width = Style.LabelWidth,
+            BorderStyle = Style.LabelBorderStyle,
         };
     public static TextBox CreateTextBox(string attribute)
         => new TextBox()

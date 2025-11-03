@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using AdminApp.Controls;
 using AdminApp.Forms;
+using Microsoft.Extensions.Logging;
 
 namespace WinFormsApp1
 {
@@ -93,35 +94,6 @@ namespace WinFormsApp1
 
 
 
-namespace AdminApp.Controls
-{
-    public abstract class ObjectCard : Panel
-    {
-        protected int _objectId;
-
-        public ObjectCard(int id)
-        {
-            _objectId = id;
-            InitializeCard();
-        }
-
-        protected virtual void InitializeCard()
-        {
-            this.BorderStyle = BorderStyle.FixedSingle;
-            this.BackColor = Color.White;
-            this.Margin = new Padding(5);
-            this.Padding = new Padding(10);
-            this.Size = new Size(280, 120);
-            this.Cursor = Cursors.Hand;
-
-            this.MouseEnter += (s, e) => this.BackColor = Color.LightCyan;
-            this.MouseLeave += (s, e) => this.BackColor = Color.White;
-        }
-
-        public abstract void CreateContent();
-    }
-}
-
 
 namespace AdminApp.Controls
 {
@@ -167,55 +139,6 @@ namespace AdminApp.Controls
             table.Controls.Add(authorLabel, 0, 1);
             table.Controls.Add(dateLabel, 0, 2);
             table.Controls.Add(categoryLabel, 0, 3);
-
-            this.Controls.Add(table);
-        }
-    }
-
-    public class EventCard : ObjectCard
-    {
-        private string _title;
-        private string _date;
-        private string _location;
-        private string _organizer;
-        private string _participants;
-
-        public EventCard(int id, string title, string date, string location, string organizer, string participants)
-            : base(id)
-        {
-            _title = title;
-            _date = date;
-            _location = location;
-            _organizer = organizer;
-            _participants = participants;
-            CreateContent();
-        }
-
-        public override void CreateContent()
-        {
-            var table = FactoryElements.CreateTableLayoutPanel(1, new[] { 25, 20, 20, 20 })
-                .With(t => t.Dock = DockStyle.Fill);
-
-            var titleLabel = FactoryElements.CreateLabel(_title)
-                .With(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
-                .With(l => l.ForeColor = Color.DarkBlue);
-
-            var dateLocationLabel = FactoryElements.CreateLabel($"📅 {_date} | 📍 {_location}")
-                .With(l => l.Font = new Font("Arial", 9))
-                .With(l => l.ForeColor = Color.Gray);
-
-            var organizerLabel = FactoryElements.CreateLabel($"👨‍💼 {_organizer}")
-                .With(l => l.Font = new Font("Arial", 9))
-                .With(l => l.ForeColor = Color.Gray);
-
-            var participantsLabel = FactoryElements.CreateLabel($"👥 {_participants}")
-                .With(l => l.Font = new Font("Arial", 9))
-                .With(l => l.ForeColor = Color.DarkGreen);
-
-            table.Controls.Add(titleLabel, 0, 0);
-            table.Controls.Add(dateLocationLabel, 0, 1);
-            table.Controls.Add(organizerLabel, 0, 2);
-            table.Controls.Add(participantsLabel, 0, 3);
 
             this.Controls.Add(table);
         }
@@ -520,169 +443,6 @@ namespace AdminApp.Forms
 }
 
 
-namespace AdminApp.Forms
-{
-    public partial class AdminMainForm : Form
-    {
-        public AdminMainForm()
-        {
-            InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            Text = "Панель администратора";
-            Size = new Size(900, 700);
-            StartPosition = FormStartPosition.CenterScreen;
-            BackColor = Color.White;
-
-            CreateMainMenu();
-        }
-
-        private void CreateMainMenu()
-        {
-            Controls.Add(
-                FactoryElements.CreateTableLayoutPanel()
-                .With(t => t.Padding = new Padding(30))
-                .ControlAddIsColumnPercent(null, 25)
-                .ControlAddIsColumnAbsolute(null, 600)
-                .ControlAddIsRowsAbsoluteV2(
-                    FactoryElements.CreateLabel("Панель администратора")
-                        .With(l => l.Font = new Font("Arial", 20, FontStyle.Bold))
-                        .With(l => l.TextAlign = ContentAlignment.MiddleCenter)
-                        .With(l => l.ForeColor = Color.DarkBlue), 70)
-                .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("📰 Управление новостями", () => new NewsManagementForm().ShowDialog()), 50)
-                .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("🎭 Управление мероприятиями", () => new EventsManagementForm().ShowDialog()), 50)
-                .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("🎨 Управление кружками", () => new LessonsManagementForm().ShowDialog()), 50)
-                .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("👨‍🏫 Управление преподавателями", () => new TeachersManagementForm().ShowDialog()), 50)
-                .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("👥 Управление пользователями", () => new VisitorsManagementForm().ShowDialog()), 50)
-                .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("📊 Управление посещаемостью", () => new AttendanceManagementForm().ShowDialog()), 50)
-                .ControlAddIsColumnPercent(null, 25)
-                .ControlAddIsRowsPercent(null, 25));
-        }
-
-        private Button CreateButton(string text, Action action) 
-            => FactoryElements.CreateButton(text, action)
-                .With(b => b.Font = new Font("Arial", 12, FontStyle.Bold))
-                .With(b => b.BackColor = Color.LightGray);
-    }
-}
-
-namespace AdminApp.Forms
-{
-    public partial class EventsManagementForm : Form
-    {
-        private FlowLayoutPanel _cardsPanel;
-
-        public EventsManagementForm()
-        {
-            InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            Text = "Управление мероприятиями";
-            Size = new Size(1000, 700);
-            StartPosition = FormStartPosition.CenterParent;
-            BackColor = Color.White;
-
-            CreateUI();
-            LoadEventCards();
-        }
-
-        private void CreateUI()
-        {
-            var mainTable = FactoryElements.CreateTableLayoutPanel(1, new[] { 60, 500, 60 })
-                .With(t => t.Padding = new Padding(15));
-
-            var titleLabel = FactoryElements.CreateLabel("🎭 Управление мероприятиями")
-                .With(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
-                .With(l => l.TextAlign = ContentAlignment.MiddleCenter);
-
-            mainTable.Controls.Add(titleLabel, 0, 0);
-
-            _cardsPanel = new FlowLayoutPanel()
-                .With(p => p.Dock = DockStyle.Fill)
-                .With(p => p.AutoScroll = true)
-                .With(p => p.BackColor = Color.WhiteSmoke)
-                .With(p => p.Padding = new Padding(10));
-
-            mainTable.Controls.Add(_cardsPanel, 0, 1);
-
-            var buttonPanel = CreateButtonPanel();
-            mainTable.Controls.Add(buttonPanel, 0, 2);
-
-            this.Controls.Add(mainTable);
-        }
-
-        private void LoadEventCards()
-        {
-            var events = new[]
-            {
-                new { Id = 1, Title = "Выпускной вечер", Date = "25.05.2024", Location = "Актовый зал", Organizer = "Администрация", Participants = "120/150" },
-                new { Id = 2, Title = "Новогодний бал", Date = "28.12.2024", Location = "Школьный двор", Organizer = "Ученический совет", Participants = "200/250" },
-                new { Id = 3, Title = "Научная конференция", Date = "15.03.2024", Location = "Конференц-зал", Organizer = "Научный отдел", Participants = "50/60" },
-                new { Id = 4, Title = "Спортивная олимпиада", Date = "10.04.2024", Location = "Стадион", Organizer = "Спортивный клуб", Participants = "80/100" }
-            };
-
-            foreach (var eventItem in events)
-            {
-                var card = new EventCard(eventItem.Id, eventItem.Title, eventItem.Date,
-                    eventItem.Location, eventItem.Organizer, eventItem.Participants);
-                card.Click += (s, e) => ShowEventDetails(eventItem.Id);
-                _cardsPanel.Controls.Add(card);
-            }
-        }
-
-        private void ShowEventDetails(int eventId)
-        {
-            LogicaMessage.MessageOk($"Подробная информация о мероприятии #{eventId}");
-        }
-
-        private TableLayoutPanel CreateButtonPanel()
-
-        {
-            var table = new TableLayoutPanel()
-                .With(t => t.Dock = DockStyle.Fill);
-
-            foreach (var str in new[] { "➕ Добавить мероприятие", "✏️ Редактировать", "🗑️ Удалить", "🔄 Обновить" })
-                table.ControlAddIsColumnPercent(new Button().Button(str), 40);
-
-            return table;
-            //var addButton = FactoryElements.CreateButton("➕ Добавить мероприятие")
-            //    .With(b => b.Size = new Size(180, 35))
-            //    .With(b => b.BackColor = Color.LightGreen)
-            //    .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление мероприятия"));
-
-            //var editButton = FactoryElements.CreateButton("✏️ Редактировать")
-            //    .With(b => b.Size = new Size(140, 35))
-            //    .With(b => b.BackColor = Color.LightBlue)
-            //    .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование мероприятия"));
-
-            //var deleteButton = FactoryElements.CreateButton("🗑️ Удалить")
-            //    .With(b => b.Size = new Size(120, 35))
-            //    .With(b => b.BackColor = Color.LightCoral)
-            //    .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление мероприятия"));
-
-            //var refreshButton = FactoryElements.CreateButton("🔄 Обновить")
-            //    .With(b => b.Size = new Size(120, 35))
-            //    .With(b => b.BackColor = Color.LightYellow)
-            //    .With(b => b.Click += (s, e) => {
-            //        _cardsPanel.Controls.Clear();
-            //        LoadEventCards();
-            //        LogicaMessage.MessageSuccess("Список мероприятий обновлен!");
-            //    });
-
-
-        }
-    }
-}
 
 namespace AdminApp.Forms
 {

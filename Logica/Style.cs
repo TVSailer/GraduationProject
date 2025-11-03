@@ -31,9 +31,6 @@ namespace Logica
         public static Font HeaderFont => CreateFont("Times New Roman", 12, FontStyle.Bold);
         public static Font BoldFont => CreateFont("Times New Roman", 11, FontStyle.Bold);
 
-        public static int LabelHeinght => 30;
-
-        public static int TextBoxHeight => 30;
 
         public static Font CreateFont(string name, float size, FontStyle style = FontStyle.Regular)
             => new Font(name, size, style);
