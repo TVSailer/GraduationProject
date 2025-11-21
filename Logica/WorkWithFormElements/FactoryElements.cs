@@ -1,9 +1,13 @@
 ﻿using Logica;
+using Logica.Extension;
+
+
 
 public static class FactoryElements
 {
     private static BaseStyle style;
-    public static BaseStyle Style 
+
+    public static BaseStyle Style
     {
         get
         {
@@ -98,7 +102,7 @@ public static class FactoryElements
 
         return button;
     }
-    
+
     public static Button CreateButton(string text, Action action)
     {
         var button = CreateButton(text);
@@ -119,7 +123,7 @@ public static class FactoryElements
             BorderStyle = Style.LabelBorderStyle,
             Padding = Style.ControlPadding
         };
-    
+
     public static Label CreateLabel(string text, ContentAlignment alignment)
         => new Label()
         {
@@ -141,6 +145,15 @@ public static class FactoryElements
             Font = Style.Font,
             Format = Style.DateTimePickerFormat,
             Padding = Style.ControlPadding
+
+        };
+
+    public static DateTimePicker DateTimePicker()
+        => new DateTimePicker()
+        {
+            Dock = DockStyle.Fill,
+            Font = new Font("Times New Roman", 11, FontStyle.Bold),
+            Padding = new Padding(5)
 
         };
     public static LinkLabel CreateLinkLabel(string attribute)
@@ -166,6 +179,27 @@ public static class FactoryElements
             Width = Style.TextBoxWidth,
             BorderStyle = Style.TextBoxBorderStyle,
             Padding = Style.ControlPadding
+        };
+
+    public static TextBox TextBox(string placeholderText)
+        => new TextBox()
+        {
+            PlaceholderText = placeholderText,
+            Dock = DockStyle.Fill,
+            Font = new Font("Times New Roman", 11, FontStyle.Bold),
+            BorderStyle = BorderStyle.FixedSingle,
+
+        };
+
+    public static TextBox TextBoxMultiline(string placeholderText)
+        => new TextBox()
+        {
+            PlaceholderText = placeholderText,
+            Dock = DockStyle.Fill,
+            Font = new Font("Times New Roman", 11, FontStyle.Bold),
+            BorderStyle = BorderStyle.FixedSingle,
+            Multiline = true,
+            ScrollBars = ScrollBars.Vertical,
         };
 
     public static TextBox CreateTextBox(string attribute, Action<object> action)
@@ -220,6 +254,11 @@ public static class FactoryElements
             Dock = Style.DockStyle,
         };
 
+    public static TableLayoutPanel TableLayoutPanel()
+        => new TableLayoutPanel()
+            .With(t => t.Padding = new Padding(10))
+            .With(t => t.Dock = DockStyle.Fill);
+
     public static ToolStripMenuItem CreateToolStripMenu(string attributeMenu, params StripMenuItem[] stripMenuItems)
     {
         var toolStripMenu = new ToolStripMenuItem(attributeMenu);
@@ -257,4 +296,87 @@ public static class FactoryElements
             list.Add(action(attribute));
         return list;
     }
+
+    public static ButtonBase Button(string text)
+        => new Button()
+            .With(c => c.Text = text)
+            .With(c => c.Dock = DockStyle.Fill)
+            .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
+            .With(c => c.BackColor = SystemColors.ButtonFace)
+            .With(c => c.ForeColor = SystemColors.ControlText);
+
+    public static ButtonBase Button(string text, object context, string dataMember)
+        => new Button()
+            .With(c => c.Text = text)
+            .With(c => c.DataBindings.Add(new Binding("Command", context, dataMember, true)))
+            .With(c => c.Dock = DockStyle.Fill)
+            .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
+            .With(c => c.BackColor = SystemColors.ButtonFace)
+            .With(c => c.ForeColor = SystemColors.ControlText);
+
+    public static ButtonBase Button(string text, Action action)
+        => new Button()
+            .With(c => c.Text = text)
+            .With(c => c.Dock = DockStyle.Fill)
+            .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
+            .With(c => c.BackColor = SystemColors.ButtonFace)
+            .With(c => c.ForeColor = SystemColors.ControlText)
+            .With(c => c.Click += (s, e) => action?.Invoke());
+
+    public static Label LabelTitle(string text)
+        => Label(text)
+            .With(l => l.Font = new Font("Times New Roman", 18, FontStyle.Bold))
+            .With(l => l.ForeColor = Color.DarkBlue)
+            .With(l => l.TextAlign = ContentAlignment.TopCenter);
+
+    public static Label Label_12(string text)
+        => Label(text)
+            .With(l => l.Font = new Font("Times New Roman", 12, FontStyle.Bold));
+
+    public static Label Label_11(string text)
+        => Label(text)
+            .With(l => l.Font = new Font("Times New Roman", 11, FontStyle.Bold));
+
+    public static Label Label_10(string text)
+        => Label(text)
+            .With(l => l.Font = new Font("Times New Roman", 10, FontStyle.Bold));
+    public static Label Label_09(string text)
+        => Label(text)
+            .With(l => l.Font = new Font("Times New Roman", 9, FontStyle.Bold));
+    public static Label Label_08(string text)
+        => Label(text)
+            .With(l => l.Font = new Font("Times New Roman", 8, FontStyle.Bold));
+
+    public static Label Label(string text)
+        => new Label()
+            .With(l => l.Name = text.Replace(" ", "") + "Label")
+            .With(l => l.Text = text)
+            .With(l => l.Dock = DockStyle.Fill)
+            .With(l => l.Height = 40)
+            .With(l => l.TextAlign = ContentAlignment.TopLeft)
+            .With(l => l.BorderStyle = BorderStyle.None)
+            .With(l => l.Padding = new Padding(5));
+
+    public static FlowLayoutPanel FlowLayoutPanel()
+        => new FlowLayoutPanel()
+            .With(p => p.Dock = DockStyle.Fill)
+            .With(p => p.AutoScroll = true)
+            .With(p => p.Padding = new Padding(10));
+
+    public static Control Image(string imgUrl)
+        => new PictureBox()
+            .With(pb => pb.Cursor = Cursors.Hand)
+            .With(pb => pb.Size = new Size(300, 200))
+            .With(pb => pb.Margin = new Padding(5))
+            .With(pb => pb.SizeMode = PictureBoxSizeMode.Zoom)
+            .With(pb => pb.BackColor = Color.Black)
+            .With(pb => pb.ImageLocation = imgUrl);
+
+    public static Control NumericUpDown()
+        => new NumericUpDown()
+            .With(n => n.Minimum = 1)
+            .With(n => n.Maximum = 1000)
+            .With(n => n.Value = 50)
+            .With(n => n.Font = new Font("Times New Roman", 11))
+            .With(n => n.Dock = DockStyle.Fill);
 }

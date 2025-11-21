@@ -5,7 +5,7 @@
 namespace DataAccess.Postgres.Migrations
 {
     /// <inheritdoc />
-    public partial class init008 : Migration
+    public partial class init014 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

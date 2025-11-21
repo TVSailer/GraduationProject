@@ -29,7 +29,7 @@ namespace DataAccess.Postgres.Models
         public List<DateAttendanceEntity>? Dates { get; set; } = new();
         public List<VisitorEntity>? Visitors { get; set; } = new();
         public List<ReviewEntity>? Reviews { get; set; } = new();
-        public List<ImgLesson>? ImgsLesson { get; set; } = new();
+        public List<ImgLessonEntity>? ImgsLesson { get; set; } = new();
 
         public LessonEntity() { }
         public LessonEntity(TeacherEntity teacher, int maxPa, int curPa, double ret, int revCo, string cate, string name) 

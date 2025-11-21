@@ -15,7 +15,7 @@ public class NewsEntity
     public string Category { get; set; }
     [Required(ErrorMessage = "Отсутствует автор")]
     public string Author { get; set; }
-    public List<ImgNew>? ImgsNew { get; set; } = new();
+    public List<ImgNewEntity>? ImgsNew { get; set; } = new();
 
     public NewsEntity() { }
 

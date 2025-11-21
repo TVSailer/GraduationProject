@@ -1,26 +1,16 @@
-﻿using Logica;
+﻿using DataAccess.Postgres.Models;
+using Logica;
 using Logica.Extension;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace AdminApp.Controls
 {
     public class EventCard : ObjectCard
     {
-        public int Id { get; }
-        private string _title;
-        private string _date;
-        private string _location;
-        private string _organizer;
-        private string _participants;
-
-        public EventCard(int id, string title, string date, string location, string organizer, string participants) : base(id)
+        public EventCard(EventEntity eventEntity) : base(eventEntity.Id)
         {
-            Id = id;
-            _title = title;
-            _date = date;
-            _location = location;
-            _organizer = organizer;
-            _participants = participants;
+            DataContext = eventEntity;
             CreateContent();
         }
 
@@ -28,16 +18,28 @@ namespace AdminApp.Controls
             => new TableLayoutPanel()
                 .With(t => t.Dock = DockStyle.Fill)
                 .ControlAddIsRowsPercentV2(
-                    new Label().LabelHeard(_title)
-                    .With(t => t.ForeColor = Color.DarkBlue), 40)
+                    FactoryElements.Label_11("")
+                    .With(t => t.ForeColor = Color.DarkBlue)
+                    .With(t => t.DataBindings.Add(new Binding("Text", DataContext, "Title"))), 40)
                 .ControlAddIsRowsPercentV2(
-                    new Label().LabelMini($"📅 {_date} | 📍 {_location}")
-                    .With(t => t.ForeColor = Color.Gray), 30)
+                    FactoryElements.Label_09("")
+                    .With(t => t.ForeColor = Color.Gray)
+                    .With(t => t.DataBindings.Add(new Binding("Text", DataContext, "Date"))), 30)
                 .ControlAddIsRowsPercentV2(
-                    new Label().LabelMini($"👨‍💼 {_organizer}")
-                    .With(t => t.ForeColor = Color.Gray), 30)
+                    FactoryElements.Label_09("")
+                    .With(t => t.ForeColor = Color.Gray)
+                    .With(t => t.DataBindings.Add(new Binding("Text", DataContext, "Organizer", false, DataSourceUpdateMode.OnPropertyChanged))), 30)
                 .ControlAddIsRowsPercentV2(
-                    new Label().LabelMini($"👥 {_participants}")
-                    .With(t => t.ForeColor = Color.DarkGreen), 30);
+                    FactoryElements.Label_09("")
+                    .With(t => t.ForeColor = Color.DarkGreen)
+                    .With(t => t.DataBindings.Add(new Binding("Text", DataContext, "CurrentParticipants", false, DataSourceUpdateMode.OnPropertyChanged))), 30);
     }
 }
+//                    new Label().Label_09($"📅 {Date} | 📍 {Location}")
+//                    .With(t => t.ForeColor = Color.Gray), 30)
+//                .ControlAddIsRowsPercentV2(
+//                    new Label().Label_09($"👨‍💼 {Organizer}")
+//                    .With(t => t.ForeColor = Color.Gray), 30)
+//                .ControlAddIsRowsPercentV2(
+//                    new Label().Label_09($"👥 {Participants}")
+//                    .With(t => t.ForeColor = Color.DarkGreen), 30);

@@ -12,10 +12,10 @@ namespace DataAccess.Postgres
         public DbSet<DateAttendanceEntity> DateAttendances { get; set; }
         public DbSet<LessonEntity> Lessons { get; set; }
         public DbSet<NewsEntity> News { get; set; }
-        public DbSet<EventEntity> Event { get; set; }
-        public DbSet<ReviewEntity> Review { get; set; }
-        public DbSet<ImgLesson> ImgLesson { get; set; }
-        public DbSet<ImgEvent> ImgEvent { get; set; }
+        public DbSet<EventEntity> Events { get; set; }
+        public DbSet<ReviewEntity> Reviews { get; set; }
+        public DbSet<ImgLessonEntity> ImgLessons { get; set; }
+        public DbSet<ImgEventEntity> ImgEvents { get; set; }
 
         public ApplicationDbContext() : base()
         {

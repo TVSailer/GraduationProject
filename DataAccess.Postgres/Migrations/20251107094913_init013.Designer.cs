@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251024105546_init007")]
-    partial class init007
+    [Migration("20251107094913_init013")]
+    partial class init013
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,10 +90,10 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Event");
+                    b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.ImgEvent", b =>
+            modelBuilder.Entity("DataAccess.Postgres.Models.ImgEventEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,7 +112,29 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("ImgEvent");
+                    b.ToTable("ImgEvents");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNewEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("ImgNewEntity");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.LessonEntity", b =>
@@ -173,6 +195,10 @@ namespace DataAccess.Postgres.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("text");
@@ -186,10 +212,6 @@ namespace DataAccess.Postgres.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UrlImg")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -295,7 +317,7 @@ namespace DataAccess.Postgres.Migrations
                     b.ToTable("DateAttendanceEntityVisitorEntity");
                 });
 
-            modelBuilder.Entity("ImgLesson", b =>
+            modelBuilder.Entity("ImgLessonEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -314,7 +336,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("ImgLesson");
+                    b.ToTable("ImgLessons");
                 });
 
             modelBuilder.Entity("LessonEntityVisitorEntity", b =>
@@ -352,17 +374,22 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("LessonEntityId")
+                    b.Property<int>("LessonId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
 
+                    b.Property<int>("VisitorId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("LessonEntityId");
+                    b.HasIndex("LessonId");
 
-                    b.ToTable("Review");
+                    b.HasIndex("VisitorId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.DateAttendanceEntity", b =>
@@ -376,10 +403,21 @@ namespace DataAccess.Postgres.Migrations
                     b.Navigation("Lesson");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.ImgEvent", b =>
+            modelBuilder.Entity("DataAccess.Postgres.Models.ImgEventEntity", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Models.EventEntity", "Event")
-                        .WithMany("Imgs")
+                        .WithMany("ImgsEvent")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNewEntity", b =>
+                {
+                    b.HasOne("DataAccess.Postgres.Models.NewsEntity", "Event")
+                        .WithMany("ImgsNew")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -413,10 +451,10 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ImgLesson", b =>
+            modelBuilder.Entity("ImgLessonEntity", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Models.LessonEntity", "Lesson")
-                        .WithMany("Imgs")
+                        .WithMany("ImgsLesson")
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -441,28 +479,50 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("ReviewEntity", b =>
                 {
-                    b.HasOne("DataAccess.Postgres.Models.LessonEntity", null)
+                    b.HasOne("DataAccess.Postgres.Models.LessonEntity", "Lesson")
                         .WithMany("Reviews")
-                        .HasForeignKey("LessonEntityId");
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Postgres.Models.VisitorEntity", "Visitor")
+                        .WithMany("Reviews")
+                        .HasForeignKey("VisitorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("Visitor");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.EventEntity", b =>
                 {
-                    b.Navigation("Imgs");
+                    b.Navigation("ImgsEvent");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.LessonEntity", b =>
                 {
                     b.Navigation("Dates");
 
-                    b.Navigation("Imgs");
+                    b.Navigation("ImgsLesson");
 
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Models.NewsEntity", b =>
+                {
+                    b.Navigation("ImgsNew");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.TeacherEntity", b =>
                 {
                     b.Navigation("Lessons");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Models.VisitorEntity", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

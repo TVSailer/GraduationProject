@@ -1,23 +1,27 @@
-﻿using Logica;
+﻿using AdminApp.Forms;
+using DataAccess.Postgres;
+using Logica;
 using Logica.Extension;
+using System.Windows.Input;
 
 
 namespace AdminApp.Forms
 {
-    public partial class AdminMainForm : Form
+    public partial class AdminMainView : Form
     {
-        public AdminMainForm()
+        public AdminMainView(ApplicationDbContext dbContext)
         {
+            DataContext = new AdminMainViewModel(dbContext, this);
             InitializeComponent();
         }
 
-        private void InitializeComponent()
+        public Form InitializeComponent()
             => this
+                .With(m => m.Controls.Clear())
                 .With(m => m.Text = "Панель администратора")
                 .With(m => m.WindowState = FormWindowState.Maximized)
                 .With(m => m.StartPosition = FormStartPosition.CenterParent)
                 .With(m => m.BackColor = Color.White)
-                .With(m => m.Controls.Clear())
                 .With(m => m.Controls.Add(MainMenu()));
 
         private TableLayoutPanel MainMenu()
@@ -27,11 +31,11 @@ namespace AdminApp.Forms
                 .ControlAddIsColumnPercentV2(null, 25)
                 .ControlAddIsColumnAbsoluteV2(null, 600)
                 .ControlAddIsRowsAbsoluteV2(
-                    new Label().LabelTitle("Панель администратора"), 70)
+                    FactoryElements.LabelTitle("Панель администратора"), 70)
                 .ControlAddIsRowsAbsoluteV2(
                     CreateButton("📰 Управление новостями", () => new NewsManagementForm().ShowDialog()), 50)
                 .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("🎭 Управление мероприятиями", () => InitializeComponentEvent()), 50)
+                    CreateButton("🎭 Управление мероприятиями", DataContext, "OnLoadEventsManagemetnView"), 50)
                 .ControlAddIsRowsAbsoluteV2(
                     CreateButton("🎨 Управление кружками", () => new LessonsManagementForm().ShowDialog()), 50)
                 .ControlAddIsRowsAbsoluteV2(
@@ -43,9 +47,33 @@ namespace AdminApp.Forms
                 .ControlAddIsColumnPercentV2(null, 25)
                 .ControlAddIsRowsPercentV2(null, 25);
 
-        private Button CreateButton(string text, Action action) 
+        private Control CreateButton(string text, Action action) 
             => FactoryElements.CreateButton(text, action)
                 .With(b => b.Font = new Font("Arial", 12, FontStyle.Bold))
                 .With(b => b.BackColor = Color.LightGray);
+        
+        private Control CreateButton(string text, object context, string dataMember) 
+            => FactoryElements.CreateButton(text)
+                .With(b => b.Font = new Font("Arial", 12, FontStyle.Bold))
+                .With(b => b.DataBindings.Add(new Binding("Command", context, dataMember, true)))
+                .With(b => b.BackColor = Color.LightGray);
+    }
+
+}
+public class AdminMainViewModel 
+{
+    public ICommand OnLoadMainMenuView { get; set; }
+    public ICommand OnLoadEventsManagemetnView { get; set; }
+    public ICommand OnLoadNewsManagemetnView;
+    public ICommand OnLoadLessonsManagemetnView;
+    public ICommand OnLoadTeachersManagemetnView;
+    public ICommand OnLoadAttendancesManagemetnView;
+
+    public AdminMainViewModel(ApplicationDbContext dbContext, AdminMainView adminMainView)
+    {
+        OnLoadMainMenuView = new MainCommand(_ 
+            => adminMainView.InitializeComponent());
+        OnLoadEventsManagemetnView = new MainCommand(_ 
+            => new EventMenegmentModelView(adminMainView, OnLoadMainMenuView, dbContext));
     }
 }

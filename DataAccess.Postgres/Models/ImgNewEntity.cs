@@ -2,9 +2,9 @@
 
 namespace DataAccess.Postgres.Models;
 
-public class ImgNew : Img
+public class ImgNewEntity : ImgEntity
 {
     public NewsEntity Event { get; set; }
-    public ImgNew() { }
+    public ImgNewEntity() { }
 
 }

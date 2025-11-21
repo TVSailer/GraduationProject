@@ -69,7 +69,7 @@ namespace WinFormsApp1
         //            .With(l => l.LinkBehavior = LinkBehavior.HoverUnderline), 20)
         //    .ControlAddIsColumnPercent(
         //        new Label()
-        //            .With(l => l.Text = $"{lesson.Teacher.Name} {lesson.Teacher.Name} {lesson.Teacher.Name}")
+        //            .With(l => l.Text = $"{lesson.Event.Name} {lesson.Event.Name} {lesson.Event.Name}")
         //            .With(l => l.TextAlign = ContentAlignment.TopCenter)
         //            .With(l => l.Dock = DockStyle.Fill), 20)
         //    .ControlAddIsColumnPercent(

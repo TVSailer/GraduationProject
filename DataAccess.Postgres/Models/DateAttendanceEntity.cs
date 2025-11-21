@@ -6,17 +6,17 @@ namespace DataAccess.Postgres.Models
 {
     public class DateAttendanceEntity
     {
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
         [Required(ErrorMessage = "Пж, впиши дату!")]
-        public required string Date { get; set; }
+        public string Date { get; private set; }
 
         [ForeignKey(nameof(LessonEntity))]
         public int LessonId { get; set; }
-        public LessonEntity Lesson { get; set; }
-        public List<VisitorEntity>? Visitors { get; set; } = new();
+        public LessonEntity Lesson { get; private set; }
+        public List<VisitorEntity>? Visitors { get; private set; } = new();
 
-        public required ApplicationDbContext DbContext { get; set; }
+        public ApplicationDbContext DbContext { get; private set; }
         [Date(ErrorMessage = "Такая дата уже есть!")]
         public DateForValid DateForValide 
             => new DateForValid { Date = Date, DbContext = DbContext, LessonId = LessonId };

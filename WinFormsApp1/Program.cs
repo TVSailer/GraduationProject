@@ -1,4 +1,5 @@
 using AdminApp.Forms;
+using DataAccess.Postgres;
 
 namespace WinFormsApp1
 {
@@ -10,11 +11,11 @@ namespace WinFormsApp1
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            var mainForm = new AdminMainForm();
-            Application.Run(mainForm);
+            using (var db = new ApplicationDbContext())
+            {
+                ApplicationConfiguration.Initialize();
+                Application.Run(new AdminMainView(db));
+            }
         }
     }
 }

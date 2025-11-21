@@ -1,31 +1,47 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace DataAccess.Postgres.Models;
 
 public class EventEntity
 {
-    public int Id { get; set; }
+    public int Id { get; private set; }
     [Required(ErrorMessage = "Отсутствует название!")]
-    public required string Title { get; set; }
+    public string Title { get; set; }
     [Required(ErrorMessage = "Отсутствует описание!")]
-    public required string Description { get; set; }
+    public string Description { get; set; }
     [Required(ErrorMessage = "Отсутствует дата проведения!")]
-    public required string Date { get; set; }
+    public string Date { get; set; }
     [Required(ErrorMessage = "Отсутствует место проведения!")]
-    public required string Location { get; set; }
+    public string Location { get; set; }
     [Required(ErrorMessage = "Отсутствует гатегория!")]
-    public required string Category { get; set; }
+    public string Category { get; set; }
     [Required(ErrorMessage = "Отсутствует ссылка на регистрацию!")]
-    public required string RegistrationLink { get; set; }
+    public string RegistrationLink { get; set; }
     [Required(ErrorMessage = "Отсутствует организатор мероприятия!")]
-    public required string Organizer { get; set; }
+    public string Organizer { get; set; }
     [Required(ErrorMessage = "Отсутствует возможное количество участников!")]
     public int MaxParticipants { get; set; }
-    public int CurrentParticipants { get; set; }
-    public List<ImgEvent>? ImgsEvent { get; set; } = new();
-
+    public int CurrentParticipants { get;  set; }
+    public List<ImgEventEntity>? ImgsEvent { get; set; } = new();
+    public string Participants => $"{CurrentParticipants} / {MaxParticipants}";
     public EventEntity() { }
+
+    public EventEntity(string title, string description, string date, string location, string category, string regisLink, string organizer, int maxParticipants, int cuttentParticipants, List<ImgEventEntity> imgEventEntities) 
+    {
+        Title = title;
+        Description = description;
+        Date = date;
+        Location = location;
+        Category = category;
+        RegistrationLink = regisLink;
+        Organizer = organizer;
+        MaxParticipants = maxParticipants;
+        CurrentParticipants = cuttentParticipants;
+        ImgsEvent = imgEventEntities;
+    }
 
     public override string ToString()
         => $"Мероприятие: {Title} {Date}";

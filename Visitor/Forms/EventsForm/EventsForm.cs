@@ -94,7 +94,7 @@ public partial class ViewVisitor : Form
             Dock = DockStyle.Fill,
             LinkBehavior = LinkBehavior.AlwaysUnderline
         };
-        registerLink.Click += (s, e) => Validatoreg.OpenRegistrationLink(eventItem.RegistrationLink);
+        registerLink.Click += (s, e) => Validatoreg.OpenLink(eventItem.RegistrationLink);
 
         var tableCard = new TableLayoutPanel
         {

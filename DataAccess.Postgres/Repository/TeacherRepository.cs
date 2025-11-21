@@ -10,18 +10,20 @@ namespace DataAccess.Postgres.Repository
 
         public TeacherRepository(ApplicationDbContext dbContext)
         {
-            this.DbContext = dbContext;
+            DbContext = dbContext;
+        }
+        
+        public TeacherRepository(ApplicationDbContext dbContext, TeacherEntity teacher)
+        {
+            DbContext = dbContext;
+            Teacher = teacher;
         }
 
         public bool VerifyTeacher(string login, string password)
-        {
-            Teacher = DbContext.Teachers
+             => null != DbContext.Teachers
             .AsNoTracking()
             .Include(t => t.Lessons)
-            .FirstOrDefault(t => t.Login == login && t.Password == password) ?? throw new ArgumentNullException();
-
-            return Teacher != null;
-        }
+            .FirstOrDefault(t => t.Login == login && t.Password == password);
 
         public List<TeacherEntity> Get()
             => DbContext.Teachers
@@ -42,43 +44,25 @@ namespace DataAccess.Postgres.Repository
             .Where(v => v.Id == id)
             .ToList();
 
-        public void Add(string name, string surname, string patronymic, string dateBirth, string numberPhone, List<LessonEntity> lessons, string login, string password)
-        {
-            var visitor = new TeacherEntity()
-            {
-                Name = name,
-                Surname = surname,
-                Patronymic = patronymic,
-                DateBirth = dateBirth,
-                NumberPhone = numberPhone,
-                Lessons = lessons,
-                Login = login,
-                Password = password
-            };
-
-            DbContext.Add(visitor);
-            DbContext.SaveChanges();
-        }
-
         public void Add(TeacherEntity visitor)
         {
             DbContext.Add(visitor);
             DbContext.SaveChanges();
         }
 
-        public void Update(int id, string name, string surname, string patronymic, string dateBirth, string numberPhone, ICollection<LessonEntity> lessons, string login, string password)
-        {
-            DbContext.Teachers
-                .Where(v => v.Id == id)
-                .ExecuteUpdate(v => v
-                    .SetProperty(v => v.Name, name)
-                    .SetProperty(v => v.Surname, surname)
-                    .SetProperty(v => v.Patronymic, patronymic)
-                    .SetProperty(v => v.DateBirth, dateBirth)
-                    .SetProperty(v => v.NumberPhone, numberPhone)
-                    .SetProperty(v => v.Login, login)
-                    .SetProperty(v => v.Password, password));
-        }
+        //public void Update(int id, string name, string surname, string patronymic, string dateBirth, string numberPhone, ICollection<LessonEntity> lessons, string login, string password)
+        //{
+        //    DbContext.Teachers
+        //        .Where(v => v.Id == id)
+        //        .ExecuteUpdate(v => v
+        //            .SetProperty(v => v.Name, name)
+        //            .SetProperty(v => v.Surname, surname)
+        //            .SetProperty(v => v.Patronymic, patronymic)
+        //            .SetProperty(v => v.DateBirth, dateBirth)
+        //            .SetProperty(v => v.NumberPhone, numberPhone)
+        //            .SetProperty(v => v.Login, login)
+        //            .SetProperty(v => v.Password, password));
+        //}
 
         public void Update(int id, TeacherEntity visitor)
         {

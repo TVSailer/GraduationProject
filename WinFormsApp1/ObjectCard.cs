@@ -1,4 +1,5 @@
-﻿using Logica.Extension;
+﻿using CSharpFunctionalExtensions;
+using Logica.Extension;
 
 namespace AdminApp.Controls
 {
@@ -32,7 +33,7 @@ namespace AdminApp.Controls
             MouseEnter += OnMouseEnterCard;
             MouseLeave += OnMouseLeaveCard;
             Click += OnClickCard;
-            ControlAdded += OnControlAdded;
+            ControlAdded += (s, e) => SetupChildControl(e.Control);
         }
 
         private void OnMouseEnterCard(object sender, EventArgs e)
@@ -50,32 +51,20 @@ namespace AdminApp.Controls
                 .With(t => t.OnCardClicked?.Invoke(this, EventArgs.Empty))
                 .With(t => t.OnMouseLeaveCard(sender, e));
 
-        private void OnControlAdded(object sender, ControlEventArgs e)
-            => SetupChildControl(e.Control);
-
         private void SetupChildControl(Control control)
-        {
-            control.MouseEnter += (s, args) =>
-            {
-                if (!_isMouseOver) 
-                    OnMouseEnterCard(s, args);
-            };
-
-            control.MouseLeave += (s, args) =>
-            {
-                if (!ClientRectangle.Contains(PointToClient(Cursor.Position)))
-                    OnMouseLeaveCard(s, args);
-            };
-
-            control.Click += OnClickCard;
-            control.Cursor = Cursors.Hand;
-
-            foreach (Control child in control.Controls)
-                SetupChildControl(child);
-        }
+            => control
+                .With(c => c.MouseEnter += (s, args) =>
+                    c.If(!_isMouseOver, c => OnMouseEnterCard(s, args)))
+                .With(c => c.MouseLeave += (s, args) =>
+                    PointToClient(Cursor.Position)
+                    .If(pos => !ClientRectangle.Contains(pos),
+                        pos => OnMouseLeaveCard(s, args)))
+                .With(c => c.Click += OnClickCard)
+                .With(c => c.Cursor = Cursors.Hand)
+                .With(c => c.Controls.AsEnumerable().ForEach(SetupChildControl));
 
         public virtual void CreateContent() { Controls.Add(Content()); }
         
-        public virtual Control Content() { return null; }
+        public virtual Control Content() { throw new ArgumentNullException(); }
     }
 }

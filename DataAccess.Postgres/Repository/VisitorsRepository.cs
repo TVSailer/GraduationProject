@@ -11,7 +11,6 @@ namespace DataAccess.Postgres.Repository
         {
             DbContext = dbContext;
         }
-
         public List<VisitorEntity> Get()
             => DbContext.Visitors
             .AsNoTracking()

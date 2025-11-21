@@ -1,7 +1,7 @@
 ﻿using DataAccess.Postgres.Models;
 
-public class ImgLesson : Img
+public class ImgLessonEntity : ImgEntity
 {
     public LessonEntity Lesson { get; set; }
-    public ImgLesson() { }
+    public ImgLessonEntity() { }
 }

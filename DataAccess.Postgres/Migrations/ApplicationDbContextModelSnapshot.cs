@@ -87,10 +87,10 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Event");
+                    b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.ImgEvent", b =>
+            modelBuilder.Entity("DataAccess.Postgres.Models.ImgEventEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -109,10 +109,10 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("ImgEvent");
+                    b.ToTable("ImgEvents");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNew", b =>
+            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNewEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -131,7 +131,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("ImgNew");
+                    b.ToTable("ImgNewEntity");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.LessonEntity", b =>
@@ -314,7 +314,7 @@ namespace DataAccess.Postgres.Migrations
                     b.ToTable("DateAttendanceEntityVisitorEntity");
                 });
 
-            modelBuilder.Entity("ImgLesson", b =>
+            modelBuilder.Entity("ImgLessonEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -333,7 +333,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("ImgLesson");
+                    b.ToTable("ImgLessons");
                 });
 
             modelBuilder.Entity("LessonEntityVisitorEntity", b =>
@@ -386,7 +386,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("VisitorId");
 
-                    b.ToTable("Review");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.DateAttendanceEntity", b =>
@@ -400,7 +400,7 @@ namespace DataAccess.Postgres.Migrations
                     b.Navigation("Lesson");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.ImgEvent", b =>
+            modelBuilder.Entity("DataAccess.Postgres.Models.ImgEventEntity", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Models.EventEntity", "Event")
                         .WithMany("ImgsEvent")
@@ -411,7 +411,7 @@ namespace DataAccess.Postgres.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNew", b =>
+            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNewEntity", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Models.NewsEntity", "Event")
                         .WithMany("ImgsNew")
@@ -448,7 +448,7 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ImgLesson", b =>
+            modelBuilder.Entity("ImgLessonEntity", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Models.LessonEntity", "Lesson")
                         .WithMany("ImgsLesson")
