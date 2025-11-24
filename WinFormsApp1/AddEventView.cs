@@ -1,19 +1,14 @@
-﻿using DataAccess.Postgres.Models;
-using Logica;
-using Logica.Extension;
+﻿using Logica;
 
 namespace AdminApp.Forms
 {
     public partial class AddEventView
     {
         private AddEventViewModel context;
-        private List<LabelIsControl> labelIsControls;
-        private FlowLayoutPanel images;
 
         public AddEventView(Form mainForm, AddEventViewModel context)
         {
             this.context = context;
-            images = FactoryElements.FlowLayoutPanel();
             InitializeComponent(mainForm);
         }
 
@@ -53,7 +48,7 @@ namespace AdminApp.Forms
 
         private TableLayoutPanel CreateFormFields()
         {
-            labelIsControls = new()
+            var labelIsControls = new[]
             {
                 new LabelIsControl(
                     FactoryElements.Label_11("📝 Название мероприятия:*"),
@@ -70,6 +65,8 @@ namespace AdminApp.Forms
                     FactoryElements.DateTimePicker()
                         .With(d => d.Format = DateTimePickerFormat.Custom)
                         .With(d => d.CustomFormat = "dd.MM.yyyy HH:mm")
+                        .With(d => d.ShowUpDown = true)
+                        .With(d => d.MinDate = DateTime.Now)
                         .With(t => t.TextChanged += (s, e) => context.Date = t.Text)
                         .With(t => context.ControlOnProperty.Add(OnPropertyAddEventViewModel.Date, t)), 45),
                 new LabelIsControl(
@@ -112,41 +109,26 @@ namespace AdminApp.Forms
 
         private TableLayoutPanel CreateImagesSection()
             => FactoryElements.TableLayoutPanel()
-            .ControlAddIsRowsAbsoluteV2(FactoryElements.Label_12("📷 Изображения мероприятия:"), 50)
-            .ControlAddIsRowsPercentV2(images, 10);
-
-        private void AddImages()
-        {
-            using (var openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
-                openFileDialog.Title = "Выберите изображения мероприятия";
-                openFileDialog.Multiselect = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+            .ControlAddIsRowsAbsoluteV2(
+                FactoryElements.Label_12("📷 Изображения мероприятия:"), 50)
+            .ControlAddIsRowsPercentV2(
+                FactoryElements.FlowLayoutPanel()
+                .With(f => context.PropertyChanged += (obj, propCh) 
+                =>
                 {
-                    foreach (var fileName in openFileDialog.FileNames)
+                    f.Controls.Clear();
+                    context.SelectedImg.ForEach(
+                    url =>
                     {
-                        images.Controls.Add(FactoryElements.Image(fileName)
-                            .With(img => img.Click += (s, e) => FullSizeImage(fileName)));
-                    }
-                }
-            }
-        }
-
-        private void FullSizeImage(string imgUrl)
-            => new Form()
-                .With(f => f.Text = $"Просмотр изображения: {System.IO.Path.GetFileName(imgUrl)}")
-                .With(f => f.Size = new Size(800, 600))
-                .With(f => f.StartPosition = FormStartPosition.CenterParent)
-                .With(f => f.BackColor = Color.Black)
-                .With(f => f.Controls.Add(
-                    new PictureBox()
-                    .With(pb => pb.Dock = DockStyle.Fill)
-                    .With(pb => pb.SizeMode = PictureBoxSizeMode.Zoom)
-                    .With(pb => pb.BackColor = Color.Black)
-                    .With(pb => pb.ImageLocation = imgUrl)))
-                .ShowDialog();
+                        f.Controls.Add(FactoryElements.Image(url.Key)
+                        .With(i => i.MouseClick +=
+                        (s, e) =>
+                        {
+                            context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
+                            i.BackColor = context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
+                        }));
+                    });
+                }), 10);
 
         private TableLayoutPanel CreateButtonPanel()
             => FactoryElements.TableLayoutPanel()

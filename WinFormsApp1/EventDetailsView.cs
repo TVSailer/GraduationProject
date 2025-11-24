@@ -4,18 +4,14 @@ using DataAccess.Postgres.Models;
 
 namespace AdminApp.Forms
 {
-    public partial class EventDetailsForm
+    public partial class EventDetailsView
     {
         public readonly EventEntity Event;
         public readonly EventManagementView EventManagementForm;
-        public readonly EventMenegmentModelView EventManagementModelView;
 
-        public EventDetailsForm(Control context, Form mainForm)
+        public EventDetailsView(Control context, Form mainForm)
         {
-            //EventManagementModelView = eventManagementForm.m;
-            //Event = eventManagementForm.m.EventEntities[0];
-            //EventManagementForm = eventManagementForm;
-            //InitializeEventComponent();
+            InitializeEventComponent(mainForm);
         }
 
         private Form InitializeEventComponent(Form form)
@@ -65,8 +61,7 @@ namespace AdminApp.Forms
                                     .If(f.Label == "📝 Описание:", l => l
                                         .With(l => l.AutoSize = false)
                                         .With(l => l.Height = 70)
-                                        .With(l => l.Dock = DockStyle.Fill)), 50), 50)));
-    }
+                                        .With(l => l.Dock = DockStyle.Fill)), 50), 50)));}
 
         private Control CreateGalleryPanel()
             => FactoryElements
@@ -117,7 +112,7 @@ namespace AdminApp.Forms
                     .Button("🗑️ Удалить"), 40)
                 .ControlAddIsColumnPercentV2(
                     FactoryElements
-                    .Button("✏️ Редактировать", () => EventManagementModelView.EventEntities[0].CurrentParticipants++), 40)
+                    .Button("✏️ Редактировать"), 40)
                 .ControlAddIsColumnPercentV2(
                     FactoryElements
                     .Button("📝 Зарегистрироваться",

@@ -356,21 +356,34 @@ public static class FactoryElements
             .With(l => l.TextAlign = ContentAlignment.TopLeft)
             .With(l => l.BorderStyle = BorderStyle.None)
             .With(l => l.Padding = new Padding(5));
-
+    
     public static FlowLayoutPanel FlowLayoutPanel()
         => new FlowLayoutPanel()
             .With(p => p.Dock = DockStyle.Fill)
             .With(p => p.AutoScroll = true)
             .With(p => p.Padding = new Padding(10));
 
-    public static Control Image(string imgUrl)
+    public static PictureBox Image(string imgUrl)
         => new PictureBox()
-            .With(pb => pb.Cursor = Cursors.Hand)
             .With(pb => pb.Size = new Size(300, 200))
             .With(pb => pb.Margin = new Padding(5))
             .With(pb => pb.SizeMode = PictureBoxSizeMode.Zoom)
             .With(pb => pb.BackColor = Color.Black)
-            .With(pb => pb.ImageLocation = imgUrl);
+            .With(pb => pb.ImageLocation = imgUrl)
+            .With(img => img.MouseDoubleClick += (s, e) => FullSizeImage(imgUrl));
+
+    public static void FullSizeImage(string imgUrl)
+           => new Form()
+               .With(f => f.Text = $"Просмотр изображения: {System.IO.Path.GetFileName(imgUrl)}")
+               .With(f => f.Size = new Size(800, 600))
+               .With(f => f.StartPosition = FormStartPosition.CenterParent)
+               .With(f => f.BackColor = Color.Black)
+               .With(f => f.Controls.Add(
+                   new PictureBox()
+                   .With(pb => pb.Dock = DockStyle.Fill)
+                   .With(pb => pb.SizeMode = PictureBoxSizeMode.Zoom)
+                   .With(pb => pb.ImageLocation = imgUrl)))
+               .ShowDialog();
 
     public static Control NumericUpDown()
         => new NumericUpDown()

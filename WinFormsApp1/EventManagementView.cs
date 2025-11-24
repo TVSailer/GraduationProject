@@ -47,7 +47,7 @@ namespace AdminApp.Forms
                 .ForEach(ev =>
                 cardsPanel.Controls.Add(
                     new EventCard(ev)));
-                            //.With(c => c.OnCardClicked += (s, e) => new EventDetailsForm(this, ))));
+                            //.With(c => c.OnCardClicked += (s, e) => new EventDetailsView(this, ))));
 
 
             return cardsPanel;
