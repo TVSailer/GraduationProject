@@ -1,31 +1,15 @@
-﻿using AdminApp.Forms;
-using DataAccess.Postgres;
-using DataAccess.Postgres.Models;
+﻿using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-
-public enum OnPropertyAddEventViewModel
-{
-    Title,
-    Description,
-    Date,
-    Location,
-    Category,
-    RegisLink,
-    Organizer,
-    MaxParticipants,
-    ImgsEvent
-}
+using WinFormsApp1.View;
 
 public class AddEventViewModel : INotifyPropertyChanged
 {
     private ErrorProvider errorProvider = new() { BlinkStyle = ErrorBlinkStyle.NeverBlink};
-    private AddEventView addEventView;
-    private EventRepository eventRepository;
     
     public Dictionary<string, bool> SelectedImg { get; private set; } = new();
     public Dictionary<OnPropertyAddEventViewModel, Control> ControlOnProperty { get; private set; } = new();
@@ -39,10 +23,12 @@ public class AddEventViewModel : INotifyPropertyChanged
 
     private string title;
     private string description;
+    private string date = DateTime.Now.ToString();
     private string location;
     private string category;
     private string regisLink;
     private string organizer;
+    private int maxParticipants = 1;
 
     [Required]
     public string Title
@@ -59,7 +45,7 @@ public class AddEventViewModel : INotifyPropertyChanged
     }
 
     [Required]
-    public string Date { get; set; }
+    public string Date{ get => date; set => date = value; }
 
     [Required]
     public string Location
@@ -120,9 +106,9 @@ public class AddEventViewModel : INotifyPropertyChanged
         set => Set(OnPropertyAddEventViewModel.Organizer, ref organizer, value);
     }
 
-    public int MaxParticipants { get; set; }
+    public int MaxParticipants { get => maxParticipants; set => maxParticipants = value; }
 
-    public AddEventViewModel(Form mainForm, ICommand onBack, ApplicationDbContext dbContext)
+    public AddEventViewModel(Form mainForm, ICommand onBack, EventRepository eventRepository)
     {
         OnBack = onBack;
         OnSave = new MainCommand(
@@ -136,13 +122,43 @@ public class AddEventViewModel : INotifyPropertyChanged
 
                     eventRepository.Add(
                         new EventEntity(Title, Description, Date, Location, Category, RegisLink, Organizer, MaxParticipants, imgs));
+
+                    LogicaMessage.MessageOk("Мероприятие успешно добавленно!");
+                    onBack.Execute(null);
                 }
             });
-        OnAddingImg = new MainCommand(_ => AddImages());
-        OnDeletingImg = new MainCommand(_ => DeleteImg());
 
-        addEventView = new AddEventView(mainForm, this);
-        eventRepository = new(dbContext);
+        OnAddingImg = new MainCommand(
+            _ =>
+            {
+                using (var openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+                    openFileDialog.Title = "Выберите изображения мероприятия";
+                    openFileDialog.Multiselect = true;
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        foreach (var fileName in openFileDialog.FileNames)
+                        {
+                            if (!SelectedImg.ContainsKey(fileName))
+                                SelectedImg.Add(fileName, false);
+                        }
+                    }
+                }
+
+                OnPropertyChanged();
+            });
+
+        OnDeletingImg = new MainCommand(
+            _ =>
+            {
+                if (!SelectedImg.ContainsValue(true)) return;
+                SelectedImg.ForEach(img => img.If(img.Value, i => SelectedImg.Remove(img.Key)));
+                OnPropertyChanged();
+            });
+
+        new AddEventView(mainForm, this);
     }
 
     public string Get(OnPropertyAddEventViewModel onPropertyAddEventViewModel, ref string file)
@@ -169,36 +185,6 @@ public class AddEventViewModel : INotifyPropertyChanged
         }
         errorProvider.SetError(control, "");
         file = value;
-
-        OnPropertyChanged();
-    }
-
-    private void AddImages()
-    {
-        using (var openFileDialog = new OpenFileDialog())
-        {
-            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
-            openFileDialog.Title = "Выберите изображения мероприятия";
-            openFileDialog.Multiselect = true;
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                foreach (var fileName in openFileDialog.FileNames)
-                {
-                    if (!SelectedImg.ContainsKey(fileName))
-                        SelectedImg.Add(fileName, false);
-                }
-            }
-        }
-
-        OnPropertyChanged();
-    }
-    
-    private void DeleteImg()
-    {
-        if (!SelectedImg.ContainsValue(true)) return;
-
-        SelectedImg.ForEach(img => img.If(img.Value, i => SelectedImg.Remove(img.Key)));
 
         OnPropertyChanged();
     }

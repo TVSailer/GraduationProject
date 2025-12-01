@@ -1,11 +1,8 @@
 ﻿using AdminApp.Controls;
 using Logica;
-using Logica.Extension;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using WinFormsApp1.ViewModel;
 
-namespace AdminApp.Forms
+namespace WinFormsApp1.View.Event
 {
     public partial class EventManagementView
     {
@@ -21,12 +18,12 @@ namespace AdminApp.Forms
             => form
                 .With(m => m.Controls.Clear())
                 .With(m => m.Text = "Управление мероприятиями")
-                .With(m => m.Controls.Add(UIEvent()));
+                .With(m => m.Controls.Add(UIEvent(form)));
 
-        private TableLayoutPanel UIEvent()
+        private TableLayoutPanel UIEvent(Form form)
             => FactoryElements.TableLayoutPanel()
                 .ControlAddIsRowsAbsoluteV2(FactoryElements.LabelTitle("🎭 Управление мероприятиями"), 70)
-                .ControlAddIsRowsPercentV2(LoadEventCards(), 70)
+                .ControlAddIsRowsPercentV2(LoadEventCards(form), 70)
                 .ControlAddIsRowsAbsoluteV2(
                     FactoryElements.TableLayoutPanel()
                         .ControlAddIsColumnPercentV2(FactoryElements.Button(""), 40)
@@ -35,23 +32,17 @@ namespace AdminApp.Forms
                         .ControlAddIsColumnPercentV2(FactoryElements.Button("⬅️ Назад", context, "OnBack"), 40), 90);
 
 
-        private Control LoadEventCards()
-        {
-            var cardsPanel = new FlowLayoutPanel()
-                        .With(p => p.Dock = DockStyle.Fill)
-                        .With(p => p.AutoScroll = true)
-                        .With(p => p.BackColor = Color.WhiteSmoke)
-                        .With(p => p.Padding = new Padding(10));
-
-            context.EventEntities
-                .ForEach(ev =>
-                cardsPanel.Controls.Add(
-                    new EventCard(ev)));
-                            //.With(c => c.OnCardClicked += (s, e) => new EventDetailsView(this, ))));
-
-
-            return cardsPanel;
-        }
+        private Control LoadEventCards(Form form)
+            => new FlowLayoutPanel()
+                .With(p => p.Dock = DockStyle.Fill)
+                .With(p => p.AutoScroll = true)
+                .With(p => p.BackColor = Color.WhiteSmoke)
+                .With(p => p.Padding = new Padding(10))
+                .With(p => context.EventEntities
+                    .ForEach(
+                        ev => p.Controls.Add(new EventCard(ev)
+                        .With(c => c.OnCardClicked += 
+                        (s, e) => new EventDetailsViewModel(form, new MainCommand(_ => InitializeComponent(form)), context.EventRepository, ev.Id)))));
     }
 
 }

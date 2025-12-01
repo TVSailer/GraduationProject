@@ -1,4 +1,5 @@
-﻿using DataAccess.Postgres.Models;
+﻿using CSharpFunctionalExtensions;
+using DataAccess.Postgres.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
@@ -20,22 +21,24 @@ namespace DataAccess.Postgres.Repository
         }
 
         public List<EventEntity> Get()
-            => DbContext.Events
+            => DbContext.Event
+            .Include(e => e.ImgsEvent)
             .AsNoTracking()
             .ToList() ?? throw new ArgumentNullException();
 
-        public List<EventEntity>? Get(string title, string category, string date)
-            => DbContext.Events
+        public List<EventEntity> Get(string title, string category, string date)
+            => DbContext.Event
             .AsNoTracking()
             .Where(v => v.Title.StartsWith(title))
             .Where(v => v.Category.StartsWith(category))
             .Where(v => v.Date.StartsWith(date))
             .ToList();
 
-        public EventEntity? Get(int id)
-            => DbContext.Events
+        public EventEntity Get(int id)
+            => DbContext.Event
             .AsNoTracking()
-            .FirstOrDefault(v => v.Id == id);
+            .Include(e => e.ImgsEvent)
+            .FirstOrDefault(v => v.Id == id) ?? throw new ArgumentNullException();
 
         public void Add(EventEntity @event)
         {
@@ -45,7 +48,7 @@ namespace DataAccess.Postgres.Repository
 
         public void Update(int id, EventEntity @event)
         {
-            DbContext.Events
+            DbContext.Event
                 .Where(v => v.Id == id)
                 .ExecuteUpdate(v => v
                     .SetProperty(v => v.Title, @event.Title)
@@ -57,10 +60,42 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(v => v.MaxParticipants, @event.MaxParticipants)
                     .SetProperty(v => v.CurrentParticipants, @event.CurrentParticipants)
                     .SetProperty(v => v.RegistrationLink, @event.RegistrationLink));
+
+            if (@event.ImgsEvent == null || @event.ImgsEvent.Count == 0) return;
+
+            DbContext.Event
+                .FirstOrDefault(ev => ev.Id == id).ImgsEvent.Clear();
+
+            DbContext.Event
+                .FirstOrDefault(ev => ev.Id == id).ImgsEvent = @event.ImgsEvent;
+
+            //var listImgDb = DbContext.ImgEvent
+            //    .Where(img => img.Event.Id == id)
+            //    .ToList();
+
+            //var listImg = @event.ImgsEvent;
+
+            //listImgDb
+            //    .ForEach(
+            //    imgDb =>
+            //    {
+            //        if (!listImg.Select(img => img.Url).Contains(imgDb.Url))
+            //            DbContext.ImgEvent.Remove(imgDb);
+            //    });
+            
+            //listImg
+            //    .ForEach(
+            //    img =>
+            //    {
+            //        if (!listImgDb.Select(img => img.Url).Contains(img.Url))
+            //            DbContext.Event.FirstOrDefault(ev => ev.Id == id).ImgsEvent.Add(img);
+            //    });
+
+            DbContext.SaveChanges();
         }
 
         public void Delete(int id)
-            => DbContext.Events
+            => DbContext.Event
             .Where(v => v.Id == id)
             .ExecuteDelete();
     }

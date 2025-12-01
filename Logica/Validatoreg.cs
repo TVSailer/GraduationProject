@@ -22,13 +22,35 @@ public static class Validatoreg
         return true;
     }
     
-    public static bool TryValidObject(object instance, bool isErrorMessage)
+    public static bool TryValidObject(object instance, bool isErrorMessage = false)
     {
         string text = null;
         var results = new List<ValidationResult>();
         var context = new ValidationContext(instance);
 
         if (!Validator.TryValidateObject(instance, context, results))
+        {
+            if (isErrorMessage)
+            {
+                foreach (var error in results)
+                    text += error.ErrorMessage + " ";
+
+                LogicaMessage.MessageError(text);
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+    
+    public static bool TryValidProperty(object value, bool isErrorMessage = false)
+    {
+        string text = null;
+        var results = new List<ValidationResult>();
+        var context = new ValidationContext(value);
+
+        if (!Validator.TryValidateProperty(value, context, results))
         {
             if (isErrorMessage)
             {

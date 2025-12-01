@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251107094944_init014")]
-    partial class init014
+    [Migration("20251130184936_init2")]
+    partial class init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,7 +90,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Event");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.ImgEventEntity", b =>
@@ -112,7 +112,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("ImgEvents");
+                    b.ToTable("ImgEvent");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.ImgNewEntity", b =>
@@ -217,7 +217,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("News");
+                    b.ToTable("New");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.TeacherEntity", b =>
@@ -336,7 +336,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("ImgLessons");
+                    b.ToTable("ImgLesson");
                 });
 
             modelBuilder.Entity("LessonEntityVisitorEntity", b =>
@@ -389,7 +389,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("VisitorId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.DateAttendanceEntity", b =>

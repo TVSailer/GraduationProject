@@ -2,7 +2,7 @@
 
 public class EventEntity
 {
-    public int Id { get; private set; }
+    public int Id { get; set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
     public string Date { get; private set; }
@@ -17,7 +17,7 @@ public class EventEntity
 
     public EventEntity() { }
 
-    public EventEntity(string title, string description, string date, string location, string category, string regisLink, string organizer, int maxParticipants, List<ImgEventEntity> imgEventEntities) 
+    public EventEntity(string title, string description, string date, string location, string category, string regisLink, string organizer, int maxParticipants, int currentPart, List<ImgEventEntity> imgEventEntities) 
     {
         Title = title;
         Description = description;
@@ -31,7 +31,7 @@ public class EventEntity
         ImgsEvent = imgEventEntities;
     }
     
-    public EventEntity(string title, string description, string date, string location, string category, string regisLink, string organizer, int maxParticipants, int current, List<ImgEventEntity> imgEventEntities) 
+    public EventEntity(string title, string description, string date, string location, string category, string regisLink, string organizer, int maxParticipants, List<ImgEventEntity> imgEventEntities) 
     {
         Title = title;
         Description = description;
@@ -41,7 +41,7 @@ public class EventEntity
         RegistrationLink = regisLink;
         Organizer = organizer;
         MaxParticipants = maxParticipants;
-        CurrentParticipants = current;
+        CurrentParticipants = 0;
         ImgsEvent = imgEventEntities;
     }
 

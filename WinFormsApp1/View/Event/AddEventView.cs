@@ -1,6 +1,6 @@
 ﻿using Logica;
 
-namespace AdminApp.Forms
+namespace WinFormsApp1.View.Event
 {
     public partial class AddEventView
     {
@@ -113,8 +113,8 @@ namespace AdminApp.Forms
                 FactoryElements.Label_12("📷 Изображения мероприятия:"), 50)
             .ControlAddIsRowsPercentV2(
                 FactoryElements.FlowLayoutPanel()
-                .With(f => context.PropertyChanged += (obj, propCh) 
-                =>
+                .With(f => context.PropertyChanged += 
+                (obj, propCh) =>
                 {
                     f.Controls.Clear();
                     context.SelectedImg.ForEach(

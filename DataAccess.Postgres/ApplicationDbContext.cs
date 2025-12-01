@@ -1,7 +1,6 @@
 ﻿using DataAccess.Postgres.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Npgsql;
 
 namespace DataAccess.Postgres
 {
@@ -11,16 +10,16 @@ namespace DataAccess.Postgres
         public DbSet<TeacherEntity> Teachers { get; set; }
         public DbSet<DateAttendanceEntity> DateAttendances { get; set; }
         public DbSet<LessonEntity> Lessons { get; set; }
-        public DbSet<NewsEntity> News { get; set; }
-        public DbSet<EventEntity> Events { get; set; }
-        public DbSet<ReviewEntity> Reviews { get; set; }
-        public DbSet<ImgLessonEntity> ImgLessons { get; set; }
-        public DbSet<ImgEventEntity> ImgEvents { get; set; }
+        public DbSet<NewsEntity> New { get; set; }
+        public DbSet<EventEntity> Event { get; set; }
+        public DbSet<ReviewEntity> Review { get; set; }
+        public DbSet<ImgLessonEntity> ImgLesson { get; set; }
+        public DbSet<ImgEventEntity> ImgEvent { get; set; }
 
         public ApplicationDbContext() : base()
         {
-            Database.EnsureCreated();
-            Database.Migrate();
+            //Database.EnsureCreated();
+            //Database.Migrate();
         }
 
         protected async override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
