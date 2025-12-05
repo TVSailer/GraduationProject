@@ -86,6 +86,18 @@ namespace Logica
                         t.ColumnStyles.Count - 1, 
                         t.RowStyles.Count - 1));
         
+        public static TableLayoutPanel ControlAddIsRowsPercentV2(
+           this TableLayoutPanel table, Control? control)
+            => control == null ? 
+                table
+                    .ControlAddIsRowsPercent(new Panel(), 10) : 
+                table
+                    .With(t => t.RowStyles.Add(new RowStyle(SizeType.Percent, 10)))
+                    .With(t => t.Controls.Add(control, 
+                        t.ColumnStyles.Count == 0 ? 0 :
+                        t.ColumnStyles.Count - 1, 
+                        t.RowStyles.Count - 1));
+        
         
         public static TableLayoutPanel ControlAddIsColumnAbsolute(
            this TableLayoutPanel table, Control? control, int weidht)

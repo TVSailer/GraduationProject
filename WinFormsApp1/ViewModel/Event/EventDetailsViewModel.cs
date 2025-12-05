@@ -1,13 +1,12 @@
-﻿using Logica;
-using DataAccess.Postgres.Models;
+﻿using DataAccess.Postgres.Models;
+using DataAccess.Postgres.Repository;
+using Logica;
+using Logica.DI;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using System.ComponentModel.DataAnnotations;
-using DataAccess.Postgres.Repository;
-using WinFormsApp1.View;
-using System.Reflection;
-using CSharpFunctionalExtensions;
+using WinFormsApp1.View.Event;
 
 namespace WinFormsApp1.ViewModel.Event
 {
@@ -70,7 +69,6 @@ namespace WinFormsApp1.ViewModel.Event
         [Required]
         public string RegistrationLink
         {
-
             get
             {
                 if (!ControlOnProperty.ContainsKey(OnPropertyAddEventViewModel.RegisLink)) throw new ArgumentNullException();
@@ -132,7 +130,7 @@ namespace WinFormsApp1.ViewModel.Event
             set => Set(OnPropertyAddEventViewModel.MaxParticipants, ref maxPart, value);
         }
 
-        public EventDetailsViewModel(Form mainForm, ICommand onBack, EventRepository eventRepository, int idEvent)
+        public EventDetailsViewModel(EventRepository eventRepository, int idEvent)
         {
             EventEntity = eventRepository.Get(idEvent);
 
@@ -147,7 +145,13 @@ namespace WinFormsApp1.ViewModel.Event
             organizer = EventEntity.Organizer;
             regisLink = EventEntity.RegistrationLink;
 
-            OnBack = onBack;
+            OnBack = new MainCommand(
+                _ =>
+                {
+                    using (var scope = new ContainerScoped(AdminConteiner.Container))
+                        scope.GetService<EventManagementView>().InitializeComponent();
+                });
+
             OnUpdate = new MainCommand(
                 _ =>
                 {
@@ -200,8 +204,6 @@ namespace WinFormsApp1.ViewModel.Event
                     SelectedImg.ForEach(img => img.If(img.Value, i => SelectedImg.Remove(img.Key)));
                     OnPropertyChanged("OnDeletingImg");
                 });
-
-            new EventDetailsView(this, mainForm);
         }
 
         private string Get(OnPropertyAddEventViewModel onPropertyAddEventViewModel, ref string file)
@@ -221,6 +223,8 @@ namespace WinFormsApp1.ViewModel.Event
             file = value;
             OnPropertyChanged(prop);
         }
+
+        //public void 
 
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {

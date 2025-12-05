@@ -10,15 +10,17 @@ namespace WinFormsApp1.View.Event
     {
         private readonly EventDetailsViewModel context;
         private readonly EventEntity eventEntity;
+        private readonly AdminMainView form;
 
-        public EventDetailsView(EventDetailsViewModel context, Form mainForm)
+        public EventDetailsView(AdminMainView mainForm, int idEvent)
         {
-            this.context = context;
+            context = AdminConteiner.GetService<EventDetailsViewModel>(idEvent);
             eventEntity = context.EventEntity;
-            InitializeEventComponent(mainForm);
+            form = mainForm;
+
         }
 
-        private Form InitializeEventComponent(Form form)
+        public Form InitializeComponents()
             => form
                 .With(f => f.Controls.Clear())
                 .With(f => f.Text = $"Подробности: {eventEntity.Title}")
@@ -77,7 +79,13 @@ namespace WinFormsApp1.View.Event
 
         private FlowLayoutPanel LoadImages()
             => FactoryElements.FlowLayoutPanel()
-                .With(fp => context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.Image(url.Key))))
+                .With(fp => context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.Image(url.Key)
+                    .With(i => i.MouseClick +=
+                    (s, e) =>
+                    {
+                        context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
+                        i.BackColor = context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
+                    }))))
                 .With(fp => context.PropertyChanged +=
                 (obj, propCh) =>
                 {

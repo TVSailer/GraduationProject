@@ -1,5 +1,7 @@
 ﻿using System.Windows.Input;
 
+namespace Logica;
+
 public class MainCommand : ICommand
 {
     public event EventHandler? CanExecuteChanged;

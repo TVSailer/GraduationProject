@@ -9,35 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Logica\Logica.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Forms\EventsForm\EventsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\LessonsForm\LessonsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\MyProfileForm\MyProfileForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\NewsForm\NewsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Forms\LessonsForm\LessonsForm.cs" />
+    <Compile Update="Forms\MyProfileForm\MyProfileForm.cs" />
+    <Compile Update="Forms\NewsForm\NewsForm.cs" />
     <Compile Update="Forms\LessonsForm\ShowAddReviewForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\LessonsForm\ShowClubDetailsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\LessonsForm\ShowCLubReviewsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\ViewVisitorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\LoadTestItems.cs">
+    <Compile Update="Forms\LessonsForm\ShowClubDetailsForm.cs" />
+    <Compile Update="Forms\LessonsForm\ShowCLubReviewsForm.cs" />
+    <Compile Update="Forms\VisitorView.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

@@ -14,12 +14,6 @@ namespace DataAccess.Postgres.Repository
             DbContext = dbContext;
         }
         
-        public EventRepository(ApplicationDbContext dbContext, EventEntity eventEntity)
-        {
-            DbContext = dbContext;
-            Event = eventEntity;
-        }
-
         public List<EventEntity> Get()
             => DbContext.Event
             .Include(e => e.ImgsEvent)
@@ -63,33 +57,27 @@ namespace DataAccess.Postgres.Repository
 
             if (@event.ImgsEvent == null || @event.ImgsEvent.Count == 0) return;
 
-            DbContext.Event
-                .FirstOrDefault(ev => ev.Id == id).ImgsEvent.Clear();
+            var listImgDb = DbContext.ImgEvent
+                .Where(img => img.Event.Id == id)
+                .ToList();
 
-            DbContext.Event
-                .FirstOrDefault(ev => ev.Id == id).ImgsEvent = @event.ImgsEvent;
+            var listImg = @event.ImgsEvent;
 
-            //var listImgDb = DbContext.ImgEvent
-            //    .Where(img => img.Event.Id == id)
-            //    .ToList();
+            listImgDb
+                .ForEach(
+                imgDb =>
+                {
+                    if (!listImg.Select(img => img.Url).Contains(imgDb.Url))
+                        DbContext.ImgEvent.Remove(imgDb);
+                });
 
-            //var listImg = @event.ImgsEvent;
-
-            //listImgDb
-            //    .ForEach(
-            //    imgDb =>
-            //    {
-            //        if (!listImg.Select(img => img.Url).Contains(imgDb.Url))
-            //            DbContext.ImgEvent.Remove(imgDb);
-            //    });
-            
-            //listImg
-            //    .ForEach(
-            //    img =>
-            //    {
-            //        if (!listImgDb.Select(img => img.Url).Contains(img.Url))
-            //            DbContext.Event.FirstOrDefault(ev => ev.Id == id).ImgsEvent.Add(img);
-            //    });
+            listImg
+                .ForEach(
+                img =>
+                {
+                    if (!listImgDb.Select(img => img.Url).Contains(img.Url))
+                        DbContext.Event.FirstOrDefault(ev => ev.Id == id).ImgsEvent.Add(img);
+                });
 
             DbContext.SaveChanges();
         }

@@ -1,5 +1,5 @@
-using AdminApp.Forms;
 using DataAccess.Postgres;
+using WinFormsApp1.View;
 
 namespace WinFormsApp1
 {
@@ -11,11 +11,9 @@ namespace WinFormsApp1
         [STAThread]
         static void Main()
         {
-            using (var db = new ApplicationDbContext())
-            {
-                ApplicationConfiguration.Initialize();
-                Application.Run(new AdminMainView(db));
-            }
+            ApplicationConfiguration.Initialize();
+            Application.Run(AdminConteiner.GetService<AdminMainView>());
         }
     }
 }
+

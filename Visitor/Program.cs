@@ -1,3 +1,4 @@
+using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
 
 namespace Visitor
@@ -13,7 +14,11 @@ namespace Visitor
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new ViewVisitor());
+            using (var db = new ApplicationDbContext())
+            {
+                ApplicationConfiguration.Initialize();
+                Application.Run(new VisitorView(db));
+            }
         }
     }
 }

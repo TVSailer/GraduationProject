@@ -1,5 +1,8 @@
 ﻿using Logica;
 using Logica.Extension;
+using static System.Net.Mime.MediaTypeNames;
+using System.Threading.Tasks.Dataflow;
+using Font = System.Drawing.Font;
 
 
 
@@ -169,6 +172,28 @@ public static class FactoryElements
             Width = Style.LabelWidth,
             BorderStyle = Style.LabelBorderStyle,
         };
+    
+    
+    public static LinkLabel LinkLabel(string text, int size)
+        => new LinkLabel()
+        {
+            Dock = DockStyle.Fill,
+            Font = new Font("Times New Roman", size, FontStyle.Bold),
+            Text = text,
+            TextAlign = ContentAlignment.TopLeft,
+            LinkColor = Color.DarkBlue,
+            LinkBehavior = LinkBehavior.HoverUnderline,
+        };
+    
+    public static LinkLabel LinkLabelTitle(string text, Action actionClick)
+        => LinkLabel(text, 18)
+        .With(l => l.Click += (s, e) => actionClick?.Invoke());
+
+    public static LinkLabel LinkLabel_10(string text, Action actionClick)
+        => LinkLabel(text, 10)
+        .With(l => l.Click += (s, e) => actionClick?.Invoke())
+        .With(l => l.LinkBehavior = LinkBehavior.AlwaysUnderline);
+
     public static TextBox CreateTextBox(string attribute)
         => new TextBox()
         {
@@ -310,18 +335,28 @@ public static class FactoryElements
             .With(c => c.Text = text)
             .With(c => c.DataBindings.Add(new Binding("Command", context, dataMember, true)))
             .With(c => c.Dock = DockStyle.Fill)
-            .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
-            .With(c => c.BackColor = SystemColors.ButtonFace)
-            .With(c => c.ForeColor = SystemColors.ControlText);
+            .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold));
 
     public static ButtonBase Button(string text, Action action)
         => new Button()
             .With(c => c.Text = text)
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
-            .With(c => c.BackColor = SystemColors.ButtonFace)
-            .With(c => c.ForeColor = SystemColors.ControlText)
             .With(c => c.Click += (s, e) => action?.Invoke());
+    
+    public static ButtonBase Button(string text, int size, Action action)
+        => Button(text, size)
+            .With(c => c.Click += (s, e) => action?.Invoke());
+
+    public static ButtonBase Button(string text, int size, object context, string dataMember)
+        => Button(text, size)
+            .With(c => c.DataBindings.Add(new Binding("Command", context, dataMember, true)));
+
+    public static ButtonBase Button(string text, int size)
+        => new Button()
+            .With(c => c.Text = text)
+            .With(c => c.Dock = DockStyle.Fill)
+            .With(c => c.Font = new Font("Times New Roman", size, FontStyle.Bold));
 
     public static Label LabelTitle(string text)
         => Label(text)

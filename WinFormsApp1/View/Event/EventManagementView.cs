@@ -1,20 +1,21 @@
-﻿using AdminApp.Controls;
-using Logica;
-using WinFormsApp1.ViewModel;
+﻿using Logica;
+using Logica.DI;
+using WinFormsApp1.ViewModel.Event;
 
 namespace WinFormsApp1.View.Event
 {
     public partial class EventManagementView
     {
         private EventMenegmentModelView context;
+        private readonly AdminMainView form;
 
-        public EventManagementView(Form mainForm, EventMenegmentModelView context)
+        public EventManagementView(AdminMainView mainForm, EventMenegmentModelView context)
         {
             this.context = context;
-            InitializeComponent(mainForm);
+            form = mainForm;
         }
 
-        public Form InitializeComponent(Form form)
+        public Form InitializeComponent()
             => form
                 .With(m => m.Controls.Clear())
                 .With(m => m.Text = "Управление мероприятиями")
@@ -26,10 +27,10 @@ namespace WinFormsApp1.View.Event
                 .ControlAddIsRowsPercentV2(LoadEventCards(form), 70)
                 .ControlAddIsRowsAbsoluteV2(
                     FactoryElements.TableLayoutPanel()
-                        .ControlAddIsColumnPercentV2(FactoryElements.Button(""), 40)
-                        .ControlAddIsColumnPercentV2(FactoryElements.Button("➕ Добавить", context, "OnLoadAddView"), 40)
-                        .ControlAddIsColumnPercentV2(FactoryElements.Button("🔄 Обновить"), 40)
-                        .ControlAddIsColumnPercentV2(FactoryElements.Button("⬅️ Назад", context, "OnBack"), 40), 90);
+                    .ControlAddIsColumnPercentV2(FactoryElements.Button(""), 40)
+                    .ControlAddIsColumnPercentV2(FactoryElements.Button("➕ Добавить", context, "OnLoadAddView"), 40)
+                    .ControlAddIsColumnPercentV2(FactoryElements.Button("🔄 Обновить"), 40)
+                    .ControlAddIsColumnPercentV2(FactoryElements.Button("⬅️ Назад", context, "OnBack"), 40), 90);
 
 
         private Control LoadEventCards(Form form)
@@ -42,7 +43,13 @@ namespace WinFormsApp1.View.Event
                     .ForEach(
                         ev => p.Controls.Add(new EventCard(ev)
                         .With(c => c.OnCardClicked += 
-                        (s, e) => new EventDetailsViewModel(form, new MainCommand(_ => InitializeComponent(form)), context.EventRepository, ev.Id)))));
+                        (s, e) =>
+                        {
+                            using (var scope = new ContainerScoped(AdminConteiner.Container))
+                            {
+                                scope.GetService<EventDetailsView>(ev.Id).InitializeComponents();
+                            }
+                        }))));
     }
 
 }

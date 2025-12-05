@@ -1,56 +1,43 @@
-﻿using DataAccess.Postgres;
-using DataAccess.Postgres.Models;
+﻿using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using Logica;
+using Logica.DI;
 using System.Windows.Input;
+using WinFormsApp1;
 using WinFormsApp1.View;
+using WinFormsApp1.View.Event;
 
 public class EventMenegmentModelView
 {
-    public readonly EventRepository EventRepository;
-
     public ICommand OnBack { get; private set; }
     public ICommand OnLoadAddView { get; private set; }
+    public ICommand OnLoadDetailsView { get; private set; }
 
-    public List<EventEntity> EventEntities => EventRepository.Get();
+    public readonly List<EventEntity> EventEntities = new();
 
-    public EventMenegmentModelView(Form mainForm, ICommand onBack, ApplicationDbContext dbContext)
+    public EventMenegmentModelView(AdminMainView mainForm, EventRepository eventRepository)
     {
-        EventRepository = new EventRepository(dbContext);
+        EventEntities = eventRepository.Get();
 
-        OnBack = onBack;
+        OnBack = new MainCommand(
+            _ => mainForm.InitializeComponent());
+
+        OnLoadDetailsView = new MainCommand(
+            _ =>
+            {
+                using (var scope = new ContainerScoped(AdminConteiner.Container))
+                {
+                    scope.GetService<EventDetailsView>().InitializeComponents();
+                }
+            });
 
         OnLoadAddView = new MainCommand(
-            _ => new AddEventViewModel(mainForm, new MainCommand(_ => new EventManagementView(mainForm, this)), EventRepository));
-
-        new EventManagementView(mainForm, this);
-        //EventEntities = new()
-        //    {
-        //        new EventEntity(
-        //            "Выпускной вечер",
-        //            "Торжественное мероприятие по случаю окончания учебного года с вручением дипломов и аттестатов.",
-        //            "25.05.2024",
-        //            "Актовый зал",
-        //            "Образование",
-        //            "https://example.com/register/1",
-        //            "Администрация школы", 150, 121,
-        //            new List<ImgEventEntity>
-        //            {
-        //                new ImgEventEntity { Url = "C://Users/tereg/Pictures/Screenshots/Screenshot 2025-03-20 151358.png" },
-        //                new ImgEventEntity { Url = "C://Users/tereg/Pictures/Screenshots/Screenshot 2025-03-15 113443.png" }
-        //            }) { },
-        //        new EventEntity
-        //        (
-        //            "Научная конференция",
-        //            "Ежегодная научная конференция с представлением исследовательских работ студентов и школьников.",
-        //            "15.03.2024",
-        //            "Конференц-зал",
-        //            "Наука",
-        //            "https://example.com/register/2",
-        //            "Научный отдел", 60, 50,
-        //            new List<ImgEventEntity>() { }) { }
-        //    };
-
+            _ =>
+            {
+                using (var scope = new ContainerScoped(AdminConteiner.Container))
+                {
+                    scope.GetService<AddEventView>().InitializeComponents();
+                }
+            });
     }
 }

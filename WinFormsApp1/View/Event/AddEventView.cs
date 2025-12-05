@@ -4,12 +4,13 @@ namespace WinFormsApp1.View.Event
 {
     public partial class AddEventView
     {
-        private AddEventViewModel context;
+        private readonly AddEventViewModel context;
+        private readonly AdminMainView form;
 
-        public AddEventView(Form mainForm, AddEventViewModel context)
+        public AddEventView(AdminMainView mainForm, AddEventViewModel context)
         {
             this.context = context;
-            InitializeComponent(mainForm);
+            form = mainForm;
         }
 
         private class LabelIsControl
@@ -24,19 +25,16 @@ namespace WinFormsApp1.View.Event
                 Control = control;
                 Height = heinght;
             }
-
         }
 
-        private void InitializeComponent(Form form)
-        {
-            form
+        public Form InitializeComponents()
+            => form
                 .With(m => m.Controls.Clear())
                 .With(m => m.WindowState = FormWindowState.Maximized)
                 .With(m => m.StartPosition = FormStartPosition.CenterParent)
                 .With(m => m.BackColor = Color.White)
-                .With(f => f.Text = "Добавление мероприятия")
+                .With(m => m.Text = "Добавление мероприятия")
                 .With(m => m.Controls.Add(CreateUI()));
-        }
 
         private TableLayoutPanel CreateUI()
             => FactoryElements
@@ -113,21 +111,31 @@ namespace WinFormsApp1.View.Event
                 FactoryElements.Label_12("📷 Изображения мероприятия:"), 50)
             .ControlAddIsRowsPercentV2(
                 FactoryElements.FlowLayoutPanel()
-                .With(f => context.PropertyChanged += 
+                .With(fp => context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.Image(url.Key)
+                    .With(i => i.MouseClick +=
+                    (s, e) =>
+                    {
+                        context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
+                        i.BackColor = context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
+                    }))))
+                .With(fp => context.PropertyChanged +=
                 (obj, propCh) =>
                 {
-                    f.Controls.Clear();
-                    context.SelectedImg.ForEach(
-                    url =>
+                    if (propCh.PropertyName == "OnAddingImg" || propCh.PropertyName == "OnDeletingImg")
                     {
-                        f.Controls.Add(FactoryElements.Image(url.Key)
-                        .With(i => i.MouseClick +=
-                        (s, e) =>
+                        fp.Controls.Clear();
+                        context.SelectedImg.ForEach(
+                        url =>
                         {
-                            context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
-                            i.BackColor = context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
-                        }));
-                    });
+                            fp.Controls.Add(FactoryElements.Image(url.Key)
+                            .With(i => i.MouseClick +=
+                            (s, e) =>
+                            {
+                                context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
+                                i.BackColor = context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
+                            }));
+                        });
+                    }
                 }), 10);
 
         private TableLayoutPanel CreateButtonPanel()

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using AdminApp.Controls;
 using AdminApp.Forms;
 using Microsoft.Extensions.Logging;
+using WinFormsApp1.View;
 
 namespace WinFormsApp1
 {

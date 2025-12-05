@@ -1,11 +1,15 @@
-﻿using DataAccess.Postgres.Models;
+﻿using AdminApp.Forms;
+using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
+using Logica.DI;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using WinFormsApp1;
 using WinFormsApp1.View;
+using WinFormsApp1.View.Event;
 
 public class AddEventViewModel : INotifyPropertyChanged
 {
@@ -108,9 +112,15 @@ public class AddEventViewModel : INotifyPropertyChanged
 
     public int MaxParticipants { get => maxParticipants; set => maxParticipants = value; }
 
-    public AddEventViewModel(Form mainForm, ICommand onBack, EventRepository eventRepository)
+    public AddEventViewModel(EventRepository eventRepository)
     {
-        OnBack = onBack;
+        OnBack = new MainCommand(
+             _ =>
+             {
+                 using (var scope = new ContainerScoped(AdminConteiner.Container))
+                     scope.GetService<EventManagementView>().InitializeComponent();
+             });
+
         OnSave = new MainCommand(
             _ => 
             {
@@ -124,7 +134,7 @@ public class AddEventViewModel : INotifyPropertyChanged
                         new EventEntity(Title, Description, Date, Location, Category, RegisLink, Organizer, MaxParticipants, imgs));
 
                     LogicaMessage.MessageOk("Мероприятие успешно добавленно!");
-                    onBack.Execute(null);
+                    OnBack.Execute(null);
                 }
             });
 
@@ -157,8 +167,6 @@ public class AddEventViewModel : INotifyPropertyChanged
                 SelectedImg.ForEach(img => img.If(img.Value, i => SelectedImg.Remove(img.Key)));
                 OnPropertyChanged();
             });
-
-        new AddEventView(mainForm, this);
     }
 
     public string Get(OnPropertyAddEventViewModel onPropertyAddEventViewModel, ref string file)

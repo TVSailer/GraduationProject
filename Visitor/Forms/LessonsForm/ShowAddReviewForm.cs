@@ -2,14 +2,14 @@
 using Logica;
 using System.ComponentModel.DataAnnotations;
 
-public partial class ViewVisitor
+public partial class VisitorView
 {
     public class ShowAddReviewForm : Form
     {
         private ReviewEntity ReviewEntity { get; set; }
         private LessonEntity Club { get; set; }
 
-        public ShowAddReviewForm(LessonEntity club, ViewVisitor viewVisitor)
+        public ShowAddReviewForm(LessonEntity club, VisitorView viewVisitor)
         {
             Club = club;
             this.ReviewEntity = new();
@@ -87,11 +87,11 @@ public partial class ViewVisitor
                 Font = FactoryElements.Style.Font}, 0, 0)
             .ControlsAdd(FactoryElements.CreateTextBox("", (text) => ReviewEntity.Comment = (string)text), 0, 1);
 
-        private void SubmitReview(ViewVisitor viewVisitor)
+        private void SubmitReview(VisitorView viewVisitor)
         {
             if (!Validatoreg.TryValidObject(ReviewEntity)) return;
 
-            viewVisitor.UpdateListReviewClub(ReviewEntity, Club.Name);
+            //viewVisitor.UpdateListReviewClub(ReviewEntity, Club.Name);
             Close();
         }
     }

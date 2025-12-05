@@ -1,17 +1,17 @@
 ﻿using AdminApp.Forms;
 using DataAccess.Postgres;
 using Logica;
-using Logica.Extension;
-using System.Windows.Input;
+using WinFormsApp1;
+using WinFormsApp1.View.Event;
 
 
-namespace AdminApp.Forms
+namespace WinFormsApp1.View
 {
     public partial class AdminMainView : Form
     {
-        public AdminMainView(ApplicationDbContext dbContext)
+        public AdminMainView(AdminMainViewModel adminMainViewModel)
         {
-            DataContext = new AdminMainViewModel(dbContext, this);
+            DataContext = adminMainViewModel;
             InitializeComponent();
         }
 
@@ -59,21 +59,4 @@ namespace AdminApp.Forms
                 .With(b => b.BackColor = Color.LightGray);
     }
 
-}
-public class AdminMainViewModel 
-{
-    public ICommand OnLoadMainMenuView { get; set; }
-    public ICommand OnLoadEventsManagemetnView { get; set; }
-    public ICommand OnLoadNewsManagemetnView;
-    public ICommand OnLoadLessonsManagemetnView;
-    public ICommand OnLoadTeachersManagemetnView;
-    public ICommand OnLoadAttendancesManagemetnView;
-
-    public AdminMainViewModel(ApplicationDbContext dbContext, AdminMainView adminMainView)
-    {
-        OnLoadMainMenuView = new MainCommand(_ 
-            => adminMainView.InitializeComponent());
-        OnLoadEventsManagemetnView = new MainCommand(_ 
-            => new EventMenegmentModelView(adminMainView, OnLoadMainMenuView, dbContext));
-    }
 }
