@@ -10,7 +10,7 @@ public static class FunctionalExtensions
         return control;
     }
 
-    public static T If<T>(this T obj, Func<T, bool> condition, Action<T> action)
+    public static T If<T>(this T obj, Func<T, bool> condition, Action<T> action) 
     {
         if (condition.Invoke(obj)) action(obj);
         return obj;

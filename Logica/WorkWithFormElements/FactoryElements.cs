@@ -46,6 +46,10 @@ public static class FactoryElements
         return cb;
     }
 
+    public static ComboBox ComboBox()
+        => new ComboBox()
+        .With(cb => cb.Dock = DockStyle.Fill);
+
     public static CheckedListBox CreateCheckedListBox(params object[] attributes)
     {
         var clb = CreateCheckedListBoxBase();
@@ -333,6 +337,7 @@ public static class FactoryElements
     public static ButtonBase Button(string text, object context, string dataMember)
         => new Button()
             .With(c => c.Text = text)
+            .With(c => c.BackColor = Color.White)
             .With(c => c.DataBindings.Add(new Binding("Command", context, dataMember, true)))
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold));

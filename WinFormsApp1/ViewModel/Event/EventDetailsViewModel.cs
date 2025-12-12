@@ -224,8 +224,6 @@ namespace WinFormsApp1.ViewModel.Event
             OnPropertyChanged(prop);
         }
 
-        //public void 
-
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));

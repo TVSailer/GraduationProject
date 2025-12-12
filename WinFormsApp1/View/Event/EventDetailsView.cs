@@ -1,6 +1,7 @@
 ﻿using DataAccess.Postgres.Models;
 using Logica;
 using Logica.Extension;
+using System.Security.Policy;
 using WinFormsApp1.ViewModel.Event;
 
 namespace WinFormsApp1.View.Event
@@ -17,7 +18,6 @@ namespace WinFormsApp1.View.Event
             context = AdminConteiner.GetService<EventDetailsViewModel>(idEvent);
             eventEntity = context.EventEntity;
             form = mainForm;
-
         }
 
         public Form InitializeComponents()
@@ -79,13 +79,7 @@ namespace WinFormsApp1.View.Event
 
         private FlowLayoutPanel LoadImages()
             => FactoryElements.FlowLayoutPanel()
-                .With(fp => context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.Image(url.Key)
-                    .With(i => i.MouseClick +=
-                    (s, e) =>
-                    {
-                        context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
-                        i.BackColor = context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
-                    }))))
+                .With(fp => context.SelectedImg.ForEach(url => fp.Controls.Add(Image(url.Key))))
                 .With(fp => context.PropertyChanged +=
                 (obj, propCh) =>
                 {
@@ -94,17 +88,17 @@ namespace WinFormsApp1.View.Event
                         fp.Controls.Clear();
 
                         context.SelectedImg.ForEach(
-                        url =>
-                        {
-                            fp.Controls.Add(FactoryElements.Image(url.Key)
-                            .With(i => i.MouseClick +=
-                            (s, e) =>
-                            {
-                                context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
-                                i.BackColor = context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
-                            }));
-                        });
+                        url => fp.Controls.Add(Image(url.Key)));
                     }
+                });
+
+        private PictureBox Image(string url)
+            => FactoryElements.Image(url)
+                .With(i => i.MouseClick +=
+                (s, e) =>
+                {
+                    context.SelectedImg[url] = !context.SelectedImg[url];
+                    i.BackColor = context.SelectedImg[url] ? Color.Gray : Color.Black;
                 });
 
         private TableLayoutPanel Buttons()

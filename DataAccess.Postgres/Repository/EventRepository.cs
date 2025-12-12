@@ -20,14 +20,6 @@ namespace DataAccess.Postgres.Repository
             .AsNoTracking()
             .ToList() ?? throw new ArgumentNullException();
 
-        public List<EventEntity> Get(string title, string category, string date)
-            => DbContext.Event
-            .AsNoTracking()
-            .Where(v => v.Title.StartsWith(title))
-            .Where(v => v.Category.StartsWith(category))
-            .Where(v => v.Date.StartsWith(date))
-            .ToList();
-
         public EventEntity Get(int id)
             => DbContext.Event
             .AsNoTracking()
