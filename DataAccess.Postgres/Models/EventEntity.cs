@@ -2,7 +2,7 @@
 
 public class EventEntity
 {
-    public int Id { get; set; }
+    public int Id { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
     public string Date { get; private set; }

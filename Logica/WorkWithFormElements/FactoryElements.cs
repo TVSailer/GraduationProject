@@ -50,9 +50,9 @@ public static class FactoryElements
         => new ComboBox()
         .With(cb => cb.Dock = DockStyle.Fill);
 
-    public static CheckedListBox CreateCheckedListBox(params object[] attributes)
+    public static CheckedListBox CheckedListBox(params object[] attributes)
     {
-        var clb = CreateCheckedListBoxBase();
+        var clb = CheckedListBoxBase();
         foreach (var attribute in attributes)
             clb.Items.Add(attribute);
         return clb;
@@ -158,6 +158,7 @@ public static class FactoryElements
     public static DateTimePicker DateTimePicker()
         => new DateTimePicker()
         {
+            Text = DateTime.Now.ToString(),
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
             Padding = new Padding(5)
@@ -246,7 +247,7 @@ public static class FactoryElements
         return tb;
     }
 
-    public static CheckedListBox CreateCheckedListBoxBase(params object[] attributes)
+    public static CheckedListBox CheckedListBoxBase(params object[] attributes)
         => new CheckedListBox()
         {
             Dock = Style.DockStyle,
@@ -403,7 +404,7 @@ public static class FactoryElements
             .With(p => p.AutoScroll = true)
             .With(p => p.Padding = new Padding(10));
 
-    public static PictureBox Image(string imgUrl)
+    public static PictureBox PictureBox(string imgUrl)
         => new PictureBox()
             .With(pb => pb.Size = new Size(300, 200))
             .With(pb => pb.Margin = new Padding(5))

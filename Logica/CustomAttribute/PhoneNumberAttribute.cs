@@ -1,10 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace DataAccess.Postgres.Attributes
+namespace Logica.CustomAttribute
 {
     public class PhoneNumberAttribute : ValidationAttribute
     {
+        public PhoneNumberAttribute()
+        {
+            ErrorMessage = $"Неверно набран номер тел.!";
+        }
+
+        public PhoneNumberAttribute(string errorMessage)
+        {
+            ErrorMessage = errorMessage;
+        }
+
         public override bool IsValid(object? value)
         {
             if (value is string phoneNumber)

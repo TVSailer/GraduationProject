@@ -1,15 +1,14 @@
-﻿using DataAccess.Postgres.Models;
+﻿using Admin.ViewModel;
+using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.DI;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using WinFormsApp1;
 using WinFormsApp1.View;
 using WinFormsApp1.View.Event;
 
-public class EventMenegmentModelView : INotifyPropertyChanged
+public class EventMenegmentModelView : AbstractManagmentModelView
 {
     private List<EventEntity> eventEntities = new();
     private List<string> categorys = new() { "Пусто" };
@@ -18,11 +17,11 @@ public class EventMenegmentModelView : INotifyPropertyChanged
     private string stDate = DateTime.Now.ToString();
     private string enDate = DateTime.Now.ToString();
 
-    public ICommand OnBack { get; private set; }
-    public ICommand OnLoadAddView { get; private set; }
-    public ICommand OnLoadDetailsView { get; private set; }
-    public ICommand OnSerch { get; private set; }
-    public ICommand OnClearSerch { get; private set; }
+    public override ICommand OnBack { get; set; }
+    public override ICommand OnLoadAddingView { get; set; }
+    public override ICommand OnLoadDetailsView { get; set; }
+    public override ICommand OnSerch { get; set; }
+    public override ICommand OnClearSerch { get; set; }
 
     public string Title 
     { 
@@ -94,8 +93,6 @@ public class EventMenegmentModelView : INotifyPropertyChanged
         }
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
     public EventMenegmentModelView(AdminMainView mainForm, EventRepository eventRepository)
     {
         eventRepository.Get().ForEach(e =>
@@ -127,24 +124,19 @@ public class EventMenegmentModelView : INotifyPropertyChanged
         OnLoadDetailsView = new MainCommand(
             _ =>
             {
-                using (var scope = new ContainerScoped(AdminConteiner.Container))
+                using (var scope = new ContainerScoped(AdminDIConteiner.Container))
                 {
                     scope.GetService<EventDetailsView>().InitializeComponents();
                 }
             });
 
-        OnLoadAddView = new MainCommand(
+        OnLoadAddingView = new MainCommand(
             _ =>
             {
-                using (var scope = new ContainerScoped(AdminConteiner.Container))
+                using (var scope = new ContainerScoped(AdminDIConteiner.Container))
                 {
-                    scope.GetService<AddEventView>().InitializeComponents();
+                    scope.GetService<AddingEventView>().InitializeComponents();
                 }
             });
-    }
-
-    public void OnPropertyChanged([CallerMemberName] string prop = "")
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 }

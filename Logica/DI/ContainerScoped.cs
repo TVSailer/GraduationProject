@@ -2,10 +2,10 @@
 {
     public class ContainerScoped : IDisposable
     {
-        private Container container;
+        private DIContainer container;
         private Dictionary<Type, object> scopedInstances = new();
 
-        public ContainerScoped(Container container)
+        public ContainerScoped(DIContainer container)
         {
             this.container = container;
         }

@@ -6,18 +6,12 @@ namespace DataAccess.Postgres.Repository
     public class TeacherRepository
     {
         public readonly ApplicationDbContext DbContext;
-        public TeacherEntity Teacher { get; private set; }
 
         public TeacherRepository(ApplicationDbContext dbContext)
         {
             DbContext = dbContext;
         }
         
-        public TeacherRepository(ApplicationDbContext dbContext, TeacherEntity teacher)
-        {
-            DbContext = dbContext;
-            Teacher = teacher;
-        }
 
         public bool VerifyTeacher(string login, string password)
              => null != DbContext.Teachers
@@ -41,7 +35,7 @@ namespace DataAccess.Postgres.Repository
         public List<TeacherEntity>? Get(int id)
             => DbContext.Teachers
             .AsNoTracking()
-            .Where(v => v.Id == id)
+            .Where(t => t.Id == id)
             .ToList();
 
         public void Add(TeacherEntity visitor)

@@ -1,6 +1,6 @@
 ﻿namespace Logica.DI
 {
-    public class Container
+    public class DIContainer
     {
         public Dictionary<Type, ServiceDescriptor> descriptors { get; private set; } = new();
 

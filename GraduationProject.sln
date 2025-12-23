@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin", "Admin\Admin.csproj", "{A315F99C-037E-687F-5376-8EFA338F3D2E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Postgres", "DataAccess.Postgres\DataAccess.Postgres.csproj", "{CF7D20A0-39C4-3D5E-6F8B-09319B632434}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entere", "Entere\Entere.csproj", "{ACDFE6B7-76F7-C2C3-B4CE-25267F0D21A2}"
@@ -15,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teacher", "Teacher\Teacher.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visitor", "Visitor\Visitor.csproj", "{6BE0D0EA-3A07-7E2B-CD05-D62953E568C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp1", "WinFormsApp1\WinFormsApp1.csproj", "{2C77EBE4-A1B4-4045-9DCF-0473A57B3437}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin", "WinFormsApp1\Admin.csproj", "{2C77EBE4-A1B4-4045-9DCF-0473A57B3437}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A315F99C-037E-687F-5376-8EFA338F3D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A315F99C-037E-687F-5376-8EFA338F3D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A315F99C-037E-687F-5376-8EFA338F3D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A315F99C-037E-687F-5376-8EFA338F3D2E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF7D20A0-39C4-3D5E-6F8B-09319B632434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF7D20A0-39C4-3D5E-6F8B-09319B632434}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7D20A0-39C4-3D5E-6F8B-09319B632434}.Release|Any CPU.ActiveCfg = Release|Any CPU

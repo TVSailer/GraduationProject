@@ -4,31 +4,13 @@ namespace Logica;
 
 public static class Validatoreg
 {
-    public static bool TryValidObject(object instance)
+    public static bool TryValidObject(object instance, bool isErrorMessage = false)
     {
-        string text = null;
+        string text = "";
         var results = new List<ValidationResult>();
         var context = new ValidationContext(instance);
 
         if (!Validator.TryValidateObject(instance, context, results, true))
-        {
-            foreach (var error in results)
-                text += error.ErrorMessage + " ";
-
-            LogicaMessage.MessageError(text);
-            return false;
-        }
-
-        return true;
-    }
-    
-    public static bool TryValidObject(object instance, bool isErrorMessage = false)
-    {
-        string text = null;
-        var results = new List<ValidationResult>();
-        var context = new ValidationContext(instance);
-
-        if (!Validator.TryValidateObject(instance, context, results))
         {
             if (isErrorMessage)
             {
@@ -41,6 +23,35 @@ public static class Validatoreg
             return false;
         }
 
+        return true;
+    }
+    
+    public static bool TryValidObject(object instance, out List<ValidationResult> results, bool isErrorMessage = false)
+    {
+        string text = "";
+        results = new List<ValidationResult>();
+        var context = new ValidationContext(instance);
+
+        if (!Validator.TryValidateObject(instance, context, results, true))
+            return false;
+
+        return true;
+    }
+    
+    public static bool TryValidValue(object value, List<ValidationAttribute> validationAttributes, out string errorMessage, bool isErrorMessage = false)
+    {
+        var results = new List<ValidationResult>();
+        var context = new ValidationContext(value);
+
+        if (!Validator.TryValidateValue(value, context, results, validationAttributes))
+        {
+            string erText = "";
+            results.ForEach(m => erText += m.ErrorMessage);
+            errorMessage = erText;
+            return false;
+        }
+
+        errorMessage = "";
         return true;
     }
     

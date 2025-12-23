@@ -10,7 +10,7 @@ namespace DataAccess.Postgres
         public DbSet<TeacherEntity> Teachers { get; set; }
         public DbSet<DateAttendanceEntity> DateAttendances { get; set; }
         public DbSet<LessonEntity> Lessons { get; set; }
-        public DbSet<NewsEntity> New { get; set; }
+        public DbSet<NewsEntity> News { get; set; }
         public DbSet<EventEntity> Event { get; set; }
         public DbSet<ReviewEntity> Review { get; set; }
         public DbSet<ImgLessonEntity> ImgLesson { get; set; }
@@ -36,7 +36,6 @@ namespace DataAccess.Postgres
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
         }
     }
 }

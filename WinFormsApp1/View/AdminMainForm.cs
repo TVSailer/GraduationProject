@@ -1,8 +1,5 @@
 ﻿using AdminApp.Forms;
-using DataAccess.Postgres;
 using Logica;
-using WinFormsApp1;
-using WinFormsApp1.View.Event;
 
 
 namespace WinFormsApp1.View
@@ -39,7 +36,7 @@ namespace WinFormsApp1.View
                 .ControlAddIsRowsAbsoluteV2(
                     CreateButton("🎨 Управление кружками", () => new LessonsManagementForm().ShowDialog()), 50)
                 .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("👨‍🏫 Управление преподавателями", () => new TeachersManagementForm().ShowDialog()), 50)
+                    CreateButton("👨‍🏫 Управление преподавателями", DataContext, "OnLoadTeachersManagemetnView"), 50)
                 .ControlAddIsRowsAbsoluteV2(
                     CreateButton("👥 Управление пользователями", () => new VisitorsManagementForm().ShowDialog()), 50)
                 .ControlAddIsRowsAbsoluteV2(

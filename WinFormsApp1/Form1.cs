@@ -1,5 +1,4 @@
 ﻿using DataAccess.Postgres;
-using DataAccess.Postgres.Models;
 using Logica;
 using Logica.Extension;
 using Microsoft.EntityFrameworkCore;
@@ -189,50 +188,6 @@ namespace AdminApp.Controls
             table.Controls.Add(categoryLabel, 0, 1);
             table.Controls.Add(teacherScheduleLabel, 0, 2);
             table.Controls.Add(participantsLabel, 0, 3);
-
-            this.Controls.Add(table);
-        }
-    }
-
-    public class TeacherCard : ObjectCard
-    {
-        private string _surname;
-        private string _name;
-        private string _patronymic;
-        private string _phone;
-        private int _lessonsCount;
-
-        public TeacherCard(int id, string surname, string name, string patronymic, string phone, int lessonsCount)
-            : base(id)
-        {
-            _surname = surname;
-            _name = name;
-            _patronymic = patronymic;
-            _phone = phone;
-            _lessonsCount = lessonsCount;
-            CreateContent();
-        }
-
-        public override void CreateContent()
-        {
-            var table = FactoryElements.CreateTableLayoutPanel(1, new[] { 25, 20, 20, 20 })
-                .With(t => t.Dock = DockStyle.Fill);
-
-            var nameLabel = FactoryElements.CreateLabel($"{_surname} {_name} {_patronymic}")
-                .With(l => l.Font = new Font("Arial", 11, FontStyle.Bold))
-                .With(l => l.ForeColor = Color.DarkBlue);
-
-            var phoneLabel = FactoryElements.CreateLabel($"📞 {_phone}")
-                .With(l => l.Font = new Font("Arial", 9))
-                .With(l => l.ForeColor = Color.Gray);
-
-            var lessonsLabel = FactoryElements.CreateLabel($"🎨 Кружков: {_lessonsCount}")
-                .With(l => l.Font = new Font("Arial", 9))
-                .With(l => l.ForeColor = Color.DarkGreen);
-
-            table.Controls.Add(nameLabel, 0, 0);
-            table.Controls.Add(phoneLabel, 0, 1);
-            table.Controls.Add(lessonsLabel, 0, 2);
 
             this.Controls.Add(table);
         }
@@ -543,119 +498,6 @@ namespace AdminApp.Forms
                     _cardsPanel.Controls.Clear();
                     LoadLessonCards();
                     LogicaMessage.MessageSuccess("Список кружков обновлен!");
-                });
-
-            int xPos = 20;
-            foreach (var button in new[] { addButton, editButton, deleteButton, refreshButton })
-            {
-                button.With(b => b.Location = new Point(xPos, 10));
-                xPos += button.Width + 10;
-                panel.Controls.Add(button);
-            }
-
-            return panel;
-        }
-    }
-}
-
-namespace AdminApp.Forms
-{
-    public partial class TeachersManagementForm : Form
-    {
-        private FlowLayoutPanel _cardsPanel;
-
-        public TeachersManagementForm()
-        {
-            InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            Text = "Управление преподавателями";
-            Size = new Size(1000, 700);
-            StartPosition = FormStartPosition.CenterParent;
-            BackColor = Color.White;
-
-            CreateUI();
-            LoadTeacherCards();
-        }
-
-        private void CreateUI()
-        {
-            var mainTable = FactoryElements.CreateTableLayoutPanel(1, new[] { 60, 500, 60 })
-                .With(t => t.Padding = new Padding(15));
-
-            var titleLabel = FactoryElements.CreateLabel("👨‍🏫 Управление преподавателями")
-                .With(l => l.Font = new Font("Arial", 16, FontStyle.Bold))
-                .With(l => l.TextAlign = ContentAlignment.MiddleCenter);
-
-            mainTable.Controls.Add(titleLabel, 0, 0);
-
-            _cardsPanel = new FlowLayoutPanel()
-                .With(p => p.Dock = DockStyle.Fill)
-                .With(p => p.AutoScroll = true)
-                .With(p => p.BackColor = Color.WhiteSmoke)
-                .With(p => p.Padding = new Padding(10));
-
-            mainTable.Controls.Add(_cardsPanel, 0, 1);
-
-            var buttonPanel = CreateButtonPanel();
-            mainTable.Controls.Add(buttonPanel, 0, 2);
-
-            this.Controls.Add(mainTable);
-        }
-
-        private void LoadTeacherCards()
-        {
-            var teachers = new[]
-            {
-                new { Id = 1, Surname = "Иванов", Name = "Иван", Patronymic = "Иванович", Phone = "+7(999)123-45-67", LessonsCount = 2 },
-                new { Id = 2, Surname = "Петров", Name = "Петр", Patronymic = "Петрович", Phone = "+7(888)123-45-67", LessonsCount = 1 },
-                new { Id = 3, Surname = "Сидорова", Name = "Мария", Patronymic = "Ивановна", Phone = "+7(777)123-45-67", LessonsCount = 3 },
-                new { Id = 4, Surname = "Кузнецов", Name = "Алексей", Patronymic = "Сергеевич", Phone = "+7(666)123-45-67", LessonsCount = 2 }
-            };
-
-            foreach (var teacher in teachers)
-            {
-                var card = new TeacherCard(teacher.Id, teacher.Surname, teacher.Name, teacher.Patronymic, teacher.Phone, teacher.LessonsCount);
-                card.Click += (s, e) => ShowTeacherDetails(teacher.Id);
-                _cardsPanel.Controls.Add(card);
-            }
-        }
-
-        private void ShowTeacherDetails(int teacherId)
-        {
-            LogicaMessage.MessageOk($"Подробная информация о преподавателе #{teacherId}");
-        }
-
-        private Panel CreateButtonPanel()
-        {
-            var panel = new Panel()
-                .With(p => p.Dock = DockStyle.Fill)
-                .With(p => p.Height = 50);
-
-            var addButton = FactoryElements.CreateButton("➕ Добавить преподавателя")
-                .With(b => b.Size = new Size(190, 35))
-                .With(b => b.BackColor = Color.LightGreen)
-                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Добавление преподавателя"));
-
-            var editButton = FactoryElements.CreateButton("✏️ Редактировать")
-                .With(b => b.Size = new Size(140, 35))
-                .With(b => b.BackColor = Color.LightBlue)
-                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Редактирование преподавателя"));
-
-            var deleteButton = FactoryElements.CreateButton("🗑️ Удалить")
-                .With(b => b.Size = new Size(120, 35))
-                .With(b => b.BackColor = Color.LightCoral)
-                .With(b => b.Click += (s, e) => LogicaMessage.MessageOk("Удаление преподавателя"));
-
-            var refreshButton = FactoryElements.CreateButton("🔄 Обновить")
-                .With(b => b.Size = new Size(120, 35))
-                .With(b => b.BackColor = Color.LightYellow)
-                .With(b => b.Click += (s, e) => {
-                    _cardsPanel.Controls.Clear();
-                    LoadTeacherCards();
-                    LogicaMessage.MessageSuccess("Список преподавателей обновлен!");
                 });
 
             int xPos = 20;

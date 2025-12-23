@@ -1,7 +1,4 @@
-﻿using CSharpFunctionalExtensions;
-using Logica.Extension;
-
-namespace WinFormsApp1.View
+﻿namespace WinFormsApp1.View
 {
     public abstract class ObjectCard : Panel
     {

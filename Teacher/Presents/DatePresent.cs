@@ -160,7 +160,7 @@ namespace Teacher.Presents
 
             //if (!Validator.TryValidateObject(visitor, context, results, true))
             //    foreach (var error in results)
-            //        Message(error.ErrorMessage);
+            //        Message(error.ErrorMessagePropertyArgs);
             //else
             //{
             //    VRepository.Update(Convert.ToInt32(row.Cells[0].Value.ToString()), visitor);

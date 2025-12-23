@@ -103,8 +103,6 @@ namespace Logica
             => table
                 .ControlAddIsRowsPercent(new Panel(), 10);
 
-
-
         public static TableLayoutPanel ControlAddIsColumnAbsolute(
            this TableLayoutPanel table, Control? control, int weidht)
             => control == null ?
@@ -121,6 +119,10 @@ namespace Logica
         public static TableLayoutPanel ControlAddIsColumnPercentV2(
            this TableLayoutPanel table, Control control, int weidht)
             => table.ControlAddIsColumn(control, weidht, SizeType.Percent);
+        
+        public static TableLayoutPanel ControlAddIsColumnPercentV2(
+           this TableLayoutPanel table, Control control)
+            => table.ControlAddIsColumn(control, 10, SizeType.Percent);
         
         public static TableLayoutPanel ControlAddIsColumn(
            this TableLayoutPanel table, Control control, int weidht, SizeType sizeType)

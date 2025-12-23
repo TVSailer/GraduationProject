@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251130184936_init2")]
-    partial class init2
+    [Migration("20251217134411_init0")]
+    partial class init0
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -217,7 +217,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("New");
+                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.TeacherEntity", b =>
@@ -253,6 +253,10 @@ namespace DataAccess.Postgres.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UrlFaceImg")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -294,6 +298,10 @@ namespace DataAccess.Postgres.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UrlFaceImg")
                         .IsRequired()
                         .HasColumnType("text");
 

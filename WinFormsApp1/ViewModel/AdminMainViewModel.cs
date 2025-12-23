@@ -1,17 +1,17 @@
-﻿using AdminApp.Forms;
-using DataAccess.Postgres;
+﻿using DataAccess.Postgres;
 using Logica;
 using Logica.DI;
 using System.Windows.Input;
 using WinFormsApp1;
 using WinFormsApp1.View.Event;
+using WinFormsApp1.View.Teachers;
 
 public class AdminMainViewModel 
 {
     public ICommand OnLoadEventsManagemetnView { get; private set; }
     public ICommand OnLoadNewsManagemetnView;
     public ICommand OnLoadLessonsManagemetnView;
-    public ICommand OnLoadTeachersManagemetnView;
+    public ICommand OnLoadTeachersManagemetnView { get; private set; }
     public ICommand OnLoadAttendancesManagemetnView;
 
     public AdminMainViewModel(ApplicationDbContext dbContext)
@@ -19,9 +19,18 @@ public class AdminMainViewModel
         OnLoadEventsManagemetnView = new MainCommand(
             _ =>
             {
-                using (var scope = new ContainerScoped(AdminConteiner.Container))
+                using (var scope = new ContainerScoped(AdminDIConteiner.Container))
                 {
-                    scope.GetService<EventManagementView>().InitializeComponent();
+                    scope.GetService<EventManagementView>().InitializeComponents();
+                }
+            });
+        
+        OnLoadTeachersManagemetnView = new MainCommand(
+            _ =>
+            {
+                using (var scope = new ContainerScoped(AdminDIConteiner.Container))
+                {
+                    scope.GetService<TeachersManagementView>().InitializeComponents();
                 }
             });
     }

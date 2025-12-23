@@ -214,7 +214,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("New");
+                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.TeacherEntity", b =>
@@ -250,6 +250,10 @@ namespace DataAccess.Postgres.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UrlFaceImg")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -291,6 +295,10 @@ namespace DataAccess.Postgres.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UrlFaceImg")
                         .IsRequired()
                         .HasColumnType("text");
 

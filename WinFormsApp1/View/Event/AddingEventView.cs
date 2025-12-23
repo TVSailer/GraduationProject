@@ -1,13 +1,15 @@
-﻿using Logica;
+﻿using Admin.View;
+using Logica;
 
 namespace WinFormsApp1.View.Event
 {
-    public partial class AddEventView
+    public partial class AddingEventView : IViewForm
     {
-        private readonly AddEventViewModel context;
+        private ErrorProvider errorProvider = new() { BlinkStyle = ErrorBlinkStyle.NeverBlink };
+        private readonly AddingEventViewModel context;
         private readonly AdminMainView form;
 
-        public AddEventView(AdminMainView mainForm, AddEventViewModel context)
+        public AddingEventView(AdminMainView mainForm, AddingEventViewModel context)
         {
             this.context = context;
             form = mainForm;
@@ -30,9 +32,6 @@ namespace WinFormsApp1.View.Event
         public Form InitializeComponents()
             => form
                 .With(m => m.Controls.Clear())
-                .With(m => m.WindowState = FormWindowState.Maximized)
-                .With(m => m.StartPosition = FormStartPosition.CenterParent)
-                .With(m => m.BackColor = Color.White)
                 .With(m => m.Text = "Добавление мероприятия")
                 .With(m => m.Controls.Add(CreateUI()));
 
@@ -51,47 +50,47 @@ namespace WinFormsApp1.View.Event
                 new LabelIsControl(
                     FactoryElements.Label_11("📝 Название мероприятия:*"),
                     FactoryElements.TextBox("Введите название мероприятия")
-                        .With(t => t.TextChanged += (s, e) => context.Title = t.Text)
-                        .With(t => context.ControlOnProperty.Add(OnPropertyAddEventViewModel.Title, t)), 45),
+                       .With(t => t.TextChanged += (s, e) => context.Title = t.Text)
+                       .With(t => OnErrorProvider(nameof(context.Title), t)), 45),
                 new LabelIsControl(
                     FactoryElements.Label_11("📄 Описание:*"),
                     FactoryElements.TextBoxMultiline("Введите описание мероприятия")
                         .With(t => t.TextChanged += (s, e) => context.Description = t.Text)
-                        .With(t => context.ControlOnProperty.Add(OnPropertyAddEventViewModel.Description, t)), 110),
+                        .With(t => OnErrorProvider(nameof(context.Description), t)), 110),
                 new LabelIsControl(
-                    FactoryElements.Label_11("📅 Дата проведения:*"), 
+                    FactoryElements.Label_11("📅 Дата проведения:*"),
                     FactoryElements.DateTimePicker()
                         .With(d => d.Format = DateTimePickerFormat.Custom)
                         .With(d => d.CustomFormat = "dd.MM.yyyy HH:mm")
                         .With(d => d.ShowUpDown = true)
                         .With(d => d.MinDate = DateTime.Now)
                         .With(t => t.TextChanged += (s, e) => context.Date = t.Text)
-                        .With(t => context.ControlOnProperty.Add(OnPropertyAddEventViewModel.Date, t)), 45),
+                        .With(t => OnErrorProvider(nameof(context.Date), t)), 45),
                 new LabelIsControl(
-                    FactoryElements.Label_11("📍 Место проведения:*"), 
+                    FactoryElements.Label_11("📍 Место проведения:*"),
                     FactoryElements.TextBox("Введите место проведения")
                     .With(t => t.TextChanged += (s, e) => context.Location = t.Text)
-                    .With(t => context.ControlOnProperty.Add(OnPropertyAddEventViewModel.Location, t)), 45),
+                    .With(t => OnErrorProvider(nameof(context.Location), t)), 45),
                 new LabelIsControl(
                     FactoryElements.Label_11("🏷️ Категория:*"),
                     FactoryElements.TextBox("Например: Образование, Спорт, Культура")
                     .With(t => t.TextChanged +=(s, e) => context.Category = t.Text)
-                    .With(t => context.ControlOnProperty.Add(OnPropertyAddEventViewModel.Category, t)), 45),
+                    .With(t => OnErrorProvider(nameof(context.Category), t)), 45),
                 new LabelIsControl(
-                    FactoryElements.Label_11("🔗 Ссылка на регистрацию:*"), 
+                    FactoryElements.Label_11("🔗 Ссылка на регистрацию:*"),
                     FactoryElements.TextBox("https://example.com/registration")
                     .With(t => t.TextChanged += (s, e) => context.RegisLink = t.Text)
-                    .With(t => context.ControlOnProperty.Add(OnPropertyAddEventViewModel.RegisLink , t)), 45),
+                    .With(t => OnErrorProvider(nameof(context.RegisLink), t)), 45),
                 new LabelIsControl(
                     FactoryElements.Label_11("👨‍💼 Организатор:*"),
                     FactoryElements.TextBox("Введите организатора мероприятия")
                     .With(t => t.TextChanged += (s, e) => context.Organizer = t.Text)
-                    .With(t => context.ControlOnProperty.Add(OnPropertyAddEventViewModel.Organizer, t)), 45),
+                    .With(t => OnErrorProvider(nameof(context.Organizer), t)), 45),
                 new LabelIsControl(
-                    FactoryElements.Label_11("👥 Максимальное количество участников:*"), 
+                    FactoryElements.Label_11("👥 Максимальное количество участников:*"),
                     FactoryElements.NumericUpDown()
-                    .With(t => t.TextChanged += (s, e) => context.MaxParticipants = int.Parse(t.Text))
-                    .With(t => context.ControlOnProperty.Add(OnPropertyAddEventViewModel.MaxParticipants, t)), 45)
+                    .With(t => t.TextChanged += (s, e) => context.MaxParticipants = t.Text)
+                    .With(t => OnErrorProvider(nameof(context.MaxParticipants), t)), 45)
             };
 
             return FactoryElements.TableLayoutPanel()
@@ -105,13 +104,22 @@ namespace WinFormsApp1.View.Event
                         .ControlAddIsColumnAbsoluteV2(null, 1), f.Height)));
         }
 
+        private void OnErrorProvider(string propertyName, Control control)
+        {
+            context.ErrorMassegeProvider += (s, e) =>
+            {
+                if (!propertyName.Equals(e.PropertyName)) return;
+                errorProvider.SetError(control, e.ErrorMessage);
+            };
+        }
+
         private TableLayoutPanel CreateImagesSection()
             => FactoryElements.TableLayoutPanel()
             .ControlAddIsRowsAbsoluteV2(
                 FactoryElements.Label_12("📷 Изображения мероприятия:"), 50)
             .ControlAddIsRowsPercentV2(
                 FactoryElements.FlowLayoutPanel()
-                .With(fp => context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.Image(url.Key)
+                .With(fp => context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.PictureBox(url.Key)
                     .With(i => i.MouseClick +=
                     (s, e) =>
                     {
@@ -121,13 +129,13 @@ namespace WinFormsApp1.View.Event
                 .With(fp => context.PropertyChanged +=
                 (obj, propCh) =>
                 {
-                    if (propCh.PropertyName == "OnAddingImg" || propCh.PropertyName == "OnDeletingImg")
+                    if (propCh.PropertyName == nameof(context.OnAddingImg) || propCh.PropertyName == nameof(context.OnDeletingImg))
                     {
                         fp.Controls.Clear();
                         context.SelectedImg.ForEach(
                         url =>
                         {
-                            fp.Controls.Add(FactoryElements.Image(url.Key)
+                            fp.Controls.Add(FactoryElements.PictureBox(url.Key)
                             .With(i => i.MouseClick +=
                             (s, e) =>
                             {

@@ -1,37 +1,30 @@
-﻿using BCrypt.Net;
-using DataAccess.Postgres.Attributes;
-using System.ComponentModel.DataAnnotations;
-
-namespace DataAccess.Postgres.Models
+﻿namespace DataAccess.Postgres.Models
 {
     public class TeacherEntity
     {
-        public int Id { get; set; }
-
-        [Required(ErrorMessage = "Пж, норм имя впиши")]
-        public string Name { get; set; }
-
-        [Required(ErrorMessage = "Пж, норм фамилию впиши")]
-        public string Surname { get; set; }
-
-        [Required(ErrorMessage = "Пж, норм отчество впиши")]
-        public string Patronymic { get; set; }
-
-        [DateBirthday(ErrorMessage = "Не корректная дата рождения")]
-        public string DateBirth { get; set; }
-
-        [PhoneNumber(ErrorMessage = "Пж, норм номер телефон впиши")]
-        public string NumberPhone { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
+        public int Id { get; private set; }
+        public string Name { get; private set; }
+        public string Surname { get; private set; }
+        public string Patronymic { get; private set; }
+        public string DateBirth { get; private set; }
+        public string NumberPhone { get; private set; }
+        public string Login { get; private set; }
+        public string Password { get; private set; }
         public List<LessonEntity>? Lessons { get; set; }
+        public string UrlFaceImg { get; private set; }
 
         public TeacherEntity() { }
-        public TeacherEntity(string name, string surname, string patro) 
+        public TeacherEntity(string name, string surname, string patro, string dateBurth, string numberPhone, string urlImg, List<LessonEntity>? lesson) 
         {
             Name = name;
             Surname = surname;
             Patronymic = patro;
+            DateBirth = dateBurth;
+            NumberPhone = numberPhone;
+            UrlFaceImg = urlImg;
+            Lessons = lesson;
+            Password = "1234";
+            Login = "1234";
         }
 
         public override string ToString()

@@ -6,13 +6,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     /// <inheritdoc />
-    public partial class init1 : Migration
+    public partial class init0 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Events",
+                name: "Event",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -29,7 +29,7 @@ namespace DataAccess.Postgres.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.PrimaryKey("PK_Event", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -61,7 +61,8 @@ namespace DataAccess.Postgres.Migrations
                     DateBirth = table.Column<string>(type: "text", nullable: false),
                     NumberPhone = table.Column<string>(type: "text", nullable: false),
                     Login = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false)
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    UrlFaceImg = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,7 +81,8 @@ namespace DataAccess.Postgres.Migrations
                     DateBirth = table.Column<string>(type: "text", nullable: false),
                     NumberPhone = table.Column<string>(type: "text", nullable: false),
                     Login = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false)
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    UrlFaceImg = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,7 +90,7 @@ namespace DataAccess.Postgres.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ImgEvents",
+                name: "ImgEvent",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -98,11 +100,11 @@ namespace DataAccess.Postgres.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ImgEvents", x => x.Id);
+                    table.PrimaryKey("PK_ImgEvent", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ImgEvents_Events_EventId",
+                        name: "FK_ImgEvent_Event_EventId",
                         column: x => x.EventId,
-                        principalTable: "Events",
+                        principalTable: "Event",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -176,7 +178,7 @@ namespace DataAccess.Postgres.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ImgLessons",
+                name: "ImgLesson",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -186,9 +188,9 @@ namespace DataAccess.Postgres.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ImgLessons", x => x.Id);
+                    table.PrimaryKey("PK_ImgLesson", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ImgLessons_Lessons_LessonId",
+                        name: "FK_ImgLesson_Lessons_LessonId",
                         column: x => x.LessonId,
                         principalTable: "Lessons",
                         principalColumn: "Id",
@@ -220,7 +222,7 @@ namespace DataAccess.Postgres.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviews",
+                name: "Review",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -234,15 +236,15 @@ namespace DataAccess.Postgres.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.PrimaryKey("PK_Review", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_Lessons_LessonId",
+                        name: "FK_Review_Lessons_LessonId",
                         column: x => x.LessonId,
                         principalTable: "Lessons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reviews_Visitors_VisitorId",
+                        name: "FK_Review_Visitors_VisitorId",
                         column: x => x.VisitorId,
                         principalTable: "Visitors",
                         principalColumn: "Id",
@@ -284,13 +286,13 @@ namespace DataAccess.Postgres.Migrations
                 column: "LessonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ImgEvents_EventId",
-                table: "ImgEvents",
+                name: "IX_ImgEvent_EventId",
+                table: "ImgEvent",
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ImgLessons_LessonId",
-                table: "ImgLessons",
+                name: "IX_ImgLesson_LessonId",
+                table: "ImgLesson",
                 column: "LessonId");
 
             migrationBuilder.CreateIndex(
@@ -309,13 +311,13 @@ namespace DataAccess.Postgres.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_LessonId",
-                table: "Reviews",
+                name: "IX_Review_LessonId",
+                table: "Review",
                 column: "LessonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_VisitorId",
-                table: "Reviews",
+                name: "IX_Review_VisitorId",
+                table: "Review",
                 column: "VisitorId");
         }
 
@@ -326,10 +328,10 @@ namespace DataAccess.Postgres.Migrations
                 name: "DateAttendanceEntityVisitorEntity");
 
             migrationBuilder.DropTable(
-                name: "ImgEvents");
+                name: "ImgEvent");
 
             migrationBuilder.DropTable(
-                name: "ImgLessons");
+                name: "ImgLesson");
 
             migrationBuilder.DropTable(
                 name: "ImgNewEntity");
@@ -338,13 +340,13 @@ namespace DataAccess.Postgres.Migrations
                 name: "LessonEntityVisitorEntity");
 
             migrationBuilder.DropTable(
-                name: "Reviews");
+                name: "Review");
 
             migrationBuilder.DropTable(
                 name: "DateAttendances");
 
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "Event");
 
             migrationBuilder.DropTable(
                 name: "News");
