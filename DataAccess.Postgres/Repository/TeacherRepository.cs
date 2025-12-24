@@ -44,20 +44,6 @@ namespace DataAccess.Postgres.Repository
             DbContext.SaveChanges();
         }
 
-        //public void Update(int id, string name, string surname, string patronymic, string dateBirth, string numberPhone, ICollection<LessonEntity> lessons, string login, string password)
-        //{
-        //    DbContext.Teachers
-        //        .Where(v => v.Id == id)
-        //        .ExecuteUpdate(v => v
-        //            .SetProperty(v => v.Name, name)
-        //            .SetProperty(v => v.Surname, surname)
-        //            .SetProperty(v => v.Patronymic, patronymic)
-        //            .SetProperty(v => v.DateBirth, dateBirth)
-        //            .SetProperty(v => v.NumberPhone, numberPhone)
-        //            .SetProperty(v => v.Login, login)
-        //            .SetProperty(v => v.Password, password));
-        //}
-
         public void Update(int id, TeacherEntity visitor)
         {
             DbContext.Teachers

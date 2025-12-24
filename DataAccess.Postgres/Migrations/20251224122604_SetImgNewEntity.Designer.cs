@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251217134411_init0")]
-    partial class init0
+    [Migration("20251224122604_SetImgNewEntity")]
+    partial class SetImgNewEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -115,7 +115,7 @@ namespace DataAccess.Postgres.Migrations
                     b.ToTable("ImgEvent");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNewEntity", b =>
+            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNewsEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,7 +123,7 @@ namespace DataAccess.Postgres.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("EventId")
+                    b.Property<int>("NewsId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Url")
@@ -132,9 +132,9 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("NewsId");
 
-                    b.ToTable("ImgNewEntity");
+                    b.ToTable("ImgNews");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.LessonEntity", b =>
@@ -422,15 +422,15 @@ namespace DataAccess.Postgres.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNewEntity", b =>
+            modelBuilder.Entity("DataAccess.Postgres.Models.ImgNewsEntity", b =>
                 {
-                    b.HasOne("DataAccess.Postgres.Models.NewsEntity", "Event")
-                        .WithMany("ImgsNew")
-                        .HasForeignKey("EventId")
+                    b.HasOne("DataAccess.Postgres.Models.NewsEntity", "News")
+                        .WithMany("ImgsNews")
+                        .HasForeignKey("NewsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Event");
+                    b.Navigation("News");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.LessonEntity", b =>
@@ -520,7 +520,7 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Models.NewsEntity", b =>
                 {
-                    b.Navigation("ImgsNew");
+                    b.Navigation("ImgsNews");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.TeacherEntity", b =>

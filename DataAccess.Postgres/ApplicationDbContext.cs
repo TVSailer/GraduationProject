@@ -15,11 +15,12 @@ namespace DataAccess.Postgres
         public DbSet<ReviewEntity> Review { get; set; }
         public DbSet<ImgLessonEntity> ImgLesson { get; set; }
         public DbSet<ImgEventEntity> ImgEvent { get; set; }
+        public DbSet<ImgNewsEntity> ImgNews { get; set; }
 
         public ApplicationDbContext() : base()
         {
-            //Database.EnsureCreated();
-            //Database.Migrate();
+            Database.EnsureCreated();
+            Database.Migrate();
         }
 
         protected async override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -36,6 +37,7 @@ namespace DataAccess.Postgres
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+         
         }
     }
 }

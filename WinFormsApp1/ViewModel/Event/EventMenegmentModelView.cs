@@ -31,7 +31,6 @@ public class EventMenegmentModelView : AbstractManagmentModelView
             if (value == title)
                 return;
             title = value;
-            OnPropertyChanged();
         }
     }
     public string Category
@@ -42,7 +41,6 @@ public class EventMenegmentModelView : AbstractManagmentModelView
             if (value == category)
                 return;
             category = value;
-            OnPropertyChanged();
         }
     }
     public string StartDate
@@ -53,7 +51,6 @@ public class EventMenegmentModelView : AbstractManagmentModelView
             if (value == stDate)
                 return;
             stDate = value;
-            OnPropertyChanged();
         }
     }
     public string EndDate
@@ -64,7 +61,6 @@ public class EventMenegmentModelView : AbstractManagmentModelView
             if (value == enDate)
                 return;
             enDate = value;
-            OnPropertyChanged();
         }
     }
 
@@ -77,7 +73,6 @@ public class EventMenegmentModelView : AbstractManagmentModelView
                 return;
 
             categorys = value;
-            OnPropertyChanged();
         }
     }
     public List<EventEntity> EventEntities 
@@ -119,7 +114,7 @@ public class EventMenegmentModelView : AbstractManagmentModelView
             });
 
         OnBack = new MainCommand(
-            _ => mainForm.InitializeComponent());
+            _ => mainForm.InitializeComponents());
 
         OnLoadDetailsView = new MainCommand(
             _ =>

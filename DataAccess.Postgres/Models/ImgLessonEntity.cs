@@ -1,7 +1,16 @@
 ﻿using DataAccess.Postgres.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class ImgLessonEntity : ImgEntity
 {
-    public LessonEntity Lesson { get; set; }
+    [ForeignKey(nameof(LessonEntity))]
+    public int LessonId { get; private set; }
+    public LessonEntity Lesson { get; private set; }
+
     public ImgLessonEntity() { }
+
+    public ImgLessonEntity(string urlImg) 
+    {
+        Url = urlImg;
+    }
 }

@@ -4,20 +4,25 @@ namespace DataAccess.Postgres.Models;
 
 public class NewsEntity
 {
-    public int Id { get; set; }
-    [Required(ErrorMessage = "Отсутствует название")]
-    public string Title { get; set; }
-    [Required(ErrorMessage = "Отсутствует контент")]
-    public string Content { get; set; }
-    [Required(ErrorMessage = "Отсутствует дата написания")]
-    public string Date { get; set; }
-    [Required(ErrorMessage = "Отсутствует категория")]
-    public string Category { get; set; }
-    [Required(ErrorMessage = "Отсутствует автор")]
-    public string Author { get; set; }
-    public List<ImgNewEntity>? ImgsNew { get; set; } = new();
-
+    public int Id { get; private set; }
+    public string Title { get; private set; }
+    public string Content { get; private set; }
+    public string Date { get; private set; }
+    public string Category { get; private set; }
+    public string Author { get; private set; }
+    public List<ImgNewsEntity>? ImgsNews { get; set; } = new();
+    
     public NewsEntity() { }
+
+    public NewsEntity(string title, string content, string date, string category, string author, List<ImgNewsEntity> imgs) 
+    {
+        Title = title;
+        Content = content;
+        Date = date;
+        Category = category;
+        Author = author;
+        ImgsNews = imgs;
+    }
 
     public override string ToString()
         => $"Новость: {Title} {Date}";

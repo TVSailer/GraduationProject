@@ -60,7 +60,7 @@
                 .With(c => c.Cursor = Cursors.Hand)
                 .With(c => c.Controls.AsEnumerable().ForEach(SetupChildControl));
 
-        public virtual void CreateContent() { Controls.Add(Content()); }
+        public void CreateContent() { Controls.Add(Content()); }
         
         public virtual Control Content() { throw new ArgumentNullException(); }
     }

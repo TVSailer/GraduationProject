@@ -1,0 +1,18 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DataAccess.Postgres.Models;
+
+public class ImgNewsEntity : ImgEntity
+{
+    [ForeignKey(nameof(NewsEntity))]
+    public int NewsId { get; private set; }
+    public NewsEntity News { get; private set; }
+
+    public ImgNewsEntity() { }
+
+    public ImgNewsEntity(string urlImg) 
+    {
+        Url = urlImg;
+    }
+
+}

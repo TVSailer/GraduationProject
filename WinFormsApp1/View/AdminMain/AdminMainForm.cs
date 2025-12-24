@@ -1,18 +1,18 @@
-﻿using AdminApp.Forms;
+﻿using Admin.View;
 using Logica;
 
 
 namespace WinFormsApp1.View
 {
-    public partial class AdminMainView : Form
+    public partial class AdminMainView : Form, IViewForm
     {
         public AdminMainView(AdminMainViewModel adminMainViewModel)
         {
             DataContext = adminMainViewModel;
-            InitializeComponent();
+            InitializeComponents();
         }
 
-        public Form InitializeComponent()
+        public Form InitializeComponents()
             => this
                 .With(m => m.Controls.Clear())
                 .With(m => m.Text = "Панель администратора")
@@ -30,17 +30,17 @@ namespace WinFormsApp1.View
                 .ControlAddIsRowsAbsoluteV2(
                     FactoryElements.LabelTitle("Панель администратора"), 70)
                 .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("📰 Управление новостями", () => new NewsManagementForm().ShowDialog()), 50)
+                    CreateButton("📰 Управление новостями", DataContext, "OnLoadNewsManagemetnView"), 50)
                 .ControlAddIsRowsAbsoluteV2(
                     CreateButton("🎭 Управление мероприятиями", DataContext, "OnLoadEventsManagemetnView"), 50)
                 .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("🎨 Управление кружками", () => new LessonsManagementForm().ShowDialog()), 50)
+                    CreateButton("🎨 Управление кружками", DataContext, "OnLoadLessonsManagemetnView"), 50)
                 .ControlAddIsRowsAbsoluteV2(
                     CreateButton("👨‍🏫 Управление преподавателями", DataContext, "OnLoadTeachersManagemetnView"), 50)
                 .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("👥 Управление пользователями", () => new VisitorsManagementForm().ShowDialog()), 50)
+                    CreateButton("👥 Управление посетителями", DataContext, "OnLoadVisitorsManagemetnView"), 50)
                 .ControlAddIsRowsAbsoluteV2(
-                    CreateButton("📊 Управление посещаемостью", () => new AttendanceManagementForm().ShowDialog()), 50)
+                    CreateButton("📊 Управление посещаемостью", null), 50)
                 .ControlAddIsColumnPercentV2(null, 25)
                 .ControlAddIsRowsPercentV2(null, 25);
 

@@ -10,13 +10,13 @@ namespace WinFormsApp1.View.Event
 
         public EventCard(EventEntity eventEntity) : base(eventEntity.Id)
         {
+            Size = new Size(400, 170);
             ev = eventEntity;
             CreateContent();
         }
 
         public override Control Content()
-            => new TableLayoutPanel()
-                .With(t => t.Dock = DockStyle.Fill)
+            => FactoryElements.TableLayoutPanel()
                 .ControlAddIsRowsPercentV2(
                     FactoryElements.Label_11(ev.Title)
                     .With(t => t.ForeColor = Color.DarkBlue), 40)

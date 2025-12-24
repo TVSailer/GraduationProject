@@ -5,5 +5,5 @@ namespace DataAccess.Postgres.Models;
 public abstract class ImgEntity : Entity
 {
     public int Id { get; private set; }
-    public string Url { get; set; }
+    public string Url { get; protected set; }
 }

@@ -10,7 +10,6 @@ namespace WinFormsApp1.View.Teachers
 
         public TeachersManagementView(AdminMainView mainForm, TeacherManagementModelView modelView) : base(mainForm, modelView)
         {
-            form = mainForm;
             context = modelView;
 
             form.Text = "👨‍🏫 Управление преподавателями";
@@ -22,21 +21,20 @@ namespace WinFormsApp1.View.Teachers
         }
 
         protected override Control LoadCardsPanel()
-            => new TableLayoutPanel()
-            .With(p => p.Dock = DockStyle.Fill)
+            => FactoryElements.TableLayoutPanel()
             .With(p => p.AutoScroll = true)
             .With(p => p.Padding = new Padding(10))
             .With(p => context.PropertyChanged += (obj, propCh) =>
             {
-                if (propCh.PropertyName == "EventEntities")
+                if (propCh.PropertyName == nameof(context.TeacherEntities))
                 {
                     p.Controls.Clear();
-                    AddEventCard(p);
+                    AddCard(p);
                 }
             })
-            .With(AddEventCard);
+            .With(AddCard);
 
-        private void AddEventCard(TableLayoutPanel p)
+        private void AddCard(TableLayoutPanel p)
         {
             context.TeacherEntities
             .ForEach(

@@ -32,12 +32,12 @@ namespace Admin.ViewModel.Teachers
             }
         }
 
-        public TeacherManagementModelView(AddingTeacherView view, AdminMainView mainForm, TeacherRepository repository)
+        public TeacherManagementModelView(AdminMainView mainForm, TeacherRepository repository)
         {
             TeacherEntities = repository.Get();
 
             OnBack = new MainCommand(
-            _ => mainForm.InitializeComponent());
+            _ => mainForm.InitializeComponents());
 
             OnLoadAddingView = new MainCommand(
                 _ =>

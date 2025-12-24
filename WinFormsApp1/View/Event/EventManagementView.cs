@@ -1,5 +1,4 @@
 ﻿using Admin.View;
-using DataAccess.Postgres.Models;
 using Logica;
 using Logica.DI;
 
@@ -7,12 +6,11 @@ namespace WinFormsApp1.View.Event
 {
     public partial class EventManagementView : AbstractManagementView
     {
-        private readonly EventMenegmentModelView context;
+        private new readonly EventMenegmentModelView context;
 
         public EventManagementView(AdminMainView mainForm, EventMenegmentModelView modelView) : base(mainForm, modelView)
         {
             context = modelView;
-            form = mainForm;
 
             form.Text = "🎭 Управление мероприятиями";
         }
@@ -40,7 +38,11 @@ namespace WinFormsApp1.View.Event
                 .ControlAddIsRowsAbsoluteV2(FactoryElements.TableLayoutPanel()
                     .ControlAddIsColumnAbsoluteV2(FactoryElements.Label_11("До: "), 140)
                     .ControlAddIsColumnPercentV2(FactoryElements.DateTimePicker()
-                        .With(dt => dt.TextChanged += (s, e) => context.StartDate = dt.Text), 10), 60)));
+                        .With(dt => dt.TextChanged += (s, e) => context.StartDate = dt.Text), 10), 60)
+                .ControlAddIsRowsPercentV2()
+                .ControlAddIsRowsAbsoluteV2(FactoryElements.TableLayoutPanel()
+                    .ControlAddIsColumnPercentV2(FactoryElements.Button("Поиск", context, nameof(context.OnSerch)), 50)
+                    .ControlAddIsColumnPercentV2(FactoryElements.Button("Очистить поиск", context, nameof(context.OnClearSerch)), 50), 80)));
 
         protected override Control LoadCardsPanel()
             => new FlowLayoutPanel()
@@ -49,15 +51,15 @@ namespace WinFormsApp1.View.Event
             .With(p => p.Padding = new Padding(10))
             .With(p => context.PropertyChanged += (obj, propCh) =>
             {
-                if (propCh.PropertyName == "EventEntities")
+                if (propCh.PropertyName == nameof(context.EventEntities))
                 {
                     p.Controls.Clear();
-                    AddEventCard(p);
+                    AddCard(p);
                 }
             })
-            .With(AddEventCard);
+            .With(AddCard);
 
-            private void AddEventCard(FlowLayoutPanel p)
+            private void AddCard(FlowLayoutPanel p)
                 => context.EventEntities
                 .ForEach(
                     ev =>

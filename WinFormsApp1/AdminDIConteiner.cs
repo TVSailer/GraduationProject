@@ -30,20 +30,20 @@ namespace WinFormsApp1
             container.Register<TeacherRepository>(ServiceLifetime.Singleton);
             container.Register<LessonsRepository>(ServiceLifetime.Singleton);
 
-            container.Register<EventDataViewModel, AddingEventViewModel>(ServiceLifetime.Scoped);
-            container.Register<EventDataViewModel, EventDetailsViewModel>(ServiceLifetime.Scoped);
-            container.Register<AbstractManagmentModelView, EventMenegmentModelView>(ServiceLifetime.Scoped);
-            container.Register<AbstractManagmentModelView, TeacherManagementModelView>(ServiceLifetime.Scoped);
-            container.Register<TeacherDataViewModel, AddingTeacherViewModel>(ServiceLifetime.Scoped);
+            container.Register<AddingEventViewModel>(ServiceLifetime.Scoped);
+            container.Register<EventDetailsViewModel>(ServiceLifetime.Scoped);
+            container.Register<EventMenegmentModelView>(ServiceLifetime.Scoped);
+            container.Register<TeacherManagementModelView>(ServiceLifetime.Scoped);
+            container.Register<AddingTeacherViewModel>(ServiceLifetime.Scoped);
 
             //container.Register<LinkingTeacherToLessonViewModel>(ServiceLifetime.Scoped);
             //container.Register<IViewForm, LindingTeacherToLessonView>(ServiceLifetime.Scoped);
 
-            container.Register<IViewForm, AddingEventView>(ServiceLifetime.Scoped);
-            container.Register<IViewForm, EventDetailsView>(ServiceLifetime.Scoped);
-            container.Register<AbstractManagementView, EventManagementView>(ServiceLifetime.Scoped);
-            container.Register<AbstractManagementView, TeachersManagementView>(ServiceLifetime.Scoped);
-            container.Register<IViewForm, AddingTeacherView>(ServiceLifetime.Scoped);
+            container.Register<AddingEventView>(ServiceLifetime.Scoped);
+            container.Register<EventDetailsView>(ServiceLifetime.Scoped);
+            container.Register<EventManagementView>(ServiceLifetime.Scoped);
+            container.Register<TeachersManagementView>(ServiceLifetime.Scoped);
+            container.Register<AddingTeacherView>(ServiceLifetime.Scoped);
 
             container.Register<AdminMainView>(ServiceLifetime.Singleton);
             container.Register<AdminMainViewModel>(ServiceLifetime.Singleton);
