@@ -4,35 +4,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
 {
-    public class EventRepository
+    public class EventRepository : Repository<EventEntity>
     {
-        public readonly ApplicationDbContext DbContext;
-        public EventEntity Event { get; private set; }
-
-        public EventRepository(ApplicationDbContext dbContext)
+        public EventRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-            DbContext = dbContext;
         }
         
-        public List<EventEntity> Get()
+        public override List<EventEntity> Get()
             => DbContext.Event
             .Include(e => e.ImgsEvent)
             .AsNoTracking()
             .ToList() ?? throw new ArgumentNullException();
 
-        public EventEntity Get(int id)
+        public EventEntity Get(long id)
             => DbContext.Event
             .AsNoTracking()
             .Include(e => e.ImgsEvent)
             .FirstOrDefault(v => v.Id == id) ?? throw new ArgumentNullException();
 
-        public void Add(EventEntity @event)
-        {
-            DbContext.Add(@event);
-            DbContext.SaveChanges();
-        }
-
-        public void Update(int id, EventEntity @event)
+        public override void Update(long id, EventEntity @event)
         {
             DbContext.Event
                 .Where(v => v.Id == id)
@@ -74,9 +64,9 @@ namespace DataAccess.Postgres.Repository
             DbContext.SaveChanges();
         }
 
-        public void Delete(int id)
+        public override void Delete(EventEntity entity)
             => DbContext.Event
-            .Where(v => v.Id == id)
+            .Where(v => v.Id == entity.Id)
             .ExecuteDelete();
     }
 }

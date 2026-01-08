@@ -1,39 +1,44 @@
-﻿using DataAccess.Postgres.Models;
+﻿using Admin.View.Moduls.Event;
+using Admin.View.Moduls.Lesson;
+using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
+using Logica.DI;
 using System.Windows.Input;
+using WinFormsApp1;
 using WinFormsApp1.View;
 
 namespace Admin.ViewModel.Lesson
 {
-    public class LessonManagmentViewModel : AbstractManagmentModelView
+    public class LessonManagmentViewModel : ManagmentModelView<LessonEntity>
     {
-        private List<LessonEntity> lessonEntities = new();
-
-        public override ICommand OnBack { get; set; }
         public override ICommand OnLoadAddingView { get; set; }
-        public override ICommand OnLoadDetailsView { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override ICommand OnLoadDetailsView { get; set; }
         public override ICommand OnSerch { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override ICommand OnClearSerch { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public List<LessonEntity> LessonEntities
+        public LessonManagmentViewModel(AdminMainView mainForm, LessonsRepository lessonsRepository) : base(mainForm, lessonsRepository)
         {
-            get => lessonEntities;
-            set
-            {
-                if (lessonEntities.SequenceEqual(value))
-                    return;
-                lessonEntities = value;
-                OnPropertyChanged();
-            }
-        }
+            OnLoadAddingView = new MainCommand(
+                _ =>
+                {
+                    using (var scope = new ContainerScoped(AdminDIConteiner.Container))
+                    {
+                        scope.GetService<LessonAddingViewModel>();
+                        scope.GetService<LessonAddingView>().InitializeComponents();
+                    }
+                });
 
-        public LessonManagmentViewModel(AdminMainView mainForm, LessonsRepository lessonsRepository)
-        {
-            LessonEntities = lessonsRepository.Get();
-
-            OnBack = new MainCommand(
-                _ => mainForm.InitializeComponents());
+            OnLoadDetailsView = new MainCommand(
+               obj =>
+               {
+                   if (obj is LessonEntity les)
+                       using (var scope = new ContainerScoped(AdminDIConteiner.Container))
+                       {
+                           scope.GetService<LessonDetailsViewModel>().Initialize(les);
+                           scope.GetService<LessonDetailsView>().InitializeComponents();
+                       }
+               });
         }
     }
 }

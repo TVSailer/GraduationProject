@@ -327,7 +327,7 @@ public static class FactoryElements
         return list;
     }
 
-    public static ButtonBase Button(string text)
+    public static Button Button(string text)
         => new Button()
             .With(c => c.Text = text)
             .With(c => c.Dock = DockStyle.Fill)
@@ -335,7 +335,7 @@ public static class FactoryElements
             .With(c => c.BackColor = SystemColors.ButtonFace)
             .With(c => c.ForeColor = SystemColors.ControlText);
 
-    public static ButtonBase Button(string text, object context, string dataMember)
+    public static Button Button(string text, object context, string dataMember)
         => new Button()
             .With(c => c.Text = text)
             .With(c => c.BackColor = Color.White)
@@ -343,22 +343,22 @@ public static class FactoryElements
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold));
 
-    public static ButtonBase Button(string text, Action action)
+    public static Button Button(string text, Action action)
         => new Button()
             .With(c => c.Text = text)
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
             .With(c => c.Click += (s, e) => action?.Invoke());
     
-    public static ButtonBase Button(string text, int size, Action action)
+    public static Button Button(string text, int size, Action action)
         => Button(text, size)
             .With(c => c.Click += (s, e) => action?.Invoke());
 
-    public static ButtonBase Button(string text, int size, object context, string dataMember)
+    public static Button Button(string text, int size, object context, string dataMember)
         => Button(text, size)
             .With(c => c.DataBindings.Add(new Binding("Command", context, dataMember, true)));
 
-    public static ButtonBase Button(string text, int size)
+    public static Button Button(string text, int size)
         => new Button()
             .With(c => c.Text = text)
             .With(c => c.Dock = DockStyle.Fill)
@@ -390,7 +390,6 @@ public static class FactoryElements
 
     public static Label Label(string text)
         => new Label()
-            .With(l => l.Name = text.Replace(" ", "") + "Label")
             .With(l => l.Text = text)
             .With(l => l.Dock = DockStyle.Fill)
             .With(l => l.Height = 40)
@@ -433,4 +432,8 @@ public static class FactoryElements
             .With(n => n.Value = 50)
             .With(n => n.Font = new Font("Times New Roman", 11))
             .With(n => n.Dock = DockStyle.Fill);
+
+    public static ListBox ListBox()
+        => new ListBox()
+        .With(l => l.Dock = DockStyle.Fill);
 }

@@ -1,17 +1,14 @@
-﻿using DataAccess.Postgres.Models;
+﻿using Admin.View.Moduls.Event;
+using Admin.ViewModel.NotifuPropertyViewModel;
+using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
+using Logica.CustomAttribute;
 using Logica.DI;
-using Logica.Massage;
-using Logica.Message;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using WinFormsApp1.View.Event;
 using WinFormsApp1;
 
-public abstract class EventDataViewModel : INotifyPropertyChanged, IMessageErrorProvider
+public abstract class EventDataViewModel : NotifyPropertyViewModel
 {
     public Dictionary<string, bool> SelectedImg { get; private set; } = new();
 
@@ -20,115 +17,16 @@ public abstract class EventDataViewModel : INotifyPropertyChanged, IMessageError
     public ICommand OnAddingImg { get; protected set; }
     public ICommand OnDeletingImg { get; protected set; }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-    public event ErrorMessegePropertyHandler? ErrorMassegeProvider;
-
-    private string title;
-    private string description;
     private string date = DateTime.Now.ToString();
-    private string location;
-    private string category;
-    private string regisLink;
-    private string organizer;
-    private string maxParticipants;
 
-    [Required]
-    public string Title
-    {
-        get => Get(ref title);
-        set => Set(ref title, value);
-    }
-
-    [Required]
-    public string Description
-    {
-        get => Get(ref description);
-        set => Set(ref description, value);
-    }
-
-    [Required]
-    public string Date { get => date; set => date = value; }
-
-    [Required]
-    public string Location
-    {
-        get => Get(ref location);
-        set => Set(ref location, value);
-    }
-
-    [Required]
-    public string Category
-    {
-        get => Get(ref category);
-        set => Set(ref category, value);
-    }
-
-    [Required]
-    public string RegisLink
-    {
-
-        get
-        {
-            if (string.IsNullOrWhiteSpace(regisLink))
-                OnMassegeErrorProvider("Ссылка на регистрацию не может быть пустой");
-
-            return regisLink;
-        }
-        set
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                OnMassegeErrorProvider("Ссылка на регистрацию не может быть пустой");
-                regisLink = null;
-                return;
-            }
-
-            if (!Uri.TryCreate(value, UriKind.Absolute, out _))
-            {
-                OnMassegeErrorProvider("Введите корректный URL");
-                regisLink = null;
-                return;
-            }
-
-            OnMassegeErrorProvider("");
-            regisLink = value;
-        }
-    }
-
-    [Required]
-    public string Organizer
-    {
-        get => Get(ref organizer);
-        set => Set(ref organizer, value);
-    }
-
-    [Required]
-    public string MaxParticipants
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(maxParticipants))
-            {
-                OnMassegeErrorProvider("Данное поле не может быть пустым");
-                return null;
-            }
-            if (!int.TryParse(maxParticipants, null, out int rezult))
-            {
-                OnMassegeErrorProvider("Значения целого числа");
-                return null;
-
-            }
-            if (rezult < 1)
-            {
-                OnMassegeErrorProvider("Значения целого числа не может быть ниже нуля");
-                return null;
-            }
-
-            OnMassegeErrorProvider("");
-            return maxParticipants;
-        }
-        set => Set(ref maxParticipants, value);
-    }
+    [RequiredCustom] public string Title { get; set => Set(ref field, value); }
+    [RequiredCustom] public string Description { get; set => Set(ref field, value); }
+    [RequiredCustom] public string Date { get => date; set => date = value; }
+    [RequiredCustom] public string Location { get; set => Set(ref field, value); }
+    [RequiredCustom] public string Category { get; set => Set(ref field, value); }
+    [HttpsLink] public string RegisLink { get; set => Set(ref field, value); }
+    [RequiredCustom] public string Organizer { get; set => Set(ref field, value); }
+    [MaxParticipants] public string MaxParticipants { get; set => Set(ref field, value); }
 
     public EventDataViewModel(EventRepository eventRepository)
     {
@@ -142,7 +40,7 @@ public abstract class EventDataViewModel : INotifyPropertyChanged, IMessageError
         OnSave = new MainCommand(
             _ =>
             {
-                if (Validatoreg.TryValidObject(this, false))
+                if (Validatoreg.TryValidObject(this, out var results, false))
                 {
                     List<ImgEventEntity> imgs = new();
 
@@ -154,6 +52,7 @@ public abstract class EventDataViewModel : INotifyPropertyChanged, IMessageError
                     LogicaMessage.MessageOk("Мероприятие успешно добавленно!");
                     OnBack.Execute(null);
                 }
+                else { results.ForEach(r => r.MemberNames.ForEach(n => OnMassegeErrorProvider(r.ErrorMessage, n))); }
             });
 
         OnAddingImg = new MainCommand(
@@ -186,33 +85,4 @@ public abstract class EventDataViewModel : INotifyPropertyChanged, IMessageError
             OnPropertyChanged("OnDeletingImg");
         });
     }
-
-
-    public string Get(ref string file, [CallerMemberName] string prop = "")
-    {
-        if (string.IsNullOrWhiteSpace(file))
-            OnMassegeErrorProvider("Данное поле не может быть пустым", prop);
-        return file;
-    }
-
-    public void Set(ref string file, string value, [CallerMemberName] string prop = "")
-    {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            OnMassegeErrorProvider("Данное поле не может быть пустым", prop);
-            file = null;
-            return;
-        }
-        file = value;
-
-        OnMassegeErrorProvider("", prop);
-        OnPropertyChanged(prop);
-    }
-
-    public void OnPropertyChanged([CallerMemberName] string prop = "")
-        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-
-    public void OnMassegeErrorProvider(string errorMesege, [CallerMemberName] string prop = "")
-        => ErrorMassegeProvider?.Invoke(this, new ErrorMessagePropertyArgs(errorMesege, new PropertyChangedEventArgs(prop)));
 }
- 

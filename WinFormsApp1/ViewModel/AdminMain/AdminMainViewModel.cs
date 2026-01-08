@@ -1,13 +1,13 @@
-﻿using Admin.View.Lesson;
-using Admin.View.News;
-using Admin.View.Visitor;
+﻿using Admin.View.Moduls.Event;
+using Admin.View.Moduls.Lesson;
+using Admin.View.Moduls.News;
+using Admin.View.Moduls.Teacher;
+using Admin.View.Moduls.Visitor;
 using DataAccess.Postgres;
 using Logica;
 using Logica.DI;
 using System.Windows.Input;
 using WinFormsApp1;
-using WinFormsApp1.View.Event;
-using WinFormsApp1.View.Teachers;
 
 public class AdminMainViewModel 
 {
@@ -33,7 +33,7 @@ public class AdminMainViewModel
             {
                 using (var scope = new ContainerScoped(AdminDIConteiner.Container))
                 {
-                    scope.GetService<TeachersManagementView>().InitializeComponents();
+                    scope.GetService<TeacherManagementView>().InitializeComponents();
                 }
             });
 

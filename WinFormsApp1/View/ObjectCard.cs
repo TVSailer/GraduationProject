@@ -1,8 +1,10 @@
 ﻿namespace WinFormsApp1.View
 {
-    public abstract class ObjectCard : Panel
+    public abstract class ObjectCard<T> : Panel
     {
+        protected readonly T entity;
         protected int _objectId;
+
         private bool _isMouseOver = false;
 
         public event EventHandler OnCardClicked;
@@ -15,6 +17,14 @@
 
         public ObjectCard()
         {
+            InitializeCard();
+        }
+        
+        public ObjectCard(T obj)
+        {
+            if (obj is null) throw new ArgumentNullException();
+
+            entity = obj;
             InitializeCard();
         }
 

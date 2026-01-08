@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CSharpFunctionalExtensions;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Postgres.Models;
 
-public class NewsEntity
+public class NewsEntity : Entity
 {
-    public int Id { get; private set; }
     public string Title { get; private set; }
     public string Content { get; private set; }
     public string Date { get; private set; }

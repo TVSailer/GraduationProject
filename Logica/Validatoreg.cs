@@ -28,7 +28,6 @@ public static class Validatoreg
     
     public static bool TryValidObject(object instance, out List<ValidationResult> results, bool isErrorMessage = false)
     {
-        string text = "";
         results = new List<ValidationResult>();
         var context = new ValidationContext(instance);
 
@@ -44,6 +43,23 @@ public static class Validatoreg
         var context = new ValidationContext(value);
 
         if (!Validator.TryValidateValue(value, context, results, validationAttributes))
+        {
+            string erText = "";
+            results.ForEach(m => erText += m.ErrorMessage);
+            errorMessage = erText;
+            return false;
+        }
+
+        errorMessage = "";
+        return true;
+    }
+    
+    public static bool TryValidProperty(object value, string propertyName, object context, out string errorMessage)
+    {
+        var results = new List<ValidationResult>();
+        var con = new ValidationContext(context) { MemberName = propertyName};
+
+        if (!Validator.TryValidateProperty(value, con, results))
         {
             string erText = "";
             results.ForEach(m => erText += m.ErrorMessage);

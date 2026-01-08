@@ -23,18 +23,18 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Models.DateAttendanceEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Date")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("LessonId")
-                        .HasColumnType("integer");
+                    b.Property<long>("LessonId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -45,11 +45,11 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Models.EventEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -92,14 +92,14 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Models.ImgEventEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("EventId")
-                        .HasColumnType("integer");
+                    b.Property<long>("EventId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -114,14 +114,14 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Models.ImgNewsEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("NewsId")
-                        .HasColumnType("integer");
+                    b.Property<long>("NewsId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -136,18 +136,15 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Models.LessonEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("CurrentParticipants")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -164,77 +161,27 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("Rating")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("ReviewCount")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Schedule")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("integer");
+                    b.Property<long>("TeacherId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeacherId");
 
                     b.ToTable("Lessons");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Category = "Йога",
-                            CurrentParticipants = 15,
-                            Description = "Класс йоги для новичков",
-                            Location = "Зал 1",
-                            MaxParticipants = 20,
-                            Name = "Йога для начинающих",
-                            Rating = 4.7999999999999998,
-                            ReviewCount = 42,
-                            Schedule = "Пн, Ср, Пт 18:00-19:30",
-                            TeacherId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Category = "Фитнес",
-                            CurrentParticipants = 12,
-                            Description = "Высокоинтенсивный интервальный тренинг",
-                            Location = "Зал 2",
-                            MaxParticipants = 15,
-                            Name = "HIIT тренировка",
-                            Rating = 4.5999999999999996,
-                            ReviewCount = 35,
-                            Schedule = "Вт, Чт 19:00-20:00",
-                            TeacherId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Category = "Пилатес",
-                            CurrentParticipants = 20,
-                            Description = "Урок пилатеса для всех уровней",
-                            Location = "Зал 3",
-                            MaxParticipants = 25,
-                            Name = "Пилатес",
-                            Rating = 4.9000000000000004,
-                            ReviewCount = 58,
-                            Schedule = "Пн, Ср, Пт 10:00-11:00",
-                            TeacherId = 1
-                        });
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.NewsEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Author")
                         .IsRequired()
@@ -263,11 +210,11 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Models.TeacherEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("DateBirth")
                         .IsRequired()
@@ -308,11 +255,11 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Models.VisitorEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("DateBirth")
                         .IsRequired()
@@ -353,11 +300,11 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DateAttendanceEntityVisitorEntity", b =>
                 {
-                    b.Property<int>("DatesId")
-                        .HasColumnType("integer");
+                    b.Property<long>("DatesId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("VisitorsId")
-                        .HasColumnType("integer");
+                    b.Property<long>("VisitorsId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("DatesId", "VisitorsId");
 
@@ -368,14 +315,14 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("ImgLessonEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("LessonId")
-                        .HasColumnType("integer");
+                    b.Property<long>("LessonId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -390,11 +337,11 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("LessonEntityVisitorEntity", b =>
                 {
-                    b.Property<int>("LessonsId")
-                        .HasColumnType("integer");
+                    b.Property<long>("LessonsId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("VisitorsId")
-                        .HasColumnType("integer");
+                    b.Property<long>("VisitorsId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("LessonsId", "VisitorsId");
 
@@ -405,15 +352,11 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("ReviewEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Comment")
                         .IsRequired()
@@ -423,14 +366,14 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("LessonId")
-                        .HasColumnType("integer");
+                    b.Property<long>("LessonId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
 
-                    b.Property<int>("VisitorId")
-                        .HasColumnType("integer");
+                    b.Property<long>("VisitorId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

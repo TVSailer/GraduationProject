@@ -19,8 +19,8 @@ namespace DataAccess.Postgres
 
         public ApplicationDbContext() : base()
         {
-            Database.EnsureCreated();
-            Database.Migrate();
+            //Database.EnsureCreated();
+            //Database.Migrate();
         }
 
         protected async override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

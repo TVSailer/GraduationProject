@@ -1,4 +1,6 @@
-﻿using DataAccess.Postgres.Models;
+﻿using Admin.View.Moduls.Teacher;
+using Admin.ViewModel.NotifuPropertyViewModel;
+using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.CustomAttribute;
@@ -10,81 +12,26 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using WinFormsApp1;
-using WinFormsApp1.View.Teachers;
 
-public abstract class TeacherDataViewModel : INotifyPropertyChanged, IMessageErrorProvider
+public abstract class TeacherDataViewModel : NotifyPropertyViewModel
 {
     public ICommand OnBack { get; protected set; }
     public ICommand OnSave { get; protected set; }
     public ICommand OnAddingImg { get; protected set; }
     public ICommand OnDeletingImg { get; protected set; }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-    public event ErrorMessegePropertyHandler? ErrorMassegeProvider;
-
-    private bool isSave = false;
-
-    private string name = "";
-    private string surname = "";
-    private string patronymic = "";
-    private string dateBirth = "";
-    private string numberPhone = "";
     private string urlFaceImg = "D:\\Документы\\Projects_CSharp\\GraduationProject\\Logica\\Img\\NoImg.png";
 
-    private List<LessonEntity>? lessons = new();
+    [RequiredCustom] public string Name { get; set => Set(ref field, value); }
+    [RequiredCustom] public string Surname { get; set => Set(ref field, value); }
+    [RequiredCustom] public string Patronymic { get; set => Set(ref field, value); }
+    [DateBirthday] public string DateBirth { get; set => Set(ref field, value); }
+    [PhoneNumber] public string NumberPhone { get; set => Set(ref field, value); }
 
-    [Required(ErrorMessage = "Данное поле не может быть пустым!")]
-    public string Name
-    {
-        get => name;
-        set => Set(ref name, value, null);
-    }
-
-    [Required(ErrorMessage = "Данное поле не может быть пустым!")]
-    public string Surname
-    {
-        get => surname;
-        set => Set(ref surname, value, null);
-    }
-
-    [Required(ErrorMessage = "Данное поле не может быть пустым!")]
-    public string Patronymic
-    {
-        get => patronymic;
-        set => Set(ref patronymic, value, null);
-    }
-
-    [DateBirthday]
-    public string DateBirth
-    {
-        get => dateBirth;
-        set => Set(ref dateBirth, value, new() { new DateBirthdayAttribute() });
-    }
-
-    [PhoneNumber]
-    public string NumberPhone
-    {
-        get => numberPhone;
-        set => Set(ref numberPhone, value, new() { new PhoneNumberAttribute() });
-    }
-
-    [Required]
     public string UrlFaceImg
     {
-        get => urlFaceImg;
-        set => Set(ref urlFaceImg, value, null);
-    }
-
-    public List<LessonEntity> Lessons
-    {
-        get => lessons;
-        set
-        {
-            if (value == lessons)
-                return;
-            lessons = value;
-            OnPropertyChanged();
-        }
+        get => urlFaceImg ?? throw new ArgumentNullException();
+        set => Set(ref urlFaceImg, value);
     }
 
     public TeacherDataViewModel(TeacherRepository teacherRepository, LessonsRepository lessonsRepository)
@@ -92,17 +39,17 @@ public abstract class TeacherDataViewModel : INotifyPropertyChanged, IMessageErr
         OnBack = new MainCommand(
             _ =>
             {
-                using (var scope =  new ContainerScoped(AdminDIConteiner.Container))
-                    scope.GetService<TeachersManagementView>().InitializeComponents();
+                using (var scope = new ContainerScoped(AdminDIConteiner.Container))
+                    scope.GetService<TeacherManagementView>().InitializeComponents();
             });
 
         OnSave = new MainCommand(
             _ =>
             {
-                if (isSave ? true : Validatoreg.TryValidObject(this, out var results))
+                if (Validatoreg.TryValidObject(this, out var results))
                 {
                     teacherRepository.Add(
-                        new TeacherEntity(Name, Surname, Patronymic, DateBirth, NumberPhone, UrlFaceImg, Lessons));
+                        new TeacherEntity(Name, Surname, Patronymic, DateBirth, NumberPhone, UrlFaceImg));
 
                     LogicaMessage.MessageOk("Преподователь успешно добавлен!");
                     OnBack.Execute(null);
@@ -139,31 +86,4 @@ public abstract class TeacherDataViewModel : INotifyPropertyChanged, IMessageErr
             OnPropertyChanged("OnDeletingImg");
         });
     }
-
-    public void Set(ref string file, string value, List<ValidationAttribute>? validationAttributes, [CallerMemberName] string prop = "")
-    {
-        if (validationAttributes is null)
-            validationAttributes = new();
-
-        validationAttributes.Add(new RequiredAttribute() { ErrorMessage = "Данное поле не может быть пустым!" });
-
-        file = value;
-
-        if (!Validatoreg.TryValidValue(file, validationAttributes, out string errorMessage))
-        {
-            OnMassegeErrorProvider(errorMessage, prop);
-            isSave = false;
-            return;
-        }
-
-        isSave = true;
-        OnMassegeErrorProvider("", prop);
-        OnPropertyChanged(prop);
-    }
-
-    public void OnPropertyChanged([CallerMemberName] string prop = "")
-        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-
-    public void OnMassegeErrorProvider(string? errorMesege, [CallerMemberName] string prop = "")
-        => ErrorMassegeProvider?.Invoke(this, new ErrorMessagePropertyArgs(errorMesege, new PropertyChangedEventArgs(prop)));
 }

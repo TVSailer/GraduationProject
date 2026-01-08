@@ -1,4 +1,5 @@
-﻿using Admin.ViewModel;
+﻿using Admin.View.Moduls.Event;
+using Admin.ViewModel;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
@@ -6,18 +7,15 @@ using Logica.DI;
 using System.Windows.Input;
 using WinFormsApp1;
 using WinFormsApp1.View;
-using WinFormsApp1.View.Event;
 
-public class EventMenegmentModelView : AbstractManagmentModelView
+public class EventMenegmentModelView : ManagmentModelView<EventEntity>
 {
-    private List<EventEntity> eventEntities = new();
     private List<string> categorys = new() { "Пусто" };
     private string title = "";
     private string category = "";
     private string stDate = DateTime.Now.ToString();
     private string enDate = DateTime.Now.ToString();
 
-    public override ICommand OnBack { get; set; }
     public override ICommand OnLoadAddingView { get; set; }
     public override ICommand OnLoadDetailsView { get; set; }
     public override ICommand OnSerch { get; set; }
@@ -75,24 +73,11 @@ public class EventMenegmentModelView : AbstractManagmentModelView
             categorys = value;
         }
     }
-    public List<EventEntity> EventEntities 
-    {
-        get => eventEntities;
-        private set
-        {
-            if (eventEntities.SequenceEqual(value))
-                return;
 
-            eventEntities = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public EventMenegmentModelView(AdminMainView mainForm, EventRepository eventRepository)
+    public EventMenegmentModelView(AdminMainView mainForm, EventRepository eventRepository) : base(mainForm, eventRepository)
     {
         eventRepository.Get().ForEach(e =>
         {
-            EventEntities.Add(e);
             if (!Categorys.Contains(e.Category))
                 Categorys.Add(e.Category);
         });
@@ -100,7 +85,7 @@ public class EventMenegmentModelView : AbstractManagmentModelView
         OnSerch = new MainCommand(
             _ =>
             {
-                EventEntities = eventRepository.Get()
+                data = eventRepository.Get()
                 .Where(e => e.Title.StartsWith(Title))
                 .Where(e => Category == "Пусто" ? true : e.Category == Category)
                 .Where(e => DateTime.Parse(StartDate) < DateTime.Parse(e.Date) && DateTime.Parse(EndDate) > DateTime.Parse(e.Date))
@@ -110,19 +95,15 @@ public class EventMenegmentModelView : AbstractManagmentModelView
         OnClearSerch = new MainCommand(
             _ =>
             {
-                EventEntities = eventRepository.Get();
+                data = eventRepository.Get();
             });
 
-        OnBack = new MainCommand(
-            _ => mainForm.InitializeComponents());
-
         OnLoadDetailsView = new MainCommand(
-            _ =>
+            obj =>
             {
-                using (var scope = new ContainerScoped(AdminDIConteiner.Container))
-                {
-                    scope.GetService<EventDetailsView>().InitializeComponents();
-                }
+                if (obj is EventEntity ev)
+                    using (var scope = new ContainerScoped(AdminDIConteiner.Container))
+                        scope.GetService<EventDetailsView>(ev).InitializeComponents();
             });
 
         OnLoadAddingView = new MainCommand(
@@ -130,8 +111,9 @@ public class EventMenegmentModelView : AbstractManagmentModelView
             {
                 using (var scope = new ContainerScoped(AdminDIConteiner.Container))
                 {
-                    scope.GetService<AddingEventView>().InitializeComponents();
+                    scope.GetService<EventAddingView>().InitializeComponents();
                 }
             });
     }
+
 }

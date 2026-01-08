@@ -3,15 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
 {
-    public class TeacherRepository
+    public class TeacherRepository : Repository<TeacherEntity>
     {
-        public readonly ApplicationDbContext DbContext;
-
-        public TeacherRepository(ApplicationDbContext dbContext)
+        public TeacherRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-            DbContext = dbContext;
         }
-        
 
         public bool VerifyTeacher(string login, string password)
              => null != DbContext.Teachers
@@ -19,7 +15,7 @@ namespace DataAccess.Postgres.Repository
             .Include(t => t.Lessons)
             .FirstOrDefault(t => t.Login == login && t.Password == password);
 
-        public List<TeacherEntity> Get()
+        public override List<TeacherEntity> Get()
             => DbContext.Teachers
             .AsNoTracking()
             .ToList() ?? throw new ArgumentNullException();
@@ -38,13 +34,7 @@ namespace DataAccess.Postgres.Repository
             .Where(t => t.Id == id)
             .ToList();
 
-        public void Add(TeacherEntity visitor)
-        {
-            DbContext.Add(visitor);
-            DbContext.SaveChanges();
-        }
-
-        public void Update(int id, TeacherEntity visitor)
+        public override void Update(long id, TeacherEntity visitor)
         {
             DbContext.Teachers
                 .Where(v => v.Id == id)
@@ -58,9 +48,9 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(v => v.Password, visitor.Password));
         }
 
-        public void Delete(int id)
+        public override void Delete(TeacherEntity entity)
             => DbContext.Teachers
-            .Where(v => v.Id == id)
+            .Where(v => v.Id == entity.Id)
             .ExecuteDelete();
     }
 }

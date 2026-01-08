@@ -6,11 +6,10 @@ using WinFormsApp1.View;
 
 namespace Admin.ViewModel.News
 {
-    public class NewsManagementModelView : AbstractManagmentModelView
+    public class NewsManagementModelView : ManagmentModelView<NewsEntity>
     {
         private List<NewsEntity> newsEntities = new();
 
-        public override ICommand OnBack { get; set; }
         public override ICommand OnLoadAddingView { get; set; }
         public override ICommand OnLoadDetailsView { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override ICommand OnSerch { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -29,12 +28,8 @@ namespace Admin.ViewModel.News
             }
         }
 
-        public NewsManagementModelView(AdminMainView mainForm, NewsRepository newsRepository)
+        public NewsManagementModelView(AdminMainView mainForm, NewsRepository newsRepository) : base(mainForm, newsRepository)
         {
-            NewsEntities = newsRepository.Get();
-
-            OnBack = new MainCommand(
-                _ => mainForm.InitializeComponents());
         }
     }
 }

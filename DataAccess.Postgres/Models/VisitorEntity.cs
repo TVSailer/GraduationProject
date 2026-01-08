@@ -1,8 +1,9 @@
-﻿namespace DataAccess.Postgres.Models
+﻿using CSharpFunctionalExtensions;
+
+namespace DataAccess.Postgres.Models
 {
-    public class VisitorEntity
+    public class VisitorEntity : Entity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Patronymic { get; set; }

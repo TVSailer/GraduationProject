@@ -3,27 +3,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
 {
-    public class VisitorsRepository
+    public class VisitorsRepository : Repository<VisitorEntity>
     {
-        public readonly ApplicationDbContext DbContext;
-        public VisitorEntity Visitor { get; private set; }
-        public VisitorsRepository(ApplicationDbContext dbContext)
+        public VisitorsRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-            DbContext = dbContext;
         }
-        public List<VisitorEntity> Get()
+
+        public override List<VisitorEntity> Get()
             => DbContext.Visitors
             .AsNoTracking()
             .ToList() ?? throw new ArgumentNullException();
 
-        public bool VerifyVisitor(string login, string password)
-        {
-            Visitor = DbContext.Visitors
-            .AsNoTracking()
-            .FirstOrDefault(v => v.Login == login && v.Password == password);
+        //public bool VerifyVisitor(string login, string password)
+        //{
+        //    Visitor = DbContext.Visitors
+        //    .AsNoTracking()
+        //    .FirstOrDefault(v => v.Login == login && v.Password == password);
 
-            return Visitor != null;
-        }
+        //    return Visitor != null;
+        //}
+
         public List<VisitorEntity> Get(string name, string surname, string patronymic)
             => DbContext.Visitors
             .AsNoTracking()
@@ -45,43 +44,7 @@ namespace DataAccess.Postgres.Repository
             .Where(v => v.Id == id)
             .ToList() ?? throw new ArgumentNullException();
 
-        public void Add(string name, string surname, string patronymic, string dateBirth, string numberPhone, List<LessonEntity> lessons, string login, string password, LessonEntity lesson)
-        {
-            var visitor = new VisitorEntity()
-            {
-                Name = name,
-                Surname = surname,
-                Patronymic = patronymic,
-                DateBirth = dateBirth,
-                NumberPhone = numberPhone,
-                Lessons = lessons,
-                Login = login,
-                Password = password
-            };
-
-            DbContext.Add(visitor);
-            DbContext.SaveChanges();
-        }
-        
-        public void Add(VisitorEntity visitor)
-        {
-            DbContext.Add(visitor);
-            DbContext.SaveChanges();
-        }
-        
-        public void Update(int id, string name, string surname, string patronymic, string dateBirth, string numberPhone, ICollection<LessonEntity> lessons, string login, string password)
-            => DbContext.Visitors
-                .Where(v => v.Id == id)
-                .ExecuteUpdate(v => v
-                    .SetProperty(v => v.Name, name)
-                    .SetProperty(v => v.Surname, surname)
-                    .SetProperty(v => v.Patronymic, patronymic)
-                    .SetProperty(v => v.DateBirth, dateBirth)
-                    .SetProperty(v => v.NumberPhone, numberPhone)
-                    .SetProperty(v => v.Login, login)
-                    .SetProperty(v => v.Password, password));
-
-        public void Update(int id, VisitorEntity visitor)
+        public override void Update(long id, VisitorEntity visitor)
             => DbContext.Visitors
                 .Where(v => v.Id == id)
                 .ExecuteUpdate(v => v
@@ -93,9 +56,9 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(v => v.Login, visitor.Login)
                     .SetProperty(v => v.Password, visitor.Password));
 
-        public void Delete(int id)
+        public override void Delete(VisitorEntity entity)
             => DbContext.Visitors
-            .Where(v => v.Id == id)
+            .Where(v => v.Id == entity.Id)
             .ExecuteDelete();
 
     }

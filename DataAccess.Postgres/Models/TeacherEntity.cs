@@ -1,8 +1,9 @@
-﻿namespace DataAccess.Postgres.Models
+﻿using CSharpFunctionalExtensions;
+
+namespace DataAccess.Postgres.Models
 {
-    public class TeacherEntity
+    public class TeacherEntity : Entity
     {
-        public int Id { get; private set; }
         public string Name { get; private set; }
         public string Surname { get; private set; }
         public string Patronymic { get; private set; }
@@ -10,11 +11,11 @@
         public string NumberPhone { get; private set; }
         public string Login { get; private set; }
         public string Password { get; private set; }
-        public List<LessonEntity>? Lessons { get; set; }
+        public List<LessonEntity>? Lessons { get; set; } = new();
         public string UrlFaceImg { get; private set; }
 
         public TeacherEntity() { }
-        public TeacherEntity(string name, string surname, string patro, string dateBurth, string numberPhone, string urlImg, List<LessonEntity>? lesson) 
+        public TeacherEntity(string name, string surname, string patro, string dateBurth, string numberPhone, string urlImg) 
         {
             Name = name;
             Surname = surname;
@@ -22,7 +23,6 @@
             DateBirth = dateBurth;
             NumberPhone = numberPhone;
             UrlFaceImg = urlImg;
-            Lessons = lesson;
             Password = "1234";
             Login = "1234";
         }

@@ -4,7 +4,7 @@ public static class FunctionalExtensions
 {
 
 
-    public static T With<T>(this T control, Action<T> action) where T : class
+    public static T With<T>(this T control, Action<T> action) 
     {
         action?.Invoke(control);
         return control;

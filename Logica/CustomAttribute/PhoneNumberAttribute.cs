@@ -26,7 +26,7 @@ namespace Logica.CustomAttribute
             return false;
         }
 
-        public static bool IsValidPhoneNumber(string phoneNumber)
+        public bool IsValidPhoneNumber(string phoneNumber)
         {
             string pattern = @"^(\+7|8)[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$";
             string cleanedPhoneNumber = Regex.Replace(phoneNumber, @"\s+", "");

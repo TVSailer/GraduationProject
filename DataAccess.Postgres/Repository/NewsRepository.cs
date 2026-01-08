@@ -4,21 +4,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
 {
-    public class NewsRepository
+    public class NewsRepository : Repository<NewsEntity>
     {
-        public readonly ApplicationDbContext DbContext;
-        public NewsEntity News { get; private set; }
-
-        public NewsRepository(ApplicationDbContext dbContext)
+        public NewsRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-            DbContext = dbContext;
         }
         
-        public List<NewsEntity> Get()
+        public override List<NewsEntity> Get()
             => DbContext.News
             .Include(e => e.ImgsNews)
             .AsNoTracking()
-            .ToList() ?? throw new ArgumentNullException();
+            .ToList();
 
         public NewsEntity Get(int id)
             => DbContext.News
@@ -26,13 +22,7 @@ namespace DataAccess.Postgres.Repository
             .Include(e => e.ImgsNews)
             .FirstOrDefault(v => v.Id == id) ?? throw new ArgumentNullException();
 
-        public void Add(NewsEntity news)
-        {
-            DbContext.Add(news);
-            DbContext.SaveChanges();
-        }
-
-        public void Update(int id, NewsEntity news)
+        public override void Update(long id, NewsEntity news)
         {
             DbContext.News
                 .Where(n => n.Id == id)
@@ -70,9 +60,9 @@ namespace DataAccess.Postgres.Repository
             DbContext.SaveChanges();
         }
 
-        public void Delete(int id)
-            => DbContext.Event
-            .Where(v => v.Id == id)
+        public override void Delete(NewsEntity entity)
+            => DbContext.News
+            .Where(v => v.Id == entity.Id)
             .ExecuteDelete();
     }
 }

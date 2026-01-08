@@ -1,8 +1,9 @@
-﻿namespace DataAccess.Postgres.Models;
+﻿using CSharpFunctionalExtensions;
 
-public class EventEntity
+namespace DataAccess.Postgres.Models;
+
+public class EventEntity : Entity
 {
-    public int Id { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
     public string Date { get; private set; }
@@ -13,7 +14,6 @@ public class EventEntity
     public int MaxParticipants { get; private set; }
     public int CurrentParticipants { get;  private set; }
     public List<ImgEventEntity>? ImgsEvent { get; set; } = new();
-    public string Participants => $"{CurrentParticipants} / {MaxParticipants}";
 
     public EventEntity() { }
 

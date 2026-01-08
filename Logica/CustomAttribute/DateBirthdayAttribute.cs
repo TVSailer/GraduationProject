@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CSharpFunctionalExtensions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Logica.CustomAttribute
 {

@@ -10,9 +10,9 @@ namespace WinFormsApp1.ViewModel.Event
         public readonly EventEntity EventEntity;
         public ICommand OnDelete { get; private set; }
 
-        public EventDetailsViewModel(EventRepository eventRepository, int idEvent) : base(eventRepository)
+        public EventDetailsViewModel(EventRepository eventRepository, EventEntity ev) : base(eventRepository)
         {
-            EventEntity = eventRepository.Get(idEvent);
+            EventEntity = eventRepository.Get(ev.Id);
 
             EventEntity.ImgsEvent?.ForEach(img => SelectedImg.Add(img.Url, false));
 
@@ -28,7 +28,7 @@ namespace WinFormsApp1.ViewModel.Event
             OnDelete = new MainCommand(
                 _ =>
                 {
-                    eventRepository.Delete(EventEntity.Id);
+                    eventRepository.Delete(EventEntity);
                     OnBack.Execute(null);
                 });
 
@@ -41,7 +41,7 @@ namespace WinFormsApp1.ViewModel.Event
 
                         SelectedImg.ForEach(i => imgs.Add(new ImgEventEntity(i.Key)));
 
-                        eventRepository.Update(idEvent,
+                        eventRepository.Update(ev.Id,
                             new EventEntity(Title, Description, Date, Location, Category, RegisLink, Organizer, int.Parse(MaxParticipants), imgs));
 
                         LogicaMessage.MessageOk("Мероприятие успешно отредактировано!");

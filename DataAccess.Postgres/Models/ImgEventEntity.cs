@@ -1,17 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using CSharpFunctionalExtensions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Postgres.Models;
 
-public class ImgEventEntity : ImgEntity
+public class ImgEventEntity : Entity
 {
     [ForeignKey(nameof(EventEntity))]
-    public int EventId { get; private set; }
+    public long EventId { get; private set; }
     public EventEntity Event { get; private set; }
+    public string Url { get; protected set; }
+
 
     public ImgEventEntity() { }
 
-    public ImgEventEntity(string urlImg)
+    public ImgEventEntity(string url)
     {
-        Url = urlImg;
+        Url = url;
     }
 }
