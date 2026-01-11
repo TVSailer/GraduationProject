@@ -4,7 +4,7 @@ using Logica;
 
 namespace WinFormsApp1.View
 {
-    public partial class AdminMainView : Form, IViewForm
+    public partial class AdminMainView : Form, IView
     {
         public AdminMainView(AdminMainViewModel adminMainViewModel)
         {
@@ -54,6 +54,11 @@ namespace WinFormsApp1.View
                 .With(b => b.Font = new Font("Arial", 12, FontStyle.Bold))
                 .With(b => b.DataBindings.Add(new Binding("Command", context, dataMember, true)))
                 .With(b => b.BackColor = Color.LightGray);
+
+        public Form InitializeComponents(object? data)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

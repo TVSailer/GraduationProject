@@ -8,17 +8,22 @@ namespace Admin.View.Moduls.Lesson
     {
         private double reting;
 
-        public LessonCard(LessonEntity data)
-            : base(data)
+        public LessonCard()
         {
             Size = new Size(400, 240);
-            CreateContent();
+        }
+
+        public override ObjectCard<LessonEntity> Initialize(LessonEntity obj)
+        {
+            base.Initialize(obj);
 
             if (entity != null && entity.Reviews.Count > 0)
             {
                 entity.Reviews.ForEach(r => reting += r.Rating);
                 reting /= entity.Reviews.Count;
             }
+
+            return this;
         }
 
         public override Control Content()

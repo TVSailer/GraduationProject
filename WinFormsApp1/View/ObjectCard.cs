@@ -1,8 +1,11 @@
-﻿namespace WinFormsApp1.View
+﻿using CSharpFunctionalExtensions;
+
+namespace WinFormsApp1.View
 {
-    public abstract class ObjectCard<T> : Panel
+    public class ObjectCard<T> : Panel
+        where T : Entity
     {
-        protected readonly T entity;
+        protected T entity;
         protected int _objectId;
 
         private bool _isMouseOver = false;
@@ -70,8 +73,14 @@
                 .With(c => c.Cursor = Cursors.Hand)
                 .With(c => c.Controls.AsEnumerable().ForEach(SetupChildControl));
 
-        public void CreateContent() { Controls.Add(Content()); }
-        
+        public virtual ObjectCard<T> Initialize(T obj)
+        {
+            entity = obj;
+            Controls.Add(Content());
+
+            return this;
+        }
+
         public virtual Control Content() { throw new ArgumentNullException(); }
     }
 }

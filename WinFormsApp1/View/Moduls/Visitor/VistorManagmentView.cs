@@ -1,26 +1,14 @@
-﻿using Admin.ViewModel.Visitor;
+﻿using Admin.ViewModels.Visitor;
 using DataAccess.Postgres.Models;
 using Logica;
 using WinFormsApp1.View;
 
 namespace Admin.View.Moduls.Visitor
 {
-    public class VistorManagmentView : ManagementView<VisitorEntity>
+    public class VistorManagmentView 
     {
-        private new readonly VisitorManagementModelView context;
-
-        public VistorManagmentView(AdminMainView mainForm, VisitorManagementModelView modelView) : base(mainForm, modelView)
+        public VistorManagmentView(AdminMainView mainForm, VisitorManagementModelView modelView) //: base(mainForm, modelView, "👥 Управление посетителями")
         {
-            context = modelView;
-            form.Text = "👥 Управление посетителями";
         }
-
-        protected override Control LoadSerchPanel()
-        {
-            return new Panel();
-        }
-
-        public override ObjectCard<VisitorEntity> CreateCard(VisitorEntity entity)
-            => new VisitorCard(entity);
     }
 }

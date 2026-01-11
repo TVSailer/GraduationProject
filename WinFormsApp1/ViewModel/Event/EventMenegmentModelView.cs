@@ -1,5 +1,5 @@
 ﻿using Admin.View.Moduls.Event;
-using Admin.ViewModel;
+using Admin.ViewModels;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
@@ -8,7 +8,7 @@ using System.Windows.Input;
 using WinFormsApp1;
 using WinFormsApp1.View;
 
-public class EventMenegmentModelView : ManagmentModelView<EventEntity>
+public class EventMenegmentModelView 
 {
     private List<string> categorys = new() { "Пусто" };
     private string title = "";
@@ -16,51 +16,8 @@ public class EventMenegmentModelView : ManagmentModelView<EventEntity>
     private string stDate = DateTime.Now.ToString();
     private string enDate = DateTime.Now.ToString();
 
-    public override ICommand OnLoadAddingView { get; set; }
-    public override ICommand OnLoadDetailsView { get; set; }
-    public override ICommand OnSerch { get; set; }
-    public override ICommand OnClearSerch { get; set; }
-
-    public string Title 
-    { 
-        get => title; 
-        set
-        {
-            if (value == title)
-                return;
-            title = value;
-        }
-    }
-    public string Category
-    {
-        get => category;
-        set
-        {
-            if (value == category)
-                return;
-            category = value;
-        }
-    }
-    public string StartDate
-    {
-        get => stDate;
-        set
-        {
-            if (value == stDate)
-                return;
-            stDate = value;
-        }
-    }
-    public string EndDate
-    {
-        get => enDate;
-        set
-        {
-            if (value == enDate)
-                return;
-            enDate = value;
-        }
-    }
+    //public override ICommand OnSerch { get; set; }
+    //public override ICommand OnClearSerch { get; set; }
 
     public List<string> Categorys
     {
@@ -74,7 +31,7 @@ public class EventMenegmentModelView : ManagmentModelView<EventEntity>
         }
     }
 
-    public EventMenegmentModelView(AdminMainView mainForm, EventRepository eventRepository) : base(mainForm, eventRepository)
+    public EventMenegmentModelView(AdminMainView mainForm, EventRepository eventRepository)
     {
         eventRepository.Get().ForEach(e =>
         {
@@ -82,38 +39,36 @@ public class EventMenegmentModelView : ManagmentModelView<EventEntity>
                 Categorys.Add(e.Category);
         });
 
-        OnSerch = new MainCommand(
-            _ =>
-            {
-                data = eventRepository.Get()
-                .Where(e => e.Title.StartsWith(Title))
-                .Where(e => Category == "Пусто" ? true : e.Category == Category)
-                .Where(e => DateTime.Parse(StartDate) < DateTime.Parse(e.Date) && DateTime.Parse(EndDate) > DateTime.Parse(e.Date))
-                .ToList();
-            });
+        //OnSerch = new MainCommand(
+        //    _ =>
+        //    {
+        //        // data = eventRepository.Get()
+        //        //.Where(e => e.Title.StartsWith(Title))
+        //        //.Where(e => Category == "Пусто" ? true : e.Category == Category)
+        //        //.Where(e => DateTime.Parse(StartDate) < DateTime.Parse(e.Date) && DateTime.Parse(EndDate) > DateTime.Parse(e.Date))
+        //        //.ToList();
+        //    });
 
-        OnClearSerch = new MainCommand(
-            _ =>
-            {
-                data = eventRepository.Get();
-            });
+        //OnClearSerch = new MainCommand(
+        //    _ =>
+        //    {
+        //        //data = eventRepository.Get();
+        //    });
 
-        OnLoadDetailsView = new MainCommand(
-            obj =>
-            {
-                if (obj is EventEntity ev)
-                    using (var scope = new ContainerScoped(AdminDIConteiner.Container))
-                        scope.GetService<EventDetailsView>(ev).InitializeComponents();
-            });
+        //OnLoadDetailsView = new MainCommand(
+        //    obj =>
+        //    {
+        //        if (obj is EventEntity ev)
+        //            using (var scope = AdminDI.CreateDIScope())
+        //                scope.GetService<EventDetailsView>().InitializeComponents();
+        //    });
 
-        OnLoadAddingView = new MainCommand(
-            _ =>
-            {
-                using (var scope = new ContainerScoped(AdminDIConteiner.Container))
-                {
-                    scope.GetService<EventAddingView>().InitializeComponents();
-                }
-            });
+        //OnLoadAddingView = new MainCommand(
+        //    _ =>
+        //    {
+        //        using (var scope = AdminDI.CreateDIScope())
+        //            scope.GetService<EventAddingView>().InitializeComponents();
+        //    });
     }
 
 }

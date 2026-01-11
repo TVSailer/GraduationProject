@@ -1,30 +1,20 @@
-﻿namespace Logica.DI
+﻿using System.ComponentModel;
+using System.Xml.Linq;
+
+namespace Logica.DI
 {
-    public class DIContainer
+
+
+    public class DIContainer : IDisposable
     {
-        public Dictionary<Type, ServiceDescriptor> descriptors { get; private set; } = new();
+        public readonly Dictionary<Type, ServiceDescriptor> Description;
+        private Dictionary<Type, object> scopedInstances = new();
+        private bool isScope;
 
-        public void Register<TService, TImplementation>(ServiceLifetime serviceLifetime) 
-            where TService : class
-            where TImplementation : class, TService
+        public DIContainer(Dictionary<Type, ServiceDescriptor> descriptors, bool isScope)
         {
-            descriptors[typeof(TService)] = new ServiceDescriptor(typeof(TService), typeof(TImplementation), serviceLifetime);
-        }
-        
-        public void Register<TImplementation>(ServiceLifetime serviceLifetime) 
-            where TImplementation : class
-        {
-            descriptors[typeof(TImplementation)] = new ServiceDescriptor(typeof(TImplementation), typeof(TImplementation), serviceLifetime);
-        }
-
-        public void RegisterSingleton<TService>(TService instance)
-            where TService : class
-        {
-            descriptors[typeof(TService)] = new ServiceDescriptor(
-                typeof(TService),
-                instance.GetType(),
-                ServiceLifetime.Singleton,
-                instance);
+            Description = descriptors;
+            this.isScope = true;//isScope;
         }
 
         public T GetService<T>()
@@ -32,40 +22,48 @@
             return (T)GetService(typeof(T));
         }
         
-        public T GetService<T>(params object[] parametrs)
-        {
-            return (T)GetService(typeof(T), parametrs);
-        }
-
         public object GetService(Type serviceType)
         {
-            if (descriptors.TryGetValue(serviceType, out var descriptor))
-                return GetServiceInstance(descriptor);
-
-            throw new InvalidOperationException($"Сервис {serviceType.Name} не зарегистрирован");
-        }
-        
-        public object GetService(Type serviceType, object[] parametrs)
-        {
-            if (descriptors.TryGetValue(serviceType, out var descriptor))
-                return GetServiceInstance(descriptor, parametrs);
-
-            throw new InvalidOperationException($"Сервис {serviceType.Name} не зарегистрирован");
-        }
-
-        public object GetServiceInstance(ServiceDescriptor serviceDescriptor, params object[] parametrs)
-        {
-            if (serviceDescriptor.ServiceLifetime == ServiceLifetime.Singleton)
+            if (!Description.TryGetValue(serviceType, out var descriptor))
             {
-                if (serviceDescriptor.Instance == null)
-                    serviceDescriptor.Instance = CreateInstance(serviceDescriptor.ImplementationType, parametrs);
-                return serviceDescriptor.Instance;
+                if (!serviceType.IsAbstract && !serviceType.IsInterface)
+                {
+                    return CreateInstance(serviceType);
+                }
+
+                throw new InvalidOperationException($"Сервис {serviceType.Name} не зарегистрирован");
             }
 
-            return CreateInstance(serviceDescriptor.ImplementationType, parametrs);
+            return GetServiceInstance(descriptor);
+        }
+        
+        public object GetServiceInstance(ServiceDescriptor serviceDescriptor)
+        {
+            switch (serviceDescriptor.ServiceLifetime)
+            {
+                case ServiceLifetime.Singleton:
+                    if (serviceDescriptor.Instance == null)
+                        serviceDescriptor.Instance = CreateInstance(serviceDescriptor.ImplementationType);
+                    return serviceDescriptor.Instance;
+
+                case ServiceLifetime.Scoped:
+                    if (isScope && !scopedInstances.TryGetValue(serviceDescriptor.ServiceType, out var instance))
+                    {
+                        instance = CreateInstance(serviceDescriptor.ImplementationType);
+                        scopedInstances[serviceDescriptor.ServiceType] = instance;
+                        return instance;
+                    } 
+                    return CreateInstance(serviceDescriptor.ImplementationType);
+
+                case ServiceLifetime.Transient:
+                    return CreateInstance(serviceDescriptor.ImplementationType);
+
+                default:
+                    throw new InvalidOperationException("Неизвестный lifetime");
+            }
         }
 
-        private object CreateInstance(Type implementationType, object[] parametrsUp)
+        public object CreateInstance(Type implementationType)
         {
             var containers = implementationType.GetConstructors();
 
@@ -78,14 +76,16 @@
             var parameters = container.GetParameters();
             var parametersInstance = new object[parameters.Length];
 
-            for (int i = 0; i < parameters.Length - parametrsUp.Length; i++)
+            for (int i = 0; i < parameters.Length; i++)
                 parametersInstance[i] = GetService(parameters[i].ParameterType);
-
-            if (parametrsUp != null)
-                for (int i = parameters.Length - parametrsUp.Length; i < parameters.Length; i++)
-                    parametersInstance[i] = parametrsUp[i - (parameters.Length - parametrsUp.Length)];
 
             return container.Invoke(parametersInstance);
         }
+
+        public void Dispose()
+        {
+            scopedInstances.Clear();
+        }
+
     }
 }

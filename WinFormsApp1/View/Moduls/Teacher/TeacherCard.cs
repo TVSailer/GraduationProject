@@ -6,14 +6,16 @@ namespace Admin.View.Moduls.Teacher
 {
     public class TeacherCard : ObjectCard<TeacherEntity>
     {
-        public TeacherCard(TeacherEntity teacherEntity)
-            : base(teacherEntity)
+        public TeacherCard()
         {
             Size = new Size(900, 50);
             Margin = new Padding(1);
             Padding = new Padding(1);
+        }
 
-            CreateContent();
+        public override ObjectCard<TeacherEntity> Initialize(TeacherEntity obj)
+        {
+            return base.Initialize(obj);
         }
 
         public override Control Content()

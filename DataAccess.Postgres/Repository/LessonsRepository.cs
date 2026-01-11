@@ -24,7 +24,7 @@ namespace DataAccess.Postgres.Repository
             .Include(l => l.Dates)
             .AsNoTracking()
             .FirstOrDefault(l => l.Id == id) ?? throw new ArgumentNullException();
-        
+
         public LessonEntity Get(string name)
             => DbContext.Lessons
             .Include(l => l.Visitors)

@@ -6,10 +6,14 @@ namespace Admin.View.Moduls.Event
 {
     public class EventCard : ObjectCard<EventEntity>
     {
-        public EventCard(EventEntity eventEntity) : base(eventEntity)
+        public EventCard()
         {
             Size = new Size(400, 170);
-            CreateContent();
+        }
+
+        public override ObjectCard<EventEntity> Initialize(EventEntity obj)
+        {
+            return base.Initialize(obj);
         }
 
         public override Control Content()

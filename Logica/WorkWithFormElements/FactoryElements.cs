@@ -3,6 +3,7 @@ using Logica.Extension;
 using static System.Net.Mime.MediaTypeNames;
 using System.Threading.Tasks.Dataflow;
 using Font = System.Drawing.Font;
+using Admin.ViewModels.Lesson;
 
 
 
@@ -218,7 +219,7 @@ public static class FactoryElements
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
             BorderStyle = BorderStyle.FixedSingle,
-
+            ScrollBars = ScrollBars.Vertical,
         };
 
     public static TextBox TextBoxMultiline(string placeholderText)
@@ -340,6 +341,14 @@ public static class FactoryElements
             .With(c => c.Text = text)
             .With(c => c.BackColor = Color.White)
             .With(c => c.DataBindings.Add(new Binding("Command", context, dataMember, true)))
+            .With(c => c.Dock = DockStyle.Fill)
+            .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold));
+    
+    public static Button Button(ButtonInfoAttribute buttonInfo, object context)
+        => new Button()
+            .With(c => c.Text = buttonInfo.Text)
+            .With(c => c.BackColor = Color.White)
+            .With(c => c.DataBindings.Add(new Binding("Command", context, buttonInfo.ButtonName, true)))
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold));
 

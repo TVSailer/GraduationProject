@@ -6,53 +6,6 @@ namespace Logica
 {
     public static partial class TableLayoutPanelExtension
     {
-        //public static TableLayoutPanel ControlsAddByColumnOrRow<T>(
-        //    this TableLayoutPanel table, List<T> controls, int column, int row, bool byColumn) 
-        //    where T : Control
-        //{
-        //    foreach (var control in controls)
-        //    {
-        //        if (byColumn)
-        //        {
-        //            table.ControlsAdd(control, column, row);
-        //            column++;
-        //        }
-        //        else
-        //        {
-        //            table.ControlsAdd(control, column, row);
-        //            row++;
-        //        }
-        //    }
-
-        //    return table;
-        //}
-
-        //public static TableLayoutPanel ControlsAdd(
-        //    this TableLayoutPanel table, Control control, int column, int row) 
-        //{
-        //    table.Controls.Add(control, column, row);
-        //    return table;
-        //}
-
-        //public static TableLayoutPanel ControlsAdd(
-        //   this TableLayoutPanel table, Control control, int column, int row, int valueColumnSpan, int valueRowSpan)
-        //{
-        //    table.Controls.Add(control, column, row);
-        //    if (valueColumnSpan > 1) table.SetColumnSpan(control, valueColumnSpan);
-        //    if (valueRowSpan > 1) table.SetRowSpan(control, valueRowSpan);
-
-        //    return table;
-        //}
-        
-        //public static TableLayoutPanel ControlAddIsRowsAbsolute(
-        //   this TableLayoutPanel table, Control control, int heinght)
-        //    => control == null ? 
-        //        table
-        //            .ControlAddIsRowsAbsolute(new Panel(), heinght) : 
-        //        table
-        //            .With(t => t.RowStyles.Add(new RowStyle(SizeType.Absolute, heinght)))
-        //            .With(t => t.Controls.Add(control, 0, table.RowStyles.Count - 1));
-        
         public static TableLayoutPanel ControlAddIsRowsAbsoluteV2(
            this TableLayoutPanel table, Control? control, int heinght)
             => control == null ? 
@@ -68,15 +21,6 @@ namespace Logica
         public static TableLayoutPanel ControlAddIsRowsAbsoluteV2(
            this TableLayoutPanel table, int heinght)
             => table.ControlAddIsRowsAbsoluteV2(new Panel(), heinght);
-        
-        //public static TableLayoutPanel ControlAddIsRowsPercent(
-        //   this TableLayoutPanel table, Control? control, int heinght)
-        //    => control == null ? 
-        //        table
-        //            .ControlAddIsRowsPercent(new Panel(), heinght) : 
-        //        table
-        //            .With(t => t.RowStyles.Add(new RowStyle(SizeType.Percent, heinght)))
-        //            .With(t => t.Controls.Add(control, 0, table.RowStyles.Count - 1));
         
         public static TableLayoutPanel ControlAddIsRowsPercentV2(
            this TableLayoutPanel table, Control? control, int heinght)
@@ -98,15 +42,6 @@ namespace Logica
            this TableLayoutPanel table)
             => table
                 .ControlAddIsRowsPercentV2(new Panel(), 10);
-
-        //public static TableLayoutPanel ControlAddIsColumnAbsolute(
-        //   this TableLayoutPanel table, Control? control, int weidht)
-        //    => control == null ?
-        //        table
-        //            .ControlAddIsColumnAbsolute(new Panel(), weidht) :
-        //        table
-        //            .With(t => t.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, weidht)))
-        //            .With(t => t.Controls.Add(control, table.ColumnStyles.Count - 1, 0));
 
         public static TableLayoutPanel ControlAddIsColumnAbsoluteV2(
            this TableLayoutPanel table, Control control, int weidht)

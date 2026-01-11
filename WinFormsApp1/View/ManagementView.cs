@@ -1,36 +1,41 @@
-﻿using Admin.ViewModel;
+﻿using Admin.View.Moduls.Event;
+using Admin.View.Moduls.Lesson;
+using Admin.View.ViewForm;
+using Admin.ViewModels;
 using CSharpFunctionalExtensions;
+using DataAccess.Postgres.Repository;
 using Logica;
+using Microsoft.EntityFrameworkCore.Metadata;
 using WinFormsApp1.View;
+using IView = Admin.View.ViewForm.IView;
 
 namespace Admin.View
 {
-    public abstract class ManagementView<T>
+    public class ManagementView<TEntity, TCard> : IView
+        where TEntity : Entity 
+        where TCard : ObjectCard<TEntity>, new()
     {
         protected readonly Form form;
-        protected readonly ManagmentModelView<T> context;
+        protected readonly ManagmentModelView<TEntity> context;
 
-        public ManagementView(Form form, ManagmentModelView<T> modelView)
+        public ManagementView(AdminMainView mainForm, ManagmentModelView<TEntity> manager)
         {
-            this.form = form;
-            context = modelView;
+            form = mainForm;
+            context = manager;
         }
-
-        public Form InitializeComponents()
-            => form
-                .With(m => m.Controls.Clear())
-                .With(m => m.Controls.Add(UIEvent()));
 
         private TableLayoutPanel UIEvent()
             => FactoryElements.TableLayoutPanel()
-            .ControlAddIsRowsAbsoluteV2(FactoryElements.LabelTitle(form.Text), 70)
             .ControlAddIsRowsPercentV2(FactoryElements.TableLayoutPanel()
                 .With(t => t.BackColor = Color.WhiteSmoke)
                 .ControlAddIsColumnPercentV2(LoadCardsPanel(), 80)
                 .ControlAddIsColumnPercentV2(LoadSerchPanel(), 20))
             .ControlAddIsRowsAbsoluteV2(LoadButtonPanel(), 90);
 
-        protected abstract Control LoadSerchPanel();
+        protected virtual Control LoadSerchPanel()
+        {
+            return new Panel();
+        }
 
         protected virtual Control LoadCardsPanel()
             => new FlowLayoutPanel()
@@ -52,10 +57,10 @@ namespace Admin.View
             .ForEach(
                 en =>
                 {
-                    p.Controls.Add(CreateCard(en)
+                    p.Controls.Add(new TCard().Initialize(en)
                     .With(c => c.OnCardClicked +=
                     (s, e) => {
-                        if (en is Entity entity)
+                        if (en is TEntity entity)
                             context.OnLoadDetailsView.Execute(entity);
                         else throw new ArgumentException();
                     }));
@@ -68,7 +73,11 @@ namespace Admin.View
             .ControlAddIsColumnPercentV2(FactoryElements.Button("➕ Добавить", context, "OnLoadAddingView"), 40)
             .ControlAddIsColumnPercentV2(FactoryElements.Button("⬅️ Назад", context, "OnBack"), 40);
 
-        public abstract ObjectCard<T> CreateCard(T entity);
+
+        public Form InitializeComponents(object? data)
+            => form
+                .With(m => m.Controls.Clear())
+                .With(m => m.Controls.Add(UIEvent()));
     }
 }
 

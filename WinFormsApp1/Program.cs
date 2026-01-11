@@ -12,7 +12,7 @@ namespace WinFormsApp1
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(AdminDIConteiner.GetService<AdminMainView>());
+            Application.Run(AdminDI.GetService<AdminMainView>());
         }
     }
 }

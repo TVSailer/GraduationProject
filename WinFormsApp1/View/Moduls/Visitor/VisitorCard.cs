@@ -6,14 +6,16 @@ namespace Admin.View.Moduls.Visitor
 {
     public class VisitorCard : ObjectCard<VisitorEntity>
     {
-        public VisitorCard(VisitorEntity visitorEntity)
-            : base()
+        public VisitorCard()
         {
             Size = new Size(1200, 50);
             Margin = new Padding(1);
             Padding = new Padding(1);
+        }
 
-            CreateContent();
+        public override ObjectCard<VisitorEntity> Initialize(VisitorEntity obj)
+        {
+            return base.Initialize(obj);
         }
 
         public override Control Content()

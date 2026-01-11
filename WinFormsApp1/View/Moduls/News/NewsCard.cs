@@ -7,11 +7,14 @@ namespace Admin.View.Moduls.News
 {
     public class NewsCard : ObjectCard<NewsEntity>
     {
-        public NewsCard(NewsEntity newsEntity)
-            : base()
+        public NewsCard()
         {
             Size = new Size(400, 170);
-            CreateContent();
+        }
+
+        public override ObjectCard<NewsEntity> Initialize(NewsEntity obj)
+        {
+            return base.Initialize(obj);
         }
 
         public override Control Content()

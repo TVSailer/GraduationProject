@@ -1,16 +1,16 @@
-﻿using Admin.ViewModel.NotifuPropertyViewModel;
+﻿using Admin.ViewModels.NotifuPropertyViewModel;
 
 public class ErrorProviderView
 {
     private ErrorProvider errorProvider = new() { BlinkStyle = ErrorBlinkStyle.NeverBlink };
-    private readonly NotifyPropertyViewModel context;
+    protected readonly PropertyChange context;
 
-    public ErrorProviderView(NotifyPropertyViewModel context)
+    public ErrorProviderView(PropertyChange context)
     {
         this.context = context;
     }
 
-    protected void OnErrorProvider(string propertyName, Control control)
+    public void OnErrorProvider(string propertyName, Control control)
     {
         context.ErrorMassegeProvider += (s, e) =>
         {
