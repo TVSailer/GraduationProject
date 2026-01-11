@@ -4,6 +4,7 @@ using Admin.View.Moduls.Lesson;
 using Admin.View.Moduls.Teacher;
 using Admin.ViewModels;
 using Admin.ViewModels.Lesson;
+using Admin.ViewModels.NotifuPropertyViewModel;
 using Admin.ViewModels.Teachers;
 using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
@@ -42,7 +43,7 @@ namespace WinFormsApp1
 
             //register.RegisterScope<TeacherManagementView>();
 
-            register.Register<IViewModel<LessonEntity>, LessonViewModel>(ServiceLifetime.Scoped);
+            register.Register<ViewModel<LessonEntity>, LessonViewModel>(ServiceLifetime.Scoped);
             register.Register<ManagmentModelView<LessonEntity>>();
 
             register.Register<UI<LessonEntity>>();

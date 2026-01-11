@@ -5,7 +5,7 @@ using System.ComponentModel;
 using WinFormsApp1.View;
 
 public class ImagePanel<TEntity>
-     where TEntity : Entity
+     where TEntity : Entity, new()
 {
     public readonly ViewModelWithImages<TEntity> context;
 

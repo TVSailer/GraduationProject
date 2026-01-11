@@ -11,7 +11,7 @@ using WinFormsApp1.View;
 namespace Admin.ViewModels
 {
     public class ManagmentModelView<TEntity> : PropertyChange
-        where TEntity : Entity
+        where TEntity : Entity, new()
     {
         protected List<TEntity> data;
 
@@ -32,7 +32,7 @@ namespace Admin.ViewModels
             }
         }
 
-        public ManagmentModelView(AdminMainView mainForm, Repository<TEntity> repository, UI<TEntity> controlView, IViewModel<TEntity> controlViewModel)
+        public ManagmentModelView(AdminMainView mainForm, Repository<TEntity> repository, UI<TEntity> controlView, ViewModel<TEntity> controlViewModel)
         {
             data = repository.Get();
 

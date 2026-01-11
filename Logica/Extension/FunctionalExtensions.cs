@@ -1,9 +1,8 @@
-﻿using static System.Windows.Forms.Control;
+﻿using System.Collections;
+using static System.Windows.Forms.Control;
 
 public static class FunctionalExtensions
 {
-
-
     public static T With<T>(this T control, Action<T> action) 
     {
         action?.Invoke(control);
@@ -29,6 +28,12 @@ public static class FunctionalExtensions
     }
 
     public static IEnumerable<T> ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+    {
+        foreach (var item in collection) action(item);
+        return collection;
+    }
+    
+    public static IEnumerable ForEach(this IEnumerable collection, Action<object> action)
     {
         foreach (var item in collection) action(item);
         return collection;

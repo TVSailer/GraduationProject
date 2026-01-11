@@ -1,48 +1,77 @@
 ﻿using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
+using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Collections;
+using System.ComponentModel;
+using System.Configuration;
+using System.Data;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Admin.ViewModels.NotifuPropertyViewModel
 {
-    public abstract class ViewModel<TEntity> : PropertyChange, IViewModel<TEntity>
-        where TEntity : Entity
+    public abstract class ViewModel<TEntity> : PropertyChange
+        where TEntity : Entity, new()
     {
-        
+        public Action<TEntity> OnGetEntity;
+        public Action<TEntity> OnSetEntiy;
+
+        private Dictionary<FieldInfoViewModelAttribute, PropertyInfo> fieldInfoAttributes = new();
+
         protected TEntity Entity
         {
             get
             {
                 if (field is null) throw new ArgumentNullException();
+                OnGetEntity?.Invoke(field);
+
                 return field;
             }
-            set;
-        }
+            set
+            {
+                OnSetEntiy?.Invoke(value);
+
+                field = value;
+
+                fieldInfoAttributes.ForEach(i =>
+                {
+                    var rez = typeof(TEntity)
+                    .GetProperty(i.Key.NamePropertyEntity)
+                    .GetValue(Entity);
+
+                    i.Value.SetValue(this, rez);
+                });
+
+            }
+        } = new();
 
         [ButtonInfo("Назад")] public ICommand OnBack { get; protected set; }
         [ButtonInfo("Сохранить")] public ICommand OnSave { get; protected set; }
         [ButtonInfo("Обновить")] public ICommand OnUpdate { get; protected set; }
         [ButtonInfo("Удалить")] public ICommand OnDelete { get; protected set; }
 
-        public void Set<T>(ref T file, T value, [CallerMemberName] string prop = "")
+        public T Set<T>(T value, [CallerMemberName] string prop = "")
         {
             if (value is null) throw new ArgumentNullException();
 
-            file = value;
-
-            if (!Validatoreg.TryValidProperty(file, prop, this, out string errorMessage))
+            if (!Validatoreg.TryValidProperty(value, prop, this, out string errorMessage))
             {
                 OnMassegeErrorProvider(errorMessage, prop);
-                return;
+                return value;
             }
 
-            Entity.GetType()
-                .GEt
+            //var entityProp = typeof(TEntity).GetProperty(propEntity) ?? throw new ArgumentNullException();
+            //entityProp.SetValue(Entity, value);
 
             OnMassegeErrorProvider("", prop);
             OnPropertyChanged(prop);
+
+            return value;
         }
 
         public ViewModel() { }
@@ -61,6 +90,13 @@ namespace Admin.ViewModels.NotifuPropertyViewModel
                     repository.Delete(Entity);
                     OnBack.Execute(this);
                 });
+
+            GetType().GetProperties()
+                .ForEach(p => p.GetCustomAttributes().ForEach(a =>
+                {
+                    if (a is FieldInfoViewModelAttribute obj)
+                        fieldInfoAttributes.Add(obj, p);
+                }));
         }
 
         private void TryValidObject(Action action)
@@ -75,7 +111,19 @@ namespace Admin.ViewModels.NotifuPropertyViewModel
 
         protected abstract Action actionSave { get; set; }
 
-        public abstract IViewModel<TEntity> Initialize(object value);
-        public abstract void SetData(TEntity value);
+
+        public void SetData(TEntity value)
+        {
+            Entity = value;
+        }
+
+        public List<TAttribute?> GetPropertyInfo<TAttribute>() 
+            where TAttribute : Attribute
+        {
+            return GetType().GetProperties()
+                .Select(p => p.GetCustomAttribute<TAttribute>())
+                .Where(at => at != null)
+                .ToList() ?? throw new ArgumentNullException();
+        }
     }
 }

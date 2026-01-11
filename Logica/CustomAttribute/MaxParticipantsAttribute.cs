@@ -16,10 +16,10 @@ namespace Logica.CustomAttribute
 
         public override bool IsValid(object? value)
         {
-            if (value is string maxParticipants)
+            if (value is int maxParticipants)
             {
-                if (IsValidMaxParticipants(maxParticipants))
-                    return true;
+                //if (IsValidMaxParticipants(maxParticipants))
+                return true;
             }
 
             return false;

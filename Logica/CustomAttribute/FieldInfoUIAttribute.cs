@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Admin.ViewModels.Lesson
 {
-    public class FieldInfoAttribute : Attribute
+    public class FieldInfoUIAttribute : Attribute
     {
         public string Text { get; private set; }
         public bool Multiline { get; private set; }
@@ -12,7 +12,7 @@ namespace Admin.ViewModels.Lesson
         public int Size { get; private set; }
         public string NameProperty { get; private set; }
 
-        public FieldInfoAttribute(string text, string placeholderText = "", bool multiline = false, bool readOnly = false, int size = 54, [CallerMemberName] string prop = "")
+        public FieldInfoUIAttribute(string text, string placeholderText = "", bool multiline = false, bool readOnly = false, int size = 54, [CallerMemberName] string prop = "")
         {
             Text = text;
             PlaceholderText = placeholderText;

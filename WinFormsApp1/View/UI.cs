@@ -8,10 +8,10 @@ using Logica;
 using WinFormsApp1.View;
 
 public class UI<TEntity> : IView
-    where TEntity : Entity
+    where TEntity : Entity, new()
 {
     protected readonly AdminMainView form;
-    protected IViewModel<TEntity> context;
+    protected ViewModel<TEntity> context;
     protected ErrorProviderView errorProviderView;
     protected ImagePanel<TEntity> imagePanel;
 
@@ -22,7 +22,7 @@ public class UI<TEntity> : IView
 
     public Form InitializeComponents(object? data)
     {
-        if (data is IViewModel<TEntity> context)
+        if (data is ViewModel<TEntity> context)
         {
             this.context = context;
 
@@ -42,11 +42,12 @@ public class UI<TEntity> : IView
 
     private Control? CreateUI()
     {
-        var descrip = context.GetDescription();
+        var fieldsInfo = context.GetPropertyInfo<FieldInfoUIAttribute>();
+        var buttonInfo = context.GetPropertyInfo<ButtonInfoAttribute>();
 
-        var tp = FieldsPanel(descrip.fieldsInfo);
+        var tp = FieldsPanel(fieldsInfo);
         var ip = imagePanel.Images();
-        var bp = ButtonsPanel(descrip.buttonsInfo);
+        var bp = ButtonsPanel(buttonInfo);
 
         return FactoryElements.TableLayoutPanel()
             .ControlAddIsRowsAbsoluteV2(tp, tp.PreferredSize.Height)
@@ -54,7 +55,7 @@ public class UI<TEntity> : IView
             .ControlAddIsRowsAbsoluteV2(bp, bp.PreferredSize.Height);
     }
 
-    private Control FieldsPanel(List<FieldInfoAttribute> fieldsInfo)
+    private Control FieldsPanel(List<FieldInfoUIAttribute> fieldsInfo)
         => FactoryElements.TableLayoutPanel()
             .With(t => fieldsInfo.ForEach(
                 p => t.ControlAddIsRowsAbsoluteV2(CreateField(p), p.Size + 1)))
@@ -79,7 +80,7 @@ public class UI<TEntity> : IView
                             table.ControlAddIsColumnPercentV2(FactoryElements.Button(""));
             });
 
-    private Control CreateField(FieldInfoAttribute? fieldInfoAttribute)
+    private Control CreateField(FieldInfoUIAttribute? fieldInfoAttribute)
         => FactoryElements.TableLayoutPanel()
             .With(t => t.Padding = new Padding(0))
             .ControlAddIsRowsAbsoluteV2(FactoryElements.TableLayoutPanel()

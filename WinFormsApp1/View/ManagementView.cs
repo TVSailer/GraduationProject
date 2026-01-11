@@ -12,7 +12,7 @@ using IView = Admin.View.ViewForm.IView;
 namespace Admin.View
 {
     public class ManagementView<TEntity, TCard> : IView
-        where TEntity : Entity 
+        where TEntity : Entity, new()
         where TCard : ObjectCard<TEntity>, new()
     {
         protected readonly Form form;
