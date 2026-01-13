@@ -34,7 +34,11 @@ public class AdminMainViewModel
             });
 
         OnLoadLessonsManagemetnView = new MainCommand(
-            _ => AdminDI.GetService<ManagementView<LessonEntity, LessonCard>>().InitializeComponents(null));
+            _ =>
+            {
+                using (var scope = AdminDI.CreateDIScope())
+                    scope.GetService<ManagementView<LessonEntity, LessonCard>>().InitializeComponents(null);
+            });
         
         OnLoadNewsManagemetnView = new MainCommand(
             _ =>

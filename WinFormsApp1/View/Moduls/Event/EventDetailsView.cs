@@ -3,7 +3,7 @@
 //using Logica;
 //using WinFormsApp1;
 //using WinFormsApp1.View;
-//using WinFormsApp1.ViewModel.Event;
+//using WinFormsApp1.ViewModelEntity.Event;
 
 //namespace Admin.View.Moduls.Event
 //{

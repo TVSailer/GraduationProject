@@ -5,36 +5,44 @@ using Admin.ViewModels.Lesson;
 using Admin.ViewModels.NotifuPropertyViewModel;
 using CSharpFunctionalExtensions;
 using Logica;
+using System.Windows.Input;
 using WinFormsApp1.View;
 
-public class UI<TEntity> : IView
+public class UIEntity<TEntity> : IView
     where TEntity : Entity, new()
 {
     protected readonly AdminMainView form;
-    protected ViewModel<TEntity> context;
     protected ErrorProviderView errorProviderView;
     protected ImagePanel<TEntity> imagePanel;
 
-    public UI(AdminMainView mainView)
+    protected List<IViewModele<TEntity>> context = new();
+    protected List<FieldInfoUIAttribute> fieldInfo = new();
+    protected List<ButtonInfoUIAttribute> buttonsInfo = new();
+    protected ICommand command;
+
+    public UIEntity(AdminMainView mainView, params IViewModele<TEntity>[] viewModels)
     {
-        this.form = mainView;
+        form = mainView;
+
+        viewModels
+            .ToList()
+            .ForEach(v => {
+
+                if (context is PropertyChange obj1)
+                    errorProviderView = new ErrorProviderView(obj1);
+                else throw new ArgumentException("Переданный ViewModelEntity не наследует класс PropertyChange");
+
+                if (context is IViewModeleWithImgs<TEntity> obj2)
+                    imagePanel = new ImagePanel<TEntity>(obj2);
+        });
+
+
+        fieldInfo = context.GetPropertyInfo<FieldInfoUIAttribute>();
+        buttonsInfo = context.GetPropertyInfo<ButtonInfoUIAttribute>();
     }
 
     public Form InitializeComponents(object? data)
     {
-        if (data is ViewModel<TEntity> context)
-        {
-            this.context = context;
-
-            if (context is PropertyChange obj1)
-                errorProviderView = new ErrorProviderView(obj1);
-            else throw new ArgumentException("Переданный ViewModel не наследует класс PropertyChange");
-
-            if (context is ViewModelWithImages<TEntity> obj2)
-                imagePanel = new ImagePanel<TEntity>(obj2);
-        }
-        else throw new ArgumentException();
-
         return form
         .With(m => m.Controls.Clear())
         .With(m => m.Controls.Add(CreateUI()));
@@ -42,36 +50,46 @@ public class UI<TEntity> : IView
 
     private Control? CreateUI()
     {
-        var fieldsInfo = context.GetPropertyInfo<FieldInfoUIAttribute>();
-        var buttonInfo = context.GetPropertyInfo<ButtonInfoAttribute>();
+        var listF = fieldInfo
+            .Where(f => f.LinkCommand.Equals(command));
+        var listB = buttonsInfo
+            .Where(b => b.LinkCommand.Equals(command));
 
-        var tp = FieldsPanel(fieldsInfo);
-        var ip = imagePanel.Images();
-        var bp = ButtonsPanel(buttonInfo);
+        Control ip = null;
+
+        if (imagePanel != null)
+            ip = imagePanel.Images();
+
+        var fp = FieldsPanel(listF);
+        var bp = ButtonsPanel(listB);
 
         return FactoryElements.TableLayoutPanel()
-            .ControlAddIsRowsAbsoluteV2(tp, tp.PreferredSize.Height)
+            .ControlAddIsRowsAbsoluteV2(fp, fp.PreferredSize.Height)
             .ControlAddIsRowsPercentV2(ip)
             .ControlAddIsRowsAbsoluteV2(bp, bp.PreferredSize.Height);
     }
 
-    private Control FieldsPanel(List<FieldInfoUIAttribute> fieldsInfo)
+    private Control FieldsPanel(IEnumerable<FieldInfoUIAttribute> fieldsInfo)
         => FactoryElements.TableLayoutPanel()
             .With(t => fieldsInfo.ForEach(
                 p => t.ControlAddIsRowsAbsoluteV2(CreateField(p), p.Size + 1)))
             .ControlAddIsRowsPercentV2();
 
-    private Control ButtonsPanel(List<ButtonInfoAttribute> buttonsInfo)
+    private Control ButtonsPanel(IEnumerable<ButtonInfoUIAttribute> buttonsInfo)
         => FactoryElements.TableLayoutPanel()
             .With(t =>
             {
-                for (int i = 0; i < buttonsInfo.Count; i++)
+                var enumerator = buttonsInfo.GetEnumerator();
+
+                for (int i = 0; i < buttonsInfo.Count(); i++)
                 {
                     if (i % 4 == 0 || i == 0)
                         t.ControlAddIsRowsAbsoluteV2(new TableLayoutPanel() { Dock = DockStyle.Fill }, 70);
 
+                    if (enumerator.MoveNext())
+
                     if (t.Controls[^1] is TableLayoutPanel table)
-                        table.ControlAddIsColumnPercentV2(FactoryElements.Button(buttonsInfo[i], context));
+                        table.ControlAddIsColumnPercentV2(FactoryElements.Button(enumerator.Current, context));
                 }
 
                 if (t.Controls[^1].Controls.Count < 4)

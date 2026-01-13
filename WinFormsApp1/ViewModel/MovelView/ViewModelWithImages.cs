@@ -1,81 +1,110 @@
-﻿using Admin.ViewModels.Lesson;
+﻿using Admin.ViewModel.MovelView;
+using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
-using Logica;
-using Logica.Img;
-using System.Windows.Input;
-using WinFormsApp1.View;
-using DataAccess.Postgres.Repository;
+using DataAccess.Postgres.Migrations;
 using DataAccess.Postgres.Models;
-using System.Linq.Expressions;
-using System.Reflection;
+using Logica;
 using System.Collections;
+using System.Reflection;
+using System.Windows.Input;
 
 namespace Admin.ViewModels.NotifuPropertyViewModel
 {
-    public abstract class ViewModelWithImages<TEntity> : ViewModel<TEntity>
+    public abstract class ViewModelWithImages<TEntity, TImgEntity> : ViewModele<TEntity>
+        where TImgEntity : ImgEntity
         where TEntity : Entity, new()
     {
         public Dictionary<string, bool> SelectedImg { get; protected set; } = new();
+        private readonly PropertyInfo? typeListImgs;
+        private object? listImg;
 
-        protected ViewModelWithImages()
-        {
-        }
-
-        protected ViewModelWithImages(Repository<TEntity> repository) : base(repository)
-        {
-            Type genericArgumentForListImgs = null;
-
-            var TypelistImgs = typeof(TEntity)
-                .GetProperties()
-                .FirstOrDefault(p => p.PropertyType.GenericTypeArguments
-                .FirstOrDefault(a => a.BaseType.Name == nameof(ImgEntity))
-                .With(type => genericArgumentForListImgs = type)!= null);
-
-            if (TypelistImgs is null) throw new Exception();
-            if (genericArgumentForListImgs is null) throw new Exception();
-
-            var constructorList = TypelistImgs.PropertyType.GetConstructor([]) ?? throw new ArgumentNullException();
-            var listImg = constructorList.Invoke([]);
-
-            OnSetEntiy += (entity) =>
+        public override TEntity Entity { 
+            get
             {
-                var imgEntity = (IEnumerable?)TypelistImgs.GetValue(entity);
+                typeListImgs.PropertyType.GetMethod("Clear").Invoke(listImg, []);
+
+                SelectedImg.ForEach(i =>
+                {
+                    var method = typeListImgs.PropertyType.GetMethod("Add");
+                    method.Invoke(listImg, [typeof(TImgEntity).GetConstructor([typeof(string)]).Invoke([i.Key])]);
+                });
+
+                field.SetValue(listImg, typeListImgs.Name);
+
+                return field;
+            }
+            set
+            {
+                var imgEntity = (IEnumerable?)field.GetValue(typeListImgs.Name);
 
                 imgEntity.ForEach(img => SelectedImg.Add((string)img
                     .GetType()
                     .GetProperty("Url")
                     .GetValue(img), false));
-            };
-
-            OnGetEntity += (entity) =>
-            {
-                //constructorList.GetType().GetMethod("Clear").Invoke(constructorList, []);
-
-                SelectedImg.ForEach(i =>
-                {
-                    var method = TypelistImgs.PropertyType.GetMethod("Add");
-                    method.Invoke(listImg, [genericArgumentForListImgs.GetConstructor([typeof(string)]).Invoke([i.Key])]);
-                });
-
-                TypelistImgs.SetValue(entity, listImg);
-            };
+            }
         }
 
-        [ButtonInfo("Добавить изображения")]
+        protected ViewModelWithImages()
+        {
+            typeListImgs = typeof(TEntity)
+                .GetProperties()
+                .FirstOrDefault(p => p.PropertyType.GenericTypeArguments
+                .FirstOrDefault(a => a == (typeof(TImgEntity))) != null);
+
+            if (typeListImgs is null) throw new Exception();
+
+            var constructorList = typeListImgs.PropertyType.GetConstructor([]) ?? throw new ArgumentNullException();
+            listImg = constructorList.Invoke([]);
+
+            //ViewModelEntity<TEntity>.OnSetEntiy += GetValueEntity;
+            //ViewModelEntity<TEntity>.OnGetEntity += SetValueEntity;
+        }
+
+        //private void SetValueEntity(TEntity entity)
+        //{
+        //    typeListImgs.PropertyType.GetMethod("Clear").Invoke(listImg, []);
+
+        //    SelectedImg.ForEach(i =>
+        //    {
+        //        var method = typeListImgs.PropertyType.GetMethod("Add");
+        //        method.Invoke(listImg, [typeof(TImgEntity).GetConstructor([typeof(string)]).Invoke([i.Key])]);
+        //    });
+
+        //    entity.SetValue(listImg, typeListImgs.Name);
+        //}
+
+        //private void GetValueEntity(TEntity entity)
+        //{
+        //    var imgEntity = (IEnumerable?)entity.GetValue(typeListImgs.Name);
+
+        //    imgEntity.ForEach(img => SelectedImg.Add((string)img
+        //        .GetType()
+        //        .GetProperty("Url")
+        //        .GetValue(img), false));
+        //}
+
+        [ButtonInfoUI("Добавить изображения")]
         public ICommand OnAddingImg => new MainCommand(
             _ =>
             {
-                ImageDialog.WorkWithImages((fileName) =>
+                using (var openFileDialog = new OpenFileDialog())
                 {
-                    if (!SelectedImg.ContainsKey(fileName))
-                        SelectedImg.Add(fileName, false);
-                }, true);
+                    openFileDialog.Filter = "PictureBox Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+                    openFileDialog.Title = "Выберите изображения мероприятия";
+                    openFileDialog.Multiselect = true;
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        foreach (var fileName in openFileDialog.FileNames)
+                            if (!SelectedImg.ContainsKey(fileName))
+                                SelectedImg.Add(fileName, false);
+                    }
+                }
 
                 OnPropertyChanged(nameof(OnAddingImg));
-            }
-            );
+            });
 
-        [ButtonInfo("Удалить изображение")] 
+        [ButtonInfoUI("Удалить изображение")]
         public ICommand OnDeletingImg => new MainCommand(
             _ =>
             {
@@ -83,5 +112,12 @@ namespace Admin.ViewModels.NotifuPropertyViewModel
                 SelectedImg.ForEach(img => img.If(img.Value, i => SelectedImg.Remove(img.Key)));
                 OnPropertyChanged(nameof(OnDeletingImg));
             });
+
+
+        //public void Dispose()
+        //{
+        //    ViewModelEntity<TEntity>.OnSetEntiy -= GetValueEntity;
+        //    ViewModelEntity<TEntity>.OnGetEntity -= SetValueEntity;
+        //}
     }
 }

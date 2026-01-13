@@ -13,7 +13,7 @@ namespace Admin.ViewModels
     public class ManagmentModelView<TEntity> : PropertyChange
         where TEntity : Entity, new()
     {
-        protected List<TEntity> data;
+        public event Action<ICommand> OnClick;
 
         public ICommand OnBack { get; private set; }
         public ICommand OnLoadAddingView { get; private set; }
@@ -23,20 +23,15 @@ namespace Admin.ViewModels
 
         public List<TEntity> DataEntitys
         {
-            get => data;
-            set
-            {
-                if (data.SequenceEqual(value))
-                    return;
-                data = value;
-            }
+            get;
+            set;
         }
 
-        public ManagmentModelView(AdminMainView mainForm, Repository<TEntity> repository, UI<TEntity> controlView, ViewModel<TEntity> controlViewModel)
+        public ManagmentModelView(AdminMainView mainForm, Repository<TEntity> repository, UIEntity<TEntity> controlView, FactoryViewModelEntity<TEntity> controlViewModel)
         {
-            data = repository.Get();
+           DataEntitys = repository.Get();
 
-            OnBack = new MainCommand(
+           OnBack = new MainCommand(
                 _ => mainForm.InitializeComponents());
 
            OnLoadDetailsView = new MainCommand(
@@ -44,7 +39,7 @@ namespace Admin.ViewModels
                 {
                     if (obj is TEntity val)
                     {
-                        controlViewModel.SetData(val);
+                        controlViewModel.SetEntity(val);
                         controlView.InitializeComponents(controlViewModel);
                     }
                     else throw new ArgumentException();

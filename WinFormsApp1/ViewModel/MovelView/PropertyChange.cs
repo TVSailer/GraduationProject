@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Admin.ViewModels.NotifuPropertyViewModel
 {
-    public abstract class PropertyChange : INotifyPropertyChanged, IMessageErrorProvider
+    public class PropertyChange : INotifyPropertyChanged, IMessageErrorProvider
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         public event ErrorMessegePropertyHandler? ErrorMassegeProvider;

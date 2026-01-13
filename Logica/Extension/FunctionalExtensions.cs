@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Reflection;
 using static System.Windows.Forms.Control;
 
 public static class FunctionalExtensions
@@ -43,5 +44,14 @@ public static class FunctionalExtensions
     {
         foreach (Control control in controls)
             yield return control;
+    }
+
+    public static List<TAttribute?> GetPropertyInfo<TAttribute>(this Type type)
+            where TAttribute : Attribute
+    {
+        return type.GetProperties()
+            .Select(p => p.GetCustomAttribute<TAttribute>())
+            .Where(at => at != null)
+            .ToList();
     }
 }

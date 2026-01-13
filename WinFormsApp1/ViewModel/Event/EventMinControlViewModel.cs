@@ -9,7 +9,7 @@
 //using System.Windows.Input;
 //using WinFormsApp1;
 
-//public class EventMinControlViewModel : ViewModel<EventEntity>
+//public class EventMinControlViewModel : ViewModelEntity<EventEntity>
 //{
 //    public Dictionary<string, bool> SelectedImg { get; private set; } = new();
 
@@ -92,7 +92,7 @@
 //        throw new NotImplementedException();
 //    }
 
-//    public override void SetData(EventEntity value)
+//    public override void SetEntity(EventEntity value)
 //    {
 //        throw new NotImplementedException();
 //    }

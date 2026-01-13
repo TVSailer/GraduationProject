@@ -344,7 +344,7 @@ public static class FactoryElements
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold));
     
-    public static Button Button(ButtonInfoAttribute buttonInfo, object context)
+    public static Button Button(ButtonInfoUIAttribute buttonInfo, object context)
         => new Button()
             .With(c => c.Text = buttonInfo.Text)
             .With(c => c.BackColor = Color.White)

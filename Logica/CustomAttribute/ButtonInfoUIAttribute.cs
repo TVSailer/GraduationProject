@@ -1,14 +1,15 @@
 ﻿
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace Admin.ViewModels.Lesson
 {
-    public class ButtonInfoAttribute : Attribute
+    public class ButtonInfoUIAttribute : Attribute
     {
         public string Text { get; private set; }
         public string ButtonName { get; private set; }
 
-        public ButtonInfoAttribute(string text, [CallerMemberName] string button = "")
+        public ButtonInfoUIAttribute(string text, [CallerMemberName] string button = "")
         {
             Text = text;
             ButtonName = button;

@@ -18,29 +18,18 @@ namespace Logica.CustomAttribute
         {
             if (value is int maxParticipants)
             {
-                //if (IsValidMaxParticipants(maxParticipants))
-                return true;
+                if (IsValidMaxParticipants(maxParticipants))
+                    return true;
             }
 
             return false;
         }
 
-        public bool IsValidMaxParticipants(string maxPart)
+        public bool IsValidMaxParticipants(int maxPart)
         {
-            if (string.IsNullOrEmpty(maxPart))
+            if (maxPart < 1)
             {
-                ErrorMessage = "Данное поле не может быть пустым";
-                return false;
-            }
-            if (!int.TryParse(maxPart, null, out int rezult))
-            {
-                ErrorMessage = "Значения целого числа";
-                return false;
-
-            }
-            if (rezult < 1)
-            {
-                ErrorMessage = "Значения целого числа не может быть ниже нуля";
+                ErrorMessage = "Кол-во поситителей не может быть меньше 1";
                 return false;
             }
 

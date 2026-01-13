@@ -14,7 +14,7 @@
 //using System.Windows.Input;
 //using WinFormsApp1;
 
-//public abstract class TeacherDataViewModel : ViewModel<EventEntity>
+//public abstract class TeacherDataViewModel : ViewModelEntity<EventEntity>
 //{
 //    public ICommand OnBack { get; protected set; }
 //    public ICommand actjionSave { get; protected set; }

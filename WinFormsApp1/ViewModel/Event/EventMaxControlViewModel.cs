@@ -6,7 +6,7 @@
 //using System.Windows.Input;
 //using System.Xml.Linq;
 
-//namespace WinFormsApp1.ViewModel.Event
+//namespace WinFormsApp1.ViewModelEntity.Event
 //{
 //    public class EventMaxControlViewModel : EventMinControlViewModel
 //    {
@@ -67,7 +67,7 @@
 //            throw new NotImplementedException();
 //        }
 
-//        public override void SetData(EventEntity value)
+//        public override void SetEntity(EventEntity value)
 //        {
 //            EventEntity = value;
 //        }

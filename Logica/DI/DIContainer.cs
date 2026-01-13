@@ -14,7 +14,7 @@ namespace Logica.DI
         public DIContainer(Dictionary<Type, ServiceDescriptor> descriptors, bool isScope)
         {
             Description = descriptors;
-            this.isScope = true;//isScope;
+            this.isScope = isScope;
         }
 
         public T GetService<T>()
@@ -47,10 +47,14 @@ namespace Logica.DI
                     return serviceDescriptor.Instance;
 
                 case ServiceLifetime.Scoped:
-                    if (isScope && !scopedInstances.TryGetValue(serviceDescriptor.ServiceType, out var instance))
+                    if (isScope)
                     {
-                        instance = CreateInstance(serviceDescriptor.ImplementationType);
-                        scopedInstances[serviceDescriptor.ServiceType] = instance;
+                        if (!scopedInstances.TryGetValue(serviceDescriptor.ServiceType, out var instance))
+                        {
+                            instance = CreateInstance(serviceDescriptor.ImplementationType);
+                            scopedInstances[serviceDescriptor.ServiceType] = instance;
+                            return instance;
+                        }
                         return instance;
                     } 
                     return CreateInstance(serviceDescriptor.ImplementationType);

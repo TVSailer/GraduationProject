@@ -43,10 +43,10 @@ namespace WinFormsApp1
 
             //register.RegisterScope<TeacherManagementView>();
 
-            register.Register<ViewModel<LessonEntity>, LessonViewModel>(ServiceLifetime.Scoped);
+            register.Register<FactoryViewModelEntity<LessonEntity>, LessonAddingPanel>(ServiceLifetime.Scoped);
             register.Register<ManagmentModelView<LessonEntity>>();
 
-            register.Register<UI<LessonEntity>>();
+            register.Register<UIEntity<LessonEntity>>();
             register.Register<ManagementView<LessonEntity, LessonCard>>();
 
             register.RegisterSingleton<AdminMainView>();
