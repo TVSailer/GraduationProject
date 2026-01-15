@@ -1,19 +1,21 @@
-﻿using Admin.View.Moduls.Event;
-using Admin.View.ViewForm;
-using Admin.ViewModels.NotifuPropertyViewModel;
+﻿using Admin.ViewModels.NotifuPropertyViewModel;
 using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Repository;
 using Logica;
 using System.Windows.Input;
-using WinFormsApp1;
 using WinFormsApp1.View;
 
 namespace Admin.ViewModels
 {
-    public class ManagmentModelView<TEntity> : PropertyChange
+
+    
+
+    public class ManagmentModelView<TEntity, TAddingPanel, TDetailsPanel> : PropertyChange
         where TEntity : Entity, new()
+        where TAddingPanel : IAddingPanel<TEntity>
+        where TDetailsPanel : IDetalsPanel<TEntity>
     {
-        public event Action<ICommand> OnClick;
+        public event Action<ICommand> OnClick; 
 
         public ICommand OnBack { get; private set; }
         public ICommand OnLoadAddingView { get; private set; }
@@ -27,26 +29,31 @@ namespace Admin.ViewModels
             set;
         }
 
-        public ManagmentModelView(AdminMainView mainForm, Repository<TEntity> repository, UIEntity<TEntity> controlView, FactoryViewModelEntity<TEntity> controlViewModel)
+        public ManagmentModelView(
+            AdminMainView mainForm, 
+            Repository<TEntity> repository,
+            ParametrsFromManagmentMV<TEntity, TAddingPanel> addingPanel,
+            ParametrsFromManagmentMV<TEntity, TDetailsPanel> detailsPanel)
         {
-           DataEntitys = repository.Get();
+            DataEntitys = repository.Get();
 
-           OnBack = new MainCommand(
+            OnBack = new MainCommand(
                 _ => mainForm.InitializeComponents());
 
-           OnLoadDetailsView = new MainCommand(
+
+            OnLoadDetailsView = new MainCommand(
                 obj =>
                 {
                     if (obj is TEntity val)
                     {
-                        controlViewModel.SetEntity(val);
-                        controlView.InitializeComponents(controlViewModel);
+                        detailsPanel.RepositoryEntity.SetEntity(val);
+                        detailsPanel.UI.InitializeComponents(null);
                     }
                     else throw new ArgumentException();
                 });
 
             OnLoadAddingView = new MainCommand(
-                _ => controlView.InitializeComponents(controlViewModel));
+                _ => addingPanel.UI.InitializeComponents(null));
 
             //OnSerch = new MainCommand(
             //_ =>
@@ -63,3 +70,4 @@ namespace Admin.ViewModels
         }
     }
 }
+

@@ -449,7 +449,7 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("ImgLessonEntity", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Models.LessonEntity", "Lesson")
-                        .WithMany("ImgsLesson")
+                        .WithMany("Imgs")
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -500,7 +500,7 @@ namespace DataAccess.Postgres.Migrations
                 {
                     b.Navigation("Dates");
 
-                    b.Navigation("ImgsLesson");
+                    b.Navigation("Imgs");
 
                     b.Navigation("Reviews");
                 });

@@ -2,7 +2,6 @@
 using CSharpFunctionalExtensions;
 using Logica;
 using System.ComponentModel;
-using WinFormsApp1.View;
 
 public class ImagePanel<TEntity>
      where TEntity : Entity, new()
@@ -16,7 +15,7 @@ public class ImagePanel<TEntity>
 
     public Control? Images()
             => FactoryElements.TableLayoutPanel()
-            .ControlAddIsRowsAbsoluteV2(
+            .ControlAddIsRowsAbsolute(
                 FactoryElements.Label_12("📷 Изображения:"), 50)
             .ControlAddIsRowsPercentV2(
                 FactoryElements.FlowLayoutPanel()

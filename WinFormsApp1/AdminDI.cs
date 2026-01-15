@@ -1,11 +1,9 @@
 using Admin.View;
-using Admin.View.Moduls.Event;
 using Admin.View.Moduls.Lesson;
-using Admin.View.Moduls.Teacher;
+using Admin.ViewModel.Lesson;
 using Admin.ViewModels;
 using Admin.ViewModels.Lesson;
-using Admin.ViewModels.NotifuPropertyViewModel;
-using Admin.ViewModels.Teachers;
+using CSharpFunctionalExtensions;
 using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
@@ -22,7 +20,7 @@ namespace WinFormsApp1
 
         private static DIContainer ConfigurationContainer()
         {
-            var register = new RegisterDI();
+            var register = new ServiceCollection();
 
             register.RegisterSingleton<ApplicationDbContext>();
 
@@ -43,16 +41,30 @@ namespace WinFormsApp1
 
             //register.RegisterScope<TeacherManagementView>();
 
-            register.Register<FactoryViewModelEntity<LessonEntity>, LessonAddingPanel>(ServiceLifetime.Scoped);
-            register.Register<ManagmentModelView<LessonEntity>>();
 
-            register.Register<UIEntity<LessonEntity>>();
-            register.Register<ManagementView<LessonEntity, LessonCard>>();
+            RegisterSistem<LessonEntity, LessonDetailsPanel>(register);
+            RegisterSistem<LessonEntity, LessonAddingPanel>(register);
+            register.Register<
+                ParametrsFromManagmentMV<LessonEntity, LessonAddingPanel>>(ServiceLifetime.Transient);
+            register.Register<
+                ParametrsFromManagmentMV<LessonEntity, LessonDetailsPanel>>(ServiceLifetime.Transient);
+
+            register.Register<ManagmentModelView<LessonEntity, LessonAddingPanel, LessonDetailsPanel>>();
+            register.Register<ManagementView<LessonEntity,  LessonCard, LessonAddingPanel, LessonDetailsPanel>>();
 
             register.RegisterSingleton<AdminMainView>();
             register.RegisterSingleton<AdminMainViewModel>();
 
             return new DIContainer(register.Descriptors, false);
+        }
+
+        public static void RegisterSistem<TEntity, TViewModel>(ServiceCollection register)
+            where TEntity : Entity,new()
+            where TViewModel : class, IViewModele<TEntity>
+        {
+            register.Register<GenericRepositoryEntity<TEntity, TViewModel>>();
+            register.Register<TViewModel>(ServiceLifetime.Scoped);
+            register.Register<UIEntity<TEntity, TViewModel>>();
         }
 
         public static T GetService<T>() where T : class

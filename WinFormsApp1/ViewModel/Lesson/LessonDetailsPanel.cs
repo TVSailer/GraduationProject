@@ -1,4 +1,5 @@
-﻿using Admin.ViewModels.Lesson;
+﻿using Admin.ViewModels;
+using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
@@ -11,14 +12,10 @@ using System.Windows.Input;
 
 namespace Admin.ViewModel.Lesson
 {
-    public class LessonDetailsPanel : LessonData
+    public class LessonDetailsPanel : LessonData, IDetalsPanel<LessonEntity>
     {
-        [ButtonInfoUI("Создать расписание")]
-        public ICommand OnCreateSchedule { get; protected set; }
-
-        [ButtonInfoUI("Управление посетителями")]
-        public ICommand OnControlVisitros { get; private set; }
-
+        [ButtonInfoUI("Создать расписание")] public ICommand OnCreateSchedule { get; protected set; }
+        [ButtonInfoUI("Управление посетителями")] public ICommand OnControlVisitros { get; private set; }
         [ButtonInfoUI("Управление посещаемостью")] public ICommand OnControlDateAttendances { get; private set; }
         [ButtonInfoUI("Управление отзывами")] public ICommand OnControlReview { get; private set; }
         [ButtonInfoUI("Удалить")] public ICommand OnDelete { get; protected set; }
@@ -31,15 +28,15 @@ namespace Admin.ViewModel.Lesson
 
         private readonly List<TeacherEntity> teacherEntities;
 
-        public LessonDetailsPanel(TeacherRepository repository) : base(repository)
+        public LessonDetailsPanel(LessonsRepository lessonsRepository, TeacherRepository teacherRepository) : base(teacherRepository)
         {
             OnUpdate = new MainCommand(
-                _ => TryValidObject(() => repository.Update(Entity.Id, Entity)));
+                _ => TryValidObject(() => lessonsRepository.Update(Entity.Id, Entity)));
 
             OnDelete = new MainCommand(
                 _ =>
                 {
-                    repository.Delete(Entity);
+                    lessonsRepository.Delete(Entity);
                     OnBack.Execute(this);
                 });
         }

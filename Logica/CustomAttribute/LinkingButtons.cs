@@ -1,14 +1,15 @@
-﻿namespace Admin.ViewModels.Lesson
+﻿namespace Logica.CustomAttribute
 {
-    public class LinkingButtons : Attribute
+    public class LinkingButtonsAttribute<T> : Attribute
     {
-        public string[] nameButton { get; private set; }
+        public string nameButton { get; private set; }
 
-        public LinkingButtons(Type type, params string[] nameButton)
+        public LinkingButtonsAttribute(string nameButton)
         {
-            for (int i = 0; i < nameButton.Length; i++)
-                if (type.GetProperty(nameButton[i]) == null)
-                    throw new ArgumentException();
+            if (typeof(T).GetProperty(nameButton) == null)
+                throw new ArgumentException();
+
+            this.nameButton = nameButton;
         }
     }
 }

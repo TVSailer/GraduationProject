@@ -11,14 +11,16 @@ using IView = Admin.View.ViewForm.IView;
 
 namespace Admin.View
 {
-    public class ManagementView<TEntity, TCard> : IView
+    public class ManagementView<TEntity, TCard, TAddingPanel, TDetailsPanel> : IView
         where TEntity : Entity, new()
         where TCard : ObjectCard<TEntity>, new()
+        where TAddingPanel : IAddingPanel<TEntity>
+        where TDetailsPanel : IDetalsPanel<TEntity>
     {
         protected readonly Form form;
-        protected readonly ManagmentModelView<TEntity> context;
+        protected readonly ManagmentModelView<TEntity, TAddingPanel, TDetailsPanel> context;
 
-        public ManagementView(AdminMainView mainForm, ManagmentModelView<TEntity> manager)
+        public ManagementView(AdminMainView mainForm, ManagmentModelView<TEntity, TAddingPanel, TDetailsPanel> manager)
         {
             form = mainForm;
             context = manager;
@@ -30,7 +32,7 @@ namespace Admin.View
                 .With(t => t.BackColor = Color.WhiteSmoke)
                 .ControlAddIsColumnPercentV2(LoadCardsPanel(), 80)
                 .ControlAddIsColumnPercentV2(LoadSerchPanel(), 20))
-            .ControlAddIsRowsAbsoluteV2(LoadButtonPanel(), 90);
+            .ControlAddIsRowsAbsolute(LoadButtonPanel(), 90);
 
         protected virtual Control LoadSerchPanel()
         {

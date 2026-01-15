@@ -17,7 +17,6 @@ namespace Admin.ViewModels.NotifuPropertyViewModel
             {
                 var value = f.Key.GetValue(Instance);
                 entity.SetValue(value, f.Value.NamePropertyEntity);
-                Instance.Entity = entity;
             });
         }
 
@@ -27,7 +26,6 @@ namespace Admin.ViewModels.NotifuPropertyViewModel
             {
                 var value = entity.GetValue(f.Value.NamePropertyEntity);
                 f.Key.SetValue(Instance, value);
-                Instance.Entity = entity;
             });
         }
     }

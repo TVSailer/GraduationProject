@@ -7,12 +7,12 @@
 //    public partial class EventAddingView  
 //    {
 //        private ErrorProvider errorProvider = new() { BlinkStyle = ErrorBlinkStyle.NeverBlink };
-//        private readonly EventMinControlViewModel context;
+//        private readonly EventMinControlViewModel Context;
 //        private readonly AdminMainView form;
 
-//        public EventAddingView(AdminMainView mainForm, EventMinControlViewModel context)
+//        public EventAddingView(AdminMainView mainForm, EventMinControlViewModel Context)
 //        {
-//            this.context = context;
+//            this.Context = Context;
 //            form = mainForm;
 //        }
 
@@ -39,10 +39,10 @@
 //        private TableLayoutPanel CreateUI()
 //            => FactoryElements
 //                .TableLayoutPanel()
-//                .ControlAddIsRowsAbsoluteV2(FactoryElements.LabelTitle("➕ Добавление мероприятия"), 70)
-//                .ControlAddIsRowsAbsoluteV2(CreateFormFields(), 450)
+//                .ControlAddIsRowsAbsolute(FactoryElements.LabelTitle("➕ Добавление мероприятия"), 70)
+//                .ControlAddIsRowsAbsolute(CreateFormFields(), 450)
 //                .ControlAddIsRowsPercentV2(CreateImagesSection(), 20)
-//                .ControlAddIsRowsAbsoluteV2(CreateButtonPanel(), 90);
+//                .ControlAddIsRowsAbsolute(CreateButtonPanel(), 90);
 
 //        private TableLayoutPanel CreateFormFields()
 //        {
@@ -51,13 +51,13 @@
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("📝 Название мероприятия:*"),
 //                    FactoryElements.TextBox("Введите название мероприятия")
-//                       .With(t => t.TextChanged += (s, e) => context.Title = t.Text)
-//                       .With(t => OnErrorProvider(nameof(context.Title), t)), 45),
+//                       .With(t => t.TextChanged += (s, e) => Context.Title = t.Text)
+//                       .With(t => OnErrorProvider(nameof(Context.Title), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("📄 Описание:*"),
 //                    FactoryElements.TextBoxMultiline("Введите описание мероприятия")
-//                        .With(t => t.TextChanged += (s, e) => context.Description = t.Text)
-//                        .With(t => OnErrorProvider(nameof(context.Description), t)), 110),
+//                        .With(t => t.TextChanged += (s, e) => Context.Description = t.Text)
+//                        .With(t => OnErrorProvider(nameof(Context.Description), t)), 110),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("📅 Дата проведения:*"),
 //                    FactoryElements.DateTimePicker()
@@ -65,49 +65,49 @@
 //                        .With(d => d.CustomFormat = "dd.MM.yyyy HH:mm")
 //                        .With(d => d.ShowUpDown = true)
 //                        .With(d => d.MinDate = DateTime.Now)
-//                        .With(t => t.TextChanged += (s, e) => context.Date = t.Text)
-//                        .With(t => OnErrorProvider(nameof(context.Date), t)), 45),
+//                        .With(t => t.TextChanged += (s, e) => Context.Date = t.Text)
+//                        .With(t => OnErrorProvider(nameof(Context.Date), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("📍 Место проведения:*"),
 //                    FactoryElements.TextBox("Введите место проведения")
-//                    .With(t => t.TextChanged += (s, e) => context.Location = t.Text)
-//                    .With(t => OnErrorProvider(nameof(context.Location), t)), 45),
+//                    .With(t => t.TextChanged += (s, e) => Context.Location = t.Text)
+//                    .With(t => OnErrorProvider(nameof(Context.Location), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("🏷️ Категория:*"),
 //                    FactoryElements.TextBox("Например: Образование, Спорт, Культура")
-//                    .With(t => t.TextChanged +=(s, e) => context.Category = t.Text)
-//                    .With(t => OnErrorProvider(nameof(context.Category), t)), 45),
+//                    .With(t => t.TextChanged +=(s, e) => Context.Category = t.Text)
+//                    .With(t => OnErrorProvider(nameof(Context.Category), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("🔗 Ссылка на регистрацию:*"),
 //                    FactoryElements.TextBox("https://example.com/registration")
-//                    .With(t => t.TextChanged += (s, e) => context.RegisLink = t.Text)
-//                    .With(t => OnErrorProvider(nameof(context.RegisLink), t)), 45),
+//                    .With(t => t.TextChanged += (s, e) => Context.RegisLink = t.Text)
+//                    .With(t => OnErrorProvider(nameof(Context.RegisLink), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("👨‍💼 Организатор:*"),
 //                    FactoryElements.TextBox("Введите организатора мероприятия")
-//                    .With(t => t.TextChanged += (s, e) => context.Organizer = t.Text)
-//                    .With(t => OnErrorProvider(nameof(context.Organizer), t)), 45),
+//                    .With(t => t.TextChanged += (s, e) => Context.Organizer = t.Text)
+//                    .With(t => OnErrorProvider(nameof(Context.Organizer), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("👥 Максимальное количество участников:*"),
 //                    FactoryElements.NumericUpDown()
-//                    .With(t => t.TextChanged += (s, e) => context.MaxParticipants = t.Text)
-//                    .With(t => OnErrorProvider(nameof(context.MaxParticipants), t)), 45)
+//                    .With(t => t.TextChanged += (s, e) => Context.MaxParticipants = t.Text)
+//                    .With(t => OnErrorProvider(nameof(Context.MaxParticipants), t)), 45)
 //            };
 
 //            return FactoryElements.TableLayoutPanel()
 //                .With(t => t.Dock = DockStyle.Fill)
 //                .With(t => labelIsControls.ForEach(f 
-//                    => t.ControlAddIsRowsAbsoluteV2(FactoryElements
+//                    => t.ControlAddIsRowsAbsolute(FactoryElements
 //                        .TableLayoutPanel()
 //                        .With(t => t.Padding = new Padding(1))
-//                        .ControlAddIsColumnPercentV2(f.Label, 30)
-//                        .ControlAddIsColumnPercentV2(f.Control, 70)
-//                        .ControlAddIsColumnAbsoluteV2(null, 1), f.Height)));
+//                        .ControlAddIsColumnPercent(f.Label, 30)
+//                        .ControlAddIsColumnPercent(f.Control, 70)
+//                        .ControlAddIsColumnAbsolute(null, 1), f.Height)));
 //        }
 
 //        private void OnErrorProvider(string propertyName, Control control)
 //        {
-//            context.ErrorMassegeProvider += (s, e) =>
+//            Context.ErrorMassegeProvider += (s, e) =>
 //            {
 //                if (!propertyName.Equals(e.PropertyName)) return;
 //                errorProvider.SetError(control, e.ErrorMessage);
@@ -116,32 +116,32 @@
 
 //        private TableLayoutPanel CreateImagesSection()
 //            => FactoryElements.TableLayoutPanel()
-//            .ControlAddIsRowsAbsoluteV2(
+//            .ControlAddIsRowsAbsolute(
 //                FactoryElements.Label_12("📷 Изображения:"), 50)
 //            .ControlAddIsRowsPercentV2(
 //                FactoryElements.FlowLayoutPanel()
-//                .With(fp => context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.PictureBox(url.Key)
+//                .With(fp => Context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.PictureBox(url.Key)
 //                    .With(i => i.MouseClick +=
 //                    (s, e) =>
 //                    {
-//                        context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
-//                        i.BackColor = context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
+//                        Context.SelectedImg[url.Key] = !Context.SelectedImg[url.Key];
+//                        i.BackColor = Context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
 //                    }))))
-//                .With(fp => context.PropertyChanged +=
+//                .With(fp => Context.PropertyChanged +=
 //                (obj, propCh) =>
 //                {
-//                    if (propCh.PropertyName == nameof(context.OnAddingImg) || propCh.PropertyName == nameof(context.OnDeletingImg))
+//                    if (propCh.PropertyName == nameof(Context.OnAddingImg) || propCh.PropertyName == nameof(Context.OnDeletingImg))
 //                    {
 //                        fp.Controls.Clear();
-//                        context.SelectedImg.ForEach(
+//                        Context.SelectedImg.ForEach(
 //                        url =>
 //                        {
 //                            fp.Controls.Add(FactoryElements.PictureBox(url.Key)
 //                            .With(i => i.MouseClick +=
 //                            (s, e) =>
 //                            {
-//                                context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
-//                                i.BackColor = context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
+//                                Context.SelectedImg[url.Key] = !Context.SelectedImg[url.Key];
+//                                i.BackColor = Context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
 //                            }));
 //                        });
 //                    }
@@ -149,10 +149,10 @@
 
 //        private TableLayoutPanel CreateButtonPanel()
 //            => FactoryElements.TableLayoutPanel()
-//                .ControlAddIsColumnPercentV2(FactoryElements.Button("❌ Удалить изображение", context, "OnDeletingImg"), 40)
-//                .ControlAddIsColumnPercentV2(FactoryElements.Button("➕ Добавить изображения", context, "OnAddingImg"), 40)
-//                .ControlAddIsColumnPercentV2(FactoryElements.Button("💾 Сохранить", context, "actjionSave"), 40)
-//                .ControlAddIsColumnPercentV2(FactoryElements.Button("❌ Отмена", context, "OnBack"), 40);
+//                .ControlAddIsColumnPercent(FactoryElements.Button("❌ Удалить изображение", Context, "OnDeletingImg"), 40)
+//                .ControlAddIsColumnPercent(FactoryElements.Button("➕ Добавить изображения", Context, "OnAddingImg"), 40)
+//                .ControlAddIsColumnPercent(FactoryElements.Button("💾 Сохранить", Context, "actjionSave"), 40)
+//                .ControlAddIsColumnPercent(FactoryElements.Button("❌ Отмена", Context, "OnBack"), 40);
 
 //        public Form InitializeComponents(object? data)
 //        {

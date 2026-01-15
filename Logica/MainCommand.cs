@@ -14,3 +14,4 @@ public class MainCommand : ICommand
 
     public void Execute(object? parameter) => action?.Invoke(parameter);
 }
+

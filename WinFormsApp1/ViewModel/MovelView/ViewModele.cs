@@ -1,22 +1,24 @@
-﻿using Admin.View;
+﻿using Admin.ViewModels;
 using Admin.ViewModels.Lesson;
 using Admin.ViewModels.NotifuPropertyViewModel;
 using CSharpFunctionalExtensions;
 using Logica;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using WinFormsApp1;
-using WinFormsApp1.View;
 
 namespace Admin.ViewModel.MovelView
 {
     public abstract class ViewModele<TEntity> : PropertyChange, IViewModele<TEntity>
-        where TEntity : Entity
+        where TEntity : Entity, new()
     {
         [ButtonInfoUI("Назад")] public ICommand OnBack { get; protected set; }
 
-        public abstract TEntity Entity { get; set; }
+        public TEntity Entity { get; set; }
+
+        public ViewModele()
+        {
+        }
 
         public T Set<T>(T value, [CallerMemberName] string prop = "")
         {
@@ -43,5 +45,6 @@ namespace Admin.ViewModel.MovelView
             }
             else { results.ForEach(r => r.MemberNames.ForEach(n => OnMassegeErrorProvider(r.ErrorMessage, n))); }
         }
+
     }
 }

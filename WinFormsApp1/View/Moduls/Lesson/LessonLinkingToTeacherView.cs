@@ -21,6 +21,6 @@ public class LessonLinkingToTeacherView
             .ControlAddIsRowsPercentV2(FactoryElements.ListBox()
                 .With(cb => cb.DataSource = teacherEntities)
                 .With(cb => cb.SelectedIndexChanged += (s, e) => Teacher = (TeacherEntity)cb.SelectedItem))
-            .ControlAddIsRowsAbsoluteV2(FactoryElements.Button("Ок", () => f.Close()), 60)))
+            .ControlAddIsRowsAbsolute(FactoryElements.Button("Ок", () => f.Close()), 60)))
         .With(f => f.ShowDialog()));
 }

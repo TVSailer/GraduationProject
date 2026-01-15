@@ -1,6 +1,6 @@
 ﻿namespace Logica.DI
 {
-    public class RegisterDI
+    public class ServiceCollection
     {
         public Dictionary<Type, ServiceDescriptor> Descriptors { get; private set; } = new();
 

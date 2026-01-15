@@ -27,12 +27,12 @@ public partial class VisitorView : Form
             .With(t => t.Dock = DockStyle.Fill)
             .ControlAddIsColumnPercentV2(null, 25)
             .ControlAddIsColumnAbsoluteV2(null, 600)
-            .ControlAddIsRowsAbsoluteV2(FactoryElements.LabelTitle(""), 70)
-            .ControlAddIsRowsAbsoluteV2(Button("👤 Профиль"), 50)
-            .ControlAddIsRowsAbsoluteV2(Button("📰 Новости"), 50)
-            .ControlAddIsRowsAbsoluteV2(Button("🎭 Мероприятиями", DataContext, "OnLoadEventsView"), 50)
-            .ControlAddIsRowsAbsoluteV2(Button("🎨 Кружки"), 50)
-            .ControlAddIsRowsAbsoluteV2(Button("📊 Посещаемоть"), 50)
+            .ControlAddIsRowsAbsolute(FactoryElements.LabelTitle(""), 70)
+            .ControlAddIsRowsAbsolute(Button("👤 Профиль"), 50)
+            .ControlAddIsRowsAbsolute(Button("📰 Новости"), 50)
+            .ControlAddIsRowsAbsolute(Button("🎭 Мероприятиями", DataContext, "OnLoadEventsView"), 50)
+            .ControlAddIsRowsAbsolute(Button("🎨 Кружки"), 50)
+            .ControlAddIsRowsAbsolute(Button("📊 Посещаемоть"), 50)
             .ControlAddIsColumnPercentV2(null, 25)
             .ControlAddIsRowsPercentV2(null, 25);
 
@@ -92,13 +92,13 @@ public class EventView
 
 
         var mainTable = FactoryElements.TableLayoutPanel()
-            .ControlAddIsRowsAbsoluteV2(titleLabel, 70)
+            .ControlAddIsRowsAbsolute(titleLabel, 70)
             .ControlAddIsRowsPercentV2(
                 FactoryElements.TableLayoutPanel()
                 .With(
                     t => 
                     {
-                        entitys.ForEach(e => t.ControlAddIsRowsAbsoluteV2(EventCard(e), 270));
+                        entitys.ForEach(e => t.ControlAddIsRowsAbsolute(EventCard(e), 270));
                         t.ControlAddIsRowsPercentV2(null);
                     }));
 
@@ -129,11 +129,11 @@ public class EventView
         return FactoryElements.TableLayoutPanel()
             .With(t => t.BorderStyle = BorderStyle.FixedSingle)
             .With(t => t.Padding = new Padding(15))
-            .ControlAddIsRowsAbsoluteV2(titleLabel, 50)
-            .ControlAddIsRowsAbsoluteV2(dateLocationLabel, 35)
-            .ControlAddIsRowsAbsoluteV2(categoryOrganizerLabel, 35)
-            .ControlAddIsRowsAbsoluteV2(descriptionLabel, 60)
-            .ControlAddIsRowsAbsoluteV2(participantsLabel, 35)
-            .ControlAddIsRowsAbsoluteV2(registerLink, 35);
+            .ControlAddIsRowsAbsolute(titleLabel, 50)
+            .ControlAddIsRowsAbsolute(dateLocationLabel, 35)
+            .ControlAddIsRowsAbsolute(categoryOrganizerLabel, 35)
+            .ControlAddIsRowsAbsolute(descriptionLabel, 60)
+            .ControlAddIsRowsAbsolute(participantsLabel, 35)
+            .ControlAddIsRowsAbsolute(registerLink, 35);
     }
 }

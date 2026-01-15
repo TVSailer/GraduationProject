@@ -13,7 +13,7 @@ namespace DataAccess.Postgres.Repository
         public override List<LessonEntity> Get()
           => DbContext.Lessons
             .Include(l => l.Teacher)
-            .Include(l => l.ImgsLesson)
+            .Include(l => l.Imgs)
             .AsNoTracking()
             .ToList() ?? throw new ArgumentNullException();
 
@@ -79,13 +79,13 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(l => l.Location, lesson.Location)
                     .SetProperty(l => l.TeacherId, lesson.Teacher.Id));
 
-            if (lesson.ImgsLesson == null || lesson.ImgsLesson.Count == 0) return;
+            if (lesson.Imgs == null || lesson.Imgs.Count == 0) return;
 
             var listImgDb = DbContext.ImgLesson
                 .Where(img => img.Lesson.Id == id)
             .ToList();
 
-            var listImg = lesson.ImgsLesson;
+            var listImg = lesson.Imgs;
 
             listImgDb
                 .ForEach(
@@ -100,7 +100,7 @@ namespace DataAccess.Postgres.Repository
                 img =>
                 {
                     if (!listImgDb.Select(img => img.Url).Contains(img.Url))
-                        DbContext.Lessons.FirstOrDefault(les => les.Id == id).ImgsLesson.Add(img);
+                        DbContext.Lessons.FirstOrDefault(les => les.Id == id).Imgs.Add(img);
                 });
 
             DbContext.SaveChanges();

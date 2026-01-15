@@ -6,11 +6,29 @@ namespace Logica
 {
     public static partial class TableLayoutPanelExtension
     {
-        public static TableLayoutPanel ControlAddIsRowsAbsoluteV2(
+        private static List<TableLayoutPanel> tables = new();
+
+        public static TableLayoutPanel StartNewRowTableAbsolute(this TableLayoutPanel table, int size)
+        {
+            var newTable = FactoryElements.TableLayoutPanel();
+            table.ControlAddIsRowsAbsolute(newTable, size);
+            tables.Add(table);
+            return newTable;
+        }
+
+        public static TableLayoutPanel EndTabel(this TableLayoutPanel table)
+        {
+            var oldTable = tables.Last();
+            tables.Remove(oldTable);
+            return oldTable;
+        }
+
+
+        public static TableLayoutPanel ControlAddIsRowsAbsolute(
            this TableLayoutPanel table, Control? control, int heinght)
             => control == null ? 
                 table
-                    .ControlAddIsRowsAbsoluteV2(new Panel(), heinght) : 
+                    .ControlAddIsRowsAbsolute(new Panel(), heinght) : 
                 table
                     .With(t => t.RowStyles.Add(new RowStyle(SizeType.Absolute, heinght)))
                     .With(t => t.Controls.Add(control, 
@@ -20,7 +38,7 @@ namespace Logica
 
         public static TableLayoutPanel ControlAddIsRowsAbsoluteV2(
            this TableLayoutPanel table, int heinght)
-            => table.ControlAddIsRowsAbsoluteV2(new Panel(), heinght);
+            => table.ControlAddIsRowsAbsolute(new Panel(), heinght);
         
         public static TableLayoutPanel ControlAddIsRowsPercentV2(
            this TableLayoutPanel table, Control? control, int heinght)
@@ -47,7 +65,7 @@ namespace Logica
            this TableLayoutPanel table, Control control, int weidht)
             => table.ControlAddIsColumnV2(control, weidht, SizeType.Absolute);
         
-        public static TableLayoutPanel ControlAddIsColumnAbsoluteV2(
+        public static TableLayoutPanel ControlAddIsColumnAbsolute(
            this TableLayoutPanel table, int weidht)
             => table.ControlAddIsColumnV2(new Panel(), weidht, SizeType.Absolute);
 
@@ -55,7 +73,7 @@ namespace Logica
            this TableLayoutPanel table, Control control, int weidht)
             => table.ControlAddIsColumnV2(control, weidht, SizeType.Percent);
         
-        public static TableLayoutPanel ControlAddIsColumnPercentV2(
+        public static TableLayoutPanel ControlAddIsColumnPercent(
            this TableLayoutPanel table, Control control)
             => table.ControlAddIsColumnV2(control, 10, SizeType.Percent);
         

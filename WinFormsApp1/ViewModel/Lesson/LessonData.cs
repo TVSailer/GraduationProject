@@ -1,15 +1,19 @@
-﻿using Admin.ViewModel.MovelView;
+﻿using Admin.View;
+using Admin.View.Moduls.Lesson;
+using Admin.ViewModel.Lesson;
+using Admin.ViewModel.MovelView;
 using Admin.ViewModels.NotifuPropertyViewModel;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.CustomAttribute;
 using System.Windows.Input;
+using WinFormsApp1;
 using NotNullAttribute = Logica.CustomAttribute.NotNullAttribute;
 
 namespace Admin.ViewModels.Lesson
 {
-    public class LessonData : ViewModelWithImages<LessonEntity, ImgLessonEntity>
+    public class LessonData : ViewModelWithImages<LessonEntity>
     {
         [RequiredCustom]
         [LinkingEntity("Name")]
@@ -37,7 +41,7 @@ namespace Admin.ViewModels.Lesson
         public string Location { get; set => field = Set(value); }
 
         [MaxParticipants]
-        [LinkingEntity("MaxParticipants"))]
+        [LinkingEntity("MaxParticipants")]
         [FieldInfoUI("Кол. участников:*", "Введите кол-во участников")]
         public int MaxParticipants { get; set => field = Set(value); }
 
@@ -54,6 +58,9 @@ namespace Admin.ViewModels.Lesson
         {
             OnBindingTeacher = new MainCommand(
                 _ => Teacher = new LessonLinkingToTeacherView(repository.Get()).InitializeComponents().Teacher);
+
+            OnBack = new MainCommand(
+                _ => AdminDI.GetService<ManagementView<LessonEntity, LessonCard, LessonAddingPanel, LessonDetailsPanel>>().InitializeComponents(null));
         }
     }
 }

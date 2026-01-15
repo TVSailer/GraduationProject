@@ -27,19 +27,19 @@ namespace WinFormsApp1.View
                 .With(t => t.Dock = DockStyle.Fill)
                 .ControlAddIsColumnPercentV2(null, 25)
                 .ControlAddIsColumnAbsoluteV2(null, 600)
-                .ControlAddIsRowsAbsoluteV2(
+                .ControlAddIsRowsAbsolute(
                     FactoryElements.LabelTitle("Панель администратора"), 70)
-                .ControlAddIsRowsAbsoluteV2(
+                .ControlAddIsRowsAbsolute(
                     CreateButton("📰 Управление новостями", DataContext, "OnLoadNewsManagemetnView"), 50)
-                .ControlAddIsRowsAbsoluteV2(
+                .ControlAddIsRowsAbsolute(
                     CreateButton("🎭 Управление мероприятиями", DataContext, "OnLoadEventsManagemetnView"), 50)
-                .ControlAddIsRowsAbsoluteV2(
+                .ControlAddIsRowsAbsolute(
                     CreateButton("🎨 Управление кружками", DataContext, "OnLoadLessonsManagemetnView"), 50)
-                .ControlAddIsRowsAbsoluteV2(
+                .ControlAddIsRowsAbsolute(
                     CreateButton("👨‍🏫 Управление преподавателями", DataContext, "OnLoadTeachersManagemetnView"), 50)
-                .ControlAddIsRowsAbsoluteV2(
+                .ControlAddIsRowsAbsolute(
                     CreateButton("👥 Управление посетителями", DataContext, "OnLoadVisitorsManagemetnView"), 50)
-                .ControlAddIsRowsAbsoluteV2(
+                .ControlAddIsRowsAbsolute(
                     CreateButton("📊 Управление посещаемостью", null), 50)
                 .ControlAddIsColumnPercentV2(null, 25)
                 .ControlAddIsRowsPercentV2(null, 25);

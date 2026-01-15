@@ -4,6 +4,7 @@ using Admin.View.Moduls.Lesson;
 using Admin.View.Moduls.News;
 using Admin.View.Moduls.Teacher;
 using Admin.View.Moduls.Visitor;
+using Admin.ViewModel.Lesson;
 using Admin.ViewModels;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres;
@@ -37,7 +38,11 @@ public class AdminMainViewModel
             _ =>
             {
                 using (var scope = AdminDI.CreateDIScope())
-                    scope.GetService<ManagementView<LessonEntity, LessonCard>>().InitializeComponents(null);
+                    scope.GetService<ManagementView<
+                        LessonEntity, 
+                        LessonCard, 
+                        LessonAddingPanel, 
+                        LessonDetailsPanel>>().InitializeComponents(null);
             });
         
         OnLoadNewsManagemetnView = new MainCommand(
