@@ -11,7 +11,7 @@ namespace Logica
         public static TableLayoutPanel StartNewRowTableAbsolute(this TableLayoutPanel table, int size)
         {
             var newTable = FactoryElements.TableLayoutPanel();
-            table.ControlAddIsRowsAbsolute(newTable, size);
+            table.ControlAddIsRow(newTable, size, SizeType.Absolute);
             tables.Add(table);
             return newTable;
         }
@@ -24,84 +24,95 @@ namespace Logica
         }
 
 
+        public static TableLayoutPanel ControlAddIsRow(
+           this TableLayoutPanel table, Control? control, int heinght, SizeType sizeType)
+            => control == null ?
+                table
+                    .ControlAddIsRow(new Panel(), heinght, sizeType) :
+                table
+                    .AddingRowsStyles(new RowStyle(sizeType, heinght))
+                    .AddControlRow(control);
+
+        public static TableLayoutPanel ControlAddIsColumn(
+           this TableLayoutPanel table, Control? control, int weidht, SizeType sizeType)
+            => control == null ?
+                table
+                    .ControlAddIsColumn(new Panel(), weidht, sizeType) :
+                table
+                    .AddingColumnsStyles(new ColumnStyle(sizeType, weidht))
+                    .AddControlColumn(control);
+
+        private static TableLayoutPanel AddControlRow(this TableLayoutPanel table, Control control)
+        {
+            table.Controls.Add(control,
+                table.ColumnStyles.Count == 0 ? 0 :
+                table.ColumnStyles.Count - 1,
+                table.RowStyles.Count - 1);
+
+            return table;
+        }
+        
+        private static TableLayoutPanel AddControlColumn(this TableLayoutPanel table, Control control)
+        {
+            table.Controls.Add(control,
+                table.ColumnStyles.Count - 1,
+                table.RowStyles.Count == 0 ? 0 :
+                table.RowStyles.Count - 1);
+
+            return table;
+        }
+
         public static TableLayoutPanel ControlAddIsRowsAbsolute(
-           this TableLayoutPanel table, Control? control, int heinght)
-            => control == null ? 
-                table
-                    .ControlAddIsRowsAbsolute(new Panel(), heinght) : 
-                table
-                    .With(t => t.RowStyles.Add(new RowStyle(SizeType.Absolute, heinght)))
-                    .With(t => t.Controls.Add(control, 
-                        t.ColumnStyles.Count == 0 ? 0 : 
-                        t.ColumnStyles.Count - 1, 
-                        t.RowStyles.Count - 1));
+           this TableLayoutPanel table, Control control)
+            => table.ControlAddIsRow(control, control.PreferredSize.Height, SizeType.Absolute);
+        
+        public static TableLayoutPanel ControlAddIsRowsAbsolute(
+           this TableLayoutPanel table, Control control, int heinght)
+            => table.ControlAddIsRow(control, heinght, SizeType.Absolute);
 
-        public static TableLayoutPanel ControlAddIsRowsAbsoluteV2(
+        public static TableLayoutPanel ControlAddIsRowsAbsolute(
            this TableLayoutPanel table, int heinght)
-            => table.ControlAddIsRowsAbsolute(new Panel(), heinght);
-        
-        public static TableLayoutPanel ControlAddIsRowsPercentV2(
-           this TableLayoutPanel table, Control? control, int heinght)
-            => control == null ? 
-                table
-                    .ControlAddIsRowsPercentV2(new Panel(), heinght) : 
-                table
-                    .With(t => t.RowStyles.Add(new RowStyle(SizeType.Percent, heinght)))
-                    .With(t => t.Controls.Add(control, 
-                        t.ColumnStyles.Count == 0 ? 0 :
-                        t.ColumnStyles.Count - 1, 
-                        t.RowStyles.Count - 1));
+            => table.ControlAddIsRow(null, heinght, SizeType.Absolute);
 
-        public static TableLayoutPanel ControlAddIsRowsPercentV2(
+        public static TableLayoutPanel ControlAddIsRowsPercent(
            this TableLayoutPanel table, Control? control)
-            => table.ControlAddIsRowsPercentV2(control, 10);
-
-        public static TableLayoutPanel ControlAddIsRowsPercentV2(
-           this TableLayoutPanel table)
-            => table
-                .ControlAddIsRowsPercentV2(new Panel(), 10);
-
-        public static TableLayoutPanel ControlAddIsColumnAbsoluteV2(
-           this TableLayoutPanel table, Control control, int weidht)
-            => table.ControlAddIsColumnV2(control, weidht, SizeType.Absolute);
+            => table.ControlAddIsRow(control, 10, SizeType.Percent);
         
+        public static TableLayoutPanel ControlAddIsRowsPercent(
+           this TableLayoutPanel table, Control? control, int heingt)
+            => table.ControlAddIsRow(control, heingt, SizeType.Percent);
+        
+        public static TableLayoutPanel ControlAddIsRowsPercent(
+           this TableLayoutPanel table, int heingt)
+            => table.ControlAddIsRow(null, heingt, SizeType.Percent);
+
+        public static TableLayoutPanel ControlAddIsRowsPercent(
+           this TableLayoutPanel table)
+            => table.ControlAddIsRow(new Panel(), 10, SizeType.Percent);
+
+        public static TableLayoutPanel ControlAddIsColumnAbsolute(
+           this TableLayoutPanel table, Control control, int weidht)
+            => table.ControlAddIsColumn(control, weidht, SizeType.Absolute);
+
         public static TableLayoutPanel ControlAddIsColumnAbsolute(
            this TableLayoutPanel table, int weidht)
-            => table.ControlAddIsColumnV2(new Panel(), weidht, SizeType.Absolute);
+            => table.ControlAddIsColumn(null, weidht, SizeType.Absolute);
 
-        public static TableLayoutPanel ControlAddIsColumnPercentV2(
+        public static TableLayoutPanel ControlAddIsColumnPercent(
            this TableLayoutPanel table, Control control, int weidht)
-            => table.ControlAddIsColumnV2(control, weidht, SizeType.Percent);
+            => table.ControlAddIsColumn(control, weidht, SizeType.Percent);
         
+        public static TableLayoutPanel ControlAddIsColumnPercent(
+           this TableLayoutPanel table, int weidht)
+            => table.ControlAddIsColumn(null, weidht, SizeType.Percent);
+
         public static TableLayoutPanel ControlAddIsColumnPercent(
            this TableLayoutPanel table, Control control)
-            => table.ControlAddIsColumnV2(control, 10, SizeType.Percent);
-        
-        public static TableLayoutPanel ControlAddIsColumnPercentV2(
-           this TableLayoutPanel table)
-            => table.ControlAddIsColumnV2(null, 10, SizeType.Percent);
-
-        public static TableLayoutPanel ControlAddIsColumnV2(
-           this TableLayoutPanel table, Control control, int weidht, SizeType sizeType)
-            => control == null ?
-                table
-                    .ControlAddIsColumnV2(new Panel(), weidht, sizeType) :
-                table
-                    .With(t => t.ColumnStyles.Add(new ColumnStyle(sizeType, weidht)))
-                    .With(t => t.Controls.Add(control,
-                        t.ColumnStyles.Count - 1,
-                        t.RowStyles.Count == 0 ? 0 :
-                        t.RowStyles.Count - 1));
+            => table.ControlAddIsColumn(control, 10, SizeType.Percent);
 
         public static TableLayoutPanel ControlAddIsColumnPercent(
-           this TableLayoutPanel table, Control control, int weidht)
-            => control == null ?
-                table
-                    .ControlAddIsColumnPercent(new Panel(), weidht) :
-                table
-                    .With(t => t.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, weidht)))
-                    .With(t => t.Controls.Add(control, table.ColumnStyles.Count - 1, 0));
-
+           this TableLayoutPanel table)
+            => table.ControlAddIsColumn(null, 10, SizeType.Percent);
 
         public static TableLayoutPanel AddingColumnsStyles(this TableLayoutPanel table, params ColumnStyle[] columnStyles)
         {

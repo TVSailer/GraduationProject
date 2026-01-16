@@ -25,16 +25,16 @@ public partial class VisitorView : Form
         => FactoryElements.TableLayoutPanel()
             .With(t => t.Padding = new Padding(30))
             .With(t => t.Dock = DockStyle.Fill)
-            .ControlAddIsColumnPercentV2(null, 25)
-            .ControlAddIsColumnAbsoluteV2(null, 600)
+            .ControlAddIsColumnPercent(null, 25)
+            .ControlAddIsColumnAbsolute(null, 600)
             .ControlAddIsRowsAbsolute(FactoryElements.LabelTitle(""), 70)
             .ControlAddIsRowsAbsolute(Button("👤 Профиль"), 50)
             .ControlAddIsRowsAbsolute(Button("📰 Новости"), 50)
             .ControlAddIsRowsAbsolute(Button("🎭 Мероприятиями", DataContext, "OnLoadEventsView"), 50)
             .ControlAddIsRowsAbsolute(Button("🎨 Кружки"), 50)
             .ControlAddIsRowsAbsolute(Button("📊 Посещаемоть"), 50)
-            .ControlAddIsColumnPercentV2(null, 25)
-            .ControlAddIsRowsPercentV2(null, 25);
+            .ControlAddIsColumnPercent(null, 25)
+            .ControlAddIsRowsPercent(null, 25);
 
     private ButtonBase Button(string text)
         => FactoryElements.Button(text, 12)
@@ -93,13 +93,13 @@ public class EventView
 
         var mainTable = FactoryElements.TableLayoutPanel()
             .ControlAddIsRowsAbsolute(titleLabel, 70)
-            .ControlAddIsRowsPercentV2(
+            .ControlAddIsRowsPercent(
                 FactoryElements.TableLayoutPanel()
                 .With(
                     t => 
                     {
                         entitys.ForEach(e => t.ControlAddIsRowsAbsolute(EventCard(e), 270));
-                        t.ControlAddIsRowsPercentV2(null);
+                        t.ControlAddIsRowsPercent(null);
                     }));
 
         form.Controls.Add(mainTable);

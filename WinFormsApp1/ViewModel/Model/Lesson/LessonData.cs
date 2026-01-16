@@ -7,6 +7,7 @@ using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.CustomAttribute;
+using Microsoft.Office.Interop.Word;
 using System.Windows.Input;
 using WinFormsApp1;
 using NotNullAttribute = Logica.CustomAttribute.NotNullAttribute;
@@ -43,10 +44,11 @@ namespace Admin.ViewModels.Lesson
         [MaxParticipants]
         [LinkingEntity("MaxParticipants")]
         [FieldInfoUI("Кол. участников:*", "Введите кол-во участников")]
-        public int MaxParticipants { get; set => field = Set(value); }
+        public int MaxParticipants { get; 
+            set => field = Set(value); }
 
         [NotNull]
-        [LinkingEntity("Teacher")]
+        [LinkingEntity("TeacherFIO")]
         [FieldInfoUI("Преподователь:*", "Выберите преподователя", false, true)]
         public TeacherEntity Teacher { get; set => field = Set(value); }
 

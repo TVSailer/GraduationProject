@@ -1,26 +1,29 @@
-﻿using Admin.ViewModels.NotifuPropertyViewModel;
+﻿using Admin.View.Moduls.UIModel;
+using Admin.ViewModel.MovelView;
+using Admin.ViewModels.NotifuPropertyViewModel;
 using CSharpFunctionalExtensions;
 using Logica;
 using System.ComponentModel;
 
-public class ImagePanel<TEntity>
+public class ImageModule<TEntity> : IUIModel
      where TEntity : Entity, new()
 {
     public readonly ViewModelWithImages<TEntity> context;
 
-    public ImagePanel(ViewModelWithImages<TEntity> viewModelImages)
+    public ImageModule(IViewModele<TEntity> viewModele)
     {
-        context = viewModelImages;
+        if (viewModele is ViewModelWithImages<TEntity> obj2)
+            context = obj2;
     }
 
-    public Control? Images()
+    public Control? CreateControl()
             => FactoryElements.TableLayoutPanel()
             .ControlAddIsRowsAbsolute(
                 FactoryElements.Label_12("📷 Изображения:"), 50)
-            .ControlAddIsRowsPercentV2(
+            .ControlAddIsRowsPercent(
                 FactoryElements.FlowLayoutPanel()
                 .With(fp => AddImages(fp))
-                .With(fp => context.PropertyChanged += AddingImages(fp)), 10);
+                .With(fp => context.PropertyChanged += AddingImages(fp)));
 
     private PropertyChangedEventHandler AddingImages(FlowLayoutPanel fp)
     {

@@ -19,13 +19,13 @@ namespace Admin.View.Moduls.News
 
         public override Control Content()
             => FactoryElements.TableLayoutPanel()
-            .ControlAddIsRowsPercentV2(FactoryElements.Label_11(entity.Title)
+            .ControlAddIsRowsPercent(FactoryElements.Label_11(entity.Title)
                 .With(l => l.ForeColor = Color.DarkBlue), 40)
-            .ControlAddIsRowsPercentV2(FactoryElements.Label_09($"👤 {entity.Author}")
+            .ControlAddIsRowsPercent(FactoryElements.Label_09($"👤 {entity.Author}")
                 .With(l => l.ForeColor = Color.Gray), 30)
-            .ControlAddIsRowsPercentV2(FactoryElements.Label_09($"📅 {entity.Date}")
+            .ControlAddIsRowsPercent(FactoryElements.Label_09($"📅 {entity.Date}")
                 .With(l => l.ForeColor = Color.Gray), 30)
-            .ControlAddIsRowsPercentV2(FactoryElements.Label_09($"🏷️ {entity.Category}")
+            .ControlAddIsRowsPercent(FactoryElements.Label_09($"🏷️ {entity.Category}")
                 .With(l => l.ForeColor = Color.DarkGreen), 30);
     }
 }

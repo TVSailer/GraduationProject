@@ -61,11 +61,11 @@
 //                    .CreateButton("Добавить отзыв", viewVisitor.ShowAddingReviewForm, club), 150);
 
 //            var mainTable = elementFactory.CreateTableLayoutPanel()
-//                .ControlAddIsRowsAbsolute(titleLabel, 30)
-//                .ControlAddIsRowsAbsolute(ratingLabel, 25)
-//                .ControlAddIsRowsAbsolute(infoLabel, 100)
-//                .ControlAddIsRowsAbsolute(descriptionText, 300)
-//                .ControlAddIsRowsAbsolute(buttonTable, 60)
+//                .ControlAddIsRow(titleLabel, 30)
+//                .ControlAddIsRow(ratingLabel, 25)
+//                .ControlAddIsRow(infoLabel, 100)
+//                .ControlAddIsRow(descriptionText, 300)
+//                .ControlAddIsRow(buttonTable, 60)
 //                .ControlsAdd(new Panel(), 0, 6);
 
 //            Controls.Add(mainTable);

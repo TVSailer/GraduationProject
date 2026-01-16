@@ -3,6 +3,7 @@ using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Migrations;
 using DataAccess.Postgres.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Data;
@@ -17,7 +18,7 @@ public class GenericRepositoryEntity<TEntity, TViewModel>
     private readonly TViewModel _viewModel;
     private readonly PropertyMapping[] _mappings;
 
-    public TEntity Entity { get; private set; }
+    public TEntity Entity { get; private set; } = new();
 
     public GenericRepositoryEntity(TViewModel viewModel)
     {
@@ -46,8 +47,7 @@ public class GenericRepositoryEntity<TEntity, TViewModel>
                     EntityPropertyName = x.Attribute.NamePropertyEntity,
                     EntityProperty = entityType.GetProperty(x.Attribute.NamePropertyEntity)
                 })
-                .Where(m => m.EntityProperty != null)// &&
-                           //m.ViewModelProperty.PropertyType == m.EntityProperty.PropertyType)
+                .Where(m => m.EntityProperty != null)
                 .ToArray();
         });
     }
@@ -58,8 +58,9 @@ public class GenericRepositoryEntity<TEntity, TViewModel>
             foreach (var mapping in _mappings)
                 notify.PropertyChanged += (sender, args) =>
                 {
-                    if (args.PropertyName == mapping.ViewModelProperty.Name)
-                        UpdateEntityFromViewModel();
+                    var mapping = _mappings.FirstOrDefault(m => m.ViewModelProperty.Name == args.PropertyName);
+                    if (mapping != null)
+                        UpdateEntityFromViewModel(mapping);
                 };
     }
 
@@ -69,14 +70,15 @@ public class GenericRepositoryEntity<TEntity, TViewModel>
         UpdateViewModelFromEntity();
     }
 
-    private void UpdateEntityFromViewModel()
+    private void UpdateEntityFromViewModel(PropertyMapping mapping)
     {
-        foreach (var mapping in _mappings)
-        {
-            var value = mapping.ViewModelProperty.GetValue(_viewModel);
-            mapping.EntityProperty.SetValue(Entity, value);
-        }
-        _viewModel.Entity = Entity;
+        var value = mapping.ViewModelProperty.GetValue(_viewModel);
+
+        if (value is int intenger)
+            if (intenger == 0) return;
+        if (value is null) return;
+
+        mapping.EntityProperty.SetValue(Entity, value);
     }
 
     private void UpdateViewModelFromEntity()
@@ -86,5 +88,6 @@ public class GenericRepositoryEntity<TEntity, TViewModel>
             var value = mapping.EntityProperty.GetValue(Entity);
             mapping.ViewModelProperty.SetValue(_viewModel, value);
         }
+        _viewModel.Entity = Entity;
     }
 }

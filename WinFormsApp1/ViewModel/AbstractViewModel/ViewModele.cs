@@ -16,10 +16,6 @@ namespace Admin.ViewModel.MovelView
 
         public TEntity Entity { get; set; }
 
-        public ViewModele()
-        {
-        }
-
         public T Set<T>(T value, [CallerMemberName] string prop = "")
         {
             if (value is null) throw new ArgumentNullException();

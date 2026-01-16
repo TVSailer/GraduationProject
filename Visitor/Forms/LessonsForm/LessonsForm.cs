@@ -13,8 +13,8 @@
 
 //        Controls.Add(elementFactory
 //            .CreateTableLayoutPanel()
-//            .ControlAddIsRowsAbsolute(menuStrip, 25)
-//            .ControlAddIsRowsAbsolute(
+//            .ControlAddIsRow(menuStrip, 25)
+//            .ControlAddIsRow(
 //                elementFactory
 //                    .CreateTableLayoutPanel()
 //                    .ControlAddIsColumnPercent(
@@ -41,7 +41,7 @@
 //            .With(t => t.Size = new Size(displayItems.Width - 25, 200))
 //            .With(t => t.BorderStyle = BorderStyle.FixedSingle)
 //            .With(t => t.Padding = new Padding(15))
-//            .ControlAddIsRowsAbsolute(
+//            .ControlAddIsRow(
 //                new LinkLabel()
 //                    .With(l => l.Text = club.Name)
 //                    .With(l => l.Font = style.TitleFont)
@@ -49,7 +49,7 @@
 //                    .With(l => l.Dock = DockStyle.Fill)
 //                    .With(l => l.LinkBehavior = LinkBehavior.HoverUnderline)
 //                    .With(l => l.Click += (s, e) => new ShowClubDetails(club, this).ShowDialog()), 25)
-//            .ControlAddIsRowsAbsolute(
+//            .ControlAddIsRow(
 //                new LinkLabel()
 //                    .With(l => l.Text = $"★ {club.Rating:0.0} ({club.ReviewCount} отзывов)")
 //                    .With(l => l.Font = new Font(style.Font, FontStyle.Bold))
@@ -57,25 +57,25 @@
 //                    .With(l => l.Dock = DockStyle.Fill)
 //                    .With(l => l.LinkBehavior = LinkBehavior.HoverUnderline)
 //                    .With(l => l.Click += (s, e) => ShowClubReviews(club)), 20)
-//            .ControlAddIsRowsAbsolute(
+//            .ControlAddIsRow(
 //                new Label()
 //                    .With(l => l.Text = $"{club.Schedule} • {club.Location}")
 //                    .With(l => l.Font = new Font(style.Font, FontStyle.Regular))
 //                    .With(l => l.ForeColor = Color.DarkGreen)
 //                    .With(l => l.Dock = DockStyle.Fill), 20)
-//            .ControlAddIsRowsAbsolute(
+//            .ControlAddIsRow(
 //                new Label()
 //                    .With(l => l.Text = $"Руководитель: {club.Teacher} • {club.Category}")
 //                    .With(l => l.Font = new Font(style.Font, FontStyle.Italic))
 //                    .With(l => l.ForeColor = Color.Gray)
 //                    .With(l => l.Dock = DockStyle.Fill), 18)
-//            .ControlAddIsRowsAbsolute(
+//            .ControlAddIsRow(
 //                new Label()
 //                    .With(l => l.Text = club.Description)
 //                    .With(l => l.Font = style.Font)
 //                    .With(l => l.ForeColor = Color.Black)
 //                    .With(l => l.Dock = DockStyle.Fill), 70)
-//            .ControlAddIsRowsAbsolute(
+//            .ControlAddIsRow(
 //                new Label()
 //                    .With(l => l.Text = $"Участники: {club.CurrentParticipants}/{club.MaxParticipants}")
 //                    .With(l => l.Font = new Font(style.Font, FontStyle.Regular))

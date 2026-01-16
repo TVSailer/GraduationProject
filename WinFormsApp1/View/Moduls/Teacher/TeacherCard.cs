@@ -20,13 +20,13 @@ namespace Admin.View.Moduls.Teacher
 
         public override Control Content()
             => FactoryElements.TableLayoutPanel()
-                .ControlAddIsColumnPercentV2(
+                .ControlAddIsColumnPercent(
                     FactoryElements.Label_11($"{entity.ToString()}")
                     .With(l => l.ForeColor = Color.DarkBlue), 50)
-                .ControlAddIsColumnPercentV2(
+                .ControlAddIsColumnPercent(
                     FactoryElements.Label_11($"📞 {entity.NumberPhone}")
                     .With(l => l.ForeColor = Color.Gray), 25)
-                .ControlAddIsColumnPercentV2(
+                .ControlAddIsColumnPercent(
                     FactoryElements.Label_11($"🎨 Кружков: {0}")
                     .With(l => l.ForeColor = Color.DarkGreen), 25);
     }

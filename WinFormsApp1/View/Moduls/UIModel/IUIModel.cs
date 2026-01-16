@@ -1,10 +1,10 @@
-﻿using CSharpFunctionalExtensions;
+﻿using Admin.ViewModels.Lesson;
+using CSharpFunctionalExtensions;
 
 namespace Admin.View.Moduls.UIModel
 {
-    public interface IUIModel<TEntity, TViewModel>
-        where TEntity : Entity
-        where TViewModel : IViewModele<TEntity>
+    public interface IUIModel
     {
+        public Control? CreateControl();
     }
 }

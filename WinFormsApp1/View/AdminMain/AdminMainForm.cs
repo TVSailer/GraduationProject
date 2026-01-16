@@ -25,8 +25,8 @@ namespace WinFormsApp1.View
             => new TableLayoutPanel()
                 .With(t => t.Padding = new Padding(30))
                 .With(t => t.Dock = DockStyle.Fill)
-                .ControlAddIsColumnPercentV2(null, 25)
-                .ControlAddIsColumnAbsoluteV2(null, 600)
+                .ControlAddIsColumnPercent(25)
+                .ControlAddIsColumnAbsolute(600)
                 .ControlAddIsRowsAbsolute(
                     FactoryElements.LabelTitle("Панель администратора"), 70)
                 .ControlAddIsRowsAbsolute(
@@ -41,8 +41,8 @@ namespace WinFormsApp1.View
                     CreateButton("👥 Управление посетителями", DataContext, "OnLoadVisitorsManagemetnView"), 50)
                 .ControlAddIsRowsAbsolute(
                     CreateButton("📊 Управление посещаемостью", null), 50)
-                .ControlAddIsColumnPercentV2(null, 25)
-                .ControlAddIsRowsPercentV2(null, 25);
+                .ControlAddIsColumnPercent(25)
+                .ControlAddIsRowsPercent(25);
 
         private Control CreateButton(string text, Action action) 
             => FactoryElements.CreateButton(text, action)

@@ -4,7 +4,7 @@
     {
         public Dictionary<Type, ServiceDescriptor> Descriptors { get; private set; } = new();
 
-        public void Register<TService, TImplementation>(ServiceLifetime serviceLifetime)
+        public void Register<TService, TImplementation>(ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
             where TService : class
             where TImplementation : class, TService
         {

@@ -1,5 +1,4 @@
 ﻿using DataAccess.Postgres.Models;
-using Logica;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
@@ -24,7 +23,7 @@ namespace DataAccess.Postgres.Repository
         public List<DateAttendanceEntity>? Get(string startDate, string endDate)
             => DbContext.DateAttendances
             .AsNoTracking()
-            .Where(d => d.Date.DateMatchingTheInterval(startDate, endDate))
+            //.Where(d => d.Date.DateMatchingTheInterval(startDate, endDate))
             .ToList();
 
         public void Add(DateAttendanceEntity dateAttendance)

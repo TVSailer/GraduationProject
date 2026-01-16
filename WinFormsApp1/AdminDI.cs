@@ -42,15 +42,19 @@ namespace WinFormsApp1
             //register.RegisterScope<TeacherManagementView>();
 
 
+
             RegisterSistem<LessonEntity, LessonDetailsPanel>(register);
             RegisterSistem<LessonEntity, LessonAddingPanel>(register);
+
             register.Register<
-                ParametrsFromManagmentMV<LessonEntity, LessonAddingPanel>>(ServiceLifetime.Transient);
+                ParametrsFromManagmentMV<LessonEntity, LessonAddingPanel>>();
             register.Register<
-                ParametrsFromManagmentMV<LessonEntity, LessonDetailsPanel>>(ServiceLifetime.Transient);
+                ParametrsFromManagmentMV<LessonEntity, LessonDetailsPanel>>();
 
             register.Register<ManagmentModelView<LessonEntity, LessonAddingPanel, LessonDetailsPanel>>();
             register.Register<ManagementView<LessonEntity,  LessonCard, LessonAddingPanel, LessonDetailsPanel>>();
+
+            register.Register<SerchManagment<LessonEntity>, LessonSerch>();
 
             register.RegisterSingleton<AdminMainView>();
             register.RegisterSingleton<AdminMainViewModel>();

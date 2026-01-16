@@ -34,10 +34,10 @@
 //            Controls.Clear();
 //            return FactoryElements
 //                .CreateTableLayoutPanel()
-//                .ControlAddIsRowsAbsolute(titleLabel, 30)
-//                .ControlAddIsRowsAbsolute(ratingLabel, 25)
-//                .ControlAddIsRowsAbsolute(CreadCardsReviews(club), 300)
-//                .ControlAddIsRowsAbsolute(FactoryElements
+//                .ControlAddIsRow(titleLabel, 30)
+//                .ControlAddIsRow(ratingLabel, 25)
+//                .ControlAddIsRow(CreadCardsReviews(club), 300)
+//                .ControlAddIsRow(FactoryElements
 //                    .CreateButton("Добавить отзыв", viewVisitor.ShowAddingReviewForm, club), 40)
 //                .ControlsAdd(new Panel(), 0, 4);
 //        }
@@ -100,10 +100,10 @@
 //        return new TableLayoutPanel{
 //            BorderStyle = BorderStyle.FixedSingle,
 //            Dock = DockStyle.Top}
-//            .ControlAddIsRowsAbsolute(authorLabel, 20)
-//            .ControlAddIsRowsAbsolute(dateLabel, 20)
-//            .ControlAddIsRowsAbsolute(ratingLabel, 20)
-//            .ControlAddIsRowsAbsolute(commentLabel, 200);
+//            .ControlAddIsRow(authorLabel, 20)
+//            .ControlAddIsRow(dateLabel, 20)
+//            .ControlAddIsRow(ratingLabel, 20)
+//            .ControlAddIsRow(commentLabel, 200);
 //    }
 //    public void Init(LessonEntity club)
 //    {

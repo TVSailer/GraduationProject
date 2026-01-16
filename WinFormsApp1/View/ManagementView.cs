@@ -1,11 +1,8 @@
-﻿using Admin.View.Moduls.Event;
-using Admin.View.Moduls.Lesson;
-using Admin.View.ViewForm;
+﻿using Admin.View.Moduls.UIModel;
 using Admin.ViewModels;
+using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
-using DataAccess.Postgres.Repository;
 using Logica;
-using Microsoft.EntityFrameworkCore.Metadata;
 using WinFormsApp1.View;
 using IView = Admin.View.ViewForm.IView;
 
@@ -17,64 +14,29 @@ namespace Admin.View
         where TAddingPanel : IAddingPanel<TEntity>
         where TDetailsPanel : IDetalsPanel<TEntity>
     {
-        protected readonly Form form;
-        protected readonly ManagmentModelView<TEntity, TAddingPanel, TDetailsPanel> context;
+        private readonly Form form;
+        private readonly CardModule<TEntity, TCard> cardModule;
+        private readonly ButtonModule buttonModule;
+        private readonly SerchModule<TEntity> serchModule;
 
-        public ManagementView(AdminMainView mainForm, ManagmentModelView<TEntity, TAddingPanel, TDetailsPanel> manager)
+        public ManagementView(
+            AdminMainView mainForm, 
+            ManagmentModelView<TEntity, TAddingPanel, TDetailsPanel> manager,
+            SerchManagment<TEntity> serchManagment)
         {
             form = mainForm;
-            context = manager;
+            buttonModule = new ButtonModule(manager);
+            serchModule = new SerchModule<TEntity>(serchManagment);
+            cardModule = new CardModule<TEntity, TCard>(serchManagment, e => manager.OnLoadDetailsView.Execute(e));
         }
 
         private TableLayoutPanel UIEvent()
             => FactoryElements.TableLayoutPanel()
-            .ControlAddIsRowsPercentV2(FactoryElements.TableLayoutPanel()
+            .ControlAddIsRowsPercent(FactoryElements.TableLayoutPanel()
                 .With(t => t.BackColor = Color.WhiteSmoke)
-                .ControlAddIsColumnPercentV2(LoadCardsPanel(), 80)
-                .ControlAddIsColumnPercentV2(LoadSerchPanel(), 20))
-            .ControlAddIsRowsAbsolute(LoadButtonPanel(), 90);
-
-        protected virtual Control LoadSerchPanel()
-        {
-            return new Panel();
-        }
-
-        protected virtual Control LoadCardsPanel()
-            => new FlowLayoutPanel()
-            .With(p => p.Dock = DockStyle.Fill)
-            .With(p => p.AutoScroll = true)
-            .With(p => p.Padding = new Padding(10))
-            .With(p => context.PropertyChanged += (obj, propCh) =>
-            {
-                if (propCh.PropertyName == nameof(context.DataEntitys))
-                {
-                    p.Controls.Clear();
-                    AddCard(p);
-                }
-            })
-            .With(AddCard);
-
-        private void AddCard(FlowLayoutPanel p)
-            => context.DataEntitys
-            .ForEach(
-                en =>
-                {
-                    p.Controls.Add(new TCard().Initialize(en)
-                    .With(c => c.OnCardClicked +=
-                    (s, e) => {
-                        if (en is TEntity entity)
-                            context.OnLoadDetailsView.Execute(entity);
-                        else throw new ArgumentException();
-                    }));
-                });
-
-        protected virtual TableLayoutPanel LoadButtonPanel()
-            => FactoryElements.TableLayoutPanel()
-            .ControlAddIsColumnPercentV2(FactoryElements.Button(""), 40)
-            .ControlAddIsColumnPercentV2(FactoryElements.Button(""), 40)
-            .ControlAddIsColumnPercentV2(FactoryElements.Button("➕ Добавить", context, "OnLoadAddingView"), 40)
-            .ControlAddIsColumnPercentV2(FactoryElements.Button("⬅️ Назад", context, "OnBack"), 40);
-
+                .ControlAddIsColumnPercent(cardModule.CreateControl(), 80)
+                .ControlAddIsColumnPercent(serchModule.CreateControl(), 20))
+            .ControlAddIsRowsAbsolute(buttonModule.CreateControl(), 90);
 
         public Form InitializeComponents(object? data)
             => form

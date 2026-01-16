@@ -1,4 +1,4 @@
-﻿//using Admin.View.Moduls.Teacher;
+﻿//using Admin.View.Moduls.TeacherFIO;
 //using Admin.ViewModels.NotifuPropertyViewModel;
 //using DataAccess.Postgres.Models;
 //using DataAccess.Postgres.Repository;
