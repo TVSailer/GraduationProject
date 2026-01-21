@@ -4,9 +4,7 @@ namespace DataAccess.Postgres.Models
 {
     public class TeacherEntity : Entity
     {
-        public string Name { get; private set; }
-        public string Surname { get; private set; }
-        public string Patronymic { get; private set; }
+        public FIO FIO { get; private set; }
         public string DateBirth { get; private set; }
         public string NumberPhone { get; private set; }
         public string Login { get; private set; }
@@ -17,9 +15,7 @@ namespace DataAccess.Postgres.Models
         public TeacherEntity() { }
         public TeacherEntity(string name, string surname, string patro, string dateBurth, string numberPhone, string urlImg) 
         {
-            Name = name;
-            Surname = surname;
-            Patronymic = patro;
+            FIO = new FIO(name, surname, patro);
             DateBirth = dateBurth;
             NumberPhone = numberPhone;
             UrlFaceImg = urlImg;
@@ -28,40 +24,11 @@ namespace DataAccess.Postgres.Models
         }
 
         public override string ToString()
-            => $"{Surname} {Name} {Patronymic}";
+            => FIO.ToString();
 
         //public bool VerifyPassword(string password)
         //{
         //    return BCrypt.Net.BCrypt.Verify(password, Password);
         //}
-    }
-}
-
-public class FIO 
-{
-    public string Name { get; private set; }
-    public string Surname { get; private set; }
-    public string Patronymic { get; private set; }
-
-    public FIO() { }
-
-    public FIO(string name, string surname, string patronymic)
-    {
-        Name = name;
-        Surname = surname;
-        Patronymic = patronymic;
-    }
-    
-    public FIO(string fio)
-    {
-        if (fio is null) throw new ArgumentNullException();
-
-        var list = fio.Split(" ");
-
-        if (list.Length != 3) throw new ArgumentNullException();
-
-        Name = list[0];
-        Surname = list[1];
-        Patronymic = list[2];
     }
 }

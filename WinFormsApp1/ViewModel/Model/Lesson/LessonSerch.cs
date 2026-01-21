@@ -44,8 +44,8 @@ namespace Admin.ViewModels.Lesson
                 return entitys
                     //.Where(e => Category == "Пусто" ? true : e.Category == Category)
                     .Where(e => e.Name.StartesWith(Name))
-                    .Where(e => e.Teacher.Name.StartesWith(TeacherName))
-                    .Where(e => e.Teacher.Surname.StartesWith(TeacherSurname))
+                    .Where(e => e.Teacher.FIO.Name.StartesWith(TeacherName))
+                    .Where(e => e.Teacher.FIO.Surname.StartesWith(TeacherSurname))
                     .ToList();
 
             };

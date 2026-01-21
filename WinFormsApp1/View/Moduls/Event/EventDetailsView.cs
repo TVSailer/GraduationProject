@@ -11,13 +11,13 @@
 //    public partial class EventDetailsView 
 //    {
 //        private ErrorProvider errorProvider = new() { BlinkStyle = ErrorBlinkStyle.NeverBlink };
-//        private readonly EventMaxControlViewModel context;
+//        private readonly EventDetailsPanel context;
 //        private readonly EventEntity eventEntity;
 //        private readonly AdminMainView form;
 
 //        public EventDetailsView(AdminMainView mainForm, EventEntity even)
 //        {
-//            context = AdminDI.GetService<EventMaxControlViewModel>();
+//            context = AdminDI.GetService<EventDetailsPanel>();
 //            eventEntity = context.EventEntity;
 //            form = mainForm;
 //        }
@@ -25,7 +25,7 @@
 //        public Form InitializeComponents()
 //            => form
 //                .With(f => f.Controls.Clear())
-//                .With(f => f.Text = $"Подробности: {eventEntity.Title}")
+//                .With(f => f.LabelText = $"Подробности: {eventEntity.Title}")
 //                .With(f => f.Controls.Add(CreateUI()));
 
 //        private TableLayoutPanel CreateUI()
@@ -61,7 +61,7 @@
 //                        .ControlAddIsColumnPercent(
 //                            FactoryElements.TextBox("")
 //                            .With(l => OnErrorProvider(f.Attributee, l))
-//                            .With(l => l.DataBindings.Add(new Binding("Text", context, f.Attributee, false, DataSourceUpdateMode.OnPropertyChanged)))
+//                            .With(l => l.DataBindings.Add(new Binding("LabelText", context, f.Attributee, false, DataSourceUpdateMode.OnPropertyChanged)))
 //                            .With(l => l.BackColor = Color.White)
 //                            .If(f.Label == "📝 Описание:", l => l
 //                                .With(l => l.AutoSize = false)
@@ -70,12 +70,12 @@
 //                        .ControlAddIsColumnPercent(null, 1), 50)));
 //        }
 
-//        private void OnErrorProvider(string propertyName, Control control)
+//        private void OnErrorProvider(string propertyName, NameMethod Control)
 //        {
 //            context.ErrorMassegeProvider += (s, e) =>
 //            {
 //                if (!propertyName.Equals(e.PropertyName)) return;
-//                errorProvider.SetError(control, e.ErrorMessage);
+//                errorProvider.SetError(Control, e.ErrorMessage);
 //            };
 //        }
 

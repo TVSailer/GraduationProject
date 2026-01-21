@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
+using Logica;
 using System.Data;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 public static class TypeExtension
 {

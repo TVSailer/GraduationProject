@@ -12,14 +12,14 @@ namespace DataAccess.Postgres.Repository
         
         public override List<NewsEntity> Get()
             => DbContext.News
-            .Include(e => e.ImgsNews)
+            .Include(e => e.Imgs)
             .AsNoTracking()
             .ToList();
 
         public NewsEntity Get(int id)
             => DbContext.News
             .AsNoTracking()
-            .Include(e => e.ImgsNews)
+            .Include(e => e.Imgs)
             .FirstOrDefault(v => v.Id == id) ?? throw new ArgumentNullException();
 
         public override void Update(long id, NewsEntity news)
@@ -33,13 +33,13 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(n => n.Content, news.Content)
                     .SetProperty(n => n.Author, news.Author));
 
-            if (news.ImgsNews == null || news.ImgsNews.Count == 0) return;
+            if (news.Imgs == null || news.Imgs.Count == 0) return;
 
             var listImgDb = DbContext.ImgNews
                 .Where(img => img.News.Id == id)
                 .ToList();
 
-            var listImg = news.ImgsNews;
+            var listImg = news.Imgs;
 
             listImgDb
                 .ForEach(
@@ -54,7 +54,7 @@ namespace DataAccess.Postgres.Repository
                 img =>
                 {
                     if (!listImgDb.Select(img => img.Url).Contains(img.Url))
-                        DbContext.News.FirstOrDefault(ev => ev.Id == id).ImgsNews.Add(img);
+                        DbContext.News.FirstOrDefault(ev => ev.Id == id).Imgs.Add(img);
                 });
 
             DbContext.SaveChanges();

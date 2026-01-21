@@ -10,9 +10,8 @@ public class ImgNewsEntity : ImgEntity
     public NewsEntity News { get; private set; }
 
     public ImgNewsEntity() { }
-    public ImgNewsEntity(string url)
+    public ImgNewsEntity(string url) : base(url)
     {
-        Url = url;
     }
 }
 

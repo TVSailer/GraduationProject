@@ -16,22 +16,19 @@ namespace Admin.ViewModel.MovelView
 
         public TEntity Entity { get; set; }
 
-        public T Set<T>(T value, [CallerMemberName] string prop = "")
+        public T TryValidProperty<T>(ref T field, T value, [CallerMemberName] string prop = "")
+            => TryValidPropertyInfo(ref field, value, prop, prop);
+        
+        public T TryValidPropertyInfo<T>(ref T field, T value, string infoProperty, [CallerMemberName] string prop = "")
         {
-            if (value is null) throw new ArgumentNullException();
-
-            if (!Validatoreg.TryValidProperty(value, prop, this, out string errorMessage))
-            {
-                OnMassegeErrorProvider(errorMessage, prop);
-                return value;
-            }
-
-            OnMassegeErrorProvider("", prop);
+            field = value;
+            Validatoreg.TryValidProperty(value, prop, this, out string errorMessage);
+            OnMassegeErrorProvider(errorMessage, infoProperty);
             OnPropertyChanged(prop);
 
             return value;
         }
-
+        
         protected void TryValidObject(Action action)
         {
             if (Validatoreg.TryValidObject(this, out var results, false))

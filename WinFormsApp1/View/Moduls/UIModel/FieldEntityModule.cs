@@ -1,6 +1,7 @@
 ﻿using Admin.ViewModels.Lesson;
 using Admin.ViewModels.NotifuPropertyViewModel;
 using Logica;
+using System.Reflection;
 
 namespace Admin.View.Moduls.UIModel
 {
@@ -13,14 +14,14 @@ namespace Admin.View.Moduls.UIModel
         public FieldEntityModule(IViewModele context)
         {
             this.context = context;
-            var buttonsInfo = context.GetType().GetAttributes<FieldInfoUIAttribute>();
+            var fieldInfo = context.GetType().GetAttributes<FieldInfoUIAttribute>();
 
             if (context is PropertyChange obj1)
                 errorProviderView = new ErrorProviderView(obj1);
             else throw new ArgumentException("Переданный ViewModelEntity не наследует класс PropertyChange");
 
-            if (buttonsInfo != null)
-                this.fieldInfo = buttonsInfo;
+            if (fieldInfo != null)
+                this.fieldInfo = fieldInfo;
         }
 
         public Control CreateControl()
@@ -30,16 +31,13 @@ namespace Admin.View.Moduls.UIModel
             .ControlAddIsRowsPercent();
 
         private Control CreateField(FieldInfoUIAttribute? fieldInfoAttribute)
-        => FactoryElements.TableLayoutPanel()
+            => FactoryElements.TableLayoutPanel()
             .With(t => t.Padding = new Padding(0))
             .StartNewRowTableAbsolute(fieldInfoAttribute.Size)
                 .AddingRowsStyles(new RowStyle(SizeType.Absolute, fieldInfoAttribute.Size))
-                .ControlAddIsColumnPercent(FactoryElements.Label_11(fieldInfoAttribute.Text), 30)
-                .ControlAddIsColumnPercent(FactoryElements.TextBox(fieldInfoAttribute.PlaceholderText)
-                        .With(t => t.Multiline = fieldInfoAttribute.Multiline)
-                        .With(t => t.ReadOnly = fieldInfoAttribute.ReadOnly)
-                        .With(t => t.DataBindings.Add(nameof(t.Text), context, fieldInfoAttribute.NameProperty, false, DataSourceUpdateMode.OnPropertyChanged))
-                        .With(t => errorProviderView.OnErrorProvider(fieldInfoAttribute.NameProperty, t)), 70)
+                .ControlAddIsColumnPercent(FactoryElements.Label_11(fieldInfoAttribute.LabelText), 30)
+                .ControlAddIsColumnPercent(fieldInfoAttribute.GetContol(context)
+                    .With(t => errorProviderView.OnErrorProvider(fieldInfoAttribute.PropertyName, t)), 70)
                 .ControlAddIsColumnAbsolute(10);
     }
 }

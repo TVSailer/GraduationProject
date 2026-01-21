@@ -1,4 +1,5 @@
 using Admin.View;
+using Admin.View.Moduls.Event;
 using Admin.View.Moduls.Lesson;
 using Admin.ViewModel.Lesson;
 using Admin.ViewModels;
@@ -9,6 +10,7 @@ using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica.DI;
 using WinFormsApp1.View;
+using WinFormsApp1.ViewModelEntity.Event;
 
 namespace WinFormsApp1
 {
@@ -22,38 +24,42 @@ namespace WinFormsApp1
         {
             var register = new ServiceCollection();
 
-            register.RegisterSingleton<ApplicationDbContext>();
+            var dbContext = new ApplicationDbContext();
+
+            //dbContext.AddRange(
+            //    new LessonCategoryEntity("Спорт"),
+            //    new LessonCategoryEntity("Творчесво"),
+            //    new LessonCategoryEntity("Наука")
+            //    );
+            
+            //dbContext.AddRange(
+            //    new TeacherEntity("dsf", "sdf", "lgh", "22.11.2004", "88989988989", ""),
+            //    new TeacherEntity("jtr", "D", "DT", "22.11.2004", "88989988989", ""),
+            //    new TeacherEntity("SREG", "AERF", "SASF", "22.11.2004", "88989988989", "")
+            //    );
+            //dbContext.SaveChanges();
+
+            register.RegisterSingelton(dbContext);
 
             register.Register<Repository<LessonEntity>, LessonsRepository>(ServiceLifetime.Singleton);
+            register.Register<Repository<LessonCategoryEntity>, LessonCategoryRepositroy>(ServiceLifetime.Singleton);
             register.Register<TeacherRepository>();
-            register.Register<EventRepository>();
+            register.Register<Repository<EventEntity>, EventRepository>();
             register.Register<NewsRepository>();
 
-            //register.RegisterScope<EventMinControlViewModel>();
-            //register.RegisterScope<EventMaxControlViewModel>();
-            //register.RegisterScope<EventMenegmentModelView>();
 
-            //register.RegisterScope<EventAddingView>();
-            //register.RegisterScope<EventDetailsView>();
-            //register.RegisterScope<EventManagementView>();
+            RegisterSistem<EventEntity, EventAddingPanel>(register);
+            RegisterSistem<EventEntity, EventDetailsPanel>(register);
 
-            //register.RegisterScope<TeacherManagementModelView>();
-
-            //register.RegisterScope<TeacherManagementView>();
-
-
+            register.Register<ManagmentModelView<EventEntity, EventAddingPanel, EventDetailsPanel>>();
+            register.Register<ManagementView<EventEntity, EventCard, EventAddingPanel, EventDetailsPanel>>();
+            register.Register<SerchManagment<EventEntity>, EventSerch>();
 
             RegisterSistem<LessonEntity, LessonDetailsPanel>(register);
             RegisterSistem<LessonEntity, LessonAddingPanel>(register);
 
-            register.Register<
-                ParametrsFromManagmentMV<LessonEntity, LessonAddingPanel>>();
-            register.Register<
-                ParametrsFromManagmentMV<LessonEntity, LessonDetailsPanel>>();
-
             register.Register<ManagmentModelView<LessonEntity, LessonAddingPanel, LessonDetailsPanel>>();
             register.Register<ManagementView<LessonEntity,  LessonCard, LessonAddingPanel, LessonDetailsPanel>>();
-
             register.Register<SerchManagment<LessonEntity>, LessonSerch>();
 
             register.RegisterSingleton<AdminMainView>();
@@ -69,6 +75,8 @@ namespace WinFormsApp1
             register.Register<GenericRepositoryEntity<TEntity, TViewModel>>();
             register.Register<TViewModel>(ServiceLifetime.Scoped);
             register.Register<UIEntity<TEntity, TViewModel>>();
+            register.Register<
+                ParametrsFromManagmentMV<TEntity, TViewModel>>();
         }
 
         public static T GetService<T>() where T : class

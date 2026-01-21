@@ -27,7 +27,7 @@ public class GenericRepositoryEntity<TEntity, TViewModel>
         InitializeViewModel();
     }
 
-    private PropertyMapping[] GetOrCreateMappings()
+    private PropertyMapping[] GetOrCreateMappings() 
     {
         return _mappingsCache.GetOrAdd(typeof(TViewModel), type =>
         {
@@ -79,6 +79,7 @@ public class GenericRepositoryEntity<TEntity, TViewModel>
         if (value is null) return;
 
         mapping.EntityProperty.SetValue(Entity, value);
+        _viewModel.Entity = Entity;
     }
 
     private void UpdateViewModelFromEntity()

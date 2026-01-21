@@ -13,6 +13,8 @@ namespace DataAccess.Postgres.Repository
         public override List<LessonEntity> Get()
           => DbContext.Lessons
             .Include(l => l.Teacher)
+            .Include(l => l.Category)
+            .Include(l => l.Schedule)
             .Include(l => l.Imgs)
             .AsNoTracking()
             .ToList() ?? throw new ArgumentNullException();
@@ -21,7 +23,7 @@ namespace DataAccess.Postgres.Repository
             => DbContext.Lessons
             .Include(l => l.Visitors)
             .Include(l => l.Teacher)
-            .Include(l => l.Dates)
+            .Include(l => l.AttendanceDates)
             .AsNoTracking()
             .FirstOrDefault(l => l.Id == id) ?? throw new ArgumentNullException();
 
@@ -29,24 +31,24 @@ namespace DataAccess.Postgres.Repository
             => DbContext.Lessons
             .Include(l => l.Visitors)
             .Include(l => l.Teacher)
-            .Include(l => l.Dates)
+            .Include(l => l.AttendanceDates)
             .AsNoTracking()
             .FirstOrDefault(l => l.Name == name) ?? throw new ArgumentNullException();
 
-        public List<LessonEntity> Get(string name, string surnameTeacher)
-            => DbContext.Lessons
-            .Include(l => l.Teacher)
-            .AsNoTracking()
-            .Where(l => l.Name.StartsWith(name))
-            .Where(l => l.Teacher.Surname.StartsWith(surnameTeacher))
-            .ToList() ?? throw new ArgumentNullException();
+        //public List<LessonEntity> Get(string name, string surnameTeacher)
+        //    => DbContext.Lessons
+        //    .Include(l => l.Teacher)
+        //    .AsNoTracking()
+        //    .Where(l => l.Name.StartsWith(name))
+        //    .Where(l => l.Teacher. Surname.StartsWith(surnameTeacher))
+        //    .ToList() ?? throw new ArgumentNullException();
 
-        public List<VisitorEntity> GetVisitors(int lessonId, string name, string surname, string patro)
-            => Get(lessonId).Visitors
-            .Where(v => v.Name.StartsWith(name))
-            .Where(v => v.Surname.StartsWith(surname))
-            .Where(v => v.Patronymic.StartsWith(patro))
-            .ToList() ?? throw new ArgumentNullException();
+        //public List<VisitorEntity> GetVisitors(int lessonId, string name, string surname, string patro)
+        //    => Get(lessonId).Visitors
+        //    .Where(v => v.Name.StartsWith(name))
+        //    .Where(v => v.Surname.StartsWith(surname))
+        //    .Where(v => v.Patronymic.StartsWith(patro))
+        //    .ToList() ?? throw new ArgumentNullException();
 
         public void AddRelationWithVisitor(LessonEntity lesson, VisitorEntity visitor)
         {
@@ -55,14 +57,17 @@ namespace DataAccess.Postgres.Repository
         }
         public void AddRelationWithDateAttendance(LessonEntity lesson, DateAttendanceEntity date)
         {
-            DbContext.Lessons.FirstOrDefault(l => l.Id == lesson.Id).Dates.Add(date);
+            DbContext.Lessons.FirstOrDefault(l => l.Id == lesson.Id).AttendanceDates.Add(date);
             DbContext.SaveChanges();
         }
 
-        public void AddRelationWithLesson(TeacherEntity teacher, LessonEntity lesson)
+        public void Add(LessonEntity lesson)
         {
-            var tc = DbContext.Teachers.FirstOrDefault(t => t.Id == teacher.Id) ?? throw new ArgumentNullException();
+            var tc = DbContext.Teachers.FirstOrDefault(t => t.Id == lesson.Teacher.Id) ?? throw new ArgumentNullException();
+            var cat = DbContext.LessonCategory.FirstOrDefault(c => c.Id == lesson.Category.Id) ?? throw new ArgumentNullException();
+
             tc.Lessons.Add(lesson);
+            cat.LessonEntities.Add(lesson);
             DbContext.SaveChanges();
         }
 
@@ -73,35 +78,51 @@ namespace DataAccess.Postgres.Repository
                 .ExecuteUpdate(l => l
                     .SetProperty(l => l.Name, lesson.Name)
                     .SetProperty(l => l.Description, lesson.Description)
-                    .SetProperty(l => l.Schedule, lesson.Schedule)
                     .SetProperty(l => l.MaxParticipants, lesson.MaxParticipants)
-                    .SetProperty(l => l.Category, lesson.Category)
+                    .SetProperty(l => l.CategoryId, lesson.CategoryId)
                     .SetProperty(l => l.Location, lesson.Location)
                     .SetProperty(l => l.TeacherId, lesson.Teacher.Id));
 
-            if (lesson.Imgs == null || lesson.Imgs.Count == 0) return;
 
-            var listImgDb = DbContext.ImgLesson
-                .Where(img => img.Lesson.Id == id)
-            .ToList();
+            if (lesson.Schedule != null || lesson.Schedule.Count > 0)
+            {
+                DbContext.LessonSchedule
+                    .Where(s => s.LessonId == id)
+                    .ToList()
+                    .ForEach(s => DbContext.Remove(s));
 
-            var listImg = lesson.Imgs;
+                lesson.Schedule
+                    .ForEach(s => DbContext.Add(s));
+            }
 
-            listImgDb
-                .ForEach(
-                imgDb =>
-                {
-                    if (!listImg.Select(img => img.Url).Contains(imgDb.Url))
-                        DbContext.ImgLesson.Remove(imgDb);
-                });
 
-            listImg
-                .ForEach(
-                img =>
-                {
-                    if (!listImgDb.Select(img => img.Url).Contains(img.Url))
-                        DbContext.Lessons.FirstOrDefault(les => les.Id == id).Imgs.Add(img);
-                });
+            if (lesson.Imgs != null || lesson.Imgs.Count > 0)
+            {
+                DbContext.ImgLesson
+                    .Where(img => img.Lesson.Id == id)
+                    .ToList()
+                    .ForEach(img => DbContext.Remove(img));
+
+                lesson.Imgs
+                    .ForEach(img => DbContext.Add(img));
+            }
+
+
+            //listImgDb
+            //    .ForEach(
+            //    imgDb =>
+            //    {
+            //        if (!listImg.Select(img => img.Url).Contains(imgDb.Url))
+            //            DbContext.ImgLesson.Remove(imgDb);
+            //    });
+
+            //listImg
+            //    .ForEach(
+            //    img =>
+            //    {
+            //        if (!listImgDb.Select(img => img.Url).Contains(img.Url))
+            //            DbContext.Lessons.FirstOrDefault(les => les.Id == id).Imgs.Add(img);
+            //    });
 
             DbContext.SaveChanges();
         }

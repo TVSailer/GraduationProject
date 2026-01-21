@@ -12,7 +12,7 @@
 
 //        var titleLabel = new Label
 //        {
-//            Text = $"Отзывы о кружке \"{club.Name}\"",
+//            LabelText = $"Отзывы о кружке \"{club.Name}\"",
 //            Font = FactoryElements.Style.TitleFont,
 //            Dock = DockStyle.Top,
 //            TextAlign = ContentAlignment.MiddleCenter
@@ -20,7 +20,7 @@
 
 //        var ratingLabel = new Label
 //        {
-//            Text = $"Средняя оценка: ★ {club.Rating:0.0} ({club.ReviewCount} отзывов)",
+//            LabelText = $"Средняя оценка: ★ {club.Rating:0.0} ({club.ReviewCount} отзывов)",
 //            Font = new Font(FactoryElements.Style.Font, FontStyle.Bold),
 //            Dock = DockStyle.Top,
 //            TextAlign = ContentAlignment.MiddleCenter,
@@ -69,14 +69,14 @@
 //    {
 //        var authorLabel = new Label
 //        {
-//            Text = review.Author,
+//            LabelText = review.Author,
 //            Font = new Font(FactoryElements.Style.Font, FontStyle.Bold),
 //            Dock = DockStyle.Fill
 //        };
 
 //        var dateLabel = new Label
 //        {
-//            Text = review.Date,
+//            LabelText = review.Date,
 //            Font = new Font(FactoryElements.Style.Font, FontStyle.Italic),
 //            ForeColor = Color.Gray,
 //            Dock = DockStyle.Fill
@@ -84,7 +84,7 @@
 
 //        var ratingLabel = new Label
 //        {
-//            Text = $"Оценка: {new string('★', review.Rating)}{new string('☆', 5 - review.Rating)}",
+//            LabelText = $"Оценка: {new string('★', review.Rating)}{new string('☆', 5 - review.Rating)}",
 //            Font = new Font(FactoryElements.Style.Font, FontStyle.Regular),
 //            ForeColor = Color.DarkOrange,
 //            Dock = DockStyle.Fill
@@ -92,7 +92,7 @@
 
 //        var commentLabel = new Label
 //        {
-//            Text = review.Comment,
+//            LabelText = review.Comment,
 //            Font = FactoryElements.Style.Font,
 //            Dock = DockStyle.Fill
 //        };
@@ -107,7 +107,7 @@
 //    }
 //    public void Init(LessonEntity club)
 //    {
-//        Text = $"Отзывы - {club.Name}";
+//        LabelText = $"Отзывы - {club.Name}";
 //        Size = new Size(600, 500);
 //        StartPosition = FormStartPosition.CenterParent;
 //        Padding = new Padding(20);

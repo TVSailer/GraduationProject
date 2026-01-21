@@ -19,7 +19,7 @@
 //                    .CreateTableLayoutPanel()
 //                    .ControlAddIsColumnPercent(
 //                        new Label()
-//                            .With(l => l.Text = "Кружки и секции")
+//                            .With(l => l.LabelText = "Кружки и секции")
 //                            .With(l => l.Font = style.TitleFont)
 //                            .With(l => l.TextAlign = ContentAlignment.MiddleLeft)
 //                            .With(l => l.Dock = DockStyle.Fill)
@@ -43,7 +43,7 @@
 //            .With(t => t.Padding = new Padding(15))
 //            .ControlAddIsRow(
 //                new LinkLabel()
-//                    .With(l => l.Text = club.Name)
+//                    .With(l => l.LabelText = club.Name)
 //                    .With(l => l.Font = style.TitleFont)
 //                    .With(l => l.LinkColor = Color.DarkBlue)
 //                    .With(l => l.Dock = DockStyle.Fill)
@@ -51,7 +51,7 @@
 //                    .With(l => l.Click += (s, e) => new ShowClubDetails(club, this).ShowDialog()), 25)
 //            .ControlAddIsRow(
 //                new LinkLabel()
-//                    .With(l => l.Text = $"★ {club.Rating:0.0} ({club.ReviewCount} отзывов)")
+//                    .With(l => l.LabelText = $"★ {club.Rating:0.0} ({club.ReviewCount} отзывов)")
 //                    .With(l => l.Font = new Font(style.Font, FontStyle.Bold))
 //                    .With(l => l.LinkColor = Color.DarkOrange)
 //                    .With(l => l.Dock = DockStyle.Fill)
@@ -59,25 +59,25 @@
 //                    .With(l => l.Click += (s, e) => ShowClubReviews(club)), 20)
 //            .ControlAddIsRow(
 //                new Label()
-//                    .With(l => l.Text = $"{club.Schedule} • {club.Location}")
+//                    .With(l => l.LabelText = $"{club.Schedule} • {club.Location}")
 //                    .With(l => l.Font = new Font(style.Font, FontStyle.Regular))
 //                    .With(l => l.ForeColor = Color.DarkGreen)
 //                    .With(l => l.Dock = DockStyle.Fill), 20)
 //            .ControlAddIsRow(
 //                new Label()
-//                    .With(l => l.Text = $"Руководитель: {club.Teacher} • {club.Category}")
+//                    .With(l => l.LabelText = $"Руководитель: {club.Teacher} • {club.Category}")
 //                    .With(l => l.Font = new Font(style.Font, FontStyle.Italic))
 //                    .With(l => l.ForeColor = Color.Gray)
 //                    .With(l => l.Dock = DockStyle.Fill), 18)
 //            .ControlAddIsRow(
 //                new Label()
-//                    .With(l => l.Text = club.Description)
+//                    .With(l => l.LabelText = club.Description)
 //                    .With(l => l.Font = style.Font)
 //                    .With(l => l.ForeColor = Color.Black)
 //                    .With(l => l.Dock = DockStyle.Fill), 70)
 //            .ControlAddIsRow(
 //                new Label()
-//                    .With(l => l.Text = $"Участники: {club.CurrentParticipants}/{club.MaxParticipants}")
+//                    .With(l => l.LabelText = $"Участники: {club.CurrentParticipants}/{club.MaxParticipants}")
 //                    .With(l => l.Font = new Font(style.Font, FontStyle.Regular))
 //                    .With(l => l.ForeColor = Color.DarkBlue)
 //                    .With(l => l.Dock = DockStyle.Fill), 20);

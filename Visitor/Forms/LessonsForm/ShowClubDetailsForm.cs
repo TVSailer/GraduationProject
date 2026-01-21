@@ -17,7 +17,7 @@
 
 //            var titleLabel = new Label
 //            {
-//                Text = club.Name,
+//                LabelText = club.Name,
 //                Font = style.TitleFont,
 //                Dock = DockStyle.Top,
 //                TextAlign = ContentAlignment.MiddleCenter
@@ -25,7 +25,7 @@
 
 //            var ratingLabel = new Label
 //            {
-//                Text = $"★ {club.Rating:0.0} • {club.ReviewCount} отзывов • {club.CurrentParticipants}/{club.MaxParticipants} участников",
+//                LabelText = $"★ {club.Rating:0.0} • {club.ReviewCount} отзывов • {club.CurrentParticipants}/{club.MaxParticipants} участников",
 //                Font = new Font(style.Font, FontStyle.Bold),
 //                Dock = DockStyle.Top,
 //                TextAlign = ContentAlignment.MiddleCenter,
@@ -34,7 +34,7 @@
 
 //            var infoLabel = new Label
 //            {
-//                Text = $"Руководитель: {club.Name}\nРасписание: {club.Schedule}\nМесто: {club.Location}\nКатегория: {club.Category}",
+//                LabelText = $"Руководитель: {club.Name}\nРасписание: {club.Schedule}\nМесто: {club.Location}\nКатегория: {club.Category}",
 //                Font = style.Font,
 //                Dock = DockStyle.Fill,
 //                TextAlign = ContentAlignment.MiddleLeft
@@ -43,7 +43,7 @@
 //            var descriptionText = new TextBox
 //            {
 //                Font = new Font(Font.FontFamily, 11),
-//                Text = club.Description,
+//                LabelText = club.Description,
 //                Multiline = true,
 //                ReadOnly = true,
 //                Dock = DockStyle.Fill,
@@ -73,7 +73,7 @@
 
 //        public void Init(LessonEntity club)
 //        {
-//            Text = club.Name;
+//            LabelText = club.Name;
 //            Size = new Size(700, 600);
 //            StartPosition = FormStartPosition.CenterParent;
 //            Padding = new Padding(20);

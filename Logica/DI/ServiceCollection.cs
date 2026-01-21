@@ -13,6 +13,15 @@
                 typeof(TImplementation),
                 serviceLifetime);
         }
+        
+        public void RegisterSingelton(object instanc)
+        {
+            Descriptors[instanc.GetType()] = new ServiceDescriptor(
+                instanc.GetType(),
+                instanc.GetType(),
+                ServiceLifetime.Singleton)
+            { Instance = instanc };
+        }
 
         public void Register<TService>(ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
             where TService : class

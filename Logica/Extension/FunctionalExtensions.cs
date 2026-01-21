@@ -46,5 +46,5 @@ public static class FunctionalExtensions
             yield return control;
     }
 
-   
+
 }

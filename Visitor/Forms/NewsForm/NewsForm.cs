@@ -11,7 +11,7 @@
 
 //        var titleLabel = new Label
 //        {
-//            Text = "Последние новости",
+//            LabelText = "Последние новости",
 //            Font = style.TitleFont,
 //            TextAlign = ContentAlignment.MiddleLeft,
 //            Dock = DockStyle.Fill,
@@ -51,7 +51,7 @@
 //    {
 //        var titleLabel = new LinkLabel
 //        {
-//            Text = news.Title,
+//            LabelText = news.Title,
 //            Font = style.TitleFont,
 //            LinkColor = Color.DarkBlue,
 //            Dock = DockStyle.Fill,
@@ -61,7 +61,7 @@
 
 //        var infoLabel = new Label
 //        {
-//            Text = $"{news.Author} • {news.Date:dd.MM.yyyy} • {news.Category}",
+//            LabelText = $"{news.Author} • {news.Date:dd.MM.yyyy} • {news.Category}",
 //            Font = new Font(style.Font, FontStyle.Italic),
 //            ForeColor = Color.Gray,
 //            Dock = DockStyle.Fill
@@ -69,7 +69,7 @@
 
 //        var contentLabel = new Label
 //        {
-//            Text = news.Content,
+//            LabelText = news.Content,
 //            Font = style.Font,
 //            ForeColor = Color.Black,
 //            Dock = DockStyle.Fill

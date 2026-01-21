@@ -31,7 +31,7 @@ namespace Admin.View.Moduls.UIModel
                         .StartNewRowTableAbsolute(60)
                         .ControlAddIsColumnAbsolute(FactoryElements.Label_11($"{fi.Text}: "), 140)
                         .ControlAddIsColumnPercent(FactoryElements.TextBox("")
-                            .With(tb => tb.DataBindings.Add(new Binding("Text", context, fi.NameProperty, false, DataSourceUpdateMode.OnPropertyChanged))), 10)
+                            .With(tb => tb.DataBindings.Add(new Binding(nameof(tb.Text), context, fi.NameProperty, false, DataSourceUpdateMode.OnPropertyChanged))), 10)
                         .EndTabel()))
                 .ControlAddIsRowsPercent()
                 .StartNewRowTableAbsolute(80)

@@ -8,7 +8,7 @@ namespace DataAccess.Postgres.Models
     {
         public string Date { get; private set; }
 
-        [ForeignKey(nameof(Lesson))]
+        [ForeignKey(nameof(LessonEntity))]
         public long LessonId { get; set; }
         public LessonEntity Lesson { get; private set; }
 
@@ -17,6 +17,6 @@ namespace DataAccess.Postgres.Models
         public DateAttendanceEntity() { }
 
         public override string ToString()
-            => Date;
+            => Date.ToString();
     }
 }

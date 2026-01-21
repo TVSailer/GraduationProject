@@ -10,8 +10,7 @@ public class ImgEventEntity : ImgEntity
 
     public ImgEventEntity() { }
 
-    public ImgEventEntity(string url)
+    public ImgEventEntity(string url) : base(url)
     {
-        Url = url;
     }
 }

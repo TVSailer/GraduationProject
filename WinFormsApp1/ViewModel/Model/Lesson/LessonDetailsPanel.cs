@@ -14,21 +14,19 @@ namespace Admin.ViewModel.Lesson
 {
     public class LessonDetailsPanel : LessonData, IDetalsPanel<LessonEntity>
     {
-        [ButtonInfoUI("Создать расписание")] public ICommand OnCreateSchedule { get; protected set; }
         [ButtonInfoUI("Управление посетителями")] public ICommand OnControlVisitros { get; private set; }
         [ButtonInfoUI("Управление посещаемостью")] public ICommand OnControlDateAttendances { get; private set; }
         [ButtonInfoUI("Управление отзывами")] public ICommand OnControlReview { get; private set; }
         [ButtonInfoUI("Удалить")] public ICommand OnDelete { get; protected set; }
         [ButtonInfoUI("Обновить")] public ICommand OnUpdate { get; protected set; }
 
-        private List<ImgLessonEntity>? imgLessonEntities = new();
         private List<ReviewEntity>? reviewEntities = new();
         private List<DateAttendanceEntity>? dateAttendances = new();
         private List<VisitorEntity>? visitorEntities = new();
 
         private readonly List<TeacherEntity> teacherEntities;
 
-        public LessonDetailsPanel(LessonsRepository lessonsRepository, TeacherRepository teacherRepository) : base(teacherRepository)
+        public LessonDetailsPanel(LessonsRepository lessonsRepository, TeacherRepository teacherRepository, LessonCategoryRepositroy lessonCategoryRepositroy) : base(teacherRepository, lessonCategoryRepositroy)
         {
             OnUpdate = new MainCommand(
                 _ => TryValidObject(() => lessonsRepository.Update(Entity.Id, Entity)));

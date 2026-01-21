@@ -16,6 +16,10 @@ namespace DataAccess.Postgres
         public DbSet<ImgLessonEntity> ImgLesson { get; set; }
         public DbSet<ImgEventEntity> ImgEvent { get; set; }
         public DbSet<ImgNewsEntity> ImgNews { get; set; }
+        public DbSet<LessonScheduleEntity> LessonSchedule { get; set; }
+        public DbSet<NewsCategoryEntity> NewsCategory { get; set; }
+        public DbSet<LessonCategoryEntity> LessonCategory { get; set; }
+        public DbSet<EventCategoryEntity> EventCategory { get; set; }
 
         public ApplicationDbContext() : base()
         {
@@ -37,7 +41,7 @@ namespace DataAccess.Postgres
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-         
+           
         }
     }
 }

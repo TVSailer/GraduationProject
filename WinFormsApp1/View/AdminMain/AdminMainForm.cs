@@ -45,12 +45,12 @@ namespace WinFormsApp1.View
                 .ControlAddIsRowsPercent(25);
 
         private Control CreateButton(string text, Action action) 
-            => FactoryElements.CreateButton(text, action)
+            => FactoryElements.Button(text, action)
                 .With(b => b.Font = new Font("Arial", 12, FontStyle.Bold))
                 .With(b => b.BackColor = Color.LightGray);
         
         private Control CreateButton(string text, object context, string dataMember) 
-            => FactoryElements.CreateButton(text)
+            => FactoryElements.Button(text)
                 .With(b => b.Font = new Font("Arial", 12, FontStyle.Bold))
                 .With(b => b.DataBindings.Add(new Binding("Command", context, dataMember, true)))
                 .With(b => b.BackColor = Color.LightGray);

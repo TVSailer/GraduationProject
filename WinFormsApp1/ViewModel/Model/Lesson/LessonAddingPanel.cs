@@ -10,10 +10,10 @@ namespace Admin.ViewModels.Lesson
     {
         [ButtonInfoUI("Сохранить")] public ICommand OnSave { get; protected set; }
 
-        public LessonAddingPanel(LessonsRepository lessonsRepository, TeacherRepository teacherRepository) : base(teacherRepository)
+        public LessonAddingPanel(LessonsRepository lessonsRepository, TeacherRepository teacherRepository, LessonCategoryRepositroy lessonCategoryRepositroy) : base(teacherRepository, lessonCategoryRepositroy)
         {
             OnSave = new MainCommand(
-                _ => TryValidObject(() => lessonsRepository.AddRelationWithLesson(Teacher, Entity)));
+                _ => TryValidObject(() => lessonsRepository.Add(Entity)));
         }
     }
 }

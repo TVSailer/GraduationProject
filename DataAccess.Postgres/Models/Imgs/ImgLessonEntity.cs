@@ -10,8 +10,7 @@ public class ImgLessonEntity : ImgEntity
 
     public ImgLessonEntity() { }
 
-    public ImgLessonEntity(string url)
+    public ImgLessonEntity(string url) : base(url)
     {
-        Url = url;
     }
 }

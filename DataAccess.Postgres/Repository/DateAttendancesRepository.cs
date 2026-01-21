@@ -23,7 +23,7 @@ namespace DataAccess.Postgres.Repository
         public List<DateAttendanceEntity>? Get(string startDate, string endDate)
             => DbContext.DateAttendances
             .AsNoTracking()
-            //.Where(d => d.Date.DateMatchingTheInterval(startDate, endDate))
+            //.Where(d => d.Schedule.DateMatchingTheInterval(startDate, endDate))
             .ToList();
 
         public void Add(DateAttendanceEntity dateAttendance)
@@ -45,12 +45,12 @@ namespace DataAccess.Postgres.Repository
             DbContext.SaveChanges();
         }
 
-        public void Update(int id, string date, LessonEntity lesson)
-            => DbContext.DateAttendances
-                .Where(d => d.Id == id)
-                .ExecuteUpdate(v => v
-                    .SetProperty(v => v.Date, date)
-                    .SetProperty(v => v.Lesson, lesson));
+        //public void Update(int id, string date, LessonEntity lesson)
+        //    => DbContext.DateAttendances
+        //        .Where(d => d.Id == id)
+        //        .ExecuteUpdate(v => v
+        //            .SetProperty(v => v.Schedule, date)
+        //            .SetProperty(v => v.Lesson, lesson));
         
         public void Update(int id, DateAttendanceEntity dateAttendance)
             => DbContext.DateAttendances

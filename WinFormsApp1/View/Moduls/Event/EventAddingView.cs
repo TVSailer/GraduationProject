@@ -7,10 +7,10 @@
 //    public partial class EventAddingView  
 //    {
 //        private ErrorProvider errorProvider = new() { BlinkStyle = ErrorBlinkStyle.NeverBlink };
-//        private readonly EventMinControlViewModel context;
+//        private readonly EventData context;
 //        private readonly AdminMainView form;
 
-//        public EventAddingView(AdminMainView mainForm, EventMinControlViewModel context)
+//        public EventAddingView(AdminMainView mainForm, EventData context)
 //        {
 //            this.context = context;
 //            form = mainForm;
@@ -19,13 +19,13 @@
 //        private class LabelIsControl
 //        {
 //            public Label Label { get; private set; }
-//            public Control Control { get; private set; }
+//            public NameMethod NameMethod { get; private set; }
 //            public int Height { get; private set; }
 
-//            public LabelIsControl(Label label, Control control, int heinght)
+//            public LabelIsControl(Label label, NameMethod Control, int heinght)
 //            {
 //                Label = label;
-//                Control = control;
+//                NameMethod = Control;
 //                Height = heinght;
 //            }
 //        }
@@ -33,7 +33,7 @@
 //        public Form InitializeComponents()
 //            => form
 //                .With(m => m.Controls.Clear())
-//                .With(m => m.Text = "Добавление мероприятия")
+//                .With(m => m.LabelText = "Добавление мероприятия")
 //                .With(m => m.Controls.Add(CreateUI()));
 
 //        private TableLayoutPanel CreateUI()
@@ -51,46 +51,46 @@
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("📝 Название мероприятия:*"),
 //                    FactoryElements.TextBox("Введите название мероприятия")
-//                       .With(t => t.TextChanged += (s, e) => context.Title = t.Text)
+//                       .With(t => t.TextChanged += (s, e) => context.Title = t.LabelText)
 //                       .With(t => OnErrorProvider(nameof(context.Title), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("📄 Описание:*"),
 //                    FactoryElements.TextBoxMultiline("Введите описание мероприятия")
-//                        .With(t => t.TextChanged += (s, e) => context.Description = t.Text)
+//                        .With(t => t.TextChanged += (s, e) => context.Description = t.LabelText)
 //                        .With(t => OnErrorProvider(nameof(context.Description), t)), 110),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("📅 Дата проведения:*"),
-//                    FactoryElements.DateTimePicker()
+//                    FactoryElements.DateTimePickerCustom()
 //                        .With(d => d.Format = DateTimePickerFormat.Custom)
 //                        .With(d => d.CustomFormat = "dd.MM.yyyy HH:mm")
 //                        .With(d => d.ShowUpDown = true)
 //                        .With(d => d.MinDate = DateTime.Now)
-//                        .With(t => t.TextChanged += (s, e) => context.Date = t.Text)
+//                        .With(t => t.TextChanged += (s, e) => context.Date = t.LabelText)
 //                        .With(t => OnErrorProvider(nameof(context.Date), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("📍 Место проведения:*"),
 //                    FactoryElements.TextBox("Введите место проведения")
-//                    .With(t => t.TextChanged += (s, e) => context.Location = t.Text)
+//                    .With(t => t.TextChanged += (s, e) => context.Location = t.LabelText)
 //                    .With(t => OnErrorProvider(nameof(context.Location), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("🏷️ Категория:*"),
 //                    FactoryElements.TextBox("Например: Образование, Спорт, Культура")
-//                    .With(t => t.TextChanged +=(s, e) => context.Category = t.Text)
+//                    .With(t => t.TextChanged +=(s, e) => context.Category = t.LabelText)
 //                    .With(t => OnErrorProvider(nameof(context.Category), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("🔗 Ссылка на регистрацию:*"),
 //                    FactoryElements.TextBox("https://example.com/registration")
-//                    .With(t => t.TextChanged += (s, e) => context.RegisLink = t.Text)
+//                    .With(t => t.TextChanged += (s, e) => context.RegisLink = t.LabelText)
 //                    .With(t => OnErrorProvider(nameof(context.RegisLink), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("👨‍💼 Организатор:*"),
 //                    FactoryElements.TextBox("Введите организатора мероприятия")
-//                    .With(t => t.TextChanged += (s, e) => context.Organizer = t.Text)
+//                    .With(t => t.TextChanged += (s, e) => context.Organizer = t.LabelText)
 //                    .With(t => OnErrorProvider(nameof(context.Organizer), t)), 45),
 //                new LabelIsControl(
 //                    FactoryElements.Label_11("👥 Максимальное количество участников:*"),
 //                    FactoryElements.NumericUpDown()
-//                    .With(t => t.TextChanged += (s, e) => context.MaxParticipants = t.Text)
+//                    .With(t => t.TextChanged += (s, e) => context.MaxParticipants = t.LabelText)
 //                    .With(t => OnErrorProvider(nameof(context.MaxParticipants), t)), 45)
 //            };
 
@@ -101,16 +101,16 @@
 //                        .TableLayoutPanel()
 //                        .With(t => t.Padding = new Padding(1))
 //                        .ControlAddIsColumnPercent(f.Label, 30)
-//                        .ControlAddIsColumnPercent(f.Control, 70)
+//                        .ControlAddIsColumnPercent(f.NameMethod, 70)
 //                        .ControlAddIsColumnAbsolute(null, 1), f.Height)));
 //        }
 
-//        private void OnErrorProvider(string propertyName, Control control)
+//        private void OnErrorProvider(string propertyName, NameMethod Control)
 //        {
 //            context.ErrorMassegeProvider += (s, e) =>
 //            {
 //                if (!propertyName.Equals(e.PropertyName)) return;
-//                errorProvider.SetError(control, e.ErrorMessage);
+//                errorProvider.SetError(Control, e.ErrorMessage);
 //            };
 //        }
 

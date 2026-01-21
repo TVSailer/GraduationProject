@@ -14,6 +14,7 @@ using Logica;
 using Logica.DI;
 using System.Windows.Input;
 using WinFormsApp1;
+using WinFormsApp1.ViewModelEntity.Event;
 
 public class AdminMainViewModel 
 {
@@ -26,9 +27,17 @@ public class AdminMainViewModel
     public AdminMainViewModel(
         ApplicationDbContext dbContext)
     {
-        //OnLoadEventsManagemetnView = new MainCommand(
-        //    _ => eventMenegment.InitializeComponents("🎭 Управление мероприятиями"));
-        
+        OnLoadEventsManagemetnView = new MainCommand(
+             _ =>
+             {
+                 using (var scope = AdminDI.CreateDIScope())
+                     scope.GetService<ManagementView<
+                         EventEntity,
+                         EventCard,
+                         EventAddingPanel,
+                         EventDetailsPanel>>().InitializeComponents(null);
+             });
+
         OnLoadTeachersManagemetnView = new MainCommand(
             _ =>
             {

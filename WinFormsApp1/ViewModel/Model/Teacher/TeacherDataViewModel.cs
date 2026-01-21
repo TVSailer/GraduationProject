@@ -19,11 +19,11 @@
 //    public ICommand OnBack { get; protected set; }
 //    public ICommand actjionSave { get; protected set; }
 
-//    [RequiredCustom] public string Name { get; set => Set(ref field, value); }
-//    [RequiredCustom] public string Surname { get; set => Set(ref field, value); }
-//    [RequiredCustom] public string Patronymic { get; set => Set(ref field, value); }
-//    [DateBirthday] public string DateBirth { get; set => Set(ref field, value); }
-//    [PhoneNumber] public string NumberPhone { get; set => Set(ref field, value); }
+//    [RequiredCustom] public string Name { get; set => TryValidProperty(ref field, value); }
+//    [RequiredCustom] public string Surname { get; set => TryValidProperty(ref field, value); }
+//    [RequiredCustom] public string Patronymic { get; set => TryValidProperty(ref field, value); }
+//    [DateBirthday] public string DateBirth { get; set => TryValidProperty(ref field, value); }
+//    [PhoneNumber] public string NumberPhone { get; set => TryValidProperty(ref field, value); }
 
 //    public TeacherDataViewModel(TeacherRepository teacherRepository, LessonsRepository lessonsRepository)
 //    {

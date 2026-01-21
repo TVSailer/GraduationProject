@@ -4,9 +4,7 @@ namespace DataAccess.Postgres.Models
 {
     public class VisitorEntity : Entity
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Patronymic { get; set; }
+        public FIO FIO { get; set; }
         public string DateBirth { get; set; }
         public string NumberPhone { get; set; }
         public string Login { get; set; }
@@ -20,7 +18,7 @@ namespace DataAccess.Postgres.Models
 
         public override string ToString()
         {
-            return $"{Surname} {Name} {Patronymic}";
+            return FIO.ToString();
         }
     }
 }

@@ -1,13 +1,11 @@
 ﻿using Admin.View;
 using Admin.View.Moduls.Lesson;
 using Admin.ViewModel.Lesson;
-using Admin.ViewModel.MovelView;
 using Admin.ViewModels.NotifuPropertyViewModel;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.CustomAttribute;
-using Microsoft.Office.Interop.Word;
 using System.Windows.Input;
 using WinFormsApp1;
 using NotNullAttribute = Logica.CustomAttribute.NotNullAttribute;
@@ -16,53 +14,79 @@ namespace Admin.ViewModels.Lesson
 {
     public class LessonData : ViewModelWithImages<LessonEntity>
     {
+        public readonly List<LessonCategoryEntity> categories;
+        public readonly List<TeacherEntity> teachers;
+
         [RequiredCustom]
         [LinkingEntity("Name")]
-        [FieldInfoUI("Название:*", "Введите название")]
-        public string Name { get; set => field = Set(value); }
+        [BaseFieldUI("Название:*", "Введите название")]
+        public string Name { get; set => TryValidProperty(ref field, value); }
 
         [RequiredCustom]
         [LinkingEntity("Description")]
-        [FieldInfoUI("Описание:*", "Введите описание мероприятия", true, false, 100)]
-        public string Description { get; set => field = Set(value); }
+        [MultilineFieldUI()]
+        public string Description { get; set => TryValidProperty(ref field, value); }
 
-        [RequiredCustom]
-        [LinkingEntity("Category")]
-        [FieldInfoUI("Категория:*", "Введите категорию")]
-        public string Category { get; set => field = Set(value); }
-
-        [RequiredCustom]
         [LinkingEntity("Schedule")]
-        [FieldInfoUI("Расписание:*", "Введите расписание, например: Пн, Ср, Пт 19:00-20:30")]
-        public string Schedule { get; set => field = Set(value); }
+        public List<ScheduleEntity>? Schedule { get; 
+            set
+            {
+                TryValidProperty(ref field, value);
+                OnPropertyChanged(nameof(ScheduleParse));
+            }
+        }
+
+        [RequiredCustom]
+        [ReadOnlyFieldUI("Расписание*:", "Создайте расписание")]
+        public string? ScheduleParse
+        {
+            get
+            {
+                if (Schedule is null)
+                {
+                    return null;
+                }
+                string value = null;
+                Schedule.ForEach(s => value += $"{s.Day.ToDescriptionString().Substring(0, 4)}. {s.Start}-{s.End} ");
+                return value;
+            }
+        }
 
         [RequiredCustom]
         [LinkingEntity("Location")]
-        [FieldInfoUI("Место проведения:*", "Введите место проведения")]
-        public string Location { get; set => field = Set(value); }
+        [BaseFieldUI("Место проведения:*", "Введите место проведения")]
+        public string Location { get; set => TryValidProperty(ref field, value); }
 
         [MaxParticipants]
         [LinkingEntity("MaxParticipants")]
-        [FieldInfoUI("Кол. участников:*", "Введите кол-во участников")]
-        public int MaxParticipants { get; 
-            set => field = Set(value); }
+        [NumericFieldUI("Кол. участников:*")]
+        public int MaxParticipants { get; set => TryValidProperty(ref field, value); }
+
+        [RequiredCustom]
+        [LinkingEntity("Category")]
+        [ComboBoxFieldUI("Категория:*", nameof(categories))]
+        public LessonCategoryEntity Category { get; set => 
+                TryValidProperty(ref field, value); }
 
         [NotNull]
-        [LinkingEntity("TeacherFIO")]
-        [FieldInfoUI("Преподователь:*", "Выберите преподователя", false, true)]
-        public TeacherEntity Teacher { get; set => field = Set(value); }
+        [LinkingEntity("Teacher")]
+        [ComboBoxFieldUI("Преподователь:*", nameof(teachers))]
+        public TeacherEntity Teacher { get; 
+            set => TryValidProperty(ref field, value); }
 
+        [ButtonInfoUI("Создать расписание")] public ICommand OnCreateSchedule { get; protected set; }
 
-        [ButtonInfoUI("Выбрать преподователя")]
-        public ICommand OnBindingTeacher { get; protected set; }
-
-        public LessonData(TeacherRepository repository)
+        public LessonData(TeacherRepository teacherRepository,  LessonCategoryRepositroy eventCategoryRepositroy)
         {
-            OnBindingTeacher = new MainCommand(
-                _ => Teacher = new LessonLinkingToTeacherView(repository.Get()).InitializeComponents().Teacher);
+            categories = eventCategoryRepositroy.Get();
+            teachers = teacherRepository.Get();
 
             OnBack = new MainCommand(
                 _ => AdminDI.GetService<ManagementView<LessonEntity, LessonCard, LessonAddingPanel, LessonDetailsPanel>>().InitializeComponents(null));
+
+            OnCreateSchedule = new MainCommand(
+                _ => new ScheduleView(Schedule, s => Schedule = s).ShowDialog());
         }
     }
 }
+
