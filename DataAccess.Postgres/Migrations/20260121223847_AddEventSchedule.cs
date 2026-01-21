@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     /// <inheritdoc />
-    public partial class AddLessonSchedule : Migration
+    public partial class AddEventSchedule : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -92,6 +92,34 @@ namespace DataAccess.Postgres.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Event",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    idDate = table.Column<long>(type: "bigint", nullable: false),
+                    Location = table.Column<string>(type: "text", nullable: false),
+                    idCategory = table.Column<long>(type: "bigint", nullable: false),
+                    CategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    RegistrationLink = table.Column<string>(type: "text", nullable: false),
+                    Organizer = table.Column<string>(type: "text", nullable: false),
+                    MaxParticipants = table.Column<int>(type: "integer", nullable: false),
+                    CurrentParticipants = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Event", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Event_EventCategory_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "EventCategory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "News",
                 columns: table => new
                 {
@@ -141,6 +169,48 @@ namespace DataAccess.Postgres.Migrations
                         name: "FK_Lessons_Teachers_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventSchedule",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EventId = table.Column<long>(type: "bigint", nullable: false),
+                    Start = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    End = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    Day = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventSchedule", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EventSchedule_Event_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Event",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ImgEvent",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EventId = table.Column<long>(type: "bigint", nullable: false),
+                    Url = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImgEvent", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImgEvent_Event_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Event",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -230,6 +300,28 @@ namespace DataAccess.Postgres.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LessonSchedule",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LessonId = table.Column<long>(type: "bigint", nullable: false),
+                    Start = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    End = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    Day = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LessonSchedule", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LessonSchedule_Lessons_LessonId",
+                        column: x => x.LessonId,
+                        principalTable: "Lessons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Review",
                 columns: table => new
                 {
@@ -259,35 +351,6 @@ namespace DataAccess.Postgres.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ScheduleEntity",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Start = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
-                    End = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
-                    Day = table.Column<int>(type: "integer", nullable: false),
-                    Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
-                    LessonEntityId = table.Column<long>(type: "bigint", nullable: true),
-                    LessonId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ScheduleEntity", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ScheduleEntity_Lessons_LessonEntityId",
-                        column: x => x.LessonEntityId,
-                        principalTable: "Lessons",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ScheduleEntity_Lessons_LessonId",
-                        column: x => x.LessonId,
-                        principalTable: "Lessons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DateAttendanceEntityVisitorEntity",
                 columns: table => new
                 {
@@ -311,61 +374,6 @@ namespace DataAccess.Postgres.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Event",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    idDate = table.Column<long>(type: "bigint", nullable: false),
-                    ScheduleId = table.Column<long>(type: "bigint", nullable: false),
-                    Location = table.Column<string>(type: "text", nullable: false),
-                    idCategory = table.Column<long>(type: "bigint", nullable: false),
-                    CategoryId = table.Column<long>(type: "bigint", nullable: false),
-                    RegistrationLink = table.Column<string>(type: "text", nullable: false),
-                    Organizer = table.Column<string>(type: "text", nullable: false),
-                    MaxParticipants = table.Column<int>(type: "integer", nullable: false),
-                    CurrentParticipants = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Event", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Event_EventCategory_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "EventCategory",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Event_ScheduleEntity_ScheduleId",
-                        column: x => x.ScheduleId,
-                        principalTable: "ScheduleEntity",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ImgEvent",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EventId = table.Column<long>(type: "bigint", nullable: false),
-                    Url = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ImgEvent", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ImgEvent_Event_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Event",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_DateAttendanceEntityVisitorEntity_VisitorsId",
                 table: "DateAttendanceEntityVisitorEntity",
@@ -382,9 +390,10 @@ namespace DataAccess.Postgres.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Event_ScheduleId",
-                table: "Event",
-                column: "ScheduleId");
+                name: "IX_EventSchedule_EventId",
+                table: "EventSchedule",
+                column: "EventId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ImgEvent_EventId",
@@ -417,6 +426,11 @@ namespace DataAccess.Postgres.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LessonSchedule_LessonId",
+                table: "LessonSchedule",
+                column: "LessonId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_News_CategoryId",
                 table: "News",
                 column: "CategoryId");
@@ -430,16 +444,6 @@ namespace DataAccess.Postgres.Migrations
                 name: "IX_Review_VisitorId",
                 table: "Review",
                 column: "VisitorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ScheduleEntity_LessonEntityId",
-                table: "ScheduleEntity",
-                column: "LessonEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ScheduleEntity_LessonId",
-                table: "ScheduleEntity",
-                column: "LessonId");
         }
 
         /// <inheritdoc />
@@ -447,6 +451,9 @@ namespace DataAccess.Postgres.Migrations
         {
             migrationBuilder.DropTable(
                 name: "DateAttendanceEntityVisitorEntity");
+
+            migrationBuilder.DropTable(
+                name: "EventSchedule");
 
             migrationBuilder.DropTable(
                 name: "ImgEvent");
@@ -459,6 +466,9 @@ namespace DataAccess.Postgres.Migrations
 
             migrationBuilder.DropTable(
                 name: "LessonEntityVisitorEntity");
+
+            migrationBuilder.DropTable(
+                name: "LessonSchedule");
 
             migrationBuilder.DropTable(
                 name: "Review");
@@ -476,16 +486,13 @@ namespace DataAccess.Postgres.Migrations
                 name: "Visitors");
 
             migrationBuilder.DropTable(
+                name: "Lessons");
+
+            migrationBuilder.DropTable(
                 name: "EventCategory");
 
             migrationBuilder.DropTable(
-                name: "ScheduleEntity");
-
-            migrationBuilder.DropTable(
                 name: "NewsCategory");
-
-            migrationBuilder.DropTable(
-                name: "Lessons");
 
             migrationBuilder.DropTable(
                 name: "LessonCategory");

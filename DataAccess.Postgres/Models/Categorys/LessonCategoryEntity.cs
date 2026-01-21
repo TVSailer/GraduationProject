@@ -4,7 +4,7 @@ namespace DataAccess.Postgres.Models
 {
     public class LessonCategoryEntity : CategoryEntity
     {
-        public List<LessonEntity> LessonEntities { get; private set; } = new();
+        public List<LessonEntity>? LessonEntities { get; set; } = new();
 
         public LessonCategoryEntity() { }
 

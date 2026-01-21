@@ -9,7 +9,7 @@
             DbContext = dbContext;
         }
 
-        public void Add(object obj)
+        public virtual void Add(object obj)
         {
             if (obj is null) throw new ArgumentNullException();
 

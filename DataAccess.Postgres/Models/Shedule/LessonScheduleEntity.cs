@@ -6,7 +6,7 @@ namespace DataAccess.Postgres.Models
     {
         [ForeignKey(nameof(LessonEntity))]
         public long LessonId { get; private set; }
-        public LessonEntity Lesson { get; private set; }
+        public LessonEntity Lesson { get; set; }
 
         public LessonScheduleEntity()
         {

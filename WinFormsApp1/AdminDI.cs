@@ -31,7 +31,7 @@ namespace WinFormsApp1
             //    new LessonCategoryEntity("Творчесво"),
             //    new LessonCategoryEntity("Наука")
             //    );
-            
+
             //dbContext.AddRange(
             //    new TeacherEntity("dsf", "sdf", "lgh", "22.11.2004", "88989988989", ""),
             //    new TeacherEntity("jtr", "D", "DT", "22.11.2004", "88989988989", ""),

@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260121091346_AddLessonSchedule")]
-    partial class AddLessonSchedule
+    [Migration("20260121223847_AddEventSchedule")]
+    partial class AddEventSchedule
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,9 +98,6 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("ScheduleId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
@@ -115,9 +112,35 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("ScheduleId");
-
                     b.ToTable("Event");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Models.EventScheduleEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Day")
+                        .HasColumnType("integer");
+
+                    b.Property<TimeOnly>("End")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<long>("EventId")
+                        .HasColumnType("bigint");
+
+                    b.Property<TimeOnly>("Start")
+                        .HasColumnType("time without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId")
+                        .IsUnique();
+
+                    b.ToTable("EventSchedule");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.ImgEventEntity", b =>
@@ -219,6 +242,33 @@ namespace DataAccess.Postgres.Migrations
                     b.ToTable("Lessons");
                 });
 
+            modelBuilder.Entity("DataAccess.Postgres.Models.LessonScheduleEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Day")
+                        .HasColumnType("integer");
+
+                    b.Property<TimeOnly>("End")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<long>("LessonId")
+                        .HasColumnType("bigint");
+
+                    b.Property<TimeOnly>("Start")
+                        .HasColumnType("time without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId");
+
+                    b.ToTable("LessonSchedule");
+                });
+
             modelBuilder.Entity("DataAccess.Postgres.Models.NewsCategoryEntity", b =>
                 {
                     b.Property<long>("Id")
@@ -271,42 +321,6 @@ namespace DataAccess.Postgres.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("News");
-                });
-
-            modelBuilder.Entity("DataAccess.Postgres.Models.ScheduleEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("Day")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("character varying(21)");
-
-                    b.Property<TimeOnly>("End")
-                        .HasColumnType("time without time zone");
-
-                    b.Property<long?>("LessonEntityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<TimeOnly>("Start")
-                        .HasColumnType("time without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LessonEntityId");
-
-                    b.ToTable("ScheduleEntity");
-
-                    b.HasDiscriminator().HasValue("ScheduleEntity");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.TeacherEntity", b =>
@@ -495,18 +509,6 @@ namespace DataAccess.Postgres.Migrations
                     b.ToTable("Review");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.LessonScheduleEntity", b =>
-                {
-                    b.HasBaseType("DataAccess.Postgres.Models.ScheduleEntity");
-
-                    b.Property<long>("LessonId")
-                        .HasColumnType("bigint");
-
-                    b.HasIndex("LessonId");
-
-                    b.HasDiscriminator().HasValue("LessonScheduleEntity");
-                });
-
             modelBuilder.Entity("DataAccess.Postgres.Models.DateAttendanceEntity", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Models.LessonEntity", "Lesson")
@@ -526,15 +528,18 @@ namespace DataAccess.Postgres.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccess.Postgres.Models.ScheduleEntity", "Schedule")
-                        .WithMany()
-                        .HasForeignKey("ScheduleId")
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Models.EventScheduleEntity", b =>
+                {
+                    b.HasOne("DataAccess.Postgres.Models.EventEntity", "Event")
+                        .WithOne("Schedule")
+                        .HasForeignKey("DataAccess.Postgres.Models.EventScheduleEntity", "EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
-
-                    b.Navigation("Schedule");
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.ImgEventEntity", b =>
@@ -578,6 +583,17 @@ namespace DataAccess.Postgres.Migrations
                     b.Navigation("Teacher");
                 });
 
+            modelBuilder.Entity("DataAccess.Postgres.Models.LessonScheduleEntity", b =>
+                {
+                    b.HasOne("DataAccess.Postgres.Models.LessonEntity", "Lesson")
+                        .WithMany("Schedule")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
+                });
+
             modelBuilder.Entity("DataAccess.Postgres.Models.NewsEntity", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Models.NewsCategoryEntity", "Category")
@@ -587,13 +603,6 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("DataAccess.Postgres.Models.ScheduleEntity", b =>
-                {
-                    b.HasOne("DataAccess.Postgres.Models.LessonEntity", null)
-                        .WithMany("Schedule")
-                        .HasForeignKey("LessonEntityId");
                 });
 
             modelBuilder.Entity("DateAttendanceEntityVisitorEntity", b =>
@@ -656,17 +665,6 @@ namespace DataAccess.Postgres.Migrations
                     b.Navigation("Visitor");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Models.LessonScheduleEntity", b =>
-                {
-                    b.HasOne("DataAccess.Postgres.Models.LessonEntity", "Lesson")
-                        .WithMany()
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lesson");
-                });
-
             modelBuilder.Entity("DataAccess.Postgres.Models.EventCategoryEntity", b =>
                 {
                     b.Navigation("EventEntities");
@@ -675,6 +673,9 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Models.EventEntity", b =>
                 {
                     b.Navigation("Imgs");
+
+                    b.Navigation("Schedule")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.LessonCategoryEntity", b =>

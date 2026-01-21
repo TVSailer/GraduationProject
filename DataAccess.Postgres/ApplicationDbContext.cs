@@ -17,6 +17,7 @@ namespace DataAccess.Postgres
         public DbSet<ImgEventEntity> ImgEvent { get; set; }
         public DbSet<ImgNewsEntity> ImgNews { get; set; }
         public DbSet<LessonScheduleEntity> LessonSchedule { get; set; }
+        public DbSet<EventScheduleEntity> EventSchedule { get; set; }
         public DbSet<NewsCategoryEntity> NewsCategory { get; set; }
         public DbSet<LessonCategoryEntity> LessonCategory { get; set; }
         public DbSet<EventCategoryEntity> EventCategory { get; set; }

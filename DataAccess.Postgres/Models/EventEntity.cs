@@ -8,9 +8,9 @@ public class EventEntity : Entity
     public string Title { get; private set; }
     public string Description { get; private set; }
 
-    [ForeignKey(nameof(ScheduleEntity))]
+    [ForeignKey(nameof(EventScheduleEntity))]
     public long idDate { get; private set; }
-    public ScheduleEntity Schedule { get; private set; }
+    public EventScheduleEntity Schedule { get; private set; }
 
     public string Location { get; private set; }
 
@@ -26,8 +26,8 @@ public class EventEntity : Entity
     public EventEntity() { }
 
     public EventEntity(string title, 
-        string description, 
-        ScheduleEntity date, 
+        string description,
+        EventScheduleEntity date, 
         string location, 
         EventCategoryEntity category, 
         string regisLink, 

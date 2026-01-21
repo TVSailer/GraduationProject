@@ -6,14 +6,14 @@ namespace Admin.ViewModels.Lesson
 {
     public class ScheduleView : Form
     {
-        private List<ScheduleEntity> scheduleEntities = new();
+        private List<LessonScheduleEntity> scheduleEntities = new();
 
         private DataGridView scheduleGrid;
         private ComboBox dayComboBox;
         private DateTimePicker timeStart;
         private DateTimePicker timeEnd;
 
-        public ScheduleView(List<ScheduleEntity>? schedule, Action<List<ScheduleEntity>> func)
+        public ScheduleView(List<LessonScheduleEntity>? schedule, Action<List<LessonScheduleEntity>> func)
         {
             Text = "Создание расписания";
             Size = new Size(1000, 500);
@@ -74,7 +74,7 @@ namespace Admin.ViewModels.Lesson
                 return;
             }
 
-            scheduleEntities.Add(new ScheduleEntity(timeStart.HousMinute(), timeEnd.HousMinute(), (Day)dayComboBox.SelectedValue));
+            scheduleEntities.Add(new LessonScheduleEntity(timeStart.HousMinute(), timeEnd.HousMinute(), (Day)dayComboBox.SelectedValue));
 
             scheduleGrid.Rows.Add(
                 dayComboBox.Text,

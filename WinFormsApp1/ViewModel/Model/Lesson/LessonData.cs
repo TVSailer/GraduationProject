@@ -28,7 +28,7 @@ namespace Admin.ViewModels.Lesson
         public string Description { get; set => TryValidProperty(ref field, value); }
 
         [LinkingEntity("Schedule")]
-        public List<ScheduleEntity>? Schedule { get; 
+        public List<LessonScheduleEntity>? Schedule { get; 
             set
             {
                 TryValidProperty(ref field, value);
