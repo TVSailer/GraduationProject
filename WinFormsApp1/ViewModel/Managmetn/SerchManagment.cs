@@ -1,4 +1,5 @@
-﻿using Admin.ViewModels.NotifuPropertyViewModel;
+﻿using System.Reflection;
+using Admin.ViewModels.NotifuPropertyViewModel;
 using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Repository;
 using Logica;
@@ -19,21 +20,29 @@ namespace Admin.ViewModels.Lesson
             }
         }
 
-        public ICommand OnSerch { get; private set; }
         public ICommand OnClearSerch { get; private set; }
 
         public SerchManagment(Repository<T> repository)
         {
             DataEntitys = repository.Get();
 
-            OnSerch = new MainCommand(
-                _ => DataEntitys = OnSerhFunk(repository.Get()));
-
             OnClearSerch = new MainCommand(
                 _ =>
                 {
                     DataEntitys = repository.Get();
                     OnClearSerchFunk();
+                });
+
+            GetType()
+                .GetProperties()
+                .Where(p => p.GetCustomAttribute<FieldInfoUiAttribute>() != null)
+                .ForEach(p =>
+                {
+                    PropertyChanged += (s, e) =>
+                    {
+                        if (e.PropertyName.Equals(p.Name)) 
+                            DataEntitys = OnSerhFunk(repository.Get());
+                    };
                 });
         }
 

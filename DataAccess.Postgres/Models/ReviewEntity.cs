@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Models;
-using System.ComponentModel.DataAnnotations;
 
 public class ReviewEntity : Entity
 {

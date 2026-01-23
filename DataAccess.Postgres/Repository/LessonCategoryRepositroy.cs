@@ -1,5 +1,4 @@
 ﻿using DataAccess.Postgres.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
 {
@@ -16,8 +15,7 @@ namespace DataAccess.Postgres.Repository
 
         public override List<LessonCategoryEntity> Get()
             => DbContext.LessonCategory
-            .AsNoTracking()
-            .ToList();
+                .ToList();
 
         public override void Update(long id, LessonCategoryEntity entity)
         {

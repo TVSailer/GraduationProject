@@ -1,10 +1,6 @@
-﻿using Admin.ViewModels.Lesson;
+﻿using Admin.View.ViewForm;
+using Admin.ViewModels.Lesson;
 using Logica;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Admin.View.Moduls.UIModel
 {
@@ -16,10 +12,7 @@ namespace Admin.View.Moduls.UIModel
         public ButtonModule(IViewModele context)
         {
             this.context = context;
-            var buttonsInfo = context.GetType().GetAttributes<ButtonInfoUIAttribute>();
-
-            if (buttonsInfo != null)
-                this.buttonsInfo = buttonsInfo;
+            buttonsInfo = context.GetType().GetAttributes<ButtonInfoUIAttribute>();
         }
 
         public Control CreateControl()
@@ -35,10 +28,13 @@ namespace Admin.View.Moduls.UIModel
                         table.ControlAddIsColumnPercent(FactoryElements.Button(buttonsInfo[i], context));
                 }
 
-                if (t.Controls[^1].Controls.Count < 4)
-                    if (t.Controls[^1] is TableLayoutPanel table)
-                        for (int i = table.Controls.Count; i < 4; i++)
-                            table.ControlAddIsColumnPercent(FactoryElements.Button(""));
+                if (t.Controls[^1].Controls.Count >= 4) return;
+                {
+                    if (t.Controls[^1] is not TableLayoutPanel table) return;
+                    for (int i = table.Controls.Count; i < 4; i++)
+                        table.ControlAddIsColumnPercent(FactoryElements.Button(""));
+                }
             });
+
     }
 }

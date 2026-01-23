@@ -1,27 +1,23 @@
 ﻿using Admin.ViewModels.Lesson;
 using Admin.ViewModels.NotifuPropertyViewModel;
 using Logica;
-using System.Reflection;
+using Logica.Extension;
 
 namespace Admin.View.Moduls.UIModel
 {
     public class FieldEntityModule : IUIModel
     {
-        private readonly ErrorProviderView errorProviderView;
-        private readonly IViewModele context;
-        private readonly List<FieldInfoUIAttribute> fieldInfo = new();
+        private readonly PropertyChange context;
+        private readonly List<FieldInfoUiAttribute> fieldInfo = new();
 
         public FieldEntityModule(IViewModele context)
         {
-            this.context = context;
-            var fieldInfo = context.GetType().GetAttributes<FieldInfoUIAttribute>();
+            fieldInfo = context.GetType().GetAttributes<FieldInfoUiAttribute>();
 
-            if (context is PropertyChange obj1)
-                errorProviderView = new ErrorProviderView(obj1);
-            else throw new ArgumentException("Переданный ViewModelEntity не наследует класс PropertyChange");
+            if (context is not PropertyChange pc)
+                throw new ArgumentException("Переданный ViewModelEntity не наследует класс PropertyChange");
 
-            if (fieldInfo != null)
-                this.fieldInfo = fieldInfo;
+            this.context = pc;
         }
 
         public Control CreateControl()
@@ -30,14 +26,15 @@ namespace Admin.View.Moduls.UIModel
                 p => t.ControlAddIsRowsAbsolute(CreateField(p), p.Size + 1)))
             .ControlAddIsRowsPercent();
 
-        private Control CreateField(FieldInfoUIAttribute? fieldInfoAttribute)
+        private Control CreateField(FieldInfoUiAttribute? fieldInfoAttribute)
             => FactoryElements.TableLayoutPanel()
             .With(t => t.Padding = new Padding(0))
             .StartNewRowTableAbsolute(fieldInfoAttribute.Size)
                 .AddingRowsStyles(new RowStyle(SizeType.Absolute, fieldInfoAttribute.Size))
                 .ControlAddIsColumnPercent(FactoryElements.Label_11(fieldInfoAttribute.LabelText), 30)
-                .ControlAddIsColumnPercent(fieldInfoAttribute.GetContol(context)
-                    .With(t => errorProviderView.OnErrorProvider(fieldInfoAttribute.PropertyName, t)), 70)
+                .ControlAddIsColumnPercent(fieldInfoAttribute
+                    .GetContol(context)
+                    .OnErrorProvider(fieldInfoAttribute.PropertyName, context), 70)
                 .ControlAddIsColumnAbsolute(10);
     }
 }

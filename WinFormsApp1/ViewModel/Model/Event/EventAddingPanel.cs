@@ -7,14 +7,15 @@ using System.Windows.Input;
 
 namespace WinFormsApp1.ViewModelEntity.Event
 {
-    public class EventAddingPanel : EventData, IAddingPanel<EventEntity>
+    [LinkingCommand(nameof(ManagmentModelView<>.OnLoadAddingView))]
+    public class EventAddingPanel : EventData
     {
         [ButtonInfoUI("Сохранить")] public ICommand OnSave { get; protected set; }
 
-        public EventAddingPanel(EventRepository repository)
+        public EventAddingPanel(EventRepository repository, EventCategoryRepositroy categoryRepositroy) : base(categoryRepositroy)
         {
             OnSave = new MainCommand(
-                _ => TryValidObject(() => repository.Add(Entity)));
+                _ => TryValidObject(() => repository.Add(GenericRepositoryEntity.Entity)));
         }
     }
 }

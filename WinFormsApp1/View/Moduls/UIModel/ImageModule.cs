@@ -1,12 +1,11 @@
 ﻿using Admin.View.Moduls.UIModel;
-using Admin.ViewModel.MovelView;
 using Admin.ViewModels.NotifuPropertyViewModel;
 using CSharpFunctionalExtensions;
 using Logica;
 using System.ComponentModel;
 
 public class ImageModule<TEntity> : IUIModel
-     where TEntity : Entity, new()
+    where TEntity : Entity, new()
 {
     public readonly ViewModelWithImages<TEntity> context;
 
@@ -17,19 +16,20 @@ public class ImageModule<TEntity> : IUIModel
     }
 
     public Control? CreateControl()
-            => FactoryElements.TableLayoutPanel()
+        => FactoryElements.TableLayoutPanel()
             .ControlAddIsRowsAbsolute(
                 FactoryElements.Label_12("📷 Изображения:"), 50)
             .ControlAddIsRowsPercent(
                 FactoryElements.FlowLayoutPanel()
-                .With(fp => AddImages(fp))
-                .With(fp => context.PropertyChanged += AddingImages(fp)));
+                    .With(fp => AddImages(fp))
+                    .With(fp => context.PropertyChanged += AddingImages(fp)));
 
     private PropertyChangedEventHandler AddingImages(FlowLayoutPanel fp)
     {
         return (obj, propCh) =>
         {
-            if (propCh.PropertyName == nameof(context.OnAddingImg) || propCh.PropertyName == nameof(context.OnDeletingImg))
+            if (propCh.PropertyName == nameof(context.OnAddingImg) ||
+                propCh.PropertyName == nameof(context.OnDeletingImg))
             {
                 fp.Controls.Clear();
                 AddImages(fp);
@@ -37,9 +37,9 @@ public class ImageModule<TEntity> : IUIModel
         };
     }
 
-    private IEnumerable<KeyValuePair<string, bool>> AddImages(FlowLayoutPanel fp)
+    private void AddImages(FlowLayoutPanel fp)
     {
-        return context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.PictureBox(url.Key)
+        context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.PictureBox(url.Key)
             .With(i => i.MouseClick += (s, e) =>
             {
                 context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
@@ -47,4 +47,3 @@ public class ImageModule<TEntity> : IUIModel
             })));
     }
 }
-

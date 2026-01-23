@@ -1,23 +1,26 @@
 ﻿using Admin.View.Moduls.UIModel;
 using Admin.View.ViewForm;
+using Admin.ViewModel.MovelView;
 using CSharpFunctionalExtensions;
 using Logica;
 using WinFormsApp1.View;
 
 
 
-public class UIEntity<TEntity, TViewModel> : IView
+public class UIEntity<TEntity, TViewModel> : IView<TEntity>
     where TEntity : Entity, new()
     where TViewModel : IViewModele<TEntity>
 {
-    private readonly AdminMainView form;
-    private readonly ImageModule<TEntity> imagePanel;
-    private readonly ButtonModule buttonModule;
-    private readonly FieldEntityModule fieldInfo;
+    private AdminMainView form;
+    private ImageModule<TEntity> imagePanel;
+    private ButtonModule buttonModule;
+    private FieldEntityModule fieldInfo;
+    public IViewModele<TEntity> ViewModele { get; set; }
 
     public UIEntity(AdminMainView mainView, TViewModel viewModel)
     {
         form = mainView;
+        ViewModele = viewModel;
 
         imagePanel = new ImageModule<TEntity>(viewModel);
         buttonModule = new ButtonModule(viewModel);

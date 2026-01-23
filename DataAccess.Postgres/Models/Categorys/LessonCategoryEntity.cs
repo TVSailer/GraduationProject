@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace DataAccess.Postgres.Models
+﻿namespace DataAccess.Postgres.Models
 {
     public class LessonCategoryEntity : CategoryEntity
     {
@@ -11,6 +9,7 @@ namespace DataAccess.Postgres.Models
         public LessonCategoryEntity(string category) : base(category)
         {
         }
+
 
     }
 }

@@ -1,18 +1,19 @@
-﻿using Admin.ViewModels;
+﻿using Admin.View;
+using Admin.View.Moduls.Lesson;
+using Admin.ViewModel.WordWithEntity;
+using Admin.ViewModels;
 using Admin.ViewModels.Lesson;
+using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using Ninject;
 
 namespace Admin.ViewModel.Lesson
 {
-    public class LessonDetailsPanel : LessonData, IDetalsPanel<LessonEntity>
+    [LinkingCommand(nameof(ManagmentModelView<>.OnLoadDetailsView))]
+    public class LessonDetailsPanel : LessonData
     {
         [ButtonInfoUI("Управление посетителями")] public ICommand OnControlVisitros { get; private set; }
         [ButtonInfoUI("Управление посещаемостью")] public ICommand OnControlDateAttendances { get; private set; }
@@ -24,19 +25,25 @@ namespace Admin.ViewModel.Lesson
         private List<DateAttendanceEntity>? dateAttendances = new();
         private List<VisitorEntity>? visitorEntities = new();
 
+        
         private readonly List<TeacherEntity> teacherEntities;
 
-        public LessonDetailsPanel(LessonsRepository lessonsRepository, TeacherRepository teacherRepository, LessonCategoryRepositroy lessonCategoryRepositroy) : base(teacherRepository, lessonCategoryRepositroy)
+        public LessonDetailsPanel(
+            LessonsRepository lessonsRepository, 
+            TeacherRepository teacherRepository, 
+            LessonCategoryRepositroy lessonCategoryRepositroy) : base(teacherRepository, lessonCategoryRepositroy)
         {
             OnUpdate = new MainCommand(
-                _ => TryValidObject(() => lessonsRepository.Update(Entity.Id, Entity)));
+                _ => TryValidObject(() => lessonsRepository.Update(GenericRepositoryEntity.Entity.Id, GenericRepositoryEntity.Entity)));
 
-            OnDelete = new MainCommand(
-                _ =>
+            OnDelete = new MainCommand(_ =>
+            {
                 {
-                    lessonsRepository.Delete(Entity);
+                    lessonsRepository.Delete(GenericRepositoryEntity.Entity);
                     OnBack.Execute(this);
-                });
+                }
+            });
         }
     }
+
 }

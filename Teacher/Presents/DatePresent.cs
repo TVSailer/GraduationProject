@@ -1,8 +1,6 @@
 ﻿using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 using Teacher.Forms.Dates;
 using Teacher.Forms.Visitors;
 using Logica;

@@ -1,7 +1,6 @@
 ﻿
 using Admin;
 using DataAccess.Postgres;
-using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Entere.Forms;
 using Logica;

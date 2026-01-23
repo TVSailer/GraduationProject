@@ -1,11 +1,11 @@
-﻿using Admin.ViewModels;
+﻿using Admin.ViewModel.WordWithEntity;
 using Admin.ViewModels.Lesson;
 using Admin.ViewModels.NotifuPropertyViewModel;
 using CSharpFunctionalExtensions;
+using DataAccess.Postgres.Models;
 using Logica;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using WinFormsApp1;
 
 namespace Admin.ViewModel.MovelView
 {
@@ -13,22 +13,24 @@ namespace Admin.ViewModel.MovelView
         where TEntity : Entity, new()
     {
         [ButtonInfoUI("Назад")] public ICommand OnBack { get; protected set; }
+        public GenericRepositoryEntity<TEntity> GenericRepositoryEntity { get; set; } = new();
 
-        public TEntity Entity { get; set; }
+
+        public ViewModele()
+        {
+            GenericRepositoryEntity.Initialize(this);
+        }
 
         public T TryValidProperty<T>(ref T field, T value, [CallerMemberName] string prop = "")
-            => TryValidPropertyInfo(ref field, value, prop, prop);
-        
-        public T TryValidPropertyInfo<T>(ref T field, T value, string infoProperty, [CallerMemberName] string prop = "")
         {
             field = value;
             Validatoreg.TryValidProperty(value, prop, this, out string errorMessage);
-            OnMassegeErrorProvider(errorMessage, infoProperty);
+            OnMassegeErrorProvider(errorMessage, prop);
             OnPropertyChanged(prop);
 
             return value;
         }
-        
+
         protected void TryValidObject(Action action)
         {
             if (Validatoreg.TryValidObject(this, out var results, false))
@@ -39,5 +41,14 @@ namespace Admin.ViewModel.MovelView
             else { results.ForEach(r => r.MemberNames.ForEach(n => OnMassegeErrorProvider(r.ErrorMessage, n))); }
         }
 
+        public void SetEntity(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Initialize(object? value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

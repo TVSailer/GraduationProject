@@ -1,14 +1,7 @@
 ﻿using Logica;
-using Logica.Extension;
-using static System.Net.Mime.MediaTypeNames;
-using System.Threading.Tasks.Dataflow;
 using Font = System.Drawing.Font;
 using Admin.ViewModels.Lesson;
 using System.Reflection;
-using System.Windows.Forms;
-using System.ComponentModel;
-using DataAccess.Postgres.Models;
-
 
 
 public static class FactoryElements

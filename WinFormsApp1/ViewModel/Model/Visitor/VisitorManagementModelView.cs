@@ -1,7 +1,4 @@
-﻿using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Repository;
-using Logica;
-using System.Windows.Input;
+﻿using DataAccess.Postgres.Repository;
 using WinFormsApp1.View;
 
 namespace Admin.ViewModels.Visitor

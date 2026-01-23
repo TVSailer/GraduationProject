@@ -1,8 +1,4 @@
-﻿using CSharpFunctionalExtensions;
-using Logica;
-using System.Data;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using System.Reflection;
 
 public static class TypeExtension
 {
@@ -15,9 +11,9 @@ public static class TypeExtension
             .ToList();
     }
     
-    public static bool StartesWith(this string type, string? value)
-    {
-        if (value is null) return false;
-        return type.StartsWith(value);
-    }
+    // public static bool StartesWith(this string type, string? value)
+    // {
+    //     if (value is null) return false;
+    //     return type.StartsWith(value);
+    // }
 }

@@ -1,6 +1,5 @@
 ﻿using DataAccess.Postgres.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Postgres.Repository
 {
@@ -58,14 +57,6 @@ namespace DataAccess.Postgres.Repository
         public void AddRelationWithDateAttendance(LessonEntity lesson, DateAttendanceEntity date)
         {
             DbContext.Lessons.FirstOrDefault(l => l.Id == lesson.Id).AttendanceDates.Add(date);
-            DbContext.SaveChanges();
-        }
-
-        public override void Add(object lesson)
-        {
-            var les = (LessonEntity)lesson;
-            var tc = DbContext.Teachers.FirstOrDefault(t => t.Id == les.Teacher.Id) ?? throw new ArgumentNullException();
-            tc.Lessons.Add(les);
             DbContext.SaveChanges();
         }
 

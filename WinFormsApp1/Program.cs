@@ -1,4 +1,3 @@
-using DataAccess.Postgres;
 using WinFormsApp1.View;
 
 namespace WinFormsApp1

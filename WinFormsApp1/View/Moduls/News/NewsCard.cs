@@ -1,6 +1,5 @@
 ﻿using DataAccess.Postgres.Models;
 using Logica;
-using Microsoft.Office.Interop.Word;
 using WinFormsApp1.View;
 
 namespace Admin.View.Moduls.News

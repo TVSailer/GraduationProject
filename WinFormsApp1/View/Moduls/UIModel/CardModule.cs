@@ -1,30 +1,23 @@
-﻿using Admin.ViewModels.Lesson;
+﻿using Admin.ViewModels;
+using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using WinFormsApp1.View;
 
 namespace Admin.View.Moduls.UIModel
 {
-    public class CardModule<TEntity, TCard> : IUIModel
+    public class CardModule<TEntity, TCard>(ManagmentModelView<TEntity> managment)
+        : IUIModel
         where TEntity : Entity, new()
         where TCard : ObjectCard<TEntity>, new()
     {
-        private readonly SerchManagment<TEntity> context;
-        private readonly Action<TEntity> setEntity;
-
-        public CardModule(SerchManagment<TEntity> serchManagment, Action<TEntity> entity)
-        {
-            context = serchManagment;
-            setEntity = entity;
-        }
-
         public Control CreateControl()
             => new FlowLayoutPanel()
             .With(p => p.Dock = DockStyle.Fill)
             .With(p => p.AutoScroll = true)
             .With(p => p.Padding = new Padding(10))
-            .With(p => context.PropertyChanged += (obj, propCh) =>
+            .With(p => managment.SerchManagment.PropertyChanged += (obj, propCh) =>
             {
-                if (propCh.PropertyName == nameof(context.DataEntitys))
+                if (propCh.PropertyName == nameof(managment.SerchManagment.DataEntitys))
                 {
                     p.Controls.Clear();
                     AddCard(p);
@@ -33,7 +26,7 @@ namespace Admin.View.Moduls.UIModel
             .With(AddCard);
 
         private void AddCard(FlowLayoutPanel p)
-            => context.DataEntitys
+            => managment.SerchManagment.DataEntitys
             .ForEach(
                 en =>
                 {
@@ -41,7 +34,7 @@ namespace Admin.View.Moduls.UIModel
                     .With(c => c.OnCardClicked +=
                     (s, e) => {
                         if (en is TEntity entity)
-                            setEntity(en);
+                            managment.OnLoadDetailsView.Execute(en);
                         else throw new ArgumentException();
                     }));
                 });

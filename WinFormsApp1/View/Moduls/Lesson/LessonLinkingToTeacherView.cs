@@ -1,6 +1,4 @@
-﻿using Admin.View.ViewForm;
-using Admin.ViewModels.Lesson;
-using DataAccess.Postgres.Models;
+﻿using DataAccess.Postgres.Models;
 using Logica;
 
 public class LessonLinkingToTeacherView : Form

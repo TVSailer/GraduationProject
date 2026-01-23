@@ -1,20 +1,11 @@
 ﻿using Admin.View;
 using Admin.View.Moduls.Event;
 using Admin.View.Moduls.Lesson;
-using Admin.View.Moduls.News;
-using Admin.View.Moduls.Teacher;
-using Admin.View.Moduls.Visitor;
-using Admin.ViewModel.Lesson;
-using Admin.ViewModels;
-using Admin.ViewModels.Lesson;
 using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Repository;
 using Logica;
-using Logica.DI;
 using System.Windows.Input;
 using WinFormsApp1;
-using WinFormsApp1.ViewModelEntity.Event;
 
 public class AdminMainViewModel 
 {
@@ -30,12 +21,9 @@ public class AdminMainViewModel
         OnLoadEventsManagemetnView = new MainCommand(
              _ =>
              {
-                 using (var scope = AdminDI.CreateDIScope())
-                     scope.GetService<ManagementView<
-                         EventEntity,
-                         EventCard,
-                         EventAddingPanel,
-                         EventDetailsPanel>>().InitializeComponents(null);
+                 AdminDI.GetService<ManagementView<
+                     EventEntity,
+                     EventCard>>().InitializeComponents(null);
              });
 
         OnLoadTeachersManagemetnView = new MainCommand(
@@ -46,12 +34,9 @@ public class AdminMainViewModel
         OnLoadLessonsManagemetnView = new MainCommand(
             _ =>
             {
-                using (var scope = AdminDI.CreateDIScope())
-                    scope.GetService<ManagementView<
-                        LessonEntity, 
-                        LessonCard, 
-                        LessonAddingPanel, 
-                        LessonDetailsPanel>>().InitializeComponents(null);
+                AdminDI.GetService<ManagementView<
+                    LessonEntity, 
+                    LessonCard>>().InitializeComponents(null);
             });
         
         OnLoadNewsManagemetnView = new MainCommand(

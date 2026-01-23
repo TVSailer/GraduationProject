@@ -1,10 +1,4 @@
-﻿using Admin.View.Moduls.Teacher;
-using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Repository;
-using Logica;
-using Logica.DI;
-using System.Windows.Input;
-using WinFormsApp1;
+﻿using DataAccess.Postgres.Repository;
 using WinFormsApp1.View;
 
 namespace Admin.ViewModels.Teachers

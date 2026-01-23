@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace Logica
+﻿namespace Logica
 {
     public abstract partial class BaseCreatingElements
     {

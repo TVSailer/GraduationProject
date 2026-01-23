@@ -1,7 +1,4 @@
 ﻿using DataAccess.Postgres;
-using DataAccess.Postgres.Repository;
-using Teacher.Forms.Dates;
-using Teacher.Presents;
 
 namespace Teacher
 {

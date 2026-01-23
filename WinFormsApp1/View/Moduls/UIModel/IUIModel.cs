@@ -1,7 +1,4 @@
-﻿using Admin.ViewModels.Lesson;
-using CSharpFunctionalExtensions;
-
-namespace Admin.View.Moduls.UIModel
+﻿namespace Admin.View.Moduls.UIModel
 {
     public interface IUIModel
     {

@@ -1,12 +1,12 @@
 ﻿using Admin.ViewModel.MovelView;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
-using DataAccess.Postgres.Migrations;
 using DataAccess.Postgres.Models;
 using Logica;
 using System.Collections;
 using System.Reflection;
 using System.Windows.Input;
+using Admin.ViewModel.WordWithEntity;
 
 namespace Admin.ViewModels.NotifuPropertyViewModel
 {
@@ -122,5 +122,6 @@ namespace Admin.ViewModels.NotifuPropertyViewModel
             listImgs = newListImgs;
         }
 
+        
     }
 }

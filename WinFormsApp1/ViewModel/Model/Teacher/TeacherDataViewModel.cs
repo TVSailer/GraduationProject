@@ -43,7 +43,7 @@
 //                        new TeacherEntity(Name, Surname, Patronymic, DateBirth, NumberPhone, UrlFaceImg));
 
 //                    LogicaMessage.MessageOk("Преподователь успешно добавлен!");
-//                    OnBack.Execute(null);
+//                    OnBack.Initialize(null);
 //                }
 //                else { results.ForEach(r => r.MemberNames.ForEach(n => OnMassegeErrorProvider(r.ErrorMessage, n))); }
 //            });

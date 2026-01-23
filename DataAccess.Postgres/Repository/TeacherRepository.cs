@@ -11,8 +11,8 @@ namespace DataAccess.Postgres.Repository
 
         public bool VerifyTeacher(string login, string password)
              => null != DbContext.Teachers
-            .AsNoTracking()
-            .Include(t => t.Lessons)
+            //.AsNoTracking()
+            //.Include(t => t.Lessons)
             .FirstOrDefault(t => t.Login == login && t.Password == password);
 
         public override List<TeacherEntity> Get()

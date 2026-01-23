@@ -1,8 +1,9 @@
-﻿using CSharpFunctionalExtensions;
+﻿using Admin.ViewModel.WordWithEntity;
+using CSharpFunctionalExtensions;
 
 public interface IViewModele<TEntity> : IViewModele
-    where TEntity : Entity
+    where TEntity : Entity, new()
 {
-    public TEntity Entity { get; set; }
+    public GenericRepositoryEntity<TEntity> GenericRepositoryEntity { get; protected set; }
 }
 

@@ -1,5 +1,4 @@
 ﻿using Admin.ViewModels.News;
-using DataAccess.Postgres.Models;
 using WinFormsApp1.View;
 
 namespace Admin.View.Moduls.News

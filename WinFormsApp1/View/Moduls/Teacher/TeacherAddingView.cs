@@ -70,7 +70,7 @@
 //                .ControlAddIsColumnPercent(null, 10)
 //                .ControlAddIsColumnAbsolute(FactoryElements.PictureBox("")
 //                    .With(i => i.Dock = DockStyle.Fill)
-//                    .With(i => i.Click += (s, e) => context.OnAddingImg.Execute(null))
+//                    .With(i => i.Click += (s, e) => context.OnAddingImg.Initialize(null))
 //                    .With(i => i.DataBindings.Add(new Binding(nameof(i.ImageLocation), context, nameof(context.UrlFaceImg)))), 300)
 //                .ControlAddIsColumnPercent(null, 10);
 

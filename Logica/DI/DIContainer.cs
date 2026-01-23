@@ -1,10 +1,5 @@
-﻿using System.ComponentModel;
-using System.Xml.Linq;
-
-namespace Logica.DI
+﻿namespace Logica.DI
 {
-
-
     public class DIContainer : IDisposable
     {
         public readonly Dictionary<Type, ServiceDescriptor> Description;
@@ -24,17 +19,8 @@ namespace Logica.DI
         
         public object GetService(Type serviceType)
         {
-            if (!Description.TryGetValue(serviceType, out var descriptor))
-            {
-                if (!serviceType.IsAbstract && !serviceType.IsInterface)
-                {
-                    return CreateInstance(serviceType);
-                }
-
-                throw new InvalidOperationException($"Сервис {serviceType.Name} не зарегистрирован");
-            }
-
-            return GetServiceInstance(descriptor);
+            if (Description.TryGetValue(serviceType, out var descriptor)) return GetServiceInstance(descriptor);
+            return serviceType is { IsAbstract: false, IsInterface: false } ? CreateInstance(serviceType) : throw new InvalidOperationException($"Сервис {serviceType.Name} не зарегистрирован");
         }
         
         public object GetServiceInstance(ServiceDescriptor serviceDescriptor)
@@ -42,22 +28,15 @@ namespace Logica.DI
             switch (serviceDescriptor.ServiceLifetime)
             {
                 case ServiceLifetime.Singleton:
-                    if (serviceDescriptor.Instance == null)
-                        serviceDescriptor.Instance = CreateInstance(serviceDescriptor.ImplementationType);
+                    serviceDescriptor.Instance ??= CreateInstance(serviceDescriptor.ImplementationType);
                     return serviceDescriptor.Instance;
 
                 case ServiceLifetime.Scoped:
-                    if (isScope)
-                    {
-                        if (!scopedInstances.TryGetValue(serviceDescriptor.ServiceType, out var instance))
-                        {
-                            instance = CreateInstance(serviceDescriptor.ImplementationType);
-                            scopedInstances[serviceDescriptor.ServiceType] = instance;
-                            return instance;
-                        }
-                        return instance;
-                    } 
-                    return CreateInstance(serviceDescriptor.ImplementationType);
+                    if (!isScope) return CreateInstance(serviceDescriptor.ImplementationType);
+                    if (scopedInstances.TryGetValue(serviceDescriptor.ServiceType, out var instance)) return instance;
+                    instance = CreateInstance(serviceDescriptor.ImplementationType);
+                    scopedInstances[serviceDescriptor.ServiceType] = instance;
+                    return instance;
 
                 case ServiceLifetime.Transient:
                     return CreateInstance(serviceDescriptor.ImplementationType);
@@ -80,7 +59,7 @@ namespace Logica.DI
             var parameters = container.GetParameters();
             var parametersInstance = new object[parameters.Length];
 
-            for (int i = 0; i < parameters.Length; i++)
+            for (var i = 0; i < parameters.Length; i++)
                 parametersInstance[i] = GetService(parameters[i].ParameterType);
 
             return container.Invoke(parametersInstance);

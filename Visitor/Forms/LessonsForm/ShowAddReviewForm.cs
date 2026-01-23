@@ -1,6 +1,5 @@
 ﻿using DataAccess.Postgres.Models;
 using Logica;
-using System.ComponentModel.DataAnnotations;
 
 public partial class VisitorView
 {

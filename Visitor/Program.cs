@@ -1,5 +1,4 @@
 using DataAccess.Postgres;
-using DataAccess.Postgres.Models;
 
 namespace Visitor
 {

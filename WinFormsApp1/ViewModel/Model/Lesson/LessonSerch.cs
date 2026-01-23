@@ -3,49 +3,92 @@ using DataAccess.Postgres.Repository;
 
 namespace Admin.ViewModels.Lesson
 {
-    //[FieldInfoSerch("Категория")]
-    //public string Category { get; set; }
-    //public List<string> Categorys = new() { "Пусто" };
-    //public List<TeacherEntity> Teachers = new();
     public class LessonSerch : SerchManagment<LessonEntity>
     {
+        public List<LessonCategoryEntity> categorys = new() { new ("")};
 
-        [FieldInfoSerch("Название")]
-        public string Name { get; set; }
-
-        [FieldInfoSerch("Имя преподователя")]
-        public string TeacherName { get; set; }
-
-        [FieldInfoSerch("Фамилия преподователя")]
-        public string TeacherSurname { get; set; }
-
-        public override Func<List<LessonEntity>, List<LessonEntity>> OnSerhFunk { get; protected set; }
-        public override Action OnClearSerchFunk { get; protected set; }
-
-        public LessonSerch(LessonsRepository lessonsRepository, TeacherRepository teacherRepository) : base(lessonsRepository) 
+        [ComboBoxFieldUi("Категория", nameof(categorys))]
+        public LessonCategoryEntity Category
         {
-            //Teachers = teacherRepository.Get();
+            get;
+            set
+            {
+                if (value == field) return;
+                field = value;
+                OnPropertyChanged();
+            }
+        }
 
-            //lessonsRepository.Get().ForEach(e =>
-            //{
-            //    if (!Categorys.Contains(e.Category))
-            //        Categorys.Add(e.Category);
-            //});
+        [BaseFieldUi("Название")]
+        public string Name
+        {
+            get;
+            set
+            {
+                if (value == field) return;
+                field = value;
+                OnPropertyChanged();
+            }
+        } = "";
+
+        [BaseFieldUi("Имя преподователя")]
+        public string TeacherName
+        {
+            get;
+            set
+            {
+                if (value == field) return;
+                field = value;
+                OnPropertyChanged();
+            }
+        } = "";
+
+        [BaseFieldUi("Фамилия преподователя")]
+        public string TeacherSurname
+        {
+            get;
+            set
+            {
+                if (value == field) return;
+                field = value;
+                OnPropertyChanged();
+            }
+        } = "";
+
+        public sealed override Func<List<LessonEntity>, List<LessonEntity>> OnSerhFunk
+        {
+            get;
+            protected set;
+        }
+
+        public sealed override Action OnClearSerchFunk
+        {
+            get;
+            protected set;
+        }
+
+        public LessonSerch(LessonsRepository lessonsRepository, LessonCategoryRepositroy categoryRepository) : base(
+            lessonsRepository)
+        {
+            categoryRepository
+                .Get()
+                .ForEach(x => categorys.Add(x));
 
             OnClearSerchFunk = () =>
             {
                 Name = "";
                 TeacherName = "";
                 TeacherSurname = "";
+                Category = categorys[0];
             };
 
             OnSerhFunk = (entitys) =>
             {
                 return entitys
-                    //.Where(e => Category == "Пусто" ? true : e.Category == Category)
-                    .Where(e => e.Name.StartesWith(Name))
-                    .Where(e => e.Teacher.FIO.Name.StartesWith(TeacherName))
-                    .Where(e => e.Teacher.FIO.Surname.StartesWith(TeacherSurname))
+                    .Where(e => Category.Equals(categorys[0])|| e.Category.Equals(Category))
+                    .Where(e => e.Name.StartsWith(Name))
+                    .Where(e => e.Teacher.FIO.Name.StartsWith(TeacherName))
+                    .Where(e => e.Teacher.FIO.Surname.StartsWith(TeacherSurname))
                     .ToList();
 
             };

@@ -1,5 +1,4 @@
-﻿using CSharpFunctionalExtensions;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Postgres.Models;
 

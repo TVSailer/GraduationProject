@@ -1,6 +1,5 @@
 ﻿using DataAccess.Postgres.Models;
 using Logica;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Teacher.Presents;
 
 namespace Teacher.Forms.Dates

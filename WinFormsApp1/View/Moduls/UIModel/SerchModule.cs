@@ -4,21 +4,10 @@ using Logica;
 
 namespace Admin.View.Moduls.UIModel
 {
-    public class SerchModule<TEntity> : IUIModel
+    public class SerchModule<TEntity>(SerchManagment<TEntity> context) : IUIModel
         where TEntity : Entity
     {
-        private readonly SerchManagment<TEntity> context;
-        private readonly List<FieldInfoSerchAttribute> fieldInfos;
-
-        public SerchModule(SerchManagment<TEntity> context)
-        {
-            this.context = context;
-
-            var fieldInfos = context.GetType().GetAttributes<FieldInfoSerchAttribute>();
-
-            if (fieldInfos != null)
-                this.fieldInfos = fieldInfos;
-        }
+        private readonly List<FieldInfoUiAttribute> fieldInfos = context.GetType().GetAttributes<FieldInfoUiAttribute>();
 
         public Control CreateControl()
             => new Panel()
@@ -29,14 +18,12 @@ namespace Admin.View.Moduls.UIModel
                 .With(t => fieldInfos
                     .ForEach(fi => t
                         .StartNewRowTableAbsolute(60)
-                        .ControlAddIsColumnAbsolute(FactoryElements.Label_11($"{fi.Text}: "), 140)
-                        .ControlAddIsColumnPercent(FactoryElements.TextBox("")
-                            .With(tb => tb.DataBindings.Add(new Binding(nameof(tb.Text), context, fi.NameProperty, false, DataSourceUpdateMode.OnPropertyChanged))), 10)
+                        .ControlAddIsColumnAbsolute(FactoryElements.Label_11($"{fi.LabelText}: "), 300)
+                        .ControlAddIsColumnPercent(fi.GetContol(context), 10)
                         .EndTabel()))
                 .ControlAddIsRowsPercent()
                 .StartNewRowTableAbsolute(80)
-                    .ControlAddIsColumnPercent(FactoryElements.Button("Поиск", context, nameof(context.OnSerch)), 50)
-                    .ControlAddIsColumnPercent(FactoryElements.Button("Очистить поиск", context, nameof(context.OnClearSerch)), 50)
+                    .ControlAddIsColumnPercent(FactoryElements.Button("Очистить поиск", context, nameof(context.OnClearSerch)))
                 .EndTabel()));
     }
 }

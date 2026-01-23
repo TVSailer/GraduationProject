@@ -1,7 +1,5 @@
 ﻿using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica;
-using System.Windows.Input;
 using WinFormsApp1.View;
 
 namespace Admin.ViewModels.News

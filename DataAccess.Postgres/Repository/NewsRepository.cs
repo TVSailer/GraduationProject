@@ -1,5 +1,4 @@
-﻿using CSharpFunctionalExtensions;
-using DataAccess.Postgres.Models;
+﻿using DataAccess.Postgres.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
