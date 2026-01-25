@@ -1,46 +1,40 @@
 ﻿using DataAccess.Postgres.Models;
 using Logica;
-using WinFormsApp1.View;
 
-namespace Admin.View.Moduls.Lesson
+public class LessonCard : ObjectCard<LessonEntity>
 {
-    public class LessonCard : ObjectCard<LessonEntity>
+    private double reting;
+
+    public LessonCard()
     {
-        private double reting;
-
-        public LessonCard()
-        {
-            Size = new Size(400, 240);
-        }
-
-        public override ObjectCard<LessonEntity> Initialize(LessonEntity obj)
-        {
-            base.Initialize(obj);
-
-            if (entity != null && entity.Reviews.Count > 0)
-            {
-                entity.Reviews.ForEach(r => reting += r.Rating);
-                reting /= entity.Reviews.Count;
-            }
-
-            return this;
-        }
-
-        public override Control Content()
-            => FactoryElements.TableLayoutPanel()
-            .ControlAddIsRowsPercent(FactoryElements.Label_11(entity.Name)
-                .With(l => l.ForeColor = Color.DarkBlue), 40)
-            .ControlAddIsRowsPercent(FactoryElements.Label_09($"🏷️ {entity.Category}")
-                .With(l => l.ForeColor = Color.Gray), 30)
-            .ControlAddIsRowsPercent(FactoryElements.Label_09($"👨‍🏫 {entity.Teacher.ToString()}")
-                .With(l => l.ForeColor = Color.Gray), 30)
-            .ControlAddIsRowsPercent(FactoryElements.Label_09($"🕒 {entity.Schedule}")
-                .With(l => l.ForeColor = Color.Gray), 30)
-            .ControlAddIsRowsPercent(FactoryElements.Label_09($"👥 {entity.Visitors.Count}/{entity.MaxParticipants}")
-                .With(l => l.ForeColor = Color.DarkGreen), 30)
-            .ControlAddIsRowsPercent(FactoryElements.Label_09($"★ {reting}")
-                .With(l => l.ForeColor = Color.Red), 30);
+        Size = new Size(400, 240);
     }
+
+    public override ObjectCard<LessonEntity> Initialize(LessonEntity obj)
+    {
+        base.Initialize(obj);
+
+        if (entity.Reviews == null || entity.Reviews.Count <= 0) return this;
+        entity.Reviews.ForEach(r => reting += r.Rating);
+        reting /= entity.Reviews.Count;
+
+        return this;
+    }
+
+    public override Control Content()
+        => FactoryElements.TableLayoutPanel()
+        .ControlAddIsRowsPercent(FactoryElements.Label_11(entity.Name)
+            .With(l => l.ForeColor = Color.DarkBlue), 40)
+        .ControlAddIsRowsPercent(FactoryElements.Label_09($"🏷️ {entity.Category}")
+            .With(l => l.ForeColor = Color.Gray), 30)
+        .ControlAddIsRowsPercent(FactoryElements.Label_09($"👨‍🏫 {entity.Teacher}")
+            .With(l => l.ForeColor = Color.Gray), 30)
+        .ControlAddIsRowsPercent(FactoryElements.Label_09($"🕒 {entity.Schedule.ParseSchedule()}")
+            .With(l => l.ForeColor = Color.Gray), 30)
+        .ControlAddIsRowsPercent(FactoryElements.Label_09($"👥 {entity.Visitors.Count}/{entity.MaxParticipants}")
+            .With(l => l.ForeColor = Color.DarkGreen), 30)
+        .ControlAddIsRowsPercent(FactoryElements.Label_09($"★ {reting}")
+            .With(l => l.ForeColor = Color.Red), 30);
 }
 
 

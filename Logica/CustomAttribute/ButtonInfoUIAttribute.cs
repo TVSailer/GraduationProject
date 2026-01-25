@@ -8,10 +8,10 @@ namespace Admin.ViewModels.Lesson
         public string Text { get; private set; }
         public string ButtonName { get; private set; }
 
-        public ButtonInfoUIAttribute(string text, [CallerMemberName] string button = "")
+        public ButtonInfoUIAttribute(string text, [CallerMemberName] string prop = "")
         {
             Text = text;
-            ButtonName = button;
+            ButtonName = prop;
         }
 
     }

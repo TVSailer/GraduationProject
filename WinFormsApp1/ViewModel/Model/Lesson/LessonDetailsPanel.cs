@@ -1,13 +1,11 @@
-﻿using Admin.View;
-using Admin.View.Moduls.Lesson;
-using Admin.ViewModel.WordWithEntity;
+﻿using System.Windows.Input;
+using Admin.View;
 using Admin.ViewModels;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
-using System.Windows.Input;
 using Ninject;
 
 namespace Admin.ViewModel.Lesson
@@ -34,12 +32,12 @@ namespace Admin.ViewModel.Lesson
             LessonCategoryRepositroy lessonCategoryRepositroy) : base(teacherRepository, lessonCategoryRepositroy)
         {
             OnUpdate = new MainCommand(
-                _ => TryValidObject(() => lessonsRepository.Update(GenericRepositoryEntity.Entity.Id, GenericRepositoryEntity.Entity)));
+                _ => TryValidObject(() => lessonsRepository.Update(GenericRepositoryEntity.Id, GenericRepositoryEntity.Entity)));
 
             OnDelete = new MainCommand(_ =>
             {
                 {
-                    lessonsRepository.Delete(GenericRepositoryEntity.Entity);
+                    lessonsRepository.Delete(GenericRepositoryEntity.Id);
                     OnBack.Execute(this);
                 }
             });

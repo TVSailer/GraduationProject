@@ -1,6 +1,5 @@
 ﻿using DataAccess.Postgres.Models;
 using Logica;
-using WinFormsApp1.View;
 
 namespace Admin.View.Moduls.Visitor
 {

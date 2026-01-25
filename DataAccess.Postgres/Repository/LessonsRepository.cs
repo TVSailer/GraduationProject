@@ -15,7 +15,6 @@ namespace DataAccess.Postgres.Repository
             .Include(l => l.Category)
             .Include(l => l.Schedule)
             .Include(l => l.Imgs)
-            //.AsNoTracking()
             .ToList() ?? throw new ArgumentNullException();
 
         public LessonEntity Get(int id)
@@ -105,9 +104,11 @@ namespace DataAccess.Postgres.Repository
             DbContext.SaveChanges();
         }
 
-        public override void Delete(LessonEntity lesson)
-           => DbContext.Lessons
-           .Where(l => l.Id == lesson.Id)
-           .ExecuteDelete();
+        public override void Delete(long idEntity)
+        {
+            DbContext.Lessons
+                .Where(l => l.Id == idEntity)
+                .ExecuteDelete();
+        }
     }
 }

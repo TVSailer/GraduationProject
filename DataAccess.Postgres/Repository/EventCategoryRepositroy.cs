@@ -1,4 +1,5 @@
 ﻿using DataAccess.Postgres.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository;
 
@@ -17,7 +18,7 @@ public class EventCategoryRepositroy : Repository<EventCategoryEntity>
         throw new NotImplementedException();
     }
 
-    public override void Delete(EventCategoryEntity entity)
+    public override void Delete(long idEntity)
     {
         throw new NotImplementedException();
     }

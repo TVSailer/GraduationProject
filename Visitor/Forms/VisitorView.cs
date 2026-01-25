@@ -124,7 +124,7 @@ public class EventView
             .With(l => l.ForeColor = Color.DarkOrange);
 
         var registerLink = FactoryElements.LinkLabel_10("Зарегистрироваться →", 
-            () => Validatoreg.OpenLink(eventItem.RegistrationLink));
+            () => Validatoreg.TryOpenLink(eventItem.RegistrationLink));
 
         return FactoryElements.TableLayoutPanel()
             .With(t => t.BorderStyle = BorderStyle.FixedSingle)

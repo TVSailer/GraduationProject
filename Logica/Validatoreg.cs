@@ -93,7 +93,7 @@ public static class Validatoreg
         return true;
     }
 
-    public static bool OpenLink(string url)
+    public static bool TryOpenLink(string url)
     {
         try
         {
@@ -112,5 +112,10 @@ public static class Validatoreg
 
             return false;
         }
+    }
+
+    public static bool TryValidPassword(string hash, string inputPassword)
+    {
+        return BCrypt.Net.BCrypt.Verify(inputPassword, hash);
     }
 }

@@ -1,5 +1,4 @@
 using Admin.View;
-using Admin.View.Moduls.Lesson;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Lesson;
 using Admin.ViewModels;
@@ -9,9 +8,6 @@ using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Microsoft.Win32;
 using Ninject.Modules;
-using WinFormsApp1.View;
-
-namespace WinFormsApp1;
 
 public class LessonModule : NinjectModule
 {

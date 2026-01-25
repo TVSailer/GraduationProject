@@ -12,20 +12,4 @@ namespace Admin.ViewModels.Lesson
             NamePropertyEntity = nameProperty;
         }
     }
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public class LinkingCommandAttribute : Attribute
-    {
-        public string NameCommand { get; }
-
-        public LinkingCommandAttribute(string nameCommand)
-        {
-            // typeof(T)
-            //     .GetProperties()
-            //     .Where(p => p.PropertyType.Equals(typeof(ICommand)))
-            //     .First(p => p.Name.Equals(nameCommand));
-
-            NameCommand = nameCommand;
-        }
-    }
 }

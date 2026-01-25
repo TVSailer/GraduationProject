@@ -2,7 +2,7 @@
 {
     public class EventCategoryEntity : CategoryEntity
     {
-        public List<EventEntity>? EventEntities { get; private set; } = new();
+        public List<EventEntity> EventEntities { get; private set; } = new();
 
         public EventCategoryEntity() { }
 

@@ -5,9 +5,9 @@ namespace Admin.ViewModels.Lesson
 {
     public class LessonSerch : SerchManagment<LessonEntity>
     {
-        public List<LessonCategoryEntity> categorys = new() { new ("")};
+        public List<LessonCategoryEntity> category = [new("")];
 
-        [ComboBoxFieldUi("Категория", nameof(categorys))]
+        [ComboBoxFieldUi("Категория", nameof(category))]
         public LessonCategoryEntity Category
         {
             get;
@@ -17,7 +17,7 @@ namespace Admin.ViewModels.Lesson
                 field = value;
                 OnPropertyChanged();
             }
-        }
+        } = new ("");
 
         [BaseFieldUi("Название")]
         public string Name
@@ -72,25 +72,24 @@ namespace Admin.ViewModels.Lesson
         {
             categoryRepository
                 .Get()
-                .ForEach(x => categorys.Add(x));
+                .ForEach(x => category.Add(x));
 
             OnClearSerchFunk = () =>
             {
                 Name = "";
                 TeacherName = "";
                 TeacherSurname = "";
-                Category = categorys[0];
+                Category = category[0];
             };
 
             OnSerhFunk = (entitys) =>
             {
                 return entitys
-                    .Where(e => Category.Equals(categorys[0])|| e.Category.Equals(Category))
+                    .Where(e => Category.Equals(category[0])|| e.Category.Equals(Category))
                     .Where(e => e.Name.StartsWith(Name))
                     .Where(e => e.Teacher.FIO.Name.StartsWith(TeacherName))
                     .Where(e => e.Teacher.FIO.Surname.StartsWith(TeacherSurname))
                     .ToList();
-
             };
         }
     }

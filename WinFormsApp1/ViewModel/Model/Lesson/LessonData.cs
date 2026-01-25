@@ -1,11 +1,9 @@
-﻿using Admin.ViewModels.NotifuPropertyViewModel;
+﻿using System.Windows.Input;
+using Admin.View;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.CustomAttribute;
-using System.Windows.Input;
-using Admin.View;
-using Admin.View.Moduls.Lesson;
 using WinFormsApp1;
 using NotNullAttribute = Logica.CustomAttribute.NotNullAttribute;
 
@@ -34,28 +32,11 @@ namespace Admin.ViewModels.Lesson
         public List<LessonScheduleEntity>? Schedule
         {
             get;
-            set
-            {
-                TryValidProperty(ref field, value);
-                OnPropertyChanged(nameof(ScheduleParse));
-            }
+            set => TryValidProperty(ref field, value);
         }
 
         [RequiredCustom, ReadOnlyFieldUi("Расписание*:", "Создайте расписание")]
-        public string? ScheduleParse
-        {
-            get
-            {
-                if (Schedule is null)
-                {
-                    return null;
-                }
-
-                string value = null;
-                Schedule.ForEach(s => value += $"{s.Day.ToDescriptionString().Substring(0, 4)}. {s.Start}-{s.End} ");
-                return value;
-            }
-        }
+        public string? ScheduleParse => Schedule?.ParseSchedule();
 
         [RequiredCustom, LinkingEntity("Location"), BaseFieldUi("Место проведения:*", "Введите место проведения")]
         public string Location
@@ -69,7 +50,7 @@ namespace Admin.ViewModels.Lesson
         {
             get;
             set => TryValidProperty(ref field, value);
-        }
+        } = 1;
 
         [RequiredCustom, LinkingEntity("Category"), ComboBoxFieldUi("Категория:*", nameof(categories))]
         public LessonCategoryEntity Category
@@ -89,13 +70,11 @@ namespace Admin.ViewModels.Lesson
 
         public LessonData(
             TeacherRepository teacherRepository, 
-            LessonCategoryRepositroy eventCategoryRepositroy)
+            LessonCategoryRepositroy eventCategoryRepositroy) : base(new MainCommand(_ =>
+                AdminDI.GetService<ManagementView<LessonEntity, LessonCard>>().InitializeComponents(null)))
         {
             categories = eventCategoryRepositroy.Get();
             teachers = teacherRepository.Get();
-
-            OnBack = new MainCommand(_ =>
-                    AdminDI.GetService<ManagementView<LessonEntity, LessonCard>>().InitializeComponents(null));
 
             OnCreateSchedule = new MainCommand(_ => new ScheduleView(Schedule, s => Schedule = s).ShowDialog());
         }

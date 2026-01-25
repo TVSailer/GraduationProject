@@ -59,9 +59,11 @@ namespace DataAccess.Postgres.Repository
             DbContext.SaveChanges();
         }
 
-        public override void Delete(NewsEntity entity)
-            => DbContext.News
-            .Where(v => v.Id == entity.Id)
-            .ExecuteDelete();
+        public override void Delete(long idEntity)
+        {
+            DbContext.News
+                .Where(v => v.Id == idEntity)
+                .ExecuteDelete();
+        }
     }
 }

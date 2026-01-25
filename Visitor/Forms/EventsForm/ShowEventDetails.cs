@@ -57,7 +57,7 @@ public class ShowEventDetails : Form
             Dock = DockStyle.Fill,
             TextAlign = ContentAlignment.MiddleCenter
         };
-        registerLink.Click += (s, e) => Validatoreg.OpenLink(eventItem.RegistrationLink);
+        registerLink.Click += (s, e) => Validatoreg.TryOpenLink(eventItem.RegistrationLink);
 
         var mainTable = FactoryElements
             .CreateTableLayoutPanel()

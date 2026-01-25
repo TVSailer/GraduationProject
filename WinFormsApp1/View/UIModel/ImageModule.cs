@@ -1,18 +1,16 @@
-﻿using Admin.View.Moduls.UIModel;
-using Admin.ViewModels.NotifuPropertyViewModel;
+﻿using System.ComponentModel;
+using Admin.View.Moduls.UIModel;
 using CSharpFunctionalExtensions;
 using Logica;
-using System.ComponentModel;
 
 public class ImageModule<TEntity> : IUIModel
     where TEntity : Entity, new()
 {
     public readonly ViewModelWithImages<TEntity> context;
 
-    public ImageModule(IViewModele<TEntity> viewModele)
+    public ImageModule(ViewModelWithImages<TEntity> viewModele)
     {
-        if (viewModele is ViewModelWithImages<TEntity> obj2)
-            context = obj2;
+        context = viewModele;
     }
 
     public Control? CreateControl()

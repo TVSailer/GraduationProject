@@ -8,16 +8,17 @@ namespace DataAccess.Postgres.Repository
         {
         }
 
-        public override void Delete(LessonCategoryEntity entity)
-        {
-            throw new NotImplementedException();
-        }
 
         public override List<LessonCategoryEntity> Get()
             => DbContext.LessonCategory
                 .ToList();
 
         public override void Update(long id, LessonCategoryEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Delete(long idEntity)
         {
             throw new NotImplementedException();
         }

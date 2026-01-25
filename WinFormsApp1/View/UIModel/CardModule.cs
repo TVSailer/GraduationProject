@@ -1,7 +1,6 @@
 ﻿using Admin.ViewModels;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
-using WinFormsApp1.View;
 
 namespace Admin.View.Moduls.UIModel
 {

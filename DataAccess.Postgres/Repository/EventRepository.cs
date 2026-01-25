@@ -12,6 +12,7 @@ namespace DataAccess.Postgres.Repository
         public override List<EventEntity> Get()
             => DbContext.Event
             .Include(e => e.Imgs)
+            .Include(e => e.Category)
             .AsNoTracking()
             .ToList() ?? throw new ArgumentNullException();
 
@@ -27,7 +28,7 @@ namespace DataAccess.Postgres.Repository
                 .Where(v => v.Id == id)
                 .ExecuteUpdate(v => v
                     .SetProperty(v => v.Title, @event.Title)
-                    .SetProperty(v => v.Category, @event.Category)
+                    .SetProperty(v => v.CategoryId, @event.Category.Id)
                     .SetProperty(v => v.Schedule, @event.Schedule)
                     .SetProperty(v => v.Organizer, @event.Organizer)
                     .SetProperty(v => v.Location, @event.Location)
@@ -36,36 +37,29 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(v => v.CurrentParticipants, @event.CurrentParticipants)
                     .SetProperty(v => v.RegistrationLink, @event.RegistrationLink));
 
-            if (@event.Imgs == null || @event.Imgs.Count == 0) return;
+            var sdlf = DbContext.Event.Where(e => e.Id == id);
 
-            var listImgDb = DbContext.ImgEvent
-                .Where(img => img.Event.Id == id)
-                .ToList();
+            if (@event.Imgs != null && @event.Imgs.Count > 0)
+            {
+                @event.Imgs.ForEach(imgl => DbContext.ImgEvent
+                    .Where(img => img.Id == imgl.Id)
+                    .ExecuteUpdate(s => s
+                        .SetProperty(i => i.Url, imgl.Url)));
 
-            var listImg = @event.Imgs;
-
-            listImgDb
-                .ForEach(
-                imgDb =>
-                {
-                    if (!listImg.Select(img => img.Url).Contains(imgDb.Url))
-                        DbContext.ImgEvent.Remove(imgDb);
-                });
-
-            listImg
-                .ForEach(
-                img =>
-                {
-                    if (!listImgDb.Select(img => img.Url).Contains(img.Url))
-                        DbContext.Event.FirstOrDefault(ev => ev.Id == id).Imgs.Add(img);
-                });
+                @event.Imgs
+                    .Where(imgL => !DbContext.ImgEvent
+                        .Select(i => i.Id)
+                        .Contains(imgL.Id))
+                    .ToList()
+                    .ForEach(img => DbContext.Add(img));
+            }
 
             DbContext.SaveChanges();
         }
 
-        public override void Delete(EventEntity entity)
+        public override void Delete(long idEntity)
             => DbContext.Event
-            .Where(v => v.Id == entity.Id)
+            .Where(v => v.Id == idEntity)
             .ExecuteDelete();
     }
 }

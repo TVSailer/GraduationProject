@@ -1,10 +1,8 @@
-﻿using DataAccess.Postgres.Models;
+﻿using System.Windows.Input;
+using Admin.View;
+using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
-using System.Windows.Input;
-using Admin.View;
-using Admin.View.Moduls.Lesson;
-using Admin.ViewModel.WordWithEntity;
 using Ninject;
 
 namespace Admin.ViewModels.Lesson

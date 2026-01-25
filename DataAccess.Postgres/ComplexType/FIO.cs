@@ -29,6 +29,15 @@ public class FIO
         Patronymic = list[2];
     }
 
+    public static bool TryValidFIO(string fio)
+    {
+        if (fio is null) return false;
+
+        var list = fio.Split(" ");
+
+        return list.Length == 3;
+    }
+
     public override string ToString()
             => $"{Surname} {Name} {Patronymic}";
 }

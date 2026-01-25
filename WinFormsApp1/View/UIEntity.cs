@@ -1,11 +1,7 @@
 ﻿using Admin.View.Moduls.UIModel;
 using Admin.View.ViewForm;
-using Admin.ViewModel.MovelView;
 using CSharpFunctionalExtensions;
 using Logica;
-using WinFormsApp1.View;
-
-
 
 public class UIEntity<TEntity, TViewModel> : IView<TEntity>
     where TEntity : Entity, new()
@@ -22,7 +18,8 @@ public class UIEntity<TEntity, TViewModel> : IView<TEntity>
         form = mainView;
         ViewModele = viewModel;
 
-        imagePanel = new ImageModule<TEntity>(viewModel);
+        if (viewModel is ViewModelWithImages<TEntity> vm)
+            imagePanel = new ImageModule<TEntity>(vm);
         buttonModule = new ButtonModule(viewModel);
         fieldInfo = new FieldEntityModule(viewModel);
     }
@@ -38,7 +35,7 @@ public class UIEntity<TEntity, TViewModel> : IView<TEntity>
     {
         return FactoryElements.TableLayoutPanel()
             .ControlAddIsRowsAbsolute(fieldInfo.CreateControl())
-            .ControlAddIsRowsPercent(imagePanel.CreateControl())
+            .ControlAddIsRowsPercent(imagePanel is null ? new Control() : imagePanel.CreateControl())
             .ControlAddIsRowsAbsolute(buttonModule.CreateControl());
     }
 }

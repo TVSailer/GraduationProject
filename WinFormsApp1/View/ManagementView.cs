@@ -1,9 +1,6 @@
 ﻿using Admin.View.Moduls.UIModel;
-using Admin.ViewModels;
-using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using Logica;
-using WinFormsApp1.View;
 using IView = Admin.View.ViewForm.IView;
 
 namespace Admin.View

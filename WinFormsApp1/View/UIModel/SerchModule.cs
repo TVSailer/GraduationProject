@@ -27,10 +27,3 @@ namespace Admin.View.Moduls.UIModel
                 .EndTabel()));
     }
 }
-
-//.EndTabel()
-//.StartNewRowTableAbsolute(60)
-//    .ControlAddIsColumnAbsolute(FactoryElements.Label_11("Категория: "), 140)
-//    .ControlAddIsColumnPercent(FactoryElements.ComboBox()
-//        .With(cb => cb.DataBindings.Add(new Binding("DataSource", context, "Categorys")))
-//        .With(cb => cb.SelectedIndexChanged += (s, e) => context.Category = cb.SelectedItem.ToString()), 10)

@@ -1,19 +1,8 @@
-using Admin.View.Moduls.Event;
-using Admin.ViewModel.MovelView;
-using Admin.ViewModel.WordWithEntity;
-using Admin.ViewModels.NotifuPropertyViewModel;
-using CSharpFunctionalExtensions;
 using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Repository;
-using Logica.DI;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Ninject;
-using WinFormsApp1.View;
-using WinFormsApp1.ViewModelEntity.Event;
 
-namespace WinFormsApp1
-{
     internal static class AdminDI
     {
         
@@ -24,14 +13,17 @@ namespace WinFormsApp1
 
         private static StandardKernel ConfigurationContainer()
         {
-            var conteiner = new StandardKernel(new LessonModule(), new EventModule());
+            var conteiner = new StandardKernel(
+                new LessonModule(), 
+                new EventModule(), 
+                new TeacherModule());
 
             var db = new ApplicationDbContext();
 
-            conteiner.Bind<Repository<TeacherEntity>>().To<TeacherRepository>();
+            conteiner.Bind<ApplicationDbContext>().ToConstant(db).InSingletonScope();
+
             conteiner.Bind<AdminMainView>().ToSelf().InSingletonScope();
             conteiner.Bind<AdminMainViewModel>().ToSelf().InSingletonScope();
-            conteiner.Bind<ApplicationDbContext>().ToConstant(db);
 
             // db.AddRange(
             //     new EventCategoryEntity("Спорт"),
@@ -44,19 +36,15 @@ namespace WinFormsApp1
             //     new TeacherEntity("jtr", "D", "DT", "22.11.2004", "88989988989", ""),
             //     new TeacherEntity("SREG", "AERF", "SASF", "22.11.2004", "88989988989", "")
             //     );
+
+            // db.Teachers.ExecuteUpdate(t => t.SetProperty(t => t.Password, BCrypt.Net.BCrypt.HashPassword("1234")));
             // db.SaveChanges();
-
-
 
             return conteiner;
         }
-
-        public static IServiceScope CreateDIScope()
-            => Container.CreateScope();
 
         public static T GetService<T>() where T : class {
             return Container.Get<T>();
         }
     }
-}
 

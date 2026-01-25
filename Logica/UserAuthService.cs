@@ -1,35 +1,33 @@
-﻿using DataAccess.Postgres;
+﻿using System.Web;
 
 namespace Logica
 {
     public static class UserAuthService
     {
-        private static Random rd = new();
-        public static UserAuth CreateUser(string surname, string name, ApplicationDbContext dbContext)
+        private static Random random = new();
+
+        public static UserAuth CreateAuthUser(string surname, string[] hash)
         {
-            if (string.IsNullOrEmpty(surname) && string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(surname))
                 throw new ArgumentNullException();
             
-            string login = name + rd.Next(10000);
-            string password = null;
+            var login = surname + random.Next(10000);
+            var length = 12;
 
-            var chare = (surname + name)[rd.Next(surname.Length - 1)];
-            foreach (var ch in (surname + name))
-            {
-                if (ch == chare)
-                    password += rd.Next(255);
-                password += ch;
-            }
+            var password = string.Join("",                                // создаем строку
+                Enumerable.Range(0, length)                             // из последовательности длины length
+                    .Select(i =>
+                        i % 2 == 0 ?                                // на четных местах
+                            (char)('A' + random.Next(26)) + "" :    // генерируем букву
+                            random.Next(1, 10) + "")              // на нечетных цифру
+            );
 
-            var IsTeacher = dbContext.Teachers.Where(t => t.Login == login || t.Password == password).Count() == 0;
-
-            var IsVisitor = dbContext.Visitors.Where(t => t.Login == login || t.Password == password).Count() == 0;
-
-            if (!IsTeacher && !IsVisitor)
-                return CreateUser(surname, name, dbContext);
-
+            var rezult = hash.FirstOrDefault(h => Validatoreg.TryValidPassword(h, password));
+        
+            if (rezult != null)
+                return CreateAuthUser(surname, hash);
+        
             return new UserAuth(login, password);
-            //return BCrypt.Net.BCrypt.HashPassword(password);
         }
     }
 }

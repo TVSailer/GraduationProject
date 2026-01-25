@@ -1,10 +1,8 @@
-﻿using Admin.View;
-using Admin.View.Moduls.Event;
-using Admin.View.Moduls.Lesson;
+﻿using System.Windows.Input;
+using Admin.View;
 using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
 using Logica;
-using System.Windows.Input;
 using WinFormsApp1;
 
 public class AdminMainViewModel 
@@ -29,6 +27,9 @@ public class AdminMainViewModel
         OnLoadTeachersManagemetnView = new MainCommand(
             _ =>
             {
+                AdminDI.GetService<ManagementView<
+                    TeacherEntity,
+                    TeacherCard>>().InitializeComponents(null);
             });
 
         OnLoadLessonsManagemetnView = new MainCommand(

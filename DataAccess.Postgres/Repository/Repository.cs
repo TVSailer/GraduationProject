@@ -23,6 +23,6 @@ namespace DataAccess.Postgres.Repository
 
         public abstract List<T> Get();
         public abstract void Update(long id, T entity);
-        public abstract void Delete(T entity);
+        public abstract void Delete(long idEntity);
     }
 }

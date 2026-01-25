@@ -20,7 +20,7 @@ namespace DataAccess.Postgres.Models
 
         protected bool Equals(CategoryEntity other)
         {
-            return base.Equals(other) && Category == other.Category;
+            return Category.Equals(other.Category);
         }
 
         public override bool Equals(object? obj)

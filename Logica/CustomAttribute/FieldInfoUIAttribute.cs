@@ -11,8 +11,7 @@ namespace Admin.ViewModels.Lesson
         public string PropertyName { get; protected set; }
         public string? FieldDataName { get; protected set; }
         public string PropertyNameControl { get; protected set; }
-        public Control? Control { get; protected set; }
-
+        private Control? Control { get; }
         private readonly Func<object?, Control>? creatingControl;
 
         public FieldInfoUiAttribute(
@@ -77,6 +76,9 @@ namespace Admin.ViewModels.Lesson
         [CallerMemberName] string prop = "")
         : FieldInfoUiAttribute(labelText, prop, FactoryElements.TextBoxReadOnle(placeholder));
     
-    public class DateFieldUiAttribute(CustomFormatDatePicker format, [CallerMemberName] string prop = "")
-        : FieldInfoUiAttribute("Дата:*", prop, FactoryElements.DateTimePicker(format));
+    public class DateFieldUiAttribute(string labelText, CustomFormatDatePicker format, [CallerMemberName] string prop = "")
+        : FieldInfoUiAttribute(labelText, prop, FactoryElements.DateTimePicker(format)); 
+    
+    public class MaskedTextBoxFieldUiAttribute(string labelText, string mask, [CallerMemberName] string prop = "")
+        : FieldInfoUiAttribute(labelText, prop, FactoryElements.MaskedTextBox(mask));
 }

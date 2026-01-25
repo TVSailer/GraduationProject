@@ -37,7 +37,7 @@ namespace Teacher.Presents
         }
         internal void OnAdd()
         {
-            var userAuth = UserAuthService.CreateUser(Surname, Name, DbContext);
+            var userAuth = UserAuthService.CreateAuthUser(Surname, Name, DbContext);
 
             var visitor = new VisitorEntity()
             {
@@ -90,7 +90,7 @@ namespace Teacher.Presents
             if (gridView.SelectedRows.Count == 1)
                 if (LogicaMessage.MessageYesNo("Вы уверены, что хотите безовратно удалить запись?"))
                 {
-                    VRepository.Delete(Convert.ToInt32(gridView.SelectedRows[0].Cells[0].Value));
+                    VRepository.Delete(new InClassName<VisitorEntity>(Convert.ToInt32(gridView.SelectedRows[0].Cells[0].Value)));
                     LogicaMessage.MessageOk("Данные успешно удалились");
                 }
 
@@ -106,7 +106,7 @@ namespace Teacher.Presents
 
         internal void OnUpdate(DataGridViewRow row)
         {
-            var userAuth = UserAuthService.CreateUser(Surname, Name, DbContext);
+            var userAuth = UserAuthService.CreateAuthUser(Surname, Name, DbContext);
 
             var visitor = new VisitorEntity()
             {

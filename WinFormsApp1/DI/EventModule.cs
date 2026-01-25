@@ -1,15 +1,9 @@
 using Admin.View;
-using Admin.View.Moduls.Event;
 using Admin.View.ViewForm;
-using Admin.ViewModel.Lesson;
-using Admin.ViewModels;
-using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Ninject.Modules;
 using WinFormsApp1.ViewModelEntity.Event;
-
-namespace WinFormsApp1;
 
 public class EventModule : NinjectModule
 {
@@ -25,8 +19,8 @@ public class EventModule : NinjectModule
         Kernel.Bind<IView<EventEntity>>().To<UIEntity<EventEntity, EventAddingPanel>>();
 
         Kernel.Bind<ManagmentModelView<EventEntity>>().ToSelf();
-        Kernel.Bind<ManagementView<EventEntity, EventCard>>().ToSelf();
-        Kernel.Bind<SerchManagment<EventEntity>, EventSerch>().To<EventSerch>();
+        Kernel.Bind<ManagementView<EventEntity, EventCard>>().ToSelf().InTransientScope();
+        Kernel.Bind<SerchManagment<EventEntity>>().To<EventSerch>();
 
     }
 }

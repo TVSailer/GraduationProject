@@ -1,127 +1,122 @@
-﻿using Admin.ViewModel.MovelView;
+﻿using System.Collections;
+using System.Reflection;
+using System.Windows.Input;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Models;
 using Logica;
-using System.Collections;
-using System.Reflection;
-using System.Windows.Input;
-using Admin.ViewModel.WordWithEntity;
 
-namespace Admin.ViewModels.NotifuPropertyViewModel
+public class ViewModelWithImages<TEntity> : ViewModele<TEntity>
+    where TEntity : Entity, new()
 {
-    public class ViewModelWithImages<TEntity> : ViewModele<TEntity>
-        where TEntity : Entity, new()
+    public Dictionary<string, bool> SelectedImg { get; protected set; } = new();
+
+    private readonly ConstructorInfo constructorListImgs;
+    private readonly Type genericAttributeListImgs;
+    private readonly PropertyInfo typeListImgs;
+
+    [LinkingEntity("Imgs")]
+    public object? listImgs
     {
-        public Dictionary<string, bool> SelectedImg { get; protected set; } = new();
-
-        private readonly ConstructorInfo constructorListImgs;
-        private readonly Type genericAttributeListImgs;
-        private readonly PropertyInfo typeListImgs;
-
-        [LinkingEntity("Imgs")]
-        public object? listImgs { 
-            get; 
-            set
-            {
-                if (field is null)
-                    InitializeImages(value);
-                field = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private void InitializeImages(object? value)
+        get;
+        set
         {
-            if (value is IEnumerable list)
-            {
-                list.ForEach(img =>
-                {
-                    var imageType = img.GetType();
-                    var imageProp = imageType.GetProperty("Url");
-
-                    if (imageProp is null) throw new ArgumentException();
-                    var image = imageProp.GetValue(img);
-
-                    if (image is string url)
-                        SelectedImg.TryAdd(url, false);
-                });
-            }
+            if (field is null)
+                InitializeImages(value);
+            field = value;
         }
+    } 
 
-        protected ViewModelWithImages()
+    private void InitializeImages(object? value)
+    {
+        if (value is IEnumerable list)
         {
-            var typeListImgs = typeof(TEntity)
-                .GetProperties()
-                .FirstOrDefault(p => p.PropertyType.GenericTypeArguments
-                .FirstOrDefault(a => a.BaseType == typeof(ImgEntity)) != null);
+            list.ForEach(img =>
+            {
+                var imageType = img.GetType();
+                var imageProp = imageType.GetProperty("Url");
 
-            if (typeListImgs is null) throw new ArgumentNullException();
+                if (imageProp is null) throw new ArgumentException();
+                var image = imageProp.GetValue(img);
 
-            this.typeListImgs = typeListImgs;
-
-            genericAttributeListImgs = typeListImgs
-                .PropertyType
-                .GenericTypeArguments
-                .First();
-
-            constructorListImgs = typeListImgs.PropertyType.GetConstructor([]) ?? throw new ArgumentNullException();
+                if (image is string url)
+                    SelectedImg.TryAdd(url, false);
+            });
         }
-
-        [ButtonInfoUI("Добавить изображения")]
-        public ICommand OnAddingImg => new MainCommand(
-            _ =>
-            {
-                using (var openFileDialog = new OpenFileDialog())
-                {
-                    openFileDialog.Filter = "PictureBox Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
-                    openFileDialog.Title = "Выберите изображения мероприятия";
-                    openFileDialog.Multiselect = true;
-
-                    if (openFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        foreach (var fileName in openFileDialog.FileNames)
-                            SelectedImg.TryAdd(fileName, false);
-                    }
-                }
-
-                OnSet(true);
-                OnPropertyChanged(nameof(OnAddingImg));
-            });
-
-        [ButtonInfoUI("Удалить изображение")]
-        public ICommand OnDeletingImg => new MainCommand(
-            _ =>
-            {
-                if (!SelectedImg.ContainsValue(true)) return;
-                SelectedImg.ForEach(img => img.If(img.Value, i => SelectedImg.Remove(img.Key)));
-
-                OnSet(false);
-                OnPropertyChanged(nameof(OnDeletingImg));
-            });
-
-        private void OnSet(bool isSaveListImgs)
-        {
-            var newListImgs = constructorListImgs.Invoke([]);
-
-            if (isSaveListImgs)
-                if (listImgs != null)
-                    newListImgs = listImgs;
-
-            SelectedImg.ForEach(i =>
-            {
-                var method = typeListImgs.PropertyType.GetMethod("Add");
-                var contsructorImage = genericAttributeListImgs.GetConstructor([typeof(string)]);
-
-                if (method is null) throw new ArgumentNullException();
-                if (contsructorImage is null) throw new ArgumentNullException();
-
-                method.Invoke(newListImgs, [contsructorImage.Invoke([i.Key])]);
-            });
-
-            listImgs = newListImgs;
-        }
-
-        
     }
+
+    protected ViewModelWithImages(ICommand onBack) : base(onBack)
+    {
+        var typeListImgs = typeof(TEntity)
+            .GetProperties()
+            .FirstOrDefault(p => p.PropertyType.GenericTypeArguments
+            .FirstOrDefault(a => a.BaseType == typeof(ImgEntity)) != null);
+
+        if (typeListImgs is null) throw new ArgumentNullException();
+
+        this.typeListImgs = typeListImgs;
+
+        genericAttributeListImgs = typeListImgs
+            .PropertyType
+            .GenericTypeArguments
+            .First();
+
+        constructorListImgs = typeListImgs.PropertyType.GetConstructor([]) ?? throw new ArgumentNullException();
+        listImgs = constructorListImgs.Invoke([]);
+    }
+
+    [ButtonInfoUI("Добавить изображения")]
+    public ICommand OnAddingImg => new MainCommand(
+        _ =>
+        {
+            using (var openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "PictureBox Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+                openFileDialog.Title = "Выберите изображения мероприятия";
+                openFileDialog.Multiselect = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    foreach (var fileName in openFileDialog.FileNames)
+                        SelectedImg.TryAdd(fileName, false);
+                }
+            }
+
+            OnSet(true);
+            OnPropertyChanged();
+        });
+
+    [ButtonInfoUI("Удалить изображение")]
+    public ICommand OnDeletingImg => new MainCommand(
+        _ =>
+        {
+            if (!SelectedImg.ContainsValue(true)) return;
+            SelectedImg.ForEach(img => img.If(img.Value, i => SelectedImg.Remove(img.Key)));
+
+            OnSet(false);
+            OnPropertyChanged();
+        });
+
+    private void OnSet(bool isSaveListImgs)
+    {
+        var newListImgs = constructorListImgs.Invoke([]);
+
+        if (isSaveListImgs)
+            newListImgs = listImgs;
+
+        SelectedImg.ForEach(i =>
+        {
+            var method = typeListImgs.PropertyType.GetMethod("Add");
+            var contsructorImage = genericAttributeListImgs.GetConstructor([typeof(string)]);
+
+            if (method is null) throw new ArgumentNullException();
+            if (contsructorImage is null) throw new ArgumentNullException();
+
+            method.Invoke(newListImgs, [contsructorImage.Invoke([i.Key])]);
+        });
+
+        listImgs = newListImgs;
+    }
+
+
 }

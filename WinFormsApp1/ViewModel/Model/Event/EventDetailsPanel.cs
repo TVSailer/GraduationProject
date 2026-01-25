@@ -1,10 +1,10 @@
-﻿using Admin.ViewModels;
+﻿using System.Windows.Input;
+using Admin.ViewModels;
 using Admin.ViewModels.Lesson;
+using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
-using System.Windows.Input;
-using CSharpFunctionalExtensions;
 
 namespace WinFormsApp1.ViewModelEntity.Event
 {
@@ -19,12 +19,12 @@ namespace WinFormsApp1.ViewModelEntity.Event
             OnDelete = new MainCommand(
                 _ =>
                 {
-                    eventRepository.Delete(GenericRepositoryEntity.Entity);
+                    eventRepository.Delete(GenericRepositoryEntity.Id);
                     OnBack.Execute(null);
                 });
             
             OnUpdate = new MainCommand(
-                _ => TryValidObject(() => eventRepository.Update(GenericRepositoryEntity.Entity.Id, GenericRepositoryEntity.Entity)));
+                _ => TryValidObject(() => eventRepository.Update(GenericRepositoryEntity.Id, GenericRepositoryEntity.Entity)));
         }
     }
 }

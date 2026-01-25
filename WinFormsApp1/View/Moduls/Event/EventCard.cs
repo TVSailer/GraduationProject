@@ -1,34 +1,30 @@
 ﻿using DataAccess.Postgres.Models;
 using Logica;
-using WinFormsApp1.View;
 
-namespace Admin.View.Moduls.Event
+public class EventCard : ObjectCard<EventEntity>
 {
-    public class EventCard : ObjectCard<EventEntity>
+    public EventCard()
     {
-        public EventCard()
-        {
-            Size = new Size(400, 170);
-        }
-
-        public override ObjectCard<EventEntity> Initialize(EventEntity obj)
-        {
-            return base.Initialize(obj);
-        }
-
-        public override Control Content()
-            => FactoryElements.TableLayoutPanel()
-                .ControlAddIsRowsPercent(
-                    FactoryElements.Label_11(entity.Title)
-                    .With(t => t.ForeColor = Color.DarkBlue), 40)
-                .ControlAddIsRowsPercent(
-                    FactoryElements.Label_09($"📅 {entity.Schedule} | 📍 {entity.Location}")
-                    .With(t => t.ForeColor = Color.Gray), 30)
-                .ControlAddIsRowsPercent(
-                    FactoryElements.Label_09($"👨‍💼 {entity.Organizer}")
-                    .With(t => t.ForeColor = Color.Gray), 30)
-                .ControlAddIsRowsPercent(
-                    FactoryElements.Label_09($"👥 {entity.CurrentParticipants/(entity.MaxParticipants == 0 ? 1 : entity.MaxParticipants)}")
-                    .With(t => t.ForeColor = Color.DarkGreen), 30);
+        Size = new Size(400, 170);
     }
+
+    public override ObjectCard<EventEntity> Initialize(EventEntity obj)
+    {
+        return base.Initialize(obj);
+    }
+
+    public override Control Content()
+        => FactoryElements.TableLayoutPanel()
+            .ControlAddIsRowsPercent(
+                FactoryElements.Label_11(entity.Title)
+                .With(t => t.ForeColor = Color.DarkBlue), 40)
+            .ControlAddIsRowsPercent(
+                FactoryElements.Label_09($"📅 {entity.Schedule} | 📍 {entity.Location}")
+                .With(t => t.ForeColor = Color.Gray), 30)
+            .ControlAddIsRowsPercent(
+                FactoryElements.Label_09($"👨‍💼 {entity.Organizer}")
+                .With(t => t.ForeColor = Color.Gray), 30)
+            .ControlAddIsRowsPercent(
+                FactoryElements.Label_09($"👥 {entity.CurrentParticipants / (entity.MaxParticipants == 0 ? 1 : entity.MaxParticipants)}")
+                .With(t => t.ForeColor = Color.DarkGreen), 30);
 }

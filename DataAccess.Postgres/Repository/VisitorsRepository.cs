@@ -57,10 +57,11 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(v => v.Login, visitor.Login)
                     .SetProperty(v => v.Password, visitor.Password));
 
-        public override void Delete(VisitorEntity entity)
-            => DbContext.Visitors
-            .Where(v => v.Id == entity.Id)
-            .ExecuteDelete();
-
+        public override void Delete(long idEntity)
+        {
+            DbContext.Visitors
+                .Where(v => v.Id == idEntity)
+                .ExecuteDelete();
+        }
     }
 }

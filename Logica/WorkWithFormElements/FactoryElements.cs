@@ -137,7 +137,7 @@ public static class FactoryElements
     //}
 
     public static DateTimePicker DateTimePicker(CustomFormatDatePicker custom)
-        => new DateTimePicker()
+        => new ()
         {
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
@@ -146,9 +146,18 @@ public static class FactoryElements
             CustomFormat = custom.ToDescriptionString(),
             ShowUpDown = true,
         };
+    
+    public static MaskedTextBox MaskedTextBox(string mask)
+        => new ()
+        {
+            Dock = DockStyle.Fill,
+            Font = new Font("Times New Roman", 11, FontStyle.Bold),
+            Padding = new Padding(5),
+            Mask = mask,
+        };
 
     public static LinkLabel LinkLabel(string text, int size)
-        => new LinkLabel()
+        => new ()
         {
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", size, FontStyle.Bold),

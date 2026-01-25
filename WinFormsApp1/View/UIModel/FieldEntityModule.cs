@@ -1,5 +1,4 @@
 ﻿using Admin.ViewModels.Lesson;
-using Admin.ViewModels.NotifuPropertyViewModel;
 using Logica;
 using Logica.Extension;
 

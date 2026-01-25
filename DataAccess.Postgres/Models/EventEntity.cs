@@ -5,22 +5,20 @@ namespace DataAccess.Postgres.Models;
 
 public class EventEntity : Entity
 {
-    public string Title { get; private set; }
-    public string Description { get; private set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public EventScheduleEntity Schedule { get; set; }
+    public string Location { get; set; }
 
-    [ForeignKey(nameof(EventScheduleEntity))]
-    public long idDate { get; private set; }
-    public EventScheduleEntity Schedule { get; private set; }
-
-    public string Location { get; private set; }
 
     [ForeignKey(nameof(EventCategoryEntity))]
-    public long idCategory { get; private set; }
-    public EventCategoryEntity Category { get; private set; }
-    public string RegistrationLink { get; private set; }
-    public string Organizer { get; private set; }
-    public int MaxParticipants { get; private set; }
-    public int CurrentParticipants { get;  private set; }
+    public long CategoryId { get; set; }
+    public EventCategoryEntity Category { get; set; }
+
+    public string RegistrationLink { get; set; }
+    public string Organizer { get;  set; }
+    public int MaxParticipants { get; set; }
+    public int CurrentParticipants { get;  set; }
     public List<ImgEventEntity>? Imgs { get; set; } = new();
 
     public EventEntity() { }
