@@ -18,7 +18,7 @@ namespace Admin.ViewModels.Lesson
             LessonCategoryRepositroy lessonCategoryRepositroy) : base(teacherRepository, lessonCategoryRepositroy)
         {
             OnSave = new MainCommand(
-                _ => TryValidObject(() => lessonsRepository.Add(GenericRepositoryEntity.Entity)));
+                _ => TryValidObject(() => lessonsRepository.Add(GenericRepositoryEntity.GetEntity())));
         }
     }
 }

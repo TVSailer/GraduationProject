@@ -1,4 +1,5 @@
-﻿using DataAccess.Postgres.Models;
+﻿using System.Diagnostics;
+using DataAccess.Postgres.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -35,8 +36,9 @@ namespace DataAccess.Postgres
             //var username = "user1";
             //var password = "Sailer22_8";
             //var connString = $"host={host};port={port};database={db};username={username};password={password};";
-            optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
+            //optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
             optionsBuilder.UseNpgsql(@"host=localhost;port=5432;database=db;username=postgres;password=Sailer22_8");
+            optionsBuilder.LogTo(message => Debug.WriteLine(message));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

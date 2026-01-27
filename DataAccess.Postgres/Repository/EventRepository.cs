@@ -13,7 +13,8 @@ namespace DataAccess.Postgres.Repository
             => DbContext.Event
             .Include(e => e.Imgs)
             .Include(e => e.Category)
-            .AsNoTracking()
+            //.AsNoTracking()
+            .AsTracking()
             .ToList() ?? throw new ArgumentNullException();
 
         public EventEntity Get(long id)
@@ -37,21 +38,82 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(v => v.CurrentParticipants, @event.CurrentParticipants)
                     .SetProperty(v => v.RegistrationLink, @event.RegistrationLink));
 
-            var sdlf = DbContext.Event.Where(e => e.Id == id);
-
-            if (@event.Imgs != null && @event.Imgs.Count > 0)
+            if (@event.Imgs is { Count: > 0 })
             {
-                @event.Imgs.ForEach(imgl => DbContext.ImgEvent
-                    .Where(img => img.Id == imgl.Id)
-                    .ExecuteUpdate(s => s
-                        .SetProperty(i => i.Url, imgl.Url)));
+                var eventDb = DbContext.Event
+                    .Include(e => e.Imgs) 
+                    .FirstOrDefault(e => e.Id == id);
 
-                @event.Imgs
-                    .Where(imgL => !DbContext.ImgEvent
-                        .Select(i => i.Id)
-                        .Contains(imgL.Id))
-                    .ToList()
-                    .ForEach(img => DbContext.Add(img));
+                if (eventDb == null)
+                {
+                    DbContext.SaveChanges();
+                    return;
+                }
+
+                var existingUrls = eventDb.Imgs.Select(i => i.Url).ToHashSet();
+                var newUrls = @event.Imgs.Select(i => i.Url).ToHashSet();
+
+                var imgsToRemove = eventDb.Imgs
+                    .Where(img => !newUrls.Contains(img.Url))
+                    .ToList();
+
+                foreach (var img in imgsToRemove)
+                    eventDb.Imgs.Remove(img);
+
+                foreach (var img in @event.Imgs)
+                    if (!existingUrls.Contains(img.Url))
+                        eventDb.Imgs.Add(img);
+
+                // var listImgDb = DbContext.ImgEvent
+                //     .Where(img => img.EventId == id)
+                //     .ToList();
+                //
+                // var listImg = @event.Imgs;
+                //
+                // listImgDb
+                //     .ForEach(
+                //         imgDb =>
+                //         {
+                //             if (!listImg.Select(img => img.Url).Contains(imgDb.Url))
+                //                 DbContext.ImgEvent.Remove(imgDb);
+                //         });
+                //
+                // listImg
+                //     .ForEach(
+                //         img =>
+                //         {
+                //             if (!listImgDb.Select(imgDb => imgDb.Id).Contains(img.Id))
+                //                 DbContext.Event.FirstOrDefault(ev => ev.Id == id).Imgs.Add(img);
+                //         });
+                // // 1. Сохраняем ID для проверки (ДО любых изменений)
+                // var existingIdsBeforeChanges = DbContext.ImgEvent
+                //     .Select(i => i.Id)
+                //     .ToHashSet();
+                //
+                // // 2. Удаляем то, что не в @event.Imgs
+                // DbContext.ImgEvent
+                //     .Where(img => !@event.Imgs.Select(e => e.Id).Contains(img.Id))
+                //     .ExecuteDelete();
+                //
+                // // 3. Добавляем только то, чего действительно не было
+                // var imgsToAdd = @event.Imgs
+                //     .Where(img => !existingIdsBeforeChanges.Contains(img.Id))
+                //     .ToList();
+                //
+                // if (imgsToAdd.Any())
+                //     DbContext.ImgEvent.AddRange(imgsToAdd);
+                //
+                // // @event.Imgs.ForEach(imgl => DbContext.ImgEvent
+                // //     .Where(img => img.Id == imgl.Id)
+                // //     .ExecuteUpdate(s => s
+                // //         .SetProperty(i => i.Url, imgl.Url)));
+                // // @event.Imgs
+                // //     .Where(imgL => !DbContext.ImgEvent
+                // //         .Select(i => i.Id)
+                // //         .Contains(imgL.Id))
+                // //     .ToList()
+                // //     .ForEach(img => 
+                // //         DbContext.Add(img));
             }
 
             DbContext.SaveChanges();

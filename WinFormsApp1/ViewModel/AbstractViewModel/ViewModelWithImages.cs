@@ -21,8 +21,7 @@ public class ViewModelWithImages<TEntity> : ViewModele<TEntity>
         get;
         set
         {
-            if (field is null)
-                InitializeImages(value);
+            InitializeImages(value);
             field = value;
         }
     } 
@@ -117,6 +116,4 @@ public class ViewModelWithImages<TEntity> : ViewModele<TEntity>
 
         listImgs = newListImgs;
     }
-
-
 }

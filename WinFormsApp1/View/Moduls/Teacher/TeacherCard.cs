@@ -24,6 +24,6 @@ public class TeacherCard : ObjectCard<TeacherEntity>
                 FactoryElements.Label_11($"📞 {entity.NumberPhone}")
                 .With(l => l.ForeColor = Color.Gray), 30)
             .ControlAddIsColumnPercent(
-                FactoryElements.Label_11($"🎨 Кружков: {0}")
+                FactoryElements.Label_11($"🎨 Кружков: {entity.Lessons.Count}")
                 .With(l => l.ForeColor = Color.DarkGreen), 20);
 }

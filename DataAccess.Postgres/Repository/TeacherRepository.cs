@@ -26,16 +26,16 @@ namespace DataAccess.Postgres.Repository
             .Where(t => t.Id == id)
             .ToList();
 
-        public override void Update(long id, TeacherEntity visitor)
+        public override void Update(long id, TeacherEntity teacher)
         {
             DbContext.Teachers
                 .Where(v => v.Id == id)
                 .ExecuteUpdate(v => v
-                    .SetProperty(v => v.FIO, visitor.FIO)
-                    .SetProperty(v => v.DateBirth, visitor.DateBirth)
-                    .SetProperty(v => v.NumberPhone, visitor.NumberPhone)
-                    .SetProperty(v => v.Login, visitor.Login)
-                    .SetProperty(v => v.Password, visitor.Password));
+                    .SetProperty(v => v.FIO, teacher.FIO)
+                    .SetProperty(v => v.DateBirth, teacher.DateBirth)
+                    .SetProperty(v => v.NumberPhone, teacher.NumberPhone)
+                    .SetProperty(v => v.Login, teacher.Login)
+                    .SetProperty(v => v.Password, teacher.Password));
         }
 
         public override void Delete(long idEntity)

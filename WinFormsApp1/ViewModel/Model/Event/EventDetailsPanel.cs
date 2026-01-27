@@ -24,7 +24,7 @@ namespace WinFormsApp1.ViewModelEntity.Event
                 });
             
             OnUpdate = new MainCommand(
-                _ => TryValidObject(() => eventRepository.Update(GenericRepositoryEntity.Id, GenericRepositoryEntity.Entity)));
+                _ => TryValidObject(() => eventRepository.Update(GenericRepositoryEntity.Id, GenericRepositoryEntity.GetEntity())));
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Admin.ViewModel.Lesson
             LessonCategoryRepositroy lessonCategoryRepositroy) : base(teacherRepository, lessonCategoryRepositroy)
         {
             OnUpdate = new MainCommand(
-                _ => TryValidObject(() => lessonsRepository.Update(GenericRepositoryEntity.Id, GenericRepositoryEntity.Entity)));
+                _ => TryValidObject(() => lessonsRepository.Update(GenericRepositoryEntity.Id, GenericRepositoryEntity.GetEntity())));
 
             OnDelete = new MainCommand(_ =>
             {

@@ -15,7 +15,7 @@ namespace WinFormsApp1.ViewModelEntity.Event
         public EventAddingPanel(EventRepository repository, EventCategoryRepositroy categoryRepositroy) : base(categoryRepositroy)
         {
             OnSave = new MainCommand(
-                _ => TryValidObject(() => repository.Add(GenericRepositoryEntity.Entity)));
+                _ => TryValidObject(() => repository.Add(GenericRepositoryEntity.GetEntity())));
         }
     }
 }

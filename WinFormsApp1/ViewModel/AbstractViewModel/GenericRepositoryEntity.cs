@@ -12,7 +12,7 @@ public class GenericRepositoryEntity<TEntity>
     private PropertyMapping[] mappings;
 
     public long Id { get; private set; }
-    public TEntity Entity => GetEntity(); 
+    private TEntity Entity = new();
 
     private PropertyMapping[] GetOrCreateMappings() 
     {
@@ -53,6 +53,7 @@ public class GenericRepositoryEntity<TEntity>
         if (entity == null) throw new ArgumentNullException();
 
         Id = (long)entity.GetType().GetProperty("Id").GetValue(entity);
+        Entity = entity;
 
         foreach (var mapping in mappings)
         {
@@ -63,15 +64,14 @@ public class GenericRepositoryEntity<TEntity>
 
     public TEntity GetEntity()
     {
-        var entity = new TEntity();
         foreach (var mapping in mappings)
         {
             var value = mapping.ViewModelProperty.GetValue(viewModel);
             if (value is 0 or null) throw new ArgumentNullException();
-            mapping.EntityProperty?.SetValue(entity, value);
+            mapping.EntityProperty?.SetValue(Entity, value);
         }
 
-        return entity;
+        return Entity;
     } 
 
     // private void UpdateEntityFromViewModel(PropertyMapping mapping)

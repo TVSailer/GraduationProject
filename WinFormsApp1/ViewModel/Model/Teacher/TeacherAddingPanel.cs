@@ -16,7 +16,9 @@ public class TeacherAddingPanel : TeacherData
         OnSave = new MainCommand(
             _ => TryValidObject(() =>
             {
-                var auth = UserAuthService.CreateAuthUser(GenericRepositoryEntity.Entity.FIO.Name, 
+                var entity = GenericRepositoryEntity.GetEntity();
+
+                var auth = UserAuthService.CreateAuthUser(entity.FIO.Name, 
                     teacherRepository
                         .Get()
                         .Select(t => t.Password)
@@ -24,9 +26,9 @@ public class TeacherAddingPanel : TeacherData
 
                 LogicaMessage.MessageInfo($" Логин: {auth.Login}\nПароль: {auth.Password}");
 
-                GenericRepositoryEntity.Entity.Login = auth.Login;
-                GenericRepositoryEntity.Entity.Password = BCrypt.Net.BCrypt.HashPassword(auth.Password);
-                teacherRepository.Add(GenericRepositoryEntity.Entity);
+                entity.Login = auth.Login;
+                entity.Password = BCrypt.Net.BCrypt.HashPassword(auth.Password);
+                teacherRepository.Add(entity);
             }));
     }
 }

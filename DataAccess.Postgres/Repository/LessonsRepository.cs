@@ -1,5 +1,6 @@
 ﻿using DataAccess.Postgres.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Postgres.Repository
 {
@@ -88,17 +89,40 @@ namespace DataAccess.Postgres.Repository
 
             if (lesson.Imgs != null && lesson.Imgs.Count > 0)
             {
-                lesson.Imgs.ForEach(imgl => DbContext.ImgLesson
-                .Where(img => img.Id == imgl.Id)
-                .ExecuteUpdate(s => s
-                    .SetProperty(i => i.Url, imgl.Url)));
+                var lessonDb = DbContext.Lessons
+                    .Include(e => e.Imgs)
+                    .FirstOrDefault(e => e.Id == id);
 
-                lesson.Imgs
-                    .Where(imgL => !DbContext.ImgLesson
-                        .Select(i => i.Id)
-                        .Contains(imgL.Id))
-                    .ToList()
-                    .ForEach(img => DbContext.Add(img));
+                if (lessonDb == null)
+                {
+                    DbContext.SaveChanges();
+                    return;
+                }
+
+                var existingUrls = lessonDb.Imgs.Select(i => i.Url).ToHashSet();
+                var newUrls = lesson.Imgs.Select(i => i.Url).ToHashSet();
+
+                var imgsToRemove = lessonDb.Imgs
+                    .Where(img => !newUrls.Contains(img.Url))
+                    .ToList();
+
+                foreach (var img in imgsToRemove)
+                    lessonDb.Imgs.Remove(img);
+
+                foreach (var img in lesson.Imgs)
+                    if (!existingUrls.Contains(img.Url))
+                        lessonDb.Imgs.Add(img);
+                // lesson.Imgs.ForEach(imgl => DbContext.ImgLesson
+                // .Where(img => img.Id == imgl.Id)
+                // .ExecuteUpdate(s => s
+                //     .SetProperty(i => i.Url, imgl.Url)));
+                //
+                // lesson.Imgs
+                //     .Where(imgL => !DbContext.ImgLesson
+                //         .Select(i => i.Id)
+                //         .Contains(imgL.Id))
+                //     .ToList()
+                //     .ForEach(img => DbContext.Add(img));
             }
 
             DbContext.SaveChanges();
