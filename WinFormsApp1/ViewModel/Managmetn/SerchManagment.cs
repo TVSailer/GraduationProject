@@ -5,6 +5,8 @@ using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Repository;
 using Logica;
 
+namespace Admin.ViewModel.Managment;
+
 public abstract class SerchManagment<T> : PropertyChange
     where T : Entity
 {

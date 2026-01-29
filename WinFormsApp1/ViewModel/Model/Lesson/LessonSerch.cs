@@ -1,4 +1,5 @@
-﻿using DataAccess.Postgres.Models;
+﻿using Admin.ViewModel.Managment;
+using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 
 namespace Admin.ViewModels.Lesson

@@ -1,5 +1,8 @@
 ﻿
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using CSharpFunctionalExtensions;
+using Logica;
 
 namespace Admin.ViewModels.Lesson
 {
@@ -15,4 +18,6 @@ namespace Admin.ViewModels.Lesson
         }
 
     }
+    
+    
 }

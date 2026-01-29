@@ -9,7 +9,7 @@ namespace DataAccess.Postgres.Models
         public string NumberPhone { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public string UrlFaceImg { get; private set; }
+        public string UrlFaceImg { get; set; } = "";
         public List<LessonEntity>? Lessons { get; set; } = new();
         public List<DateAttendanceEntity>? Dates { get; set; } = new();
         public List<ReviewEntity>? Reviews { get; set; } = new();

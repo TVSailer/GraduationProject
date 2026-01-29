@@ -11,6 +11,14 @@
             tables.Add(table);
             return newTable;
         }
+        
+        public static TableLayoutPanel StartNewRowTableAbsolute(this TableLayoutPanel table)
+        {
+            var newTable = FactoryElements.TableLayoutPanel();
+            table.ControlAddIsRow(newTable, table.PreferredSize.Width, SizeType.Absolute);
+            tables.Add(table);
+            return newTable;
+        }
 
         public static TableLayoutPanel EndTabel(this TableLayoutPanel table)
         {
@@ -110,7 +118,7 @@
            this TableLayoutPanel table)
             => table.ControlAddIsColumn(null, 10, SizeType.Percent);
 
-        public static TableLayoutPanel AddingColumnsStyles(this TableLayoutPanel table, params ColumnStyle[] columnStyles)
+        public static TableLayoutPanel AddingColumnsStyles(this TableLayoutPanel table, params ColumnStyle[]? columnStyles)
         {
             if (columnStyles == null)
             {
@@ -124,7 +132,7 @@
         }
 
 
-        public static TableLayoutPanel AddingRowsStyles(this TableLayoutPanel table, params RowStyle[] rowStyles)
+        public static TableLayoutPanel AddingRowsStyles(this TableLayoutPanel table, params RowStyle[]? rowStyles)
         {
             if (rowStyles == null)
             {

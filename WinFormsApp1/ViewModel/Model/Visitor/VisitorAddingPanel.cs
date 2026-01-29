@@ -1,25 +1,24 @@
-﻿using System.Windows.Input;
-using Admin.ViewModels;
-using Admin.ViewModels.Lesson;
+﻿using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Repository;
 using Logica;
+using System.Windows.Input;
 
-namespace WinFormsApp1.ViewModel.Model.Teacher;
+namespace Admin.ViewModel.Model.Visitor;
 
 [LinkingCommand(nameof(ManagmentModelView<>.OnLoadAddingView))]
-public class TeacherAddingPanel : TeacherData
+public class VisitorAddingPanel : VisitorData
 {
-    [ButtonInfoUI("Добавить")]public ICommand OnSave { get; protected set; }
+    [ButtonInfoUI("Добавить")] public ICommand OnSave { get; protected set; }
 
-    public TeacherAddingPanel(TeacherRepository teacherRepository) 
+    public VisitorAddingPanel(VisitorsRepository visitorsRepository)
     {
         OnSave = new MainCommand(
             _ => TryValidObject(() =>
             {
                 var entity = GenericRepositoryEntity.GetEntity();
 
-                var auth = UserAuthService.CreateAuthUser(entity.FIO.Name, 
-                    teacherRepository
+                var auth = UserAuthService.CreateAuthUser(entity.FIO.Name,
+                    visitorsRepository
                         .Get()
                         .Select(t => t.Password)
                         .ToArray());
@@ -28,7 +27,7 @@ public class TeacherAddingPanel : TeacherData
 
                 entity.Login = auth.Login;
                 entity.Password = BCrypt.Net.BCrypt.HashPassword(auth.Password);
-                teacherRepository.Add(entity);
+                visitorsRepository.Add(entity);
             }));
     }
 }

@@ -1,9 +1,7 @@
-﻿using System.Collections.Concurrent;
-using System.ComponentModel;
-using System.Reflection;
-using Admin.ViewModels.Lesson;
+﻿using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
-using Ninject;
+using System.Reflection;
+using Admin.ViewModel.Interface;
 
 public class GenericRepositoryEntity<TEntity>
     where TEntity : Entity, new()
@@ -36,18 +34,6 @@ public class GenericRepositoryEntity<TEntity>
                 .ToArray();
     }
 
-    // private void InitializeViewModel()
-    // {
-    //     foreach (var mapping in mappings)
-    //         if (viewModel is PropertyChange propertyChange)
-    //             propertyChange.PropertyChanged += (sender, args) =>
-    //             {
-    //                 var firstOrDefault = mappings.FirstOrDefault(m => m.ViewModelProperty.Name == args.PropertyName);
-    //                 if (firstOrDefault != null)
-    //                     UpdateEntityFromViewModel(firstOrDefault);
-    //             };
-    // }
-
     public void SetEntity(TEntity entity)
     {
         if (entity == null) throw new ArgumentNullException();
@@ -74,30 +60,9 @@ public class GenericRepositoryEntity<TEntity>
         return Entity;
     } 
 
-    // private void UpdateEntityFromViewModel(PropertyMapping mapping)
-    // {
-    //     var value = mapping.ViewModelProperty.GetValue(viewModel);
-    //
-    //     if (value is 0)
-    //         return;
-    //     if (value is null) return;
-    //
-    //     mapping.EntityProperty?.SetValue(Entity, value);
-    // }
-    //
-    // private void UpdateViewModelFromEntity()
-    // {
-    //     foreach (var mapping in mappings)
-    //     {
-    //         var value = mapping.EntityProperty?.GetValue(Entity);
-    //         mapping.ViewModelProperty.SetValue(viewModel, value);
-    //     }
-    // }
-
     public void Initialize(IViewModele<TEntity> viewModel)
     {
         this.viewModel = viewModel;
         mappings = GetOrCreateMappings();
-        //InitializeViewModel();
     }
 }

@@ -13,7 +13,7 @@ public class TeacherDetailsPanel : TeacherData
     [ButtonInfoUI("Удалить")] public ICommand OnDelete { get; protected set; }
     [ButtonInfoUI("Обновить")] public ICommand OnUpdate { get; protected set; }
 
-    public TeacherDetailsPanel(TeacherRepository teacherRepository, LessonsRepository lessonsRepository) : base(teacherRepository, lessonsRepository)
+    public TeacherDetailsPanel(TeacherRepository teacherRepository, LessonsRepository lessonsRepository)
     {
         OnUpdate = new MainCommand(
             _ => TryValidObject(() =>
@@ -23,19 +23,18 @@ public class TeacherDetailsPanel : TeacherData
 
         OnDelete = new MainCommand(_ =>
         {
+            if (lessonsRepository.Get().Select(l => l.TeacherId).Contains(GenericRepositoryEntity.Id))
             {
-                if (lessonsRepository.Get().Select(l => l.TeacherId).Contains(GenericRepositoryEntity.Id))
-                {
-                    var rezult = LogicaMessage.MessageYesNo(
-                        "Данное дейсвие несёт за собой удаление кружков, закрепленные за преподователем!\n" +
-                        "Если хотите удалить только преподователя, то вам необходимо обновить данные в кружках поля 'Преподователь'!");
+                var rezult = LogicaMessage.MessageYesNo(
+                    "Данное дейсвие несёт за собой удаление кружков, закрепленные за преподователем!\n" +
+                    "Если хотите удалить только преподователя, то вам необходимо изменить поле в кружках 'Преподователь'!\n" +
+                    "Вы точно хотите удалить?");
 
-                    if (!rezult) return;
-                }
-
-                teacherRepository.Delete(GenericRepositoryEntity.Id);
-                OnBack.Execute(this);
+                if (!rezult) return;
             }
+
+            teacherRepository.Delete(GenericRepositoryEntity.Id);
+            OnBack.Execute(this);
         });
     }
 }

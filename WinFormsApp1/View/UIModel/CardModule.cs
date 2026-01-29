@@ -1,10 +1,16 @@
-﻿using Admin.ViewModels;
+﻿using Admin.Commands_Handlers.Managment;
+using Admin.ViewModel.Interface;
+using Admin.ViewModel.Lesson;
+using Admin.ViewModel.Managment;
+using Admin.ViewModels;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
+using DataAccess.Postgres.Models;
+using MediatR;
 
 namespace Admin.View.Moduls.UIModel
 {
-    public class CardModule<TEntity, TCard>(ManagmentModelView<TEntity> managment)
+    public class CardModule<TEntity, TCard>(IMediator mediator, SerchManagment<TEntity> serchManagment)
         : IUIModel
         where TEntity : Entity, new()
         where TCard : ObjectCard<TEntity>, new()
@@ -14,9 +20,9 @@ namespace Admin.View.Moduls.UIModel
             .With(p => p.Dock = DockStyle.Fill)
             .With(p => p.AutoScroll = true)
             .With(p => p.Padding = new Padding(10))
-            .With(p => managment.SerchManagment.PropertyChanged += (obj, propCh) =>
+            .With(p => serchManagment.PropertyChanged += (obj, propCh) =>
             {
-                if (propCh.PropertyName == nameof(managment.SerchManagment.DataEntitys))
+                if (propCh.PropertyName == nameof(serchManagment.DataEntitys))
                 {
                     p.Controls.Clear();
                     AddCard(p);
@@ -25,7 +31,7 @@ namespace Admin.View.Moduls.UIModel
             .With(AddCard);
 
         private void AddCard(FlowLayoutPanel p)
-            => managment.SerchManagment.DataEntitys
+            => serchManagment.DataEntitys
             .ForEach(
                 en =>
                 {
@@ -33,7 +39,9 @@ namespace Admin.View.Moduls.UIModel
                     .With(c => c.OnCardClicked +=
                     (s, e) => {
                         if (en is TEntity entity)
-                            managment.OnLoadDetailsView.Execute(en);
+                        {
+                            mediator.Send(new SendEntity<TEntity>(entity));
+                        }
                         else throw new ArgumentException();
                     }));
                 });

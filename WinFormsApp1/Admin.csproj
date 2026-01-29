@@ -10,6 +10,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModel\Model\Event\**" />
+    <Compile Remove="ViewModel\Model\Teacher\**" />
+    <Compile Remove="ViewModel\Model\Visitor\**" />
+    <EmbeddedResource Remove="ViewModel\Model\Event\**" />
+    <EmbeddedResource Remove="ViewModel\Model\Teacher\**" />
+    <EmbeddedResource Remove="ViewModel\Model\Visitor\**" />
+    <None Remove="ViewModel\Model\Event\**" />
+    <None Remove="ViewModel\Model\Teacher\**" />
+    <None Remove="ViewModel\Model\Visitor\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DI\EventModule.cs" />
+    <Compile Remove="DI\TeacherModule.cs" />
+    <Compile Remove="DI\VisitorModule.cs" />
+  </ItemGroup>
+
+  <!-- <ItemGroup> -->
+  <!--   <Compile Remove="ViewModel\Model\Event\**" /> -->
+  <!--   <Compile Remove="ViewModel\Model\Teacher\**" /> -->
+  <!--   <Compile Remove="ViewModel\Model\Visitor\**" /> -->
+  <!--   <EmbeddedResource Remove="ViewModel\Model\Event\**" /> -->
+  <!--   <EmbeddedResource Remove="ViewModel\Model\Teacher\**" /> -->
+  <!--   <EmbeddedResource Remove="ViewModel\Model\Visitor\**" /> -->
+  <!--   <None Remove="ViewModel\Model\Event\**" /> -->
+  <!--   <None Remove="ViewModel\Model\Teacher\**" /> -->
+  <!--   <None Remove="ViewModel\Model\Visitor\**" /> -->
+  <!-- </ItemGroup> -->
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
     <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1004" />
     <PackageReference Include="Ninject" Version="3.3.6" />
@@ -31,7 +62,6 @@
 
   <ItemGroup>
     <Folder Include="ViewModel\Model\News\" />
-    <Folder Include="ViewModel\Model\Visitor\" />
   </ItemGroup>
 
   <ItemGroup>

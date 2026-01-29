@@ -1,9 +1,12 @@
 ﻿using Admin.View.ViewForm;
+using Admin.ViewModel.Interface;
 using Logica;
 
 
-public partial class AdminMainView : Form, IView
+public partial class AdminMainView : Form, IView<AdminMainViewModel>
 {
+    public IViewModele ViewModele { get; set; }
+
     public AdminMainView(AdminMainViewModel adminMainViewModel)
     {
         DataContext = adminMainViewModel;

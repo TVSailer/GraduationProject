@@ -1,10 +1,9 @@
-﻿using System.Windows.Input;
-using Admin.View;
+﻿using Admin.View;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.CustomAttribute;
-using WinFormsApp1;
+using System.Windows.Input;
 using NotNullAttribute = Logica.CustomAttribute.NotNullAttribute;
 
 namespace Admin.ViewModels.Lesson
@@ -32,7 +31,11 @@ namespace Admin.ViewModels.Lesson
         public List<LessonScheduleEntity>? Schedule
         {
             get;
-            set => TryValidProperty(ref field, value);
+            set
+            {
+                TryValidProperty(ref field, value);
+                OnPropertyChanged(nameof(ScheduleParse));
+            }
         }
 
         [RequiredCustom, ReadOnlyFieldUi("Расписание*:", "Создайте расписание")]

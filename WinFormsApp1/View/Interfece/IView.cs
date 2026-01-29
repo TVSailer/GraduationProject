@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using Admin.ViewModel.Interface;
+using CSharpFunctionalExtensions;
 
 namespace Admin.View.ViewForm
 {
@@ -7,9 +8,15 @@ namespace Admin.View.ViewForm
         public Form InitializeComponents(object? data);
     }
     
-    public interface IView<TEntity> : IView
+    public interface IView<TEntity, TViewModel> : IView<TViewModel>
         where TEntity : Entity, new()
+        where TViewModel : IViewModele<TEntity>
     {
-        public IViewModele<TEntity> ViewModele { get; set; }
+    }
+    
+    public interface IView<TViewModel> : IView
+        where TViewModel : IViewModele
+    {
+        public IViewModele ViewModele { get; set; }
     }
 }

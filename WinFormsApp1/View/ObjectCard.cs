@@ -1,6 +1,7 @@
-﻿using CSharpFunctionalExtensions;
+﻿using Admin.View.Moduls.UIModel;
+using CSharpFunctionalExtensions;
 
-public class ObjectCard<T> : Panel
+public class ObjectCard<T> : Panel, IUIModel
     where T : Entity
 {
     protected T entity;
@@ -78,6 +79,6 @@ public class ObjectCard<T> : Panel
 
         return this;
     }
-
+    
     public virtual Control Content() { throw new ArgumentNullException(); }
 }

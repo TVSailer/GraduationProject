@@ -6,7 +6,7 @@ namespace DataAccess.Postgres.Repository
 {
     public class LessonsRepository : Repository<LessonEntity>
     {
-        public LessonsRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public LessonsRepository(ApplicationDbContext dbContext) :  base(dbContext)
         {
         }
 

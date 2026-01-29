@@ -1,5 +1,7 @@
 using Admin.View;
 using Admin.View.ViewForm;
+using Admin.ViewModel.Interface;
+using Admin.ViewModel.Managment;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Ninject.Modules;
@@ -15,8 +17,8 @@ public class EventModule : NinjectModule
         Kernel.Bind<IViewModele<EventEntity>>().To<EventAddingPanel>();
         Kernel.Bind<IViewModele<EventEntity>>().To<EventDetailsPanel>();
 
-        Kernel.Bind<IView<EventEntity>>().To<UIEntity<EventEntity, EventDetailsPanel>>();
-        Kernel.Bind<IView<EventEntity>>().To<UIEntity<EventEntity, EventAddingPanel>>();
+        Kernel.Bind<IView<EventEntity>>().To<UI<EventEntity, EventDetailsPanel>>();
+        Kernel.Bind<IView<EventEntity>>().To<UI<EventEntity, EventAddingPanel>>();
 
         Kernel.Bind<ManagmentModelView<EventEntity>>().ToSelf();
         Kernel.Bind<ManagementView<EventEntity, EventCard>>().ToSelf().InTransientScope();

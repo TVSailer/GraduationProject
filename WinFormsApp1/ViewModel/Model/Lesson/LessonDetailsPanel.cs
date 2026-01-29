@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using Admin.View;
+using Admin.ViewModel.Interface;
 using Admin.ViewModels;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
@@ -11,25 +12,18 @@ using Ninject;
 namespace Admin.ViewModel.Lesson
 {
     [LinkingCommand(nameof(ManagmentModelView<>.OnLoadDetailsView))]
-    public class LessonDetailsPanel : LessonData
+    public class LessonDetailsPanel : LessonData, IDetailsPanel<LessonEntity>
     {
-        [ButtonInfoUI("Управление посетителями")] public ICommand OnControlVisitros { get; private set; }
+        [ButtonInfoUI("Управление посетителями")] public ICommand OnControlVisitors { get; private set; }
         [ButtonInfoUI("Управление посещаемостью")] public ICommand OnControlDateAttendances { get; private set; }
         [ButtonInfoUI("Управление отзывами")] public ICommand OnControlReview { get; private set; }
         [ButtonInfoUI("Удалить")] public ICommand OnDelete { get; protected set; }
         [ButtonInfoUI("Обновить")] public ICommand OnUpdate { get; protected set; }
 
-        private List<ReviewEntity>? reviewEntities = new();
-        private List<DateAttendanceEntity>? dateAttendances = new();
-        private List<VisitorEntity>? visitorEntities = new();
-
-        
-        private readonly List<TeacherEntity> teacherEntities;
-
         public LessonDetailsPanel(
             LessonsRepository lessonsRepository, 
             TeacherRepository teacherRepository, 
-            LessonCategoryRepositroy lessonCategoryRepositroy) : base(teacherRepository, lessonCategoryRepositroy)
+            LessonCategoryRepositroy lessonCategoryRepository) : base(teacherRepository, lessonCategoryRepository)
         {
             OnUpdate = new MainCommand(
                 _ => TryValidObject(() => lessonsRepository.Update(GenericRepositoryEntity.Id, GenericRepositoryEntity.GetEntity())));
@@ -41,6 +35,11 @@ namespace Admin.ViewModel.Lesson
                     OnBack.Execute(this);
                 }
             });
+        }
+
+        public void SetEntity(LessonEntity entity)
+        {
+            GenericRepositoryEntity.SetEntity(entity);
         }
     }
 

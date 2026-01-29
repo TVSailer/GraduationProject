@@ -29,7 +29,7 @@ public abstract class TeacherData : ViewModele<TeacherEntity>
     [PhoneNumber, LinkingEntity(nameof(TeacherEntity.NumberPhone)), MaskedTextBoxFieldUi("Номер телефона", "+7 (000)-000-00-00")] 
     public string NumberPhone { get; set => TryValidProperty(ref field, value); }
 
-    public TeacherData(TeacherRepository teacherRepository, LessonsRepository lessonsRepository) : base(
+    public TeacherData() : base(
         new MainCommand(_ => AdminDI.GetService<ManagementView<TeacherEntity, TeacherCard>>().InitializeComponents(null)))
     {
         

@@ -4,4 +4,9 @@
     {
         public Control? CreateControl();
     }
+    
+    public interface IUIModel<T> : IUIModel
+        where T : Control
+    {
+    }
 }

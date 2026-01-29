@@ -1,11 +1,11 @@
-﻿using System.Windows.Input;
-using Admin.View;
+﻿using Admin.View.Moduls.Visitor;
+using Admin.ViewModel.Interface;
 using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
 using Logica;
-using WinFormsApp1;
+using System.Windows.Input;
 
-public class AdminMainViewModel 
+public class AdminMainViewModel : IViewModele
 {
     public ICommand OnLoadEventsManagemetnView { get; private set; }
     public ICommand OnLoadNewsManagemetnView { get; private set; }
@@ -48,6 +48,9 @@ public class AdminMainViewModel
         OnLoadVisitorsManagemetnView = new MainCommand(
             _ =>
             {
+                AdminDI.GetService<ManagementView<
+                    VisitorEntity,
+                    VisitorCard>>().InitializeComponents(null);
             });
 
     }

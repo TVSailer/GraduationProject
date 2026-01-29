@@ -1,16 +1,14 @@
-﻿using System.Xml.Linq;
-using Admin.ViewModel.Managment;
+﻿using Admin.ViewModel.Managment;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Microsoft.Office.Interop.Word;
 
-namespace WinFormsApp1.ViewModel.Model.Teacher;
+namespace Admin.ViewModel.Model.Visitor;
 
-public class TeacherSerch : SerchManagment<TeacherEntity>
+public class VisitorSerch : SerchManagment<VisitorEntity>
 {
     [BaseFieldUi("Имя преподователя")]
-    public string TeacherName
+    public string VisitorName
     {
         get;
         set
@@ -22,7 +20,7 @@ public class TeacherSerch : SerchManagment<TeacherEntity>
     } = "";
 
     [BaseFieldUi("Фамилия преподователя")]
-    public string TeacherSurname
+    public string VisitorSurname
     {
         get;
         set
@@ -32,23 +30,23 @@ public class TeacherSerch : SerchManagment<TeacherEntity>
             OnPropertyChanged();
         }
     } = "";
-    public TeacherSerch(Repository<TeacherEntity> repository) : base(repository)
+    public VisitorSerch(Repository<VisitorEntity> repository) : base(repository)
     {
         OnClearSerchFunk = () =>
         {
-            TeacherName = "";
-            TeacherSurname = "";
+            VisitorName = "";
+            VisitorSurname = "";
         };
 
         OnSerhFunk = (entitys) =>
         {
             return entitys
-                .Where(e => e.FIO.Name.StartsWith(TeacherName))
-                .Where(e => e.FIO.Surname.StartsWith(TeacherSurname))
+                .Where(e => e.FIO.Name.StartsWith(VisitorName))
+                .Where(e => e.FIO.Surname.StartsWith(VisitorSurname))
                 .ToList();
         };
     }
 
-    public override Func<List<TeacherEntity>, List<TeacherEntity>> OnSerhFunk { get; protected set; }
+    public override Func<List<VisitorEntity>, List<VisitorEntity>> OnSerhFunk { get; protected set; }
     public override Action OnClearSerchFunk { get; protected set; }
 }

@@ -1,28 +1,33 @@
 ﻿using Admin.View.Moduls.UIModel;
+using Admin.ViewModel.Managment;
 using CSharpFunctionalExtensions;
 using Logica;
 using IView = Admin.View.ViewForm.IView;
 
 namespace Admin.View
 {
-    public class ManagementView<TEntity, TCard> : IView
+    public class ManagementView<TEntity, TCard, TParam> : IView
+        where TParam : IParam
         where TEntity : Entity, new()
         where TCard : ObjectCard<TEntity>, new()
     {
         private Form form;
         private CardModule<TEntity, TCard> cardModule;
-        private ButtonModule buttonModule;
+        private ButtonModuleV2 buttonModule;
         private SerchModule<TEntity> serchModule;
 
         public ManagementView(
             AdminMainView mainForm,
-            ManagmentModelView<TEntity> manager)
+            CardModule<TEntity, TCard> cardModule,
+            SerchManagment<TEntity> serchManagment,
+            IParametersButtons<TParam> parametersButtons)
         {
             form = mainForm;
 
-            buttonModule = new ButtonModule(manager);
-            serchModule = new SerchModule<TEntity>(manager.SerchManagment);
-            cardModule = new CardModule<TEntity, TCard>(manager);
+            buttonModule = new ButtonModuleV2(parametersButtons);
+            serchModule = new SerchModule<TEntity>(serchManagment);
+
+            this.cardModule = cardModule;
         }
 
         private TableLayoutPanel UIEvent()
@@ -35,8 +40,6 @@ namespace Admin.View
 
         public Form InitializeComponents(object? data)
         {
-        
-
             return form
             .With(m => m.Controls.Clear())
             .With(m => m.Controls.Add(UIEvent()));

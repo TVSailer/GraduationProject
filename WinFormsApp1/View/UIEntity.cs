@@ -1,19 +1,28 @@
 ﻿using Admin.View.Moduls.UIModel;
 using Admin.View.ViewForm;
+using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 using Logica;
+using System.Reflection;
 
-public class UIEntity<TEntity, TViewModel> : IView<TEntity>
+
+public class UI<TEntity, TViewModel> : IView<TViewModel>
     where TEntity : Entity, new()
     where TViewModel : IViewModele<TEntity>
 {
+    //TODO: будущий мусор
+    private ButtonModule buttonModule;
+
+
     private AdminMainView form;
     private ImageModule<TEntity> imagePanel;
-    private ButtonModule buttonModule;
+    private IUIModel<Button> buttonModuleV2;
     private FieldEntityModule fieldInfo;
-    public IViewModele<TEntity> ViewModele { get; set; }
+    private ObjectCard<TEntity> cardModule;
 
-    public UIEntity(AdminMainView mainView, TViewModel viewModel)
+    public IViewModele ViewModele { get; set; }
+
+    public UI(AdminMainView mainView, TViewModel viewModel)
     {
         form = mainView;
         ViewModele = viewModel;
@@ -39,4 +48,5 @@ public class UIEntity<TEntity, TViewModel> : IView<TEntity>
             .ControlAddIsRowsAbsolute(buttonModule.CreateControl());
     }
 }
+
 
