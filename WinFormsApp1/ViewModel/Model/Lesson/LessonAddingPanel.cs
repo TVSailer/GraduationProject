@@ -8,7 +8,7 @@ using Ninject;
 
 namespace Admin.ViewModels.Lesson
 {
-    public class LessonAddingPanel : LessonData, IViewModel<LessonAddingPanelParam>, IAddingPanel<LessonEntity>
+    public class LessonAddingPanel : LessonData, IViewModel<LessonAddingPanel>, IAddingPanel<LessonEntity>
     {
         [ButtonInfoUI("Сохранить")] public ICommand OnSave { get; protected set; }
 

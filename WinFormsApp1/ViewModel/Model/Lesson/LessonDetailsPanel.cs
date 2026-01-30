@@ -11,7 +11,7 @@ using Ninject;
 
 namespace Admin.ViewModel.Lesson
 {
-    public class LessonDetailsPanel : LessonData, IViewModel<LessonDetailsPanelParam>, IDetailsPanel<LessonEntity>
+    public class LessonDetailsPanel : LessonData, IViewModel<LessonDetailsPanel>, IDetailsPanel<LessonEntity>
     {
         [ButtonInfoUI("Управление посетителями")] public ICommand OnControlVisitors { get; private set; }
         [ButtonInfoUI("Управление посещаемостью")] public ICommand OnControlDateAttendances { get; private set; }

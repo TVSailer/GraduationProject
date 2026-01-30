@@ -1,7 +1,6 @@
 ﻿using Admin.ViewModel.Managment;
 
 public interface IParametersButtons<T> : IParametersButtons
-    where T : IParam
 {
 
 }

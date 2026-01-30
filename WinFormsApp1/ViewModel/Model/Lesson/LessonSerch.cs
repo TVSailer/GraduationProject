@@ -5,7 +5,7 @@ using DataAccess.Postgres.Repository;
 
 namespace Admin.ViewModels.Lesson
 {
-    public class LessonSerch : SerchEntity<LessonEntity>, IViewModel<LessonManagmentEntityParam>
+    public class LessonSerch : SerchEntity<LessonEntity>, IViewModel<LessonMangment>
     {
         public List<LessonCategoryEntity> category = [new("")];
 

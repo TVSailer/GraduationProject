@@ -5,9 +5,8 @@ using MediatR;
 
 namespace Admin.View.Moduls.UIModel
 {
-    public class CardModule<TEntity, TCard>(IMediator mediator, SerchEntity<TEntity> serchEntity) : IUIModel
+    public class CardModule<TEntity>(IMediator mediator, SerchEntity<TEntity> serchEntity, ObjectCard<TEntity> card) : IUIModel
         where TEntity : Entity, new()
-        where TCard : ObjectCard<TEntity>, new()
     {
         public Control CreateControl()
             => new FlowLayoutPanel()
@@ -29,7 +28,7 @@ namespace Admin.View.Moduls.UIModel
             .ForEach(
                 en =>
                 {
-                    p.Controls.Add(new TCard().Initialize(en)
+                    p.Controls.Add(card.CreateCard(en)
                     .With(c => c.OnCardClicked +=
                     (s, e) => {
                         if (en is TEntity entity)

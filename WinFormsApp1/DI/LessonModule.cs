@@ -11,10 +11,7 @@ using DataAccess.Postgres.Repository;
 using MediatR;
 using Ninject.Modules;
 
-public struct LessonAddingPanelParam : IParam { }
-public struct LessonDetailsPanelParam : IParam { }
-public struct LessonSearchParam : IParam { }
-public struct LessonManagmentEntityParam : IParam { }
+public struct LessonMangment{}
 
 public class LessonModule : NinjectModule
 {
@@ -23,35 +20,33 @@ public class LessonModule : NinjectModule
         Kernel.Bind<IRequest>().To<SendEntity<LessonEntity>>();
         Kernel.Bind<IRequestHandler<SendEntity<LessonEntity>>>().To<InitializeDetailsPanelHandler<LessonEntity, LessonDetailsPanel>>();
 
-        //Kernel.Bind<IRequest>().To<InitializeUI<LessonDetailsPanelParam>>();
-        Kernel.Bind<IRequestHandler<InitializeUI<LessonDetailsPanelParam>>>().To<InitializeUIHandler<LessonDetailsPanelParam>>();
-        Kernel.Bind<IRequestHandler<InitializeUI<LessonAddingPanelParam>>>().To<InitializeUIHandler<LessonAddingPanelParam>>();
-        Kernel.Bind<IRequestHandler<InitializeUI<LessonManagmentEntityParam>>>().To<InitializeUIHandler<LessonManagmentEntityParam>>();
+        Kernel.Bind<IRequestHandler<InitializeUI<LessonAddingPanel>>>().To<InitializeUIHandler<LessonAddingPanel>>();
+        Kernel.Bind<IRequestHandler<InitializeUI<LessonDetailsPanel>>>().To<InitializeUIHandler<LessonDetailsPanel>>();
+        Kernel.Bind<IRequestHandler<InitializeUI<LessonMangment>>>().To<InitializeUIHandler<LessonMangment>>();
 
         Kernel.Bind<Repository<LessonEntity>>().To<LessonsRepository>();
         Kernel.Bind<Repository<LessonCategoryEntity>>().To<LessonCategoryRepositroy>();
 
-        Kernel.Bind<UIBuilder<LessonAddingPanelParam>>().ToSelf();
-        Kernel.Bind<UIBuilder<LessonDetailsPanelParam>>().ToSelf();
-        Kernel.Bind<UIBuilder<LessonDetailsPanelParam>>().ToSelf();
-        Kernel.Bind<UIBuilder<LessonManagmentEntityParam>>().ToSelf();
+        Kernel.Bind<UIBuilder<LessonAddingPanel>>().ToSelf();
+        Kernel.Bind<UIBuilder<LessonDetailsPanel>>().ToSelf();
+        Kernel.Bind<UIBuilder<LessonMangment>>().ToSelf();
 
-        Kernel.Bind<IViewModel<LessonAddingPanelParam>>().To<LessonAddingPanel>().InSingletonScope();
-        Kernel.Bind<IViewModel<LessonDetailsPanelParam>>().To<LessonDetailsPanel>().InSingletonScope();
-        Kernel.Bind<IViewModel<LessonManagmentEntityParam>, SerchEntity<LessonEntity>, LessonSerch>().To<LessonSerch>().InSingletonScope();
+        Kernel.Bind<IViewModel<LessonAddingPanel>>().To<LessonAddingPanel>().InSingletonScope();
+        Kernel.Bind<IViewModel<LessonDetailsPanel>>().To<LessonDetailsPanel>().InSingletonScope();
 
-        Kernel.Bind<IView<LessonDetailsPanelParam>>().To<BaseUI<LessonDetailsPanelParam, LessonEntity>>().InSingletonScope();
-        Kernel.Bind<IView<LessonAddingPanelParam>>().To<BaseUI<LessonAddingPanelParam, LessonEntity>>().InSingletonScope();
-        Kernel.Bind<IView<LessonManagmentEntityParam>>().To<ManagmentEntityUI<LessonManagmentEntityParam, LessonEntity, LessonCard>>();
+        Kernel.Bind<SerchEntity<LessonEntity>, LessonSerch>().To<LessonSerch>().InSingletonScope();
 
-        // Kernel.Bind<ObjectCard<LessonEntity>>().To<LessonCard>();
+        Kernel.Bind<IView<LessonAddingPanel>>().To<BaseUI<LessonAddingPanel, LessonEntity>>().InSingletonScope();
+        Kernel.Bind<IView<LessonDetailsPanel>>().To<BaseUI<LessonDetailsPanel, LessonEntity>>().InSingletonScope();
+        Kernel.Bind<IView<LessonMangment>>().To<ManagmentEntityUI<LessonMangment, LessonEntity>>();
 
-        Kernel.Bind<CardModule<LessonEntity, LessonCard>>().ToSelf();
-        Kernel.Bind<IParametersButtons<LessonManagmentEntityParam>>()
-            .To<ParametersManagmentButton<LessonManagmentEntityParam, LessonEntity, AdminMainViewModel, LessonAddingPanel>>();
+        Kernel.Bind<ObjectCard<LessonEntity>>().To<LessonCard>();
+        Kernel.Bind<CardModule<LessonEntity>>().ToSelf();
+        Kernel.Bind<IParametersButtons<LessonMangment>>().To<
+            ParametersManagmentButton<
+                LessonMangment, 
+                LessonEntity, 
+                AdminMainViewModel, 
+                LessonAddingPanel>>();
     }
-}
-
-public interface IParam
-{
 }

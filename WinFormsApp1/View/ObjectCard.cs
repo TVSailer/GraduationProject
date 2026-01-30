@@ -1,7 +1,7 @@
 ﻿using Admin.View.Moduls.UIModel;
 using CSharpFunctionalExtensions;
 
-public class ObjectCard<T> : Panel
+public abstract class ObjectCard<T> : Panel
     where T : Entity
 {
     protected T entity;
@@ -11,22 +11,8 @@ public class ObjectCard<T> : Panel
 
     public event EventHandler OnCardClicked;
 
-    public ObjectCard(int id)
-    {
-        _objectId = id;
-        InitializeCard();
-    }
-
     public ObjectCard()
     {
-        InitializeCard();
-    }
-
-    public ObjectCard(T obj)
-    {
-        if (obj is null) throw new ArgumentNullException();
-
-        entity = obj;
         InitializeCard();
     }
 
@@ -79,7 +65,14 @@ public class ObjectCard<T> : Panel
 
         return this;
     }
-    
-    public virtual Control Content() { throw new ArgumentNullException(); }
+
+    public ObjectCard<T> CreateCard(T entity)
+    {
+        var type = GetType();
+        var card = type.GetConstructor([])!.Invoke([]);
+
+        return (ObjectCard<T>)type.GetMethod("Initialize")!.Invoke(card, [entity])! ?? throw new ArgumentNullException();
+    }
+    public abstract Control Content();
 
 }

@@ -1,20 +1,13 @@
 ﻿using Admin.View.Moduls.UIModel;
-using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using Admin.ViewModel.Managment;
 using CSharpFunctionalExtensions;
 using Logica;
 using MediatR;
-using Microsoft.Office.Interop.Word;
 
 
-// public class UIBuilder<T>(AdminMainView mainView, IMediator mediator) : UIBuilder(mainView, mediator)
-//    where T : IParam;
-
-public class UIBuilder<T> : IView<T>
-    where T : IParam
+public class UIBuilder<T>
 {
-    public IViewModel<T> ViewModel { get; }
     private readonly IMediator mediator;
     private readonly Form form;
     private readonly IParametersButtons<T> parametersButtons;
@@ -22,13 +15,10 @@ public class UIBuilder<T> : IView<T>
 
 
     public UIBuilder(
-        AdminMainView mainView, 
-        IMediator mediator, 
-        IParametersButtons<T> parametersButtons,
-        IViewModel<T> viewModel)
+        AdminMainView mainView,
+        IParametersButtons<T> parametersButtons)
     {
         form = mainView;
-        ViewModel = viewModel;
         this.mediator = mediator;
         this.parametersButtons = parametersButtons;
     }
@@ -47,10 +37,7 @@ public class UIBuilder<T> : IView<T>
                 uiModels.ForEach(sloyUI =>
                     t.StartNewRowTableAbsolute().With(sloy =>
                         sloyUI.ForEach(ui =>
-                            sloy.ControlAddIsColumnPercent(ui.CreateControl())))));
-        // .ControlAddIsRowsAbsolute(fieldInfo.CreateControl())
-        // .ControlAddIsRowsPercent(imagePanel is null ? new Control() : imagePanel.CreateControl())
-        // .ControlAddIsRowsAbsolute(buttonModule.CreateControl());
+                            sloy.ControlAddIsColumnPercent(ui.CreateControl()))).EndTabel()));
     }
 
     public UIBuilder<T> NextRow()
@@ -71,26 +58,17 @@ public class UIBuilder<T> : IView<T>
         => this
             .With(_ => uiModels[^1].Add(new FieldEntityModule(viewModele)));
 
-    public UIBuilder<T> WithCardPanel<TEntity, TCard>()
-        where TCard : ObjectCard<TEntity>, new()
+    public UIBuilder<T> WithCardPanel<TEntity>(ObjectCard<TEntity> card, SerchEntity<TEntity> serch)
         where TEntity : Entity, new()
     {
-        if (ViewModel is SerchEntity<TEntity> searchEntity)
-            uiModels[^1].Add(new CardModule<TEntity, TCard>(mediator, searchEntity));
-
-        else throw new ArgumentException();
-
+        uiModels[^1].Add(new CardModule<TEntity>(mediator, serch, card));
         return this;
     }
 
-    public UIBuilder<T> WithSerchPanel<TEntity, TSearch>()
+    public UIBuilder<T> WithSerchPanel<TEntity>(SerchEntity<TEntity> serch)
         where TEntity : Entity, new()
     {
-        if (ViewModel is SerchEntity<TEntity> searchEntity)
-            uiModels[^1].Add(new SerchModule<TEntity>(searchEntity));
-
-        else throw new ArgumentException();
-
+        uiModels[^1].Add(new SerchModule<TEntity>(serch));
         return this;
     }
 }

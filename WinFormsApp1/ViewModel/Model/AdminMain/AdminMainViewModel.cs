@@ -4,6 +4,7 @@ using DataAccess.Postgres;
 using Logica;
 using MediatR;
 using System.Windows.Input;
+using Admin.ViewModels.Lesson;
 
 public class AdminMainViewModel : IViewModele
 {
@@ -35,7 +36,7 @@ public class AdminMainViewModel : IViewModele
         OnLoadLessonsManagemetnView = new MainCommand(
             _ =>
             {
-                mediator.Send(new InitializeUI<LessonManagmentEntityParam>());
+                mediator.Send(new InitializeUI<LessonMangment>());
                 // AdminDI.GetService<ManagementView<
                 //     LessonEntity, 
                 //     LessonCard>>().InitializeComponents(null);

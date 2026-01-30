@@ -8,7 +8,6 @@ using MediatR;
 using Ninject.Parameters;
 
 public class ParametersManagmentButton<T, TEntity, TViewModelExit, TAddingPanel>(IMediator mediator) : IParametersButtons<T>
-    where T : IParam
     where TViewModelExit : IViewModele
     where TAddingPanel : IAddingPanel<TEntity>
     where TEntity : Entity, new()
