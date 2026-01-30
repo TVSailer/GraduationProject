@@ -1,17 +1,11 @@
 ﻿using Admin.Commands_Handlers.Managment;
-using Admin.ViewModel.Interface;
-using Admin.ViewModel.Lesson;
 using Admin.ViewModel.Managment;
-using Admin.ViewModels;
-using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
-using DataAccess.Postgres.Models;
 using MediatR;
 
 namespace Admin.View.Moduls.UIModel
 {
-    public class CardModule<TEntity, TCard>(IMediator mediator, SerchManagment<TEntity> serchManagment)
-        : IUIModel
+    public class CardModule<TEntity, TCard>(IMediator mediator, SerchEntity<TEntity> serchEntity) : IUIModel
         where TEntity : Entity, new()
         where TCard : ObjectCard<TEntity>, new()
     {
@@ -20,9 +14,9 @@ namespace Admin.View.Moduls.UIModel
             .With(p => p.Dock = DockStyle.Fill)
             .With(p => p.AutoScroll = true)
             .With(p => p.Padding = new Padding(10))
-            .With(p => serchManagment.PropertyChanged += (obj, propCh) =>
+            .With(p => serchEntity.PropertyChanged += (obj, propCh) =>
             {
-                if (propCh.PropertyName == nameof(serchManagment.DataEntitys))
+                if (propCh.PropertyName == nameof(serchEntity.DataEntitys))
                 {
                     p.Controls.Clear();
                     AddCard(p);
@@ -31,7 +25,7 @@ namespace Admin.View.Moduls.UIModel
             .With(AddCard);
 
         private void AddCard(FlowLayoutPanel p)
-            => serchManagment.DataEntitys
+            => serchEntity.DataEntitys
             .ForEach(
                 en =>
                 {

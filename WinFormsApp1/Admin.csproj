@@ -25,6 +25,9 @@
     <Compile Remove="DI\EventModule.cs" />
     <Compile Remove="DI\TeacherModule.cs" />
     <Compile Remove="DI\VisitorModule.cs" />
+    <Compile Remove="View\ManagementView.cs" />
+    <Compile Remove="View\UI.cs" />
+    <Compile Remove="View\UIModel\ButtonModule.cs" />
   </ItemGroup>
 
   <!-- <ItemGroup> -->

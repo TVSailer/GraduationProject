@@ -1,8 +1,8 @@
-﻿using Admin.View.Moduls.Visitor;
+﻿using Admin.Commands_Handlers.Managment;
 using Admin.ViewModel.Interface;
 using DataAccess.Postgres;
-using DataAccess.Postgres.Models;
 using Logica;
+using MediatR;
 using System.Windows.Input;
 
 public class AdminMainViewModel : IViewModele
@@ -14,30 +14,31 @@ public class AdminMainViewModel : IViewModele
     public ICommand OnLoadVisitorsManagemetnView { get; private set; }
 
     public AdminMainViewModel(
-        ApplicationDbContext dbContext)
+        ApplicationDbContext dbContext, IMediator mediator)
     {
         OnLoadEventsManagemetnView = new MainCommand(
              _ =>
              {
-                 AdminDI.GetService<ManagementView<
-                     EventEntity,
-                     EventCard>>().InitializeComponents(null);
+                 // AdminDI.GetService<ManagementView<
+                 //     EventEntity,
+                 //     EventCard>>().InitializeComponents(null);
              });
 
         OnLoadTeachersManagemetnView = new MainCommand(
             _ =>
             {
-                AdminDI.GetService<ManagementView<
-                    TeacherEntity,
-                    TeacherCard>>().InitializeComponents(null);
+                // AdminDI.GetService<ManagementView<
+                //     TeacherEntity,
+                //     TeacherCard>>().InitializeComponents(null);
             });
 
         OnLoadLessonsManagemetnView = new MainCommand(
             _ =>
             {
-                AdminDI.GetService<ManagementView<
-                    LessonEntity, 
-                    LessonCard>>().InitializeComponents(null);
+                mediator.Send(new InitializeUI<LessonManagmentEntityParam>());
+                // AdminDI.GetService<ManagementView<
+                //     LessonEntity, 
+                //     LessonCard>>().InitializeComponents(null);
             });
         
         OnLoadNewsManagemetnView = new MainCommand(
@@ -48,9 +49,9 @@ public class AdminMainViewModel : IViewModele
         OnLoadVisitorsManagemetnView = new MainCommand(
             _ =>
             {
-                AdminDI.GetService<ManagementView<
-                    VisitorEntity,
-                    VisitorCard>>().InitializeComponents(null);
+                // AdminDI.GetService<ManagementView<
+                //     VisitorEntity,
+                //     VisitorCard>>().InitializeComponents(null);
             });
 
     }

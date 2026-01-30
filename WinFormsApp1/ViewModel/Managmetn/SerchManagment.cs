@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Windows.Input;
+using Admin.ViewModel.Interface;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Repository;
@@ -7,10 +8,10 @@ using Logica;
 
 namespace Admin.ViewModel.Managment;
 
-public abstract class SerchManagment<T> : PropertyChange
-    where T : Entity
+public abstract class SerchEntity<TEntity> : PropertyChange
+    where TEntity : Entity, new()
 {
-    public List<T> DataEntitys
+    public List<TEntity> DataEntitys
     {
         get;
         set
@@ -22,7 +23,7 @@ public abstract class SerchManagment<T> : PropertyChange
 
     public ICommand OnClearSerch { get; private set; }
 
-    public SerchManagment(Repository<T> repository)
+    public SerchEntity(Repository<TEntity> repository)
     {
         DataEntitys = repository.Get();
 
@@ -46,6 +47,6 @@ public abstract class SerchManagment<T> : PropertyChange
             });
     }
 
-    public abstract Func<List<T>, List<T>> OnSerhFunk { get; protected set; }
+    public abstract Func<List<TEntity>, List<TEntity>> OnSerhFunk { get; protected set; }
     public abstract Action OnClearSerchFunk { get; protected set; }
 }

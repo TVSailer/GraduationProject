@@ -8,6 +8,19 @@ public interface IViewModele<TEntity> : IViewModele
     public GenericRepositoryEntity<TEntity> GenericRepositoryEntity { get; protected set; }
 }
 
-public interface IViewModele
+public interface IViewModele : IParam
 {
+}
+
+public interface IViewModel<T> : IViewModele
+    where T : IParam
+{
+
+}
+
+public interface IViewModel<T, TEntity> : IViewModel<T>
+    where T : IParam
+    where TEntity : Entity, new()
+{
+
 }

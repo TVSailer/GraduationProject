@@ -5,7 +5,7 @@ using Logica;
 
 public partial class AdminMainView : Form, IView<AdminMainViewModel>
 {
-    public IViewModele ViewModele { get; set; }
+    public IViewModel<AdminMainViewModel> ViewModel { get; }
 
     public AdminMainView(AdminMainViewModel adminMainViewModel)
     {

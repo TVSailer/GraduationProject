@@ -1,32 +1,28 @@
-﻿using Admin.View.ViewForm;
-using Admin.ViewModel.Interface;
-using Admin.ViewModels.Lesson;
+﻿using Admin.ViewModel.Managment;
 using Logica;
 
-namespace Admin.View.Moduls.UIModel
+namespace Admin.View.Moduls.UIModel;
+
+public class ButtonModuleV2 : IUIModel
 {
-    public class ButtonModule : IUIModel
+    private readonly List<ButtonInfo> context;
+
+    public ButtonModuleV2(IParametersButtons context)
     {
-        private readonly IViewModele context;
-        private readonly List<ButtonInfoUIAttribute> buttonsInfo = new();
+        this.context = context.buttons;
+    }
 
-        public ButtonModule(IViewModele context)
-        {
-            this.context = context;
-            buttonsInfo = context.GetType().GetAttributes<ButtonInfoUIAttribute>();
-        }
-
-        public Control CreateControl()
+    public Control CreateControl()
         => FactoryElements.TableLayoutPanel()
             .With(t =>
             {
-                for (int i = 0; i < buttonsInfo.Count; i++)
+                for (int i = 0; i < context.Count; i++)
                 {
                     if (i % 4 == 0 || i == 0)
                         t.ControlAddIsRowsAbsolute(new TableLayoutPanel() { Dock = DockStyle.Fill }, 70);
 
                     if (t.Controls[^1] is TableLayoutPanel table)
-                        table.ControlAddIsColumnPercent(FactoryElements.Button(buttonsInfo[i], context));
+                        table.ControlAddIsColumnPercent(FactoryElements.Button(context[i].LabelText, context[i].Command));
                 }
 
                 if (t.Controls[^1].Controls.Count >= 4) return;
@@ -36,5 +32,4 @@ namespace Admin.View.Moduls.UIModel
                         table.ControlAddIsColumnPercent(FactoryElements.Button(""));
                 }
             });
-    }
 }

@@ -5,23 +5,32 @@ using Admin.ViewModel.Managment;
 using CSharpFunctionalExtensions;
 using Logica;
 using MediatR;
+using Microsoft.Office.Interop.Word;
 
-public class UIBuilder<T>(AdminMainView mainView, IMediator mediator) : UIBuilder(mainView, mediator)
-    where T : IParam;
 
-public class UIBuilder : IView
+// public class UIBuilder<T>(AdminMainView mainView, IMediator mediator) : UIBuilder(mainView, mediator)
+//    where T : IParam;
+
+public class UIBuilder<T> : IView<T>
+    where T : IParam
 {
-    public IMediator Mediator { get; }
-    public IViewModele ViewModele { get; }
+    public IViewModel<T> ViewModel { get; }
+    private readonly IMediator mediator;
+    private readonly Form form;
+    private readonly IParametersButtons<T> parametersButtons;
+    private List<List<IUIModel>> uiModels = [new()];
 
-    private AdminMainView form;
-    private List<List<IUIModel>> uiModels = [];
 
-
-    public UIBuilder(AdminMainView mainView, IMediator mediator)
+    public UIBuilder(
+        AdminMainView mainView, 
+        IMediator mediator, 
+        IParametersButtons<T> parametersButtons,
+        IViewModel<T> viewModel)
     {
-        Mediator = mediator;
         form = mainView;
+        ViewModel = viewModel;
+        this.mediator = mediator;
+        this.parametersButtons = parametersButtons;
     }
 
     public Form InitializeComponents(object? data)
@@ -44,32 +53,44 @@ public class UIBuilder : IView
         // .ControlAddIsRowsAbsolute(buttonModule.CreateControl());
     }
 
-    public UIBuilder NextRow()
+    public UIBuilder<T> NextRow()
         => this.With(_ => uiModels.Add(new List<IUIModel>()));
 
-    public UIBuilder With(Func<IUIModel> build)
+    public UIBuilder<T> With(Func<IUIModel> build)
         => this.With(_ => uiModels[^1].Add(build.Invoke()));
 
-    public UIBuilder WithImgPanel<T>(ViewModelWithImages<T> viewModel) where T : Entity, new()
+    public UIBuilder<T> WithImgPanel<TEntity>(ViewModelWithImages<TEntity> viewModel) where TEntity : Entity, new()
         => this
-            .With(_ => uiModels[^1].Add(new ImageModule<T>(viewModel)));
+            .With(_ => uiModels[^1].Add(new ImageModule<TEntity>(viewModel)));
 
-    public UIBuilder WithButtonPanel<T>(IParametersButtons<T> parametersButtons) where T : IParam
+    public UIBuilder<T> WithButtonPanel()
         => this
             .With(_ => uiModels[^1].Add(new ButtonModuleV2(parametersButtons)));
 
-    public UIBuilder WithFieldPanel(IViewModele viewModele)
+    public UIBuilder<T> WithFieldPanel(IViewModel<T> viewModele)
         => this
             .With(_ => uiModels[^1].Add(new FieldEntityModule(viewModele)));
 
-    public UIBuilder WithCardPanel<TEntity, TCard>(SerchManagment<TEntity> serchManagment)
+    public UIBuilder<T> WithCardPanel<TEntity, TCard>()
         where TCard : ObjectCard<TEntity>, new()
         where TEntity : Entity, new()
-        => this
-            .With(_ => uiModels[^1].Add(new CardModule<TEntity, TCard>(Mediator, serchManagment)));
+    {
+        if (ViewModel is SerchEntity<TEntity> searchEntity)
+            uiModels[^1].Add(new CardModule<TEntity, TCard>(mediator, searchEntity));
 
-    public UIBuilder WithSerchPanel<TEntity>(SerchManagment<TEntity> serchManagment)
+        else throw new ArgumentException();
+
+        return this;
+    }
+
+    public UIBuilder<T> WithSerchPanel<TEntity, TSearch>()
         where TEntity : Entity, new()
-        => this
-            .With(_ => uiModels[^1].Add(new SerchModule<TEntity>(serchManagment)));
+    {
+        if (ViewModel is SerchEntity<TEntity> searchEntity)
+            uiModels[^1].Add(new SerchModule<TEntity>(searchEntity));
+
+        else throw new ArgumentException();
+
+        return this;
+    }
 }

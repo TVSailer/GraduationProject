@@ -1,7 +1,7 @@
 ﻿using Admin.View.Moduls.UIModel;
 using CSharpFunctionalExtensions;
 
-public class ObjectCard<T> : Panel, IUIModel
+public class ObjectCard<T> : Panel
     where T : Entity
 {
     protected T entity;
@@ -81,4 +81,5 @@ public class ObjectCard<T> : Panel, IUIModel
     }
     
     public virtual Control Content() { throw new ArgumentNullException(); }
+
 }

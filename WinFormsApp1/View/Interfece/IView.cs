@@ -8,15 +8,15 @@ namespace Admin.View.ViewForm
         public Form InitializeComponents(object? data);
     }
     
-    public interface IView<TEntity, TViewModel> : IView<TViewModel>
-        where TEntity : Entity, new()
-        where TViewModel : IViewModele<TEntity>
-    {
-    }
+    // public interface IView<TEntity, TViewModel> : IView<TViewModel>
+    //     where TEntity : Entity, new()
+    //     where TViewModel : IViewModele<TEntity>
+    // {
+    // }
     
-    public interface IView<TViewModel> : IView
-        where TViewModel : IViewModele
+    public interface IView<T> : IView
+        where T : IParam
     {
-        public IViewModele ViewModele { get; set; }
+        public IViewModel<T> ViewModel { get; }
     }
 }

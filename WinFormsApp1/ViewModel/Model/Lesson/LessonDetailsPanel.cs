@@ -11,8 +11,7 @@ using Ninject;
 
 namespace Admin.ViewModel.Lesson
 {
-    [LinkingCommand(nameof(ManagmentModelView<>.OnLoadDetailsView))]
-    public class LessonDetailsPanel : LessonData, IDetailsPanel<LessonEntity>
+    public class LessonDetailsPanel : LessonData, IViewModel<LessonDetailsPanelParam>, IDetailsPanel<LessonEntity>
     {
         [ButtonInfoUI("Управление посетителями")] public ICommand OnControlVisitors { get; private set; }
         [ButtonInfoUI("Управление посещаемостью")] public ICommand OnControlDateAttendances { get; private set; }

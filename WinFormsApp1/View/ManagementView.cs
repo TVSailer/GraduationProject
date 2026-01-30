@@ -19,13 +19,13 @@ namespace Admin.View
         public ManagementView(
             AdminMainView mainForm,
             CardModule<TEntity, TCard> cardModule,
-            SerchManagment<TEntity> serchManagment,
+            SerchEntity<,> serchEntity,
             IParametersButtons<TParam> parametersButtons)
         {
             form = mainForm;
 
             buttonModule = new ButtonModuleV2(parametersButtons);
-            serchModule = new SerchModule<TEntity>(serchManagment);
+            serchModule = new SerchModule<TEntity>(serchEntity);
 
             this.cardModule = cardModule;
         }

@@ -21,7 +21,7 @@ public class InitializeDetailsPanelHandler<TEntity, TDetailsViewModel>(
     public Task Handle(SendEntity<TEntity> request, CancellationToken cancellationToken)
     {
         viewModel.SetEntity(request.Entity);
-        mediator.Send(new InitializeUI<TEntity, TDetailsViewModel>(), cancellationToken);
+        mediator.Send(new InitializeUI<TDetailsViewModel>(), cancellationToken);
         return Task.CompletedTask; 
     }
 }

@@ -34,8 +34,6 @@ internal static class AdminDI
         container.Bind<IRequest>().To<InitializeUI<AdminMainViewModel>>();
         container.Bind<IRequestHandler<InitializeUI<AdminMainViewModel>>>().To<InitializeUIHandler<AdminMainViewModel>>();
 
-        container.Bind<UIBuilder>().ToSelf();
-
         // db.AddRange(
         //     new EventCategoryEntity("Спорт"),
         //     new EventCategoryEntity("Творчесво"),

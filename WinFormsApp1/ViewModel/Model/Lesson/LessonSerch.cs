@@ -1,10 +1,11 @@
-﻿using Admin.ViewModel.Managment;
+﻿using Admin.ViewModel.Interface;
+using Admin.ViewModel.Managment;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 
 namespace Admin.ViewModels.Lesson
 {
-    public class LessonSerch : SerchManagment<LessonEntity>
+    public class LessonSerch : SerchEntity<LessonEntity>, IViewModel<LessonManagmentEntityParam>
     {
         public List<LessonCategoryEntity> category = [new("")];
 

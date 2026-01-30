@@ -5,8 +5,8 @@ using Logica;
 
 namespace Admin.View.Moduls.UIModel
 {
-    public class SerchModule<TEntity>(SerchManagment<TEntity> context) : IUIModel
-        where TEntity : Entity
+    public class SerchModule<TEntity>(SerchEntity<TEntity> context) : IUIModel
+        where TEntity : Entity, new()
     {
         private readonly List<FieldInfoUiAttribute> fieldInfos = context.GetType().GetAttributes<FieldInfoUiAttribute>();
 

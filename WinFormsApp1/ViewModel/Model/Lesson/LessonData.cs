@@ -73,8 +73,7 @@ namespace Admin.ViewModels.Lesson
 
         public LessonData(
             TeacherRepository teacherRepository, 
-            LessonCategoryRepositroy eventCategoryRepositroy) : base(new MainCommand(_ =>
-                AdminDI.GetService<ManagementView<LessonEntity, LessonCard>>().InitializeComponents(null)))
+            LessonCategoryRepositroy eventCategoryRepositroy) : base(new MainCommand(null))
         {
             categories = eventCategoryRepositroy.Get();
             teachers = teacherRepository.Get();
