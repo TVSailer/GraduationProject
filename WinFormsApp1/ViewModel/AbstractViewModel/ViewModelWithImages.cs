@@ -5,8 +5,11 @@ using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Models;
 using Logica;
+using MediatR;
 
-public class ViewModelWithImages<TEntity> : ViewModele<TEntity>
+public record ImageRequest(string nameCommnad) : IRequest;
+
+public class ViewModelWithImages<TEntity> : ViewModele<TEntity>, IRequestHandler<ImageRequest>
     where TEntity : Entity, new()
 {
     public Dictionary<string, bool> SelectedImg { get; protected set; } = new();
@@ -44,7 +47,7 @@ public class ViewModelWithImages<TEntity> : ViewModele<TEntity>
         }
     }
 
-    protected ViewModelWithImages(ICommand onBack) : base(onBack)
+    protected ViewModelWithImages()
     {
         var typeListImgs = typeof(TEntity)
             .GetProperties()
@@ -115,5 +118,20 @@ public class ViewModelWithImages<TEntity> : ViewModele<TEntity>
         });
 
         listImgs = newListImgs;
+    }
+
+    public Task Handle(ImageRequest request, CancellationToken cancellationToken)
+    {
+        switch (request.nameCommnad)
+        {
+            case nameof(OnAddingImg):
+                OnAddingImg.Execute(null);
+                break;
+            case nameof(OnDeletingImg):
+                OnDeletingImg.Execute(null);
+                break;
+            default: throw new Exception();
+        }
+        return Task.CompletedTask;
     }
 }

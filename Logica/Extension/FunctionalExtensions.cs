@@ -24,7 +24,7 @@ public static class FunctionalExtensions
     public static T IfElse<T>(this T obj, bool condition, Func<T, T> action, Func<T, T> actionElse)
     {
         if (condition) return action(obj);
-        else return actionElse(obj);
+        return actionElse(obj);
     }
 
     public static IEnumerable<T> ForEach<T>(this IEnumerable<T> collection, Action<T> action)

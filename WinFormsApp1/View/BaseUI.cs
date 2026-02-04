@@ -1,31 +1,36 @@
-﻿using Admin.View.ViewForm;
+﻿using Admin.View.Moduls.UIModel;
+using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
+using Logica.UILayerPanel;
+using System.Windows.Forms;
 
-public class BaseUI<T, TEntity> : IView<T>
+public class BaseUI<T, TEntity>(
+    AdminMainView form, 
+    IViewModel<T> viewModel, 
+    IParametersButtons<T> parametersButtons)
+    : IView<T>
     where TEntity : Entity, new()
 {
-    private readonly UIBuilder<T> builderUi;
-    public IViewModel<T> ViewModel { get; }
-
-    public BaseUI(UIBuilder<T> builderUI, IViewModel<T> viewModel)
-    {
-        builderUi = builderUI;
-        ViewModel = viewModel;
-    }
+    public IViewModel<T> ViewModel { get; } = viewModel;
 
     public Form InitializeComponents(object? data)
     {
-        builderUi
-            .WithButtonPanel()
-            .NextRow()
-            .WithFieldPanel(ViewModel);
+        return form
+            .With(m => m.Controls.Clear())
+            .With(m => m.Controls.Add(CreateUI()));
+    }
 
-        if (ViewModel is ViewModelWithImages<TEntity> vm)
-            builderUi
-                .NextRow()
-                .WithImgPanel(vm);
-
-        return builderUi.InitializeComponents(data);
+    public Control CreateUI()
+    {
+        return Layout
+            .CreateColumn()
+                .Row(400, SizeType.Absolute).ContentEnd(new FieldEntityModule(ViewModel).CreateControl())
+                .With(c => {
+                    if (ViewModel is ViewModelWithImages<TEntity> vm)
+                        c.Row().ContentEnd(new ImageModule<TEntity>(vm).CreateControl());
+                })
+                .Row(160, SizeType.Absolute).ContentEnd(new ButtonModuleV2(parametersButtons).CreateControl())
+            .Build();
     }
 }

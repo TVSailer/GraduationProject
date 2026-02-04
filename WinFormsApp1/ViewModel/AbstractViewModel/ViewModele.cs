@@ -9,14 +9,12 @@ using Logica;
 public abstract class ViewModele<TEntity> : PropertyChange, IViewModele<TEntity>
     where TEntity : Entity, new()
 {
-    [ButtonInfoUI("Назад")] public ICommand OnBack { get; protected set; }
-    public GenericRepositoryEntity<TEntity> GenericRepositoryEntity { get; set; } = new();
+    public GenericRepositoryEntity<TEntity> Entity { get; set; } = new();
 
 
-    public ViewModele(ICommand onBack)
+    public ViewModele()
     {
-        OnBack = onBack;
-        GenericRepositoryEntity.Initialize(this);
+        Entity.Initialize(this);
     }
 
     public T TryValidProperty<T>(ref T field, T value, [CallerMemberName] string prop = "")
@@ -28,15 +26,5 @@ public abstract class ViewModele<TEntity> : PropertyChange, IViewModele<TEntity>
         OnPropertyChanged(prop);
 
         return value;
-    }
-
-    protected void TryValidObject(Action action)
-    {
-        if (Validatoreg.TryValidObject(this, out var results, false))
-        {
-            action.Invoke();
-            OnBack.Execute(null);
-        }
-        else { results.ForEach(r => r.MemberNames.ForEach(n => OnMassegeErrorProvider(r.ErrorMessage, n))); }
     }
 }

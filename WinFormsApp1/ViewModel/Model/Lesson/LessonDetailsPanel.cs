@@ -24,21 +24,21 @@ namespace Admin.ViewModel.Lesson
             TeacherRepository teacherRepository, 
             LessonCategoryRepositroy lessonCategoryRepository) : base(teacherRepository, lessonCategoryRepository)
         {
-            OnUpdate = new MainCommand(
-                _ => TryValidObject(() => lessonsRepository.Update(GenericRepositoryEntity.Id, GenericRepositoryEntity.GetEntity())));
-
-            OnDelete = new MainCommand(_ =>
-            {
-                {
-                    lessonsRepository.Delete(GenericRepositoryEntity.Id);
-                    OnBack.Execute(this);
-                }
-            });
+            // OnUpdate = new MainCommand(
+            //     _ => TryValidObject(() => lessonsRepository.Update(GenericRepositoryEntity.Id, GenericRepositoryEntity.GetEntity())));
+            //
+            // OnDelete = new MainCommand(_ =>
+            // {
+            //     {
+            //         lessonsRepository.Delete(GenericRepositoryEntity.Id);
+            //         OnBack.Execute(this);
+            //     }
+            // });
         }
 
         public void SetEntity(LessonEntity entity)
         {
-            GenericRepositoryEntity.SetEntity(entity);
+            Entity.SetEntity(entity);
         }
     }
 

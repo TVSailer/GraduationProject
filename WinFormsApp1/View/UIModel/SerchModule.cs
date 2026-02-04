@@ -2,6 +2,7 @@
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using Logica;
+using Logica.UILayerPanel;
 
 namespace Admin.View.Moduls.UIModel
 {
@@ -15,16 +16,15 @@ namespace Admin.View.Moduls.UIModel
             .With(t => t.BorderStyle = BorderStyle.FixedSingle)
             .With(p => p.Dock = DockStyle.Fill)
             .With(p => p.Controls.Add(
-                FactoryElements.TableLayoutPanel()
+                Layout.CreateColumn()
                 .With(t => fieldInfos
                     .ForEach(fi => t
-                        .StartNewRowTableAbsolute(60)
-                        .ControlAddIsColumnAbsolute(FactoryElements.Label_11($"{fi.LabelText}: "), 300)
-                        .ControlAddIsColumnPercent(fi.GetContol(context), 10)
-                        .EndTabel()))
-                .ControlAddIsRowsPercent()
-                .StartNewRowTableAbsolute(80)
-                    .ControlAddIsColumnPercent(FactoryElements.Button("Очистить поиск", context, nameof(context.OnClearSerch)))
-                .EndTabel()));
+                        .Row(60, SizeType.Absolute)
+                            .Column(300, SizeType.Absolute).ContentEnd(FactoryElements.Label_11($"{fi.LabelText}: "))
+                            .Column(10).ContentEnd(fi.GetContol(context))
+                        .End()))
+                .Row().ContentEnd(new EmptyPanel())
+                .Row(60, SizeType.Absolute).ContentEnd(FactoryElements.Button("Очистить поиск", context, nameof(context.OnClearSerch)))
+                .Build()));
     }
 }

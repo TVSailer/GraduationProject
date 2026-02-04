@@ -17,8 +17,11 @@ public class LessonModule : NinjectModule
 {
     public override void Load()
     {
-        Kernel.Bind<IRequest>().To<SendEntity<LessonEntity>>();
         Kernel.Bind<IRequestHandler<SendEntity<LessonEntity>>>().To<InitializeDetailsPanelHandler<LessonEntity, LessonDetailsPanel>>();
+        Kernel.Bind<IRequestHandler<SaveCommandRequest<LessonAddingPanel, LessonEntity>>>()
+            .To<SaveCommandHandler<LessonAddingPanel, LessonEntity>>();
+        Kernel.Bind<IRequestHandler<ImageRequest>>().To<LessonAddingPanel>();
+        Kernel.Bind<IRequestHandler<ValidationObjectRequest<LessonAddingPanel>>>().To<ValidationObjectHandler<LessonAddingPanel>>();
 
         Kernel.Bind<IRequestHandler<InitializeUI<LessonAddingPanel>>>().To<InitializeUIHandler<LessonAddingPanel>>();
         Kernel.Bind<IRequestHandler<InitializeUI<LessonDetailsPanel>>>().To<InitializeUIHandler<LessonDetailsPanel>>();
@@ -27,12 +30,8 @@ public class LessonModule : NinjectModule
         Kernel.Bind<Repository<LessonEntity>>().To<LessonsRepository>();
         Kernel.Bind<Repository<LessonCategoryEntity>>().To<LessonCategoryRepositroy>();
 
-        Kernel.Bind<UIBuilder<LessonAddingPanel>>().ToSelf();
-        Kernel.Bind<UIBuilder<LessonDetailsPanel>>().ToSelf();
-        Kernel.Bind<UIBuilder<LessonMangment>>().ToSelf();
-
-        Kernel.Bind<IViewModel<LessonAddingPanel>>().To<LessonAddingPanel>().InSingletonScope();
-        Kernel.Bind<IViewModel<LessonDetailsPanel>>().To<LessonDetailsPanel>().InSingletonScope();
+        Kernel.Bind<IViewModel<LessonAddingPanel>>().To<LessonAddingPanel>();
+        Kernel.Bind<IViewModel<LessonDetailsPanel>>().To<LessonDetailsPanel>();
 
         Kernel.Bind<SerchEntity<LessonEntity>, LessonSerch>().To<LessonSerch>().InSingletonScope();
 
@@ -42,11 +41,10 @@ public class LessonModule : NinjectModule
 
         Kernel.Bind<ObjectCard<LessonEntity>>().To<LessonCard>();
         Kernel.Bind<CardModule<LessonEntity>>().ToSelf();
-        Kernel.Bind<IParametersButtons<LessonMangment>>().To<
-            ParametersManagmentButton<
-                LessonMangment, 
-                LessonEntity, 
-                AdminMainViewModel, 
-                LessonAddingPanel>>();
+
+        Kernel.Bind<IParametersButtons<LessonMangment>>().To<ParametersManagmentButton<LessonMangment, AdminMainViewModel, LessonAddingPanel>>();
+        Kernel.Bind<IParametersButtons<LessonAddingPanel>>().To<LessonAddingPanelButton>();
+        //Todo: kfd
+        Kernel.Bind<IParametersButtons<LessonDetailsPanel>>().To<DetailsPanelButton<LessonDetailsPanel>>();
     }
 }

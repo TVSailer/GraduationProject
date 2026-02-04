@@ -1,9 +1,7 @@
 using Admin.Commands_Handlers.Managment;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
-using Admin.ViewModel.Lesson;
 using DataAccess.Postgres;
-using DataAccess.Postgres.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Ninject;
@@ -28,7 +26,7 @@ internal static class AdminDI
 
         container.Bind<ApplicationDbContext>().ToConstant(db).InSingletonScope();
 
-        container.Bind<IView<AdminMainViewModel>, AdminMainView>().To<AdminMainView>().InSingletonScope();
+        container.Bind<IView<AdminMainViewModel>, Form, AdminMainView>().To<AdminMainView>().InSingletonScope();
         container.Bind<IViewModele, AdminMainViewModel>().To<AdminMainViewModel>().InSingletonScope();
 
         container.Bind<IRequest>().To<InitializeUI<AdminMainViewModel>>();

@@ -247,7 +247,7 @@ public static class FactoryElements
     
     public static TableLayoutPanel TableLayoutPanel()
         => new TableLayoutPanel()
-            .With(t => t.Padding = new Padding(10))
+            .With(t => t.Padding = new Padding(0))
             .With(t => t.Dock = DockStyle.Fill);
 
     //public static ToolStripMenuItem CreateToolStripMenu(string attributeMenu, params StripMenuItem[] stripMenuItems)

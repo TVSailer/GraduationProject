@@ -1,6 +1,7 @@
 ﻿using Admin.Commands_Handlers.Managment;
 using Admin.ViewModel.Managment;
 using CSharpFunctionalExtensions;
+using Logica.UILayerPanel;
 using MediatR;
 
 namespace Admin.View.Moduls.UIModel

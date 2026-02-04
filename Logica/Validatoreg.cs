@@ -28,13 +28,10 @@ public static class Validatoreg
     
     public static bool TryValidObject(object instance, out List<ValidationResult> results, bool isErrorMessage = false)
     {
-        results = new List<ValidationResult>();
+        results = [];
         var context = new ValidationContext(instance);
 
-        if (!Validator.TryValidateObject(instance, context, results, true))
-            return false;
-
-        return true;
+        return Validator.TryValidateObject(instance, context, results, true);
     }
     
     public static bool TryValidValue(object value, List<ValidationAttribute> validationAttributes, out string errorMessage, bool isErrorMessage = false)

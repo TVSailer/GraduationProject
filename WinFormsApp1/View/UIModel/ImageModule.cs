@@ -2,6 +2,7 @@
 using Admin.View.Moduls.UIModel;
 using CSharpFunctionalExtensions;
 using Logica;
+using Logica.UILayerPanel;
 
 public class ImageModule<TEntity> : IUIModel
     where TEntity : Entity, new()
@@ -14,13 +15,12 @@ public class ImageModule<TEntity> : IUIModel
     }
 
     public Control? CreateControl()
-        => FactoryElements.TableLayoutPanel()
-            .ControlAddIsRowsAbsolute(
-                FactoryElements.Label_12("📷 Изображения:"), 50)
-            .ControlAddIsRowsPercent(
-                FactoryElements.FlowLayoutPanel()
+    => Layout.CreateColumn()
+        .Row(50, SizeType.Absolute).ContentEnd(FactoryElements.Label_12("📷 Изображения:"))
+        .Row().ContentEnd(FactoryElements.FlowLayoutPanel()
                     .With(fp => AddImages(fp))
-                    .With(fp => context.PropertyChanged += AddingImages(fp)));
+                    .With(fp => context.PropertyChanged += AddingImages(fp)))
+        .Build();
 
     private PropertyChangedEventHandler AddingImages(FlowLayoutPanel fp)
     {

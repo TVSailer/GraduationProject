@@ -1,33 +1,39 @@
-﻿using Admin.View.ViewForm;
+﻿using Admin.View.Moduls.UIModel;
+using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using Admin.ViewModel.Managment;
 using CSharpFunctionalExtensions;
+using Logica.UILayerPanel;
+using MediatR;
 
-public class ManagmentEntityUI<T, TEntity> : IView<T>
+public class ManagmentEntityUI<T, TEntity>(
+    AdminMainView form,
+    ObjectCard<TEntity> card,
+    SerchEntity<TEntity> serch,
+    IParametersButtons<T> parametersButtons,
+    IMediator mediator)
+    : IView<T>
     where TEntity : Entity, new()
 {
-    private readonly UIBuilder<T> builderUi;
-    private readonly ObjectCard<TEntity> card;
-    private readonly SerchEntity<TEntity> serch;
-    private readonly IParametersButtons<T> parametersButtons;
-
     public IViewModel<T> ViewModel => throw new Exception("Не содержит данных");
-
-    public ManagmentEntityUI(UIBuilder<T> builderUI, ObjectCard<TEntity> card, SerchEntity<TEntity> serch)
-    {
-        builderUi = builderUI;
-        this.card = card;
-        this.serch = serch;
-    }
 
     public Form InitializeComponents(object? data)
     {
-        builderUi
-            .WithCardPanel(card, serch)
-            .WithSerchPanel(serch)
-            .NextRow()
-            .WithButtonPanel();
+        return form
+            .With(m => m.Controls.Clear())
+            .With(m => m.Controls.Add(CreateUI()));
+    }
 
-        return builderUi.InitializeComponents(data);
+    public Control CreateUI()
+    {
+        var layout = Layout.CreateColumn()
+                .Row()
+                    .Column(65).ContentEnd(new CardModule<TEntity>(mediator, serch, card).CreateControl())
+                    .Column(35).ContentEnd(new SerchModule<TEntity>(serch).CreateControl())
+                .End()
+                .Row(80, SizeType.Absolute).Content(new ButtonModuleV2(parametersButtons).CreateControl()).End()
+            .Build();
+
+        return layout;
     }
 }

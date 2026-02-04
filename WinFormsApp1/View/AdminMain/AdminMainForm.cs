@@ -10,10 +10,10 @@ public partial class AdminMainView : Form, IView<AdminMainViewModel>
     public AdminMainView(AdminMainViewModel adminMainViewModel)
     {
         DataContext = adminMainViewModel;
-        InitializeComponents();
+        InitializeComponents(null);
     }
 
-    public Form InitializeComponents()
+    public Form InitializeComponents(object? data)
         => this
             .With(m => m.Controls.Clear())
             .With(m => m.Text = "Панель администратора")
@@ -56,9 +56,5 @@ public partial class AdminMainView : Form, IView<AdminMainViewModel>
             .With(b => b.DataBindings.Add(new Binding("Command", context, dataMember, true)))
             .With(b => b.BackColor = Color.LightGray);
 
-    public Form InitializeComponents(object? data)
-    {
-        throw new NotImplementedException();
-    }
 }
 

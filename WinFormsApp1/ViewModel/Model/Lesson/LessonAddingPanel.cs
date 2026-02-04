@@ -1,24 +1,34 @@
-﻿using System.Windows.Input;
-using Admin.View;
-using Admin.ViewModel.Interface;
-using DataAccess.Postgres.Models;
+﻿using Admin.ViewModel.Interface;
+using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Repository;
-using Logica;
-using Ninject;
+using MediatR;
 
 namespace Admin.ViewModels.Lesson
 {
-    public class LessonAddingPanel : LessonData, IViewModel<LessonAddingPanel>, IAddingPanel<LessonEntity>
+    public class SaveCommandHandler<T, TEntity>(IMediator mediator, Repository<TEntity> repository, T instance) : IRequestHandler<SaveCommandRequest<T, TEntity>>
+        where T : IViewModele<TEntity>
+        where TEntity : Entity, new()
     {
-        [ButtonInfoUI("Сохранить")] public ICommand OnSave { get; protected set; }
+        public Task Handle(SaveCommandRequest<T, TEntity> request, CancellationToken cancellationToken)
+        {
+            mediator.Send(new ValidationObjectRequest<T>(instance, obj => repository.Add(obj.Entity.GetEntity())), cancellationToken);
+            return Task.CompletedTask;
+        }
+    }
+
+    public class LessonAddingPanel : LessonData, IViewModel<LessonAddingPanel>
+    {
+        private readonly LessonsRepository lessonsRepository;
+        private readonly IMediator mediator;
 
         public LessonAddingPanel(
             LessonsRepository lessonsRepository, 
+            IMediator mediator,
             TeacherRepository teacherRepository, 
             LessonCategoryRepositroy lessonCategoryRepositroy) : base(teacherRepository, lessonCategoryRepositroy)
         {
-            OnSave = new MainCommand(
-                _ => TryValidObject(() => lessonsRepository.Add(GenericRepositoryEntity.GetEntity())));
+            this.lessonsRepository = lessonsRepository;
+            this.mediator = mediator;
         }
     }
 }

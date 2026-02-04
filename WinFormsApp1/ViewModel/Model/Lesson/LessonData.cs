@@ -4,11 +4,15 @@ using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.CustomAttribute;
 using System.Windows.Input;
+using MediatR;
 using NotNullAttribute = Logica.CustomAttribute.NotNullAttribute;
+
+public record ScheduleLessonRequest : IRequest;
+
 
 namespace Admin.ViewModels.Lesson
 {
-    public class LessonData : ViewModelWithImages<LessonEntity>
+    public class LessonData : ViewModelWithImages<LessonEntity>, IRequestHandler<ScheduleLessonRequest>
     {
         public readonly List<LessonCategoryEntity> categories;
         public readonly List<TeacherEntity> teachers;
@@ -73,12 +77,18 @@ namespace Admin.ViewModels.Lesson
 
         public LessonData(
             TeacherRepository teacherRepository, 
-            LessonCategoryRepositroy eventCategoryRepositroy) : base(new MainCommand(null))
+            LessonCategoryRepositroy eventCategoryRepositroy)
         {
             categories = eventCategoryRepositroy.Get();
             teachers = teacherRepository.Get();
 
-            OnCreateSchedule = new MainCommand(_ => new ScheduleView(Schedule, s => Schedule = s).ShowDialog());
+            OnCreateSchedule = new MainCommand(_ => new ScheduleView(Schedule).ShowDialog());
+        }
+
+        public Task Handle(ScheduleLessonRequest request, CancellationToken cancellationToken)
+        {
+            new ScheduleView(Schedule).ShowDialog();
+            return Task.CompletedTask;
         }
     }
 }

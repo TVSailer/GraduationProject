@@ -1,5 +1,6 @@
 ﻿using Admin.ViewModel.Managment;
 using Logica;
+using Logica.UILayerPanel;
 
 namespace Admin.View.Moduls.UIModel;
 
@@ -16,6 +17,8 @@ public class ButtonModuleV2 : IUIModel
         => FactoryElements.TableLayoutPanel()
             .With(t =>
             {
+                if (context.Count == 0) return;
+
                 for (int i = 0; i < context.Count; i++)
                 {
                     if (i % 4 == 0 || i == 0)
