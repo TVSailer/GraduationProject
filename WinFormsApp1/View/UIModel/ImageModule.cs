@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Admin.View.Moduls.UIModel;
+using Admin.ViewModel.AbstractViewModel;
 using CSharpFunctionalExtensions;
 using Logica;
 using Logica.UILayerPanel;
@@ -18,7 +19,6 @@ public class ImageModule<TEntity> : IUIModel
     => Layout.CreateColumn()
         .Row(50, SizeType.Absolute).ContentEnd(FactoryElements.Label_12("📷 Изображения:"))
         .Row().ContentEnd(FactoryElements.FlowLayoutPanel()
-                    .With(fp => AddImages(fp))
                     .With(fp => context.PropertyChanged += AddingImages(fp)))
         .Build();
 
@@ -26,12 +26,10 @@ public class ImageModule<TEntity> : IUIModel
     {
         return (obj, propCh) =>
         {
-            if (propCh.PropertyName == nameof(context.OnAddingImg) ||
-                propCh.PropertyName == nameof(context.OnDeletingImg))
-            {
-                fp.Controls.Clear();
-                AddImages(fp);
-            }
+            if (propCh.PropertyName != nameof(context.ListImgs)) return;
+
+            fp.Controls.Clear();
+            AddImages(fp);
         };
     }
 

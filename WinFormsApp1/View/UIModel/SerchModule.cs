@@ -6,10 +6,11 @@ using Logica.UILayerPanel;
 
 namespace Admin.View.Moduls.UIModel
 {
-    public class SerchModule<TEntity>(SerchEntity<TEntity> context) : IUIModel
+    public class SerchModule<TEntity, TField>(SearchEntity<TEntity, TField> context) : IUIModel
         where TEntity : Entity, new()
+        where TField : PropertyChange
     {
-        private readonly List<FieldInfoUiAttribute> fieldInfos = context.GetType().GetAttributes<FieldInfoUiAttribute>();
+        private readonly List<FieldInfoUiAttribute> fieldInfos = context.Field.GetType().GetAttributes<FieldInfoUiAttribute>();
 
         public Control CreateControl()
             => new Panel()
@@ -21,7 +22,7 @@ namespace Admin.View.Moduls.UIModel
                     .ForEach(fi => t
                         .Row(60, SizeType.Absolute)
                             .Column(300, SizeType.Absolute).ContentEnd(FactoryElements.Label_11($"{fi.LabelText}: "))
-                            .Column(10).ContentEnd(fi.GetContol(context))
+                            .Column(10).ContentEnd(fi.GetContol(context.Field))
                         .End()))
                 .Row().ContentEnd(new EmptyPanel())
                 .Row(60, SizeType.Absolute).ContentEnd(FactoryElements.Button("Очистить поиск", context, nameof(context.OnClearSerch)))

@@ -1,18 +1,15 @@
-﻿using System.Runtime.CompilerServices;
-using System.Windows.Input;
-using Admin.ViewModel.Interface;
-using Admin.ViewModels.Lesson;
+﻿using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
-using DataAccess.Postgres.Models;
 using Logica;
+using System.Runtime.CompilerServices;
 
-public abstract class ViewModele<TEntity> : PropertyChange, IViewModele<TEntity>
+public abstract class ViewData<TEntity> : PropertyChange, IViewData<TEntity>
     where TEntity : Entity, new()
 {
     public GenericRepositoryEntity<TEntity> Entity { get; set; } = new();
 
 
-    public ViewModele()
+    public ViewData()
     {
         Entity.Initialize(this);
     }

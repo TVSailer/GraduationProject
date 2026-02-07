@@ -5,11 +5,10 @@ using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Models;
 using Logica;
-using MediatR;
 
-public record ImageRequest(string nameCommnad) : IRequest;
+namespace Admin.ViewModel.AbstractViewModel;
 
-public class ViewModelWithImages<TEntity> : ViewModele<TEntity>, IRequestHandler<ImageRequest>
+public class ViewModelWithImages<TEntity> : ViewData<TEntity>
     where TEntity : Entity, new()
 {
     public Dictionary<string, bool> SelectedImg { get; protected set; } = new();
@@ -19,13 +18,14 @@ public class ViewModelWithImages<TEntity> : ViewModele<TEntity>, IRequestHandler
     private readonly PropertyInfo typeListImgs;
 
     [LinkingEntity("Imgs")]
-    public object? listImgs
+    public object? ListImgs
     {
         get;
         set
         {
             InitializeImages(value);
             field = value;
+            OnPropertyChanged();
         }
     } 
 
@@ -52,11 +52,9 @@ public class ViewModelWithImages<TEntity> : ViewModele<TEntity>, IRequestHandler
         var typeListImgs = typeof(TEntity)
             .GetProperties()
             .FirstOrDefault(p => p.PropertyType.GenericTypeArguments
-            .FirstOrDefault(a => a.BaseType == typeof(ImgEntity)) != null);
+                .FirstOrDefault(a => a.BaseType == typeof(ImgEntity)) != null);
 
-        if (typeListImgs is null) throw new ArgumentNullException();
-
-        this.typeListImgs = typeListImgs;
+        this.typeListImgs = typeListImgs ?? throw new ArgumentNullException();
 
         genericAttributeListImgs = typeListImgs
             .PropertyType
@@ -64,10 +62,9 @@ public class ViewModelWithImages<TEntity> : ViewModele<TEntity>, IRequestHandler
             .First();
 
         constructorListImgs = typeListImgs.PropertyType.GetConstructor([]) ?? throw new ArgumentNullException();
-        listImgs = constructorListImgs.Invoke([]);
+        ListImgs = constructorListImgs.Invoke([]);
     }
 
-    [ButtonInfoUI("Добавить изображения")]
     public ICommand OnAddingImg => new MainCommand(
         _ =>
         {
@@ -88,7 +85,6 @@ public class ViewModelWithImages<TEntity> : ViewModele<TEntity>, IRequestHandler
             OnPropertyChanged();
         });
 
-    [ButtonInfoUI("Удалить изображение")]
     public ICommand OnDeletingImg => new MainCommand(
         _ =>
         {
@@ -104,34 +100,18 @@ public class ViewModelWithImages<TEntity> : ViewModele<TEntity>, IRequestHandler
         var newListImgs = constructorListImgs.Invoke([]);
 
         if (isSaveListImgs)
-            newListImgs = listImgs;
+            newListImgs = ListImgs;
 
         SelectedImg.ForEach(i =>
         {
             var method = typeListImgs.PropertyType.GetMethod("Add");
             var contsructorImage = genericAttributeListImgs.GetConstructor([typeof(string)]);
 
-            if (method is null) throw new ArgumentNullException();
-            if (contsructorImage is null) throw new ArgumentNullException();
+            if (method is null || contsructorImage is null) throw new ArgumentNullException();
 
             method.Invoke(newListImgs, [contsructorImage.Invoke([i.Key])]);
         });
 
-        listImgs = newListImgs;
-    }
-
-    public Task Handle(ImageRequest request, CancellationToken cancellationToken)
-    {
-        switch (request.nameCommnad)
-        {
-            case nameof(OnAddingImg):
-                OnAddingImg.Execute(null);
-                break;
-            case nameof(OnDeletingImg):
-                OnDeletingImg.Execute(null);
-                break;
-            default: throw new Exception();
-        }
-        return Task.CompletedTask;
+        ListImgs = newListImgs;
     }
 }

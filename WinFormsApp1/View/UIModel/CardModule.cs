@@ -6,17 +6,18 @@ using MediatR;
 
 namespace Admin.View.Moduls.UIModel
 {
-    public class CardModule<TEntity>(IMediator mediator, SerchEntity<TEntity> serchEntity, ObjectCard<TEntity> card) : IUIModel
+    public class CardModule<TEntity, TField>(IMediator mediator, SearchEntity<TEntity, TField> searchEntity, ObjectCard<TEntity> card) : IUIModel
         where TEntity : Entity, new()
+        where TField : PropertyChange
     {
         public Control CreateControl()
             => new FlowLayoutPanel()
             .With(p => p.Dock = DockStyle.Fill)
             .With(p => p.AutoScroll = true)
             .With(p => p.Padding = new Padding(10))
-            .With(p => serchEntity.PropertyChanged += (obj, propCh) =>
+            .With(p => searchEntity.PropertyChanged += (obj, propCh) =>
             {
-                if (propCh.PropertyName == nameof(serchEntity.DataEntitys))
+                if (propCh.PropertyName == nameof(searchEntity.DataEntitys))
                 {
                     p.Controls.Clear();
                     AddCard(p);
@@ -25,7 +26,7 @@ namespace Admin.View.Moduls.UIModel
             .With(AddCard);
 
         private void AddCard(FlowLayoutPanel p)
-            => serchEntity.DataEntitys
+            => searchEntity.DataEntitys
             .ForEach(
                 en =>
                 {
@@ -34,7 +35,7 @@ namespace Admin.View.Moduls.UIModel
                     (s, e) => {
                         if (en is TEntity entity)
                         {
-                            mediator.Send(new SendEntity<TEntity>(entity));
+                            mediator.Send(new SendEntityRequest<TEntity>(entity));
                         }
                         else throw new ArgumentException();
                     }));

@@ -1,23 +1,17 @@
-﻿using Admin.Commands_Handlers.Managment;
+﻿using Admin.Commands_Handlers.Managment;using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using Admin.ViewModel.Managment;
+using CSharpFunctionalExtensions;
 using MediatR;
 
-public class ParametersManagmentButton<T, TExit, TAddingPanel>(IMediator mediator) : IParametersButtons<T>
+public class ParametersManagmentButton<T, TEntity, TExit, TAddingPanel> : IParametersButtons<T>
+    where TEntity : Entity, new()
+    where TAddingPanel : IViewData<TEntity>
 {
-    public List<ButtonInfo> buttons =>
+    public List<ButtonInfo> GetButtons(T instance)
+    => 
     [
-        new("Назад", _ => mediator.Send(new InitializeUI<TExit>())),
-        new("Добавить", _ => mediator.Send(new InitializeUI<TAddingPanel>()))
+        new("Назад", _ => AdminDI.GetService<IView<TExit>>().InitializeComponents(null)),
+        new("Добавить", _ => AdminDI.GetService<IView<TAddingPanel, TEntity>>().InitializeComponents(null))
     ];
 }
-
-public class DetailsPanelButton<T>(IMediator mediator) : IParametersButtons<T>
-{
-    public List<ButtonInfo> buttons =>
-    [
-        // new("Назад", _ => mediator.Send(new InitializeUI<TViewModelExit>())),
-        // new("Сохранить", _ => mediator.Send(new InitializeUI<TAddingPanel>()))
-    ];
-}
-

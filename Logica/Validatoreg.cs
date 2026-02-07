@@ -26,12 +26,22 @@ public static class Validatoreg
         return true;
     }
     
-    public static bool TryValidObject(object instance, out List<ValidationResult> results, bool isErrorMessage = false)
+    public static bool TryValidObject(object instance, out List<ValidationResult> results)
     {
         results = [];
         var context = new ValidationContext(instance);
 
         return Validator.TryValidateObject(instance, context, results, true);
+    }
+    
+    public static bool TryValidObject(object instance, out List<ValidationResult> results, Action<object> actionElseValid)
+    {
+        results = [];
+        var context = new ValidationContext(instance);
+        var valid = Validator.TryValidateObject(instance, context, results, true);
+        if (valid)
+            actionElseValid.Invoke(instance);
+        return valid;
     }
     
     public static bool TryValidValue(object value, List<ValidationAttribute> validationAttributes, out string errorMessage, bool isErrorMessage = false)

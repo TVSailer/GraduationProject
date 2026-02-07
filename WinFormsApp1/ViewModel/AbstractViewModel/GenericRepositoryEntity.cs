@@ -6,7 +6,7 @@ using Admin.ViewModel.Interface;
 public class GenericRepositoryEntity<TEntity>
     where TEntity : Entity, new()
 {
-    private IViewModele<TEntity> viewModel;
+    private IViewData<TEntity> viewModel;
     private PropertyMapping[] mappings;
 
     public long Id { get; private set; }
@@ -60,7 +60,7 @@ public class GenericRepositoryEntity<TEntity>
         return Entity;
     } 
 
-    public void Initialize(IViewModele<TEntity> viewModel)
+    public void Initialize(IViewData<TEntity> viewModel)
     {
         this.viewModel = viewModel;
         mappings = GetOrCreateMappings();

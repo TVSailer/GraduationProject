@@ -25,7 +25,7 @@ namespace Admin.ViewModels.Lesson
             PropertyName = prop;
             FieldDataName = nameFieldData;
             PropertyNameControl = propertyNameControl;
-
+            Size = size;
             this.creatingControl = creatingControl;
         }
         
@@ -34,6 +34,7 @@ namespace Admin.ViewModels.Lesson
             LabelText = text;
             PropertyName = prop;
             PropertyNameControl = "Text";
+            Size = size;
             Control = control;
         }
 
@@ -42,7 +43,7 @@ namespace Admin.ViewModels.Lesson
             if (Control != null) return Control.Binding(PropertyNameControl, data, PropertyName);
 
             var type = data.GetType();
-            var field = type.GetField(FieldDataName) ?? throw new ArgumentException();
+            var field = type.GetProperty(FieldDataName) ?? throw new ArgumentException();
             var value = field.GetValue(data);
 
             return creatingControl
@@ -52,7 +53,7 @@ namespace Admin.ViewModels.Lesson
     }
 
     public class MultilineFieldUiAttribute([CallerMemberName] string prop = "") : FieldInfoUiAttribute("Описание:*",
-        prop, FactoryElements.TextBoxMultiline("Введите описание"), 200);
+        prop, FactoryElements.TextBoxMultiline("Введите описание"), 100);
     
     public class BaseFieldUiAttribute(string labelText, string placeholder = "", [CallerMemberName] string prop = "")
         : FieldInfoUiAttribute(labelText, prop, FactoryElements.TextBox(placeholder));

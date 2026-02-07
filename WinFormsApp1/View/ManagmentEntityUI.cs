@@ -6,17 +6,17 @@ using CSharpFunctionalExtensions;
 using Logica.UILayerPanel;
 using MediatR;
 
-public class ManagmentEntityUI<T, TEntity>(
+public class ManagmentEntityUI<TViewData, TEntity, TFieldSearch>(
     AdminMainView form,
     ObjectCard<TEntity> card,
-    SerchEntity<TEntity> serch,
-    IParametersButtons<T> parametersButtons,
-    IMediator mediator)
-    : IView<T>
+    SearchEntity<TEntity, TFieldSearch> search,
+    TViewData viewData,
+    IParametersButtons<TViewData> parametersButtons,
+    IMediator mediator) 
+    : IView<TViewData>, IInitializeSerch<TEntity>
     where TEntity : Entity, new()
+    where TFieldSearch : PropertyChange
 {
-    public IViewModel<T> ViewModel => throw new Exception("Не содержит данных");
-
     public Form InitializeComponents(object? data)
     {
         return form
@@ -28,12 +28,18 @@ public class ManagmentEntityUI<T, TEntity>(
     {
         var layout = Layout.CreateColumn()
                 .Row()
-                    .Column(65).ContentEnd(new CardModule<TEntity>(mediator, serch, card).CreateControl())
-                    .Column(35).ContentEnd(new SerchModule<TEntity>(serch).CreateControl())
+                    .Column(70).ContentEnd(new CardModule<TEntity, TFieldSearch>(mediator, search, card).CreateControl())
+                    .Column(30).ContentEnd(new SerchModule<TEntity, TFieldSearch>(search).CreateControl())
                 .End()
-                .Row(80, SizeType.Absolute).Content(new ButtonModuleV2(parametersButtons).CreateControl()).End()
+                .Row(80, SizeType.Absolute).Content(new ButtonModuleV2(parametersButtons.GetButtons(viewData)).CreateControl()).End()
             .Build();
 
         return layout;
     }
+
+    public void SetData(Func<List<TEntity>> data)
+    {
+        search.SetData(data);
+    }
 }
+

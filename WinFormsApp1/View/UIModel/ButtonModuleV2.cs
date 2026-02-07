@@ -8,9 +8,9 @@ public class ButtonModuleV2 : IUIModel
 {
     private readonly List<ButtonInfo> context;
 
-    public ButtonModuleV2(IParametersButtons context)
+    public ButtonModuleV2(List<ButtonInfo> context)
     {
-        this.context = context.buttons;
+        this.context = context;
     }
 
     public Control CreateControl()

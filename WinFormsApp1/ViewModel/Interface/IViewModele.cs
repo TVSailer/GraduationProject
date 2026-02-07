@@ -2,16 +2,12 @@
 
 namespace Admin.ViewModel.Interface;
 
-public interface IViewModel<T> : IViewModele
-{
-}
-
-public interface IViewModele<TEntity> : IViewModele
+public interface IViewData<TEntity> : IViewData
     where TEntity : Entity, new()
 {
     GenericRepositoryEntity<TEntity> Entity { get; set; }
 }
 
-public interface IViewModele
+public interface IViewData
 {
 }

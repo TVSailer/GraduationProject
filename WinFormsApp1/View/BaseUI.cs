@@ -4,16 +4,16 @@ using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 using Logica.UILayerPanel;
 using System.Windows.Forms;
+using Admin.ViewModel.AbstractViewModel;
 
-public class BaseUI<T, TEntity>(
+public class BaseUI<TViewData, TEntity>(
     AdminMainView form, 
-    IViewModel<T> viewModel, 
-    IParametersButtons<T> parametersButtons)
-    : IView<T>
+    TViewData viewData,
+    IParametersButtons<TViewData> parametersButtons)
+    : IView<TViewData, TEntity>
     where TEntity : Entity, new()
+    where TViewData : IViewData<TEntity>
 {
-    public IViewModel<T> ViewModel { get; } = viewModel;
-
     public Form InitializeComponents(object? data)
     {
         return form
@@ -25,12 +25,15 @@ public class BaseUI<T, TEntity>(
     {
         return Layout
             .CreateColumn()
-                .Row(400, SizeType.Absolute).ContentEnd(new FieldEntityModule(ViewModel).CreateControl())
+                .Row(0, SizeType.AutoSize).ContentEnd(new FieldEntityModule(viewData).CreateControl())
                 .With(c => {
-                    if (ViewModel is ViewModelWithImages<TEntity> vm)
+                    if (viewData is ViewModelWithImages<TEntity> vm)
                         c.Row().ContentEnd(new ImageModule<TEntity>(vm).CreateControl());
+                    else c.Row().End();
                 })
-                .Row(160, SizeType.Absolute).ContentEnd(new ButtonModuleV2(parametersButtons).CreateControl())
+                .Row(0, SizeType.AutoSize).ContentEnd(new ButtonModuleV2(parametersButtons.GetButtons(viewData)).CreateControl())
             .Build();
     }
+
+    public TViewData ViewData { get; } = viewData;
 }

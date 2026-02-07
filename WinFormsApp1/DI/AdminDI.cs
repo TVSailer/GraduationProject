@@ -1,4 +1,4 @@
-using Admin.Commands_Handlers.Managment;
+using Admin.DI;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using DataAccess.Postgres;
@@ -15,7 +15,8 @@ internal static class AdminDI
     private static StandardKernel ConfigurationContainer()
     {
         var container = new StandardKernel(
-            new LessonModule());
+            new LessonModule(),
+            new VisitorModule());
 
         var db = new ApplicationDbContext();
         var serviceProvader = new ServiceProviderDI(container);
@@ -24,14 +25,10 @@ internal static class AdminDI
         container.Bind<IServiceProvider>().ToConstant(serviceProvader).InSingletonScope();
         container.Bind<ILoggerFactory>().To<LoggerFactory>().InSingletonScope();
 
-        container.Bind<ApplicationDbContext>().ToConstant(db).InSingletonScope();
+        container.Bind<ApplicationDbContext>().ToConstant(db);
 
-        container.Bind<IView<AdminMainViewModel>, Form, AdminMainView>().To<AdminMainView>().InSingletonScope();
-        container.Bind<IViewModele, AdminMainViewModel>().To<AdminMainViewModel>().InSingletonScope();
-
-        container.Bind<IRequest>().To<InitializeUI<AdminMainViewModel>>();
-        container.Bind<IRequestHandler<InitializeUI<AdminMainViewModel>>>().To<InitializeUIHandler<AdminMainViewModel>>();
-
+        container.Bind<AdminMainView, IView<AdminMainViewModel>>().To<AdminMainView>().InSingletonScope();
+        container.Bind<AdminMainViewModel>().ToSelf();
         // db.AddRange(
         //     new EventCategoryEntity("Спорт"),
         //     new EventCategoryEntity("Творчесво"),

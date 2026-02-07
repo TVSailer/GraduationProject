@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace Logica.UILayerPanel;
 
 public abstract class TableNode
@@ -25,38 +27,36 @@ public abstract class TableNode
             Dock = DockStyle.Fill
         };
 
-        if (this is TableColumn column)
+        if (Style is ColumnStyle column)
         {
             table.ColumnCount = 1;
             table.RowCount = Children.Count;
-            var style = (ColumnStyle)Style;
-            table.ColumnStyles.Add(new ColumnStyle(style.SizeType, style.Width));
+            table.ColumnStyles.Add(new ColumnStyle(column.SizeType, column.Width));
 
             for (int i = 0; i < Children.Count; i++)
             {
                 var child = Children[i];
-                if (child.Style is RowStyle rowStyle)
-                {
-                    table.RowStyles.Add(rowStyle);
-                }
-                table.Controls.Add(child.Compile(), 0, i);
+                if (child.Style is not RowStyle rowStyle) continue;
+
+                var control = child.Compile();
+                table.RowStyles.Add(rowStyle.SizeType == SizeType.AutoSize ? new RowStyle(SizeType.Absolute, control.PreferredSize.Height) : rowStyle);
+                table.Controls.Add(control, 0, i);
             }
         }
-        else if (this is TableRow row)
+        else if (Style is RowStyle row)
         {
             table.ColumnCount = Children.Count;
             table.RowCount = 1;
-            var style = (RowStyle)Style;
-            table.RowStyles.Add(new RowStyle(style.SizeType, style.Height));
+            table.RowStyles.Add(new RowStyle(row.SizeType, row.Height));
 
             for (int i = 0; i < Children.Count; i++)
             {
                 var child = Children[i];
-                if (child.Style is ColumnStyle columnStyle)
-                {
-                    table.ColumnStyles.Add(columnStyle);
-                }
-                table.Controls.Add(child.Compile(), i, 0);
+                if (child.Style is not ColumnStyle columnStyle) continue;
+
+                var control = child.Compile();
+                table.ColumnStyles.Add(columnStyle.SizeType == SizeType.AutoSize ? new ColumnStyle(SizeType.Absolute, control.PreferredSize.Width) : columnStyle);
+                table.Controls.Add(control, i, 0);
             }
         }
 

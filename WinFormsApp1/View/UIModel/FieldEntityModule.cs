@@ -10,7 +10,7 @@ public class FieldEntityModule : IUIModel
     private readonly PropertyChange context;
     private readonly List<FieldInfoUiAttribute> fieldInfo;
 
-    public FieldEntityModule(IViewModele context)
+    public FieldEntityModule(object context)
     {
         fieldInfo = context.GetType().GetAttributes<FieldInfoUiAttribute>();
 

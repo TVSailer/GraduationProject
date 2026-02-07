@@ -19,3 +19,4 @@ public class PropertyChange : INotifyPropertyChanged, IMessageErrorProvider
             new ErrorMessagePropertyArgs(errorMesege, new PropertyChangedEventArgs(prop)));
     }
 }
+

@@ -1,52 +1,17 @@
 ﻿using Admin.ViewModel.Managment;
-using Admin.ViewModels.Lesson;
+using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 
 namespace Admin.ViewModel.Model.Visitor;
 
-public class VisitorSerch : SerchManagment<VisitorEntity>
+public class VisitorSearch : SearchEntity<VisitorEntity, VisitorFieldSearch>
 {
-    [BaseFieldUi("Имя преподователя")]
-    public string VisitorName
+    public VisitorSearch(Repository<VisitorEntity> repository) : base(repository.Get, new VisitorFieldSearch(),  (obj, entitys) =>
+        entitys
+            .Where(e => e.FIO.Name.StartsWith(obj.VisitorName))
+            .Where(e => e.FIO.Surname.StartsWith(obj.VisitorSurname))
+            .ToList())
     {
-        get;
-        set
-        {
-            if (value == field) return;
-            field = value;
-            OnPropertyChanged();
-        }
-    } = "";
-
-    [BaseFieldUi("Фамилия преподователя")]
-    public string VisitorSurname
-    {
-        get;
-        set
-        {
-            if (value == field) return;
-            field = value;
-            OnPropertyChanged();
-        }
-    } = "";
-    public VisitorSerch(Repository<VisitorEntity> repository) : base(repository)
-    {
-        OnClearSerchFunk = () =>
-        {
-            VisitorName = "";
-            VisitorSurname = "";
-        };
-
-        OnSerhFunk = (entitys) =>
-        {
-            return entitys
-                .Where(e => e.FIO.Name.StartsWith(VisitorName))
-                .Where(e => e.FIO.Surname.StartsWith(VisitorSurname))
-                .ToList();
-        };
     }
-
-    public override Func<List<VisitorEntity>, List<VisitorEntity>> OnSerhFunk { get; protected set; }
-    public override Action OnClearSerchFunk { get; protected set; }
 }

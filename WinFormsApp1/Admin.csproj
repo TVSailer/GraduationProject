@@ -12,35 +12,19 @@
   <ItemGroup>
     <Compile Remove="ViewModel\Model\Event\**" />
     <Compile Remove="ViewModel\Model\Teacher\**" />
-    <Compile Remove="ViewModel\Model\Visitor\**" />
     <EmbeddedResource Remove="ViewModel\Model\Event\**" />
     <EmbeddedResource Remove="ViewModel\Model\Teacher\**" />
-    <EmbeddedResource Remove="ViewModel\Model\Visitor\**" />
     <None Remove="ViewModel\Model\Event\**" />
     <None Remove="ViewModel\Model\Teacher\**" />
-    <None Remove="ViewModel\Model\Visitor\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="DI\EventModule.cs" />
     <Compile Remove="DI\TeacherModule.cs" />
-    <Compile Remove="DI\VisitorModule.cs" />
     <Compile Remove="View\ManagementView.cs" />
     <Compile Remove="View\UI.cs" />
     <Compile Remove="View\UIModel\ButtonModule.cs" />
   </ItemGroup>
-
-  <!-- <ItemGroup> -->
-  <!--   <Compile Remove="ViewModel\Model\Event\**" /> -->
-  <!--   <Compile Remove="ViewModel\Model\Teacher\**" /> -->
-  <!--   <Compile Remove="ViewModel\Model\Visitor\**" /> -->
-  <!--   <EmbeddedResource Remove="ViewModel\Model\Event\**" /> -->
-  <!--   <EmbeddedResource Remove="ViewModel\Model\Teacher\**" /> -->
-  <!--   <EmbeddedResource Remove="ViewModel\Model\Visitor\**" /> -->
-  <!--   <None Remove="ViewModel\Model\Event\**" /> -->
-  <!--   <None Remove="ViewModel\Model\Teacher\**" /> -->
-  <!--   <None Remove="ViewModel\Model\Visitor\**" /> -->
-  <!-- </ItemGroup> -->
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="14.0.0" />

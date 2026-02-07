@@ -1,6 +1,6 @@
-﻿using DataAccess.Postgres.Models;
+﻿using Admin.View.Moduls.UIModel;
+using DataAccess.Postgres.Models;
 using Logica;
-using Layout = Logica.UILayerPanel.Layout;
 
 namespace Admin.ViewModels.Lesson
 {
@@ -13,18 +13,18 @@ namespace Admin.ViewModels.Lesson
         private DateTimePicker timeStart;
         private DateTimePicker timeEnd;
 
-        public ScheduleView(List<LessonScheduleEntity>? schedule)
+        public ScheduleView(LessonFieldData instance)
         {
             Text = "Создание расписания";
             Size = new Size(width: 1000, height: 500);
             StartPosition = FormStartPosition.CenterScreen;
 
-            if (schedule != null)
-                scheduleEntities = schedule;
+            if (instance.Schedule != null)
+                scheduleEntities = instance.Schedule;
 
             CreateControls();
 
-            //FormClosed += (s, e) => func.Invoke(obj: scheduleEntities);
+            FormClosed += (s, e) => instance.Schedule = scheduleEntities;
         }
 
         private void CreateControls()
@@ -50,17 +50,17 @@ namespace Admin.ViewModels.Lesson
                 scheduleEntities.ForEach(action: s => scheduleGrid.Rows.Add(values: [s.Day.ToDescriptionString(), $"{s.Start}-{s.End}"]));
 
             Controls.Add(
-                FactoryElements.TableLayoutPanel()
-                .NewRowSize(size: 55)
-                .AddingRowsStyles(rowStyles: new RowStyle(sizeType: SizeType.Absolute, height: 40))
-                .ControlAddIsColumnAbsolute(control: dayComboBox, weidht: dayComboBox.PreferredSize.Width)
-                .ControlAddIsColumnAbsolute(control: timeStart, weidht: timeEnd.PreferredSize.Width)
-                .ControlAddIsColumnAbsolute(control: timeEnd, weidht: timeEnd.PreferredSize.Width)
-                .ControlAddIsColumnAbsolute(control: FactoryElements.Button(text: "Добавить", action: AddButton_Click), weidht: 150)
-                .ControlAddIsColumnAbsolute(control: FactoryElements.Button(text: "Удалить", action: DeleteButton_Click), weidht: 150)
-                .ControlAddIsColumnPercent()
-                .ControlAddIsRowsPercent(control: scheduleGrid)
-                );
+                Logica.UILayerPanel.Layout.CreateColumn()
+                    .Row(40, SizeType.Absolute)
+                        .Column(dayComboBox.PreferredSize.Width, SizeType.Absolute).ContentEnd(dayComboBox)
+                        .Column(timeStart.PreferredSize.Width, SizeType.Absolute).ContentEnd(timeStart)
+                        .Column(timeEnd.PreferredSize.Width, SizeType.Absolute).ContentEnd(timeEnd)
+                        .Column(150, SizeType.Absolute).ContentEnd(FactoryElements.Button(text: "Добавить", action: AddButton_Click))
+                        .Column(150, SizeType.Absolute).ContentEnd(FactoryElements.Button(text: "Удалить", action: DeleteButton_Click))
+                        .Column().ContentEnd(new EmptyPanel())
+                    .End()
+                    .Row().ContentEnd(scheduleGrid)
+                    .Build());
         }
 
         private void AddButton_Click()
@@ -83,7 +83,6 @@ namespace Admin.ViewModels.Lesson
         {
             if (scheduleGrid.SelectedRows.Count > 0)
             {
-                //var value = scheduleGrid.SelectedRows[index: 0].Cells[columnName: "Day"].Value;
                 var index = scheduleGrid.SelectedRows[index: 0].Index;
                 scheduleEntities.RemoveAt(index: index);
                 scheduleGrid.Rows.RemoveAt(index: index);

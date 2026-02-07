@@ -1,28 +1,47 @@
-using Admin.View;
+using Admin.Commands_Handlers.Managment;
+using Admin.View.Moduls.UIModel;
 using Admin.View.Moduls.Visitor;
 using Admin.View.ViewForm;
-using Admin.ViewModel.Interface;
 using Admin.ViewModel.Managment;
+using Admin.ViewModel.Managmetn;
 using Admin.ViewModel.Model.Visitor;
+using Admin.ViewModel.Model.Visitor.Buttons;
+using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
+using MediatR;
 using Ninject.Modules;
+
+namespace Admin.DI;
+
+public class VisitorDetailsPanelUI : VisitorFieldData{}
+public class VisitorAddingPanelUI : VisitorFieldData{}
+public record VisitorMangment {}
 
 public class VisitorModule : NinjectModule
 {
     public override void Load()
     {
+        Kernel.Bind<IRequestHandler<SendEntityRequest<VisitorEntity>>>()
+            .To<InitializeDetailsPanelHandler<VisitorEntity, VisitorDetailsPanelUI>>();
+
         Kernel.Bind<Repository<VisitorEntity>>().To<VisitorsRepository>();
 
-        Kernel.Bind<IViewModele<VisitorEntity>>().To<VisitorAddingPanel>().InSingletonScope();
-        Kernel.Bind<IViewModele<VisitorEntity>>().To<VisitorDetailsPanel>().InSingletonScope();
+        Kernel.Bind<VisitorAddingPanelUI>().ToSelf();
+        Kernel.Bind<VisitorDetailsPanelUI>().ToSelf();
+        Kernel.Bind<VisitorMangment>().ToSelf();
 
-        Kernel.Bind<IView<VisitorEntity>>().To<UI<VisitorEntity, VisitorAddingPanel>>().InSingletonScope();
-        Kernel.Bind<IView<VisitorEntity>>().To<UI<VisitorEntity, VisitorDetailsPanel>>().InSingletonScope();
+        Kernel.Bind<SearchEntity<VisitorEntity, VisitorFieldSearch>>().To<VisitorSearch>();
 
-        Kernel.Bind<ManagmentModelView<VisitorEntity>>().ToSelf();
-        Kernel.Bind<ManagementView<VisitorEntity, VisitorCard>>().ToSelf();
-        Kernel.Bind<SerchManagment<VisitorEntity>>().To<VisitorSerch>().InSingletonScope();
+        Kernel.Bind<IView<VisitorAddingPanelUI, VisitorEntity>>().To<BaseUI<VisitorAddingPanelUI, VisitorEntity>>();
+        Kernel.Bind<IView<VisitorDetailsPanelUI, VisitorEntity>>().To<BaseUI<VisitorDetailsPanelUI, VisitorEntity>>();
+        Kernel.Bind<IView<VisitorMangment>>().To<ManagmentEntityUI<VisitorMangment, VisitorEntity, VisitorFieldSearch>>();
 
+        Kernel.Bind<ObjectCard<VisitorEntity>>().To<VisitorCard>();
+        Kernel.Bind<CardModule<VisitorEntity, VisitorFieldSearch>>().ToSelf();
+
+        Kernel.Bind<IParametersButtons<VisitorMangment>>().To<ParametersManagmentButton<VisitorMangment, VisitorEntity, AdminMainViewModel, VisitorAddingPanelUI>>();
+        Kernel.Bind<IParametersButtons<VisitorAddingPanelUI>>().To<VisitorAddingPanelButton>();
+        Kernel.Bind<IParametersButtons<VisitorDetailsPanelUI>>().To<VisitorDetailsPanelButton>();
     }
 }
