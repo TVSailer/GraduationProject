@@ -2,15 +2,24 @@
 using Logica;
 using System.Reflection;
 using System.Windows.Input;
+using Admin.Memento;
+using Admin.ViewModel.Interface;
 
 namespace Admin.ViewModel.Managment;
 
-public abstract class SearchEntity<TEntity, T> : PropertyChange
-    where T : PropertyChange
+public interface IParametersSearch<TEntiy, TFieldData>
+    where TFieldData : IFieldData
+    where TEntiy : Entity, new()
+{
+    public Func<TFieldData, List<TEntiy>, List<TEntiy>> SearchFunc { get; }
+}
+
+public class SearchEntity<TEntity, T> : PropertyChange
+    where T : PropertyChange, IFieldData
     where TEntity : Entity, new()
 {
-    private Func<List<TEntity>> data;
-    public readonly object Field;
+    private readonly List<TEntity> data;
+    public readonly T Field;
 
     public List<TEntity> DataEntitys
     {
@@ -25,23 +34,18 @@ public abstract class SearchEntity<TEntity, T> : PropertyChange
     public ICommand OnClearSerch => new MainCommand(
         _ =>
         {
-            DataEntitys = data.Invoke();
-            field.GetType()
+            DataEntitys = data;
+            Field.GetType()
                 .GetProperties()
-                .ForEach(p => p.SetValue(this, p.GetCustomAttribute<FieldStateAttribute>().Data));
+                .Where(p => p.GetCustomAttribute<FieldStateAttribute>() != null)
+                .ForEach(p => p.SetValue(Field, p.GetCustomAttribute<FieldStateAttribute>().Data));
         });
 
-    public SearchEntity(Func<List<TEntity>> data, T field, Func<T, List<TEntity>, List<TEntity>> search)
+    public SearchEntity(T field, MementoData<TEntity> memento, IParametersSearch<TEntity, T> parameters)
     {
-        this.data = data;
+        data = memento.Data;
         Field = field;
-        DataEntitys = data.Invoke();
-        field.PropertyChanged += (s, e) => DataEntitys = search(field, data.Invoke());
-    }
-
-    public void SetData(Func<List<TEntity>> data)
-    {
-        this.data = data;
-        DataEntitys = data.Invoke();
+        DataEntitys = data;
+        Field.PropertyChanged += (s, e) => DataEntitys = parameters.SearchFunc(Field, data);
     }
 }

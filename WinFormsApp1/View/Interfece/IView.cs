@@ -8,14 +8,12 @@ namespace Admin.View.ViewForm
         public Form InitializeComponents(object? data);
     }
     
-    public interface IView<T, TEntity> : IView
+    public interface IView<T, TEntity> : IView<T>
         where TEntity : Entity, new()
-        where T : IViewData<TEntity>
+        where T : IFieldData<TEntity>
     {
-        T ViewData { get; }
+        T ViewData { get; set; }
     }
 
-    public interface IView<T> : IView
-    {
-    }
+    public interface IView<T> : IView;
 }

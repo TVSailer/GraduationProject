@@ -8,11 +8,11 @@ using Logica.UILayerPanel;
 public class ImageModule<TEntity> : IUIModel
     where TEntity : Entity, new()
 {
-    public readonly ViewModelWithImages<TEntity> context;
+    public readonly FieldModelWithImages<TEntity> context;
 
-    public ImageModule(ViewModelWithImages<TEntity> viewModele)
+    public ImageModule(FieldModelWithImages<TEntity> fieldModele)
     {
-        context = viewModele;
+        context = fieldModele;
     }
 
     public Control? CreateControl()

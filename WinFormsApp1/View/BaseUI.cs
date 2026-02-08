@@ -12,7 +12,7 @@ public class BaseUI<TViewData, TEntity>(
     IParametersButtons<TViewData> parametersButtons)
     : IView<TViewData, TEntity>
     where TEntity : Entity, new()
-    where TViewData : IViewData<TEntity>
+    where TViewData : IFieldData<TEntity>
 {
     public Form InitializeComponents(object? data)
     {
@@ -25,15 +25,15 @@ public class BaseUI<TViewData, TEntity>(
     {
         return Layout
             .CreateColumn()
-                .Row(0, SizeType.AutoSize).ContentEnd(new FieldEntityModule(viewData).CreateControl())
+                .Row(0, SizeType.AutoSize).ContentEnd(new FieldEntityModule(ViewData).CreateControl())
                 .With(c => {
-                    if (viewData is ViewModelWithImages<TEntity> vm)
+                    if (ViewData is FieldModelWithImages<TEntity> vm)
                         c.Row().ContentEnd(new ImageModule<TEntity>(vm).CreateControl());
                     else c.Row().End();
                 })
-                .Row(0, SizeType.AutoSize).ContentEnd(new ButtonModuleV2(parametersButtons.GetButtons(viewData)).CreateControl())
+                .Row(0, SizeType.AutoSize).ContentEnd(new ButtonModuleV2(parametersButtons.GetButtons(ViewData)).CreateControl())
             .Build();
     }
 
-    public TViewData ViewData { get; } = viewData;
+    public TViewData ViewData { get; set; } = viewData;
 }

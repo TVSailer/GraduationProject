@@ -2,7 +2,7 @@
 
 namespace Admin.ViewModel.Interface;
 
-public interface IAddingPanel<T> : IViewData<T>
+public interface IAddingPanel<T> : IFieldData<T>
     where T : Entity, new()
 {
     

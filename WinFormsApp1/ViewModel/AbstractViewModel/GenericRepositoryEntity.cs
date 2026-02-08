@@ -6,7 +6,7 @@ using Admin.ViewModel.Interface;
 public class GenericRepositoryEntity<TEntity>
     where TEntity : Entity, new()
 {
-    private IViewData<TEntity> viewModel;
+    private IFieldData<TEntity> fieldModel;
     private PropertyMapping[] mappings;
 
     public long Id { get; private set; }
@@ -14,7 +14,7 @@ public class GenericRepositoryEntity<TEntity>
 
     private PropertyMapping[] GetOrCreateMappings() 
     {
-        var viewModelType = viewModel.GetType();
+        var viewModelType = fieldModel.GetType();
         var entityType = typeof(TEntity);
 
         return viewModelType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
@@ -44,15 +44,15 @@ public class GenericRepositoryEntity<TEntity>
         foreach (var mapping in mappings)
         {
             var value = mapping.EntityProperty?.GetValue(entity);
-            mapping.ViewModelProperty.SetValue(viewModel, value);
+            mapping.ViewModelProperty.SetValue(fieldModel, value);
         }
     }
 
-    public TEntity GetEntity()
+    public TEntity GetData()
     {
         foreach (var mapping in mappings)
         {
-            var value = mapping.ViewModelProperty.GetValue(viewModel);
+            var value = mapping.ViewModelProperty.GetValue(fieldModel);
             if (value is 0 or null) throw new ArgumentNullException();
             mapping.EntityProperty?.SetValue(Entity, value);
         }
@@ -60,9 +60,9 @@ public class GenericRepositoryEntity<TEntity>
         return Entity;
     } 
 
-    public void Initialize(IViewData<TEntity> viewModel)
+    public void Initialize(IFieldData<TEntity> fieldModel)
     {
-        this.viewModel = viewModel;
+        this.fieldModel = fieldModel;
         mappings = GetOrCreateMappings();
     }
 }

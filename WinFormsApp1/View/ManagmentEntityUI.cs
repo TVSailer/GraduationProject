@@ -6,40 +6,36 @@ using CSharpFunctionalExtensions;
 using Logica.UILayerPanel;
 using MediatR;
 
-public class ManagmentEntityUI<TViewData, TEntity, TFieldSearch>(
+namespace Admin.View;
+
+public class ManagmentEntityUi<TFieldData, TEntity, TFieldSearch>(
     AdminMainView form,
     ObjectCard<TEntity> card,
     SearchEntity<TEntity, TFieldSearch> search,
-    TViewData viewData,
-    IParametersButtons<TViewData> parametersButtons,
+    TFieldData viewData,
+    IParametersButtons<TFieldData> parametersButtons,
     IMediator mediator) 
-    : IView<TViewData>, IInitializeSerch<TEntity>
+    : IView<TFieldData>
     where TEntity : Entity, new()
-    where TFieldSearch : PropertyChange
+    where TFieldSearch : PropertyChange, IFieldData
 {
     public Form InitializeComponents(object? data)
     {
         return form
             .With(m => m.Controls.Clear())
-            .With(m => m.Controls.Add(CreateUI()));
+            .With(m => m.Controls.Add(CreateUi()));
     }
 
-    public Control CreateUI()
+    public Control CreateUi()
     {
         var layout = Layout.CreateColumn()
-                .Row()
-                    .Column(70).ContentEnd(new CardModule<TEntity, TFieldSearch>(mediator, search, card).CreateControl())
-                    .Column(30).ContentEnd(new SerchModule<TEntity, TFieldSearch>(search).CreateControl())
-                .End()
-                .Row(80, SizeType.Absolute).Content(new ButtonModuleV2(parametersButtons.GetButtons(viewData)).CreateControl()).End()
+            .Row()
+            .Column(70).ContentEnd(new CardModule<TEntity, TFieldSearch>(mediator, search, card).CreateControl())
+            .Column(30).ContentEnd(new SerchModule<TEntity, TFieldSearch>(search).CreateControl())
+            .End()
+            .Row(80, SizeType.Absolute).Content(new ButtonModuleV2(parametersButtons.GetButtons(viewData)).CreateControl()).End()
             .Build();
 
         return layout;
     }
-
-    public void SetData(Func<List<TEntity>> data)
-    {
-        search.SetData(data);
-    }
 }
-

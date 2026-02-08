@@ -1,34 +1,37 @@
-﻿using Admin.View.ViewForm;
+﻿using Admin.Memento;
+using Admin.View.ViewForm;
 using Admin.ViewModel.Managment;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using MediatR;
 
-public class LessonDetailsPanelButton(Repository<LessonEntity> repository) : IParametersButtons<LessonDetailsPanelUI>
+public class LessonDetailsPanelButton(
+    MementoData<VisitorEntity> mementoSearch, 
+    MementoStateField<LessonDetailsPanelUI> mementoEntiy,  
+    Repository<LessonEntity> repository, 
+    IServiceProvision di) : IParametersButtons<LessonDetailsPanelUI>
 {
     private Action action;
     public List<ButtonInfo> GetButtons(LessonDetailsPanelUI instance)
     => 
     [
-        new("Назад", _ => AdminDI.GetService<IView<LessonMangment>>().InitializeComponents(null)),
+        new("Назад", _ => di.GetService<IView<LessonMangment>>().InitializeComponents(null)),
         new("Обновить", _ =>
         {
             if (Validatoreg.TryValidObject(instance, out var results))
             {
-                repository.Add(instance.Entity.GetEntity());
-                AdminDI.GetService<IView<LessonMangment>>().InitializeComponents(null);
+                repository.Update(instance.Entity.Id, instance.Entity.GetData());
+                di.GetService<IView<LessonMangment>>().InitializeComponents(null);
             }
             if (instance is PropertyChange pc)
                 results.ForEach(r => r.MemberNames.ForEach(n => { pc.OnMassegeErrorProvider(r.ErrorMessage, n); }));
         }),
         new("Управление посетителями", _ =>
         {
-            var ui = AdminDI.GetService<IView<LessonWordWithVisitor>>();
-            if(ui is IInitializeSerch<VisitorEntity> s)
-                s.SetData(() => instance.Entity.GetEntity().Visitors);
-            ui.InitializeComponents(null);
-
+            mementoEntiy.State = instance;
+            mementoSearch.Data = instance.Entity.GetData().Visitors;
+            di.GetService<IView<LessonWordWithVisitor>>().InitializeComponents(null);
         }),
         new("Управление посещаемостью", _ => action.Invoke()),
         new("Управление отзывами", _ => action.Invoke()),
@@ -37,7 +40,7 @@ public class LessonDetailsPanelButton(Repository<LessonEntity> repository) : IPa
         new("Удалить", _ =>
         {
             repository.Delete(instance.Entity.Id);
-            AdminDI.GetService<IView<LessonMangment>>().InitializeComponents(null);
+            di.GetService<IView<LessonMangment>>().InitializeComponents(null);
         }),
     ];
 }

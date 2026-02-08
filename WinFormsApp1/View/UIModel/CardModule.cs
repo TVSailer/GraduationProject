@@ -1,4 +1,5 @@
 ﻿using Admin.Commands_Handlers.Managment;
+using Admin.ViewModel.Interface;
 using Admin.ViewModel.Managment;
 using CSharpFunctionalExtensions;
 using Logica.UILayerPanel;
@@ -8,7 +9,7 @@ namespace Admin.View.Moduls.UIModel
 {
     public class CardModule<TEntity, TField>(IMediator mediator, SearchEntity<TEntity, TField> searchEntity, ObjectCard<TEntity> card) : IUIModel
         where TEntity : Entity, new()
-        where TField : PropertyChange
+        where TField : PropertyChange, IFieldData
     {
         public Control CreateControl()
             => new FlowLayoutPanel()
@@ -35,7 +36,7 @@ namespace Admin.View.Moduls.UIModel
                     (s, e) => {
                         if (en is TEntity entity)
                         {
-                            mediator.Send(new SendEntityRequest<TEntity>(entity));
+                            mediator.Send(new InitializeDetailsPanelRequest<TEntity>(entity));
                         }
                         else throw new ArgumentException();
                     }));

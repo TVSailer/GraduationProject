@@ -1,10 +1,11 @@
-﻿using Admin.ViewModels.Lesson;
+﻿using Admin.ViewModel.AbstractViewModel;
+using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using Logica.CustomAttribute;
 
 namespace Admin.ViewModel.Model.Visitor;
 
-public class VisitorFieldData : ViewData<VisitorEntity>
+public class VisitorFieldData : FieldData<VisitorEntity>
 {
     [LinkingEntity(nameof(VisitorEntity.FIO))]
     public FIO FIO

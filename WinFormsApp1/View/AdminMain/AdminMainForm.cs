@@ -53,5 +53,6 @@ public class AdminMainView : Form, IView<AdminMainViewModel>
             .With(b => b.DataBindings.Add(new Binding("Command", context, dataMember, true)))
             .With(b => b.BackColor = Color.LightGray);
 
+    public AdminMainViewModel ViewData { get; set; }
 }
 

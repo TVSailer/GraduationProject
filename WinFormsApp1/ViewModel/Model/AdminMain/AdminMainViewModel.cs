@@ -5,13 +5,14 @@ using Logica;
 using MediatR;
 using System.Windows.Input;
 using Admin.DI;
+using Admin.View;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Model.Visitor;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using Ninject;
 
-public class AdminMainViewModel : IViewData
+public class AdminMainViewModel : IFieldData
 {
     public ICommand OnLoadEventsManagemetnView { get; private set; }
     public ICommand OnLoadNewsManagemetnView { get; private set; }
@@ -42,7 +43,7 @@ public class AdminMainViewModel : IViewData
             _ =>
             {
                 
-                AdminDI.GetService<ManagmentEntityUI<LessonMangment, LessonEntity, LessonFieldSearch>>().InitializeComponents(null);
+                AdminDI.GetService<ManagmentEntityUi<LessonMangment, LessonEntity, LessonFieldSearch>>().InitializeComponents(null);
                 // AdminDI.GetService<ManagementView<
                 //     LessonEntity, 
                 //     LessonCard>>().InitializeComponents(null);
@@ -56,7 +57,7 @@ public class AdminMainViewModel : IViewData
         OnLoadVisitorsManagemetnView = new MainCommand(
             _ =>
             {
-                AdminDI.GetService<ManagmentEntityUI<VisitorMangment, VisitorEntity, VisitorFieldSearch>>().InitializeComponents(null);
+                AdminDI.GetService<ManagmentEntityUi<VisitorMangment, VisitorEntity, VisitorFieldSearch>>().InitializeComponents(null);
             });
 
     }

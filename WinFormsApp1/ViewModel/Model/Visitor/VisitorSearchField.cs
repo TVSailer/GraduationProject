@@ -1,8 +1,9 @@
-﻿using Admin.ViewModels.Lesson;
+﻿using Admin.ViewModel.Interface;
+using Admin.ViewModels.Lesson;
 
 namespace Admin.ViewModel.Model.Visitor;
 
-public class VisitorFieldSearch : PropertyChange
+public class VisitorFieldSearch : PropertyChange, IFieldData
 {
     [BaseFieldUi("Имя")]
     [FieldState("")]

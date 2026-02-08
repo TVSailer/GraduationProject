@@ -1,4 +1,6 @@
 using Admin.Commands_Handlers.Managment;
+using Admin.Memento;
+using Admin.View;
 using Admin.View.Moduls.UIModel;
 using Admin.View.Moduls.Visitor;
 using Admin.View.ViewForm;
@@ -22,7 +24,7 @@ public class VisitorModule : NinjectModule
 {
     public override void Load()
     {
-        Kernel.Bind<IRequestHandler<SendEntityRequest<VisitorEntity>>>()
+        Kernel.Bind<IRequestHandler<InitializeDetailsPanelRequest<VisitorEntity>>>()
             .To<InitializeDetailsPanelHandler<VisitorEntity, VisitorDetailsPanelUI>>();
 
         Kernel.Bind<Repository<VisitorEntity>>().To<VisitorsRepository>();
@@ -31,11 +33,13 @@ public class VisitorModule : NinjectModule
         Kernel.Bind<VisitorDetailsPanelUI>().ToSelf();
         Kernel.Bind<VisitorMangment>().ToSelf();
 
-        Kernel.Bind<SearchEntity<VisitorEntity, VisitorFieldSearch>>().To<VisitorSearch>();
+        Kernel.Bind<IParametersSearch<VisitorEntity, VisitorFieldSearch>>().To<VisitorSearch>();
+        Kernel.Bind<VisitorFieldSearch>().ToSelf();
+        Kernel.Bind<SearchEntity<VisitorEntity, VisitorFieldSearch>>().ToSelf();
 
         Kernel.Bind<IView<VisitorAddingPanelUI, VisitorEntity>>().To<BaseUI<VisitorAddingPanelUI, VisitorEntity>>();
         Kernel.Bind<IView<VisitorDetailsPanelUI, VisitorEntity>>().To<BaseUI<VisitorDetailsPanelUI, VisitorEntity>>();
-        Kernel.Bind<IView<VisitorMangment>>().To<ManagmentEntityUI<VisitorMangment, VisitorEntity, VisitorFieldSearch>>();
+        Kernel.Bind<IView<VisitorMangment>>().To<ManagmentEntityUi<VisitorMangment, VisitorEntity, VisitorFieldSearch>>();
 
         Kernel.Bind<ObjectCard<VisitorEntity>>().To<VisitorCard>();
         Kernel.Bind<CardModule<VisitorEntity, VisitorFieldSearch>>().ToSelf();

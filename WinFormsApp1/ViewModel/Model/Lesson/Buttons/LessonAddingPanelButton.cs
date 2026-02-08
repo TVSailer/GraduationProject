@@ -19,7 +19,7 @@ public class LessonAddingPanelButton(Repository<LessonEntity> repository) : IPar
             {
                 if (Validatoreg.TryValidObject(instance, out var results))
                 {
-                    repository.Add(instance.Entity.GetEntity());
+                    repository.Add(instance.Entity.GetData());
                     AdminDI.GetService<IView<LessonMangment>>().InitializeComponents(null);
                 }
 

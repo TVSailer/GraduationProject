@@ -1,23 +1,22 @@
-﻿using Admin.View.ViewForm;
+﻿using Admin.Memento;
+using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 using MediatR;
 
 namespace Admin.Commands_Handlers.Managment;
 
-public record SendEntityRequest<T>(T Entity) : IRequest
+public record InitializeDetailsPanelRequest<T>(T Entity) : IRequest
     where T : Entity, new();
 
-public class InitializeDetailsPanelHandler<TEntity, TDetailsViewModel>(IView<TDetailsViewModel, TEntity> detailsPanel) : IRequestHandler<SendEntityRequest<TEntity>>
+public class InitializeDetailsPanelHandler<TEntity, TDetailsViewModel>(IView<TDetailsViewModel, TEntity> detailsPanel) : IRequestHandler<InitializeDetailsPanelRequest<TEntity>>
     where TEntity : Entity, new()
-    where TDetailsViewModel : IViewData<TEntity>
+    where TDetailsViewModel : IFieldData<TEntity>
 {
-    public Task Handle(SendEntityRequest<TEntity> request, CancellationToken cancellationToken)
+    public Task Handle(InitializeDetailsPanelRequest<TEntity> request, CancellationToken cancellationToken)
     {
-        detailsPanel.InitializeComponents(null);
         detailsPanel.ViewData.Entity.SetEntity(request.Entity);
+        detailsPanel.InitializeComponents(null);
         return Task.CompletedTask;
     }
 }
-
-

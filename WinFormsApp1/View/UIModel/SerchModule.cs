@@ -1,4 +1,5 @@
-﻿using Admin.ViewModel.Managment;
+﻿using Admin.ViewModel.Interface;
+using Admin.ViewModel.Managment;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using Logica;
@@ -8,7 +9,7 @@ namespace Admin.View.Moduls.UIModel
 {
     public class SerchModule<TEntity, TField>(SearchEntity<TEntity, TField> context) : IUIModel
         where TEntity : Entity, new()
-        where TField : PropertyChange
+        where TField : PropertyChange, IFieldData
     {
         private readonly List<FieldInfoUiAttribute> fieldInfos = context.Field.GetType().GetAttributes<FieldInfoUiAttribute>();
 

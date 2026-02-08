@@ -1,8 +1,12 @@
 using Admin.DI;
+using Admin.Memento;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using DataAccess.Postgres;
+using DataAccess.Postgres.Models;
+using DataAccess.Postgres.Repository;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Ninject;
 
@@ -24,17 +28,14 @@ internal static class AdminDI
         container.Bind<IMediator>().To<Mediator>().InSingletonScope();
         container.Bind<IServiceProvider>().ToConstant(serviceProvader).InSingletonScope();
         container.Bind<ILoggerFactory>().To<LoggerFactory>().InSingletonScope();
+        container.Bind<IServiceProvision>().ToConstant(serviceProvader).InSingletonScope();
 
         container.Bind<ApplicationDbContext>().ToConstant(db);
 
         container.Bind<AdminMainView, IView<AdminMainViewModel>>().To<AdminMainView>().InSingletonScope();
         container.Bind<AdminMainViewModel>().ToSelf();
-        // db.AddRange(
-        //     new EventCategoryEntity("Спорт"),
-        //     new EventCategoryEntity("Творчесво"),
-        //     new EventCategoryEntity("Наука")
-        //     );
 
+        //container.GetService<Repository<LessonEntity>>().Get()[0].Visitors.Add(new VisitorEntity());
         // db.AddRange(
         //     new TeacherEntity("dsf", "sdf", "lgh", "22.11.2004", "88989988989", ""),
         //     new TeacherEntity("jtr", "D", "DT", "22.11.2004", "88989988989", ""),
@@ -42,7 +43,7 @@ internal static class AdminDI
         //     );
 
         // db.Teachers.ExecuteUpdate(t => t.SetProperty(t => t.Password, BCrypt.Net.BCrypt.HashPassword("1234")));
-        // db.SaveChanges();
+        //db.SaveChanges();
 
         return container;
     }

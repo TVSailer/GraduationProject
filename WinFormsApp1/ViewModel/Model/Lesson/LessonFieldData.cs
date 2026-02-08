@@ -10,7 +10,7 @@ namespace Admin.ViewModels.Lesson;
 public class LessonFieldData(
     TeacherRepository teacherRepository,
     LessonCategoryRepositroy eventCategoryRepository)
-    : ViewModelWithImages<LessonEntity>
+    : FieldModelWithImages<LessonEntity>
 {
     public List<LessonCategoryEntity> categories => eventCategoryRepository.Get();
     public List<TeacherEntity> teachers => teacherRepository.Get();

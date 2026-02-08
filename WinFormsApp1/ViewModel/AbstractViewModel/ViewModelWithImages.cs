@@ -8,7 +8,7 @@ using Logica;
 
 namespace Admin.ViewModel.AbstractViewModel;
 
-public class ViewModelWithImages<TEntity> : ViewData<TEntity>
+public class FieldModelWithImages<TEntity> : FieldData<TEntity>
     where TEntity : Entity, new()
 {
     public Dictionary<string, bool> SelectedImg { get; protected set; } = new();
@@ -47,7 +47,7 @@ public class ViewModelWithImages<TEntity> : ViewData<TEntity>
         }
     }
 
-    protected ViewModelWithImages()
+    protected FieldModelWithImages()
     {
         var typeListImgs = typeof(TEntity)
             .GetProperties()

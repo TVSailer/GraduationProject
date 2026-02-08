@@ -1,8 +1,10 @@
-﻿using DataAccess.Postgres.Models;
+﻿using Admin.ViewModel.Interface;
+using DataAccess.Postgres.Models;
+using DataAccess.Postgres.Repository;
 
 namespace Admin.ViewModels.Lesson;
 
-public class LessonFieldSearch(List<LessonCategoryEntity> categor) : PropertyChange
+public class LessonFieldSearch(Repository<LessonCategoryEntity> repository) : PropertyChange, IFieldData
 {
     public List<string> category
     {
@@ -10,7 +12,7 @@ public class LessonFieldSearch(List<LessonCategoryEntity> categor) : PropertyCha
         {
             var list = new List<string>();
             list.Add("");
-            categor.Select(c => c.Category).ForEach(t => list.Add(t));
+            repository.Get().Select(c => c.Category).ForEach(t => list.Add(t));
             return list;
         }
     }

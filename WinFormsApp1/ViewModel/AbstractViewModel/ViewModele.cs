@@ -1,15 +1,17 @@
-﻿using Admin.ViewModel.Interface;
+﻿using System.Runtime.CompilerServices;
+using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 using Logica;
-using System.Runtime.CompilerServices;
 
-public abstract class ViewData<TEntity> : PropertyChange, IViewData<TEntity>
+namespace Admin.ViewModel.AbstractViewModel;
+
+public abstract class FieldData<TEntity> : PropertyChange, IFieldData<TEntity>
     where TEntity : Entity, new()
 {
     public GenericRepositoryEntity<TEntity> Entity { get; set; } = new();
 
 
-    public ViewData()
+    protected FieldData()
     {
         Entity.Initialize(this);
     }
