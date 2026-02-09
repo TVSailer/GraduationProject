@@ -1,5 +1,6 @@
 ﻿using Admin.DI;
 using Admin.Memento;
+using Admin.View;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Managment;
 using DataAccess.Postgres.Models;
@@ -8,12 +9,12 @@ using Logica;
 
 namespace Admin.ViewModel.Model.Visitor.Buttons;
 
-public class VisitorAddingPanelButton(Repository<VisitorEntity> repository, MementoData<VisitorEntity> memento, IServiceProvision di) : IParametersButtons<VisitorAddingPanelUI>
+public class VisitorAddingPanelButton(Repository<LessonEntity> repositoryL, Repository<VisitorEntity> repositoryV, MementoData<VisitorEntity> memento, ControlView control) : IParametersButtons<VisitorAddingPanelUI>
 {
     public List<ButtonInfo> GetButtons(VisitorAddingPanelUI instance)
         => 
         [
-            new("Назад", _ => AdminDI.GetService<IView<VisitorMangment>>().InitializeComponents(null)),
+            new("Назад", _ => control.Exit()),
             new("Сохранить",
                 _ =>
                 {
@@ -22,7 +23,7 @@ public class VisitorAddingPanelButton(Repository<VisitorEntity> repository, Meme
                         var entity = instance.Entity.GetData();
 
                         var auth = UserAuthService.CreateAuthUser(entity.FIO.Name,
-                            repository
+                            repositoryV
                                 .Get()
                                 .Select(t => t.Password)
                                 .ToArray());
@@ -31,10 +32,9 @@ public class VisitorAddingPanelButton(Repository<VisitorEntity> repository, Meme
 
                         entity.Login = auth.Login;
                         entity.Password = BCrypt.Net.BCrypt.HashPassword(auth.Password);
-                        repository.Add(entity);
+                        repositoryV.Add(entity);
                         memento.Data.Add(entity);
-                        di.GetService<IView<VisitorMangment>>().InitializeComponents(null);
-                        //di.GetService<IView<LessonMangment>>().InitializeComponents(null);
+                        control.Exit();
                     }
                     if (instance is PropertyChange pc)
                         results.ForEach(r => r.MemberNames.ForEach(n => { pc.OnMassegeErrorProvider(r.ErrorMessage, n); }));

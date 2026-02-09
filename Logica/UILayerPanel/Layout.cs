@@ -1,6 +1,6 @@
 ﻿namespace Logica.UILayerPanel;
 
-public static class Layout
+public static class LayoutPanel
 {
     public static IColumnBuilder CreateColumn(float width = 100, SizeType sizeType = SizeType.Percent)
     {

@@ -1,13 +1,17 @@
 ﻿using Admin.View.ViewForm;
+using Admin.ViewModel.Managment;
 using Logica;
+using Logica.UILayerPanel;
 
+namespace Admin.View.AdminMain;
 
-public class AdminMainView : Form, IView<AdminMainViewModel>
+public class AdminMainView : Form, IView<AdminPanelUI>
 {
-    public AdminMainView(AdminMainViewModel adminMainViewModel)
+    private readonly List<ButtonInfo> buttonInfos;
+
+    public AdminMainView(IParametersButtons<AdminPanelUI> buttons, AdminPanelUI model)
     {
-        DataContext = adminMainViewModel;
-        InitializeComponents(null);
+        buttonInfos = buttons.GetButtons(model, this);
     }
 
     public Form InitializeComponents(object? data)
@@ -19,40 +23,22 @@ public class AdminMainView : Form, IView<AdminMainViewModel>
             .With(m => m.BackColor = Color.White)
             .With(m => m.Controls.Add(MainMenu()));
 
-    private TableLayoutPanel MainMenu()
-        => new TableLayoutPanel()
-            .With(t => t.Padding = new Padding(30))
-            .With(t => t.Dock = DockStyle.Fill)
-            .ControlAddIsColumnPercent(25)
-            .ControlAddIsColumnAbsolute(600)
-            .ControlAddIsRowsAbsolute(
-                FactoryElements.LabelTitle("Панель администратора"), 70)
-            .ControlAddIsRowsAbsolute(
-                CreateButton("📰 Управление новостями", DataContext, "OnLoadNewsManagemetnView"), 50)
-            .ControlAddIsRowsAbsolute(
-                CreateButton("🎭 Управление мероприятиями", DataContext, "OnLoadEventsManagemetnView"), 50)
-            .ControlAddIsRowsAbsolute(
-                CreateButton("🎨 Управление кружками", DataContext, "OnLoadLessonsManagemetnView"), 50)
-            .ControlAddIsRowsAbsolute(
-                CreateButton("👨‍🏫 Управление преподавателями", DataContext, "OnLoadTeachersManagemetnView"), 50)
-            .ControlAddIsRowsAbsolute(
-                CreateButton("👥 Управление посетителями", DataContext, "OnLoadVisitorsManagemetnView"), 50)
-            .ControlAddIsRowsAbsolute(
-                CreateButton("📊 Управление посещаемостью", null), 50)
-            .ControlAddIsColumnPercent(25)
-            .ControlAddIsRowsPercent(25);
+    private Control MainMenu()
+        => LayoutPanel.CreateRow()
+            .Column(25).End()
+            .Column(50)
+                .Row(70, SizeType.Absolute).ContentEnd(FactoryElements.LabelTitle("Панель администратора"))
+                .Row(60, SizeType.Absolute).ContentEnd(Button(buttonInfos[0]))
+                .Row(60, SizeType.Absolute).ContentEnd(Button(buttonInfos[1]))
+                .Row(60, SizeType.Absolute).ContentEnd(Button(buttonInfos[2]))
+                .Row(60, SizeType.Absolute).ContentEnd(Button(buttonInfos[3]))
+                .Row(60, SizeType.Absolute).ContentEnd(Button(buttonInfos[4]))
+                .Row().End()
+                .End()
+            .Column(25).End()
+            .Build();
 
-    private Control CreateButton(string text, Action action)
-        => FactoryElements.Button(text, action)
-            .With(b => b.Font = new Font("Arial", 12, FontStyle.Bold))
-            .With(b => b.BackColor = Color.LightGray);
+    public Button Button(ButtonInfo buttonInfo) => FactoryElements.Button(buttonInfo.LabelText, buttonInfo.Command);
 
-    private Control CreateButton(string text, object context, string dataMember)
-        => FactoryElements.Button(text)
-            .With(b => b.Font = new Font("Arial", 12, FontStyle.Bold))
-            .With(b => b.DataBindings.Add(new Binding("Command", context, dataMember, true)))
-            .With(b => b.BackColor = Color.LightGray);
-
-    public AdminMainViewModel ViewData { get; set; }
+    public AdminPanelUI? ViewData { get; set; }
 }
-

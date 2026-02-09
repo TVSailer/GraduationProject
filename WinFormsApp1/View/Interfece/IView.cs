@@ -12,7 +12,7 @@ namespace Admin.View.ViewForm
         where TEntity : Entity, new()
         where T : IFieldData<TEntity>
     {
-        T ViewData { get; set; }
+        T ViewField { get; set; }
     }
 
     public interface IView<T> : IView;

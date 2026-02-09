@@ -1,4 +1,5 @@
 ﻿using Admin.Memento;
+using Admin.View;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
@@ -9,14 +10,13 @@ namespace Admin.Commands_Handlers.Managment;
 public record InitializeDetailsPanelRequest<T>(T Entity) : IRequest
     where T : Entity, new();
 
-public class InitializeDetailsPanelHandler<TEntity, TDetailsViewModel>(IView<TDetailsViewModel, TEntity> detailsPanel) : IRequestHandler<InitializeDetailsPanelRequest<TEntity>>
+public class InitializeDetailsPanelHandler<TEntity, TDetailsViewModel>(ControlView control) : IRequestHandler<InitializeDetailsPanelRequest<TEntity>>
     where TEntity : Entity, new()
     where TDetailsViewModel : IFieldData<TEntity>
 {
     public Task Handle(InitializeDetailsPanelRequest<TEntity> request, CancellationToken cancellationToken)
     {
-        detailsPanel.ViewData.Entity.SetEntity(request.Entity);
-        detailsPanel.InitializeComponents(null);
+        control.LoadView<TDetailsViewModel, TEntity>(request.Entity);
         return Task.CompletedTask;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 
 namespace Admin.Memento;
@@ -18,4 +19,7 @@ public class MementoData<T>(Repository<T> repository)
             IsProvide = true;
         }
     }
+
+
 }
+

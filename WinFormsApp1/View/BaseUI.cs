@@ -4,6 +4,7 @@ using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 using Logica.UILayerPanel;
 using System.Windows.Forms;
+using Admin.View.AdminMain;
 using Admin.ViewModel.AbstractViewModel;
 
 public class BaseUI<TViewData, TEntity>(
@@ -23,17 +24,17 @@ public class BaseUI<TViewData, TEntity>(
 
     public Control CreateUI()
     {
-        return Layout
+        return LayoutPanel
             .CreateColumn()
-                .Row(0, SizeType.AutoSize).ContentEnd(new FieldEntityModule(ViewData).CreateControl())
+                .Row(0, SizeType.AutoSize).ContentEnd(new FieldEntityModule(ViewField).CreateControl())
                 .With(c => {
-                    if (ViewData is FieldModelWithImages<TEntity> vm)
+                    if (ViewField is FieldModelWithImages<TEntity> vm)
                         c.Row().ContentEnd(new ImageModule<TEntity>(vm).CreateControl());
                     else c.Row().End();
                 })
-                .Row(0, SizeType.AutoSize).ContentEnd(new ButtonModuleV2(parametersButtons.GetButtons(ViewData)).CreateControl())
+                .Row(0, SizeType.AutoSize).ContentEnd(new ButtonModuleV2(parametersButtons.GetButtons(ViewField, this)).CreateControl())
             .Build();
     }
 
-    public TViewData ViewData { get; set; } = viewData;
+    public TViewData ViewField { get; set; } = viewData;
 }

@@ -1,4 +1,7 @@
 
+using Admin.View;
+using Admin.View.AdminMain;
+
 internal static class Program
 {
     /// <summary>
@@ -8,7 +11,10 @@ internal static class Program
     static void Main()
     {
         ApplicationConfiguration.Initialize();
-        Application.Run(AdminDI.GetService<AdminMainView>());
+        Application.Run(
+            AdminDI
+            .GetService<ControlView>()
+            .LoadView<AdminPanelUI>());
     }
 }
 

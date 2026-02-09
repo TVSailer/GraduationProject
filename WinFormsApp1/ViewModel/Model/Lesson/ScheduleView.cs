@@ -50,7 +50,7 @@ namespace Admin.ViewModels.Lesson
                 scheduleEntities.ForEach(action: s => scheduleGrid.Rows.Add(values: [s.Day.ToDescriptionString(), $"{s.Start}-{s.End}"]));
 
             Controls.Add(
-                Logica.UILayerPanel.Layout.CreateColumn()
+                Logica.UILayerPanel.LayoutPanel.CreateColumn()
                     .Row(40, SizeType.Absolute)
                         .Column(dayComboBox.PreferredSize.Width, SizeType.Absolute).ContentEnd(dayComboBox)
                         .Column(timeStart.PreferredSize.Width, SizeType.Absolute).ContentEnd(timeStart)

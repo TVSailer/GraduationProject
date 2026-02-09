@@ -13,6 +13,7 @@ namespace DataAccess.Postgres.Repository
         public override List<LessonEntity> Get()
           => DbContext.Lessons
             .Include(l => l.Teacher)
+            .Include(l => l.Visitors)
             .Include(l => l.Category)
             .Include(l => l.Schedule)
             .Include(l => l.Imgs)

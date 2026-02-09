@@ -16,7 +16,7 @@ public class ImageModule<TEntity> : IUIModel
     }
 
     public Control? CreateControl()
-    => Layout.CreateColumn()
+    => LayoutPanel.CreateColumn()
         .Row(50, SizeType.Absolute).ContentEnd(FactoryElements.Label_12("📷 Изображения:"))
         .Row().ContentEnd(FactoryElements.FlowLayoutPanel()
                     .With(fp => context.PropertyChanged += AddingImages(fp)))

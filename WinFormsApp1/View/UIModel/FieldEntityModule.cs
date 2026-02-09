@@ -22,7 +22,7 @@ public class FieldEntityModule : IUIModel
 
     public Control CreateControl()
     {
-        return Layout.CreateColumn()
+        return LayoutPanel.CreateColumn()
             .With(t => fieldInfo.ForEach(p =>
                 t.Row(p.Size + 1, SizeType.Absolute).ContentEnd(CreateField(p))))
             .Row().ContentEnd(new EmptyPanel())
@@ -31,7 +31,7 @@ public class FieldEntityModule : IUIModel
 
     private Control CreateField(FieldInfoUiAttribute fieldInfoAttribute)
     {
-        return Layout.CreateRow(fieldInfoAttribute.Size, SizeType.Absolute)
+        return LayoutPanel.CreateRow(fieldInfoAttribute.Size, SizeType.Absolute)
             .Column(30).ContentEnd(FactoryElements.Label_11(fieldInfoAttribute.LabelText))
             .Column(70).ContentEnd(fieldInfoAttribute
                 .GetContol(context)

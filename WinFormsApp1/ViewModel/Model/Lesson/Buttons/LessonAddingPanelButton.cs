@@ -1,4 +1,6 @@
 ﻿using Admin.Commands_Handlers.Managment;
+using Admin.Memento;
+using Admin.View;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Managment;
 using Admin.ViewModels.Lesson;
@@ -9,7 +11,7 @@ using MediatR;
 
 namespace Admin.ViewModel.Managmetn;
 
-public class LessonAddingPanelButton(Repository<LessonEntity> repository) : IParametersButtons<LessonAddingPanelUI>
+public class LessonAddingPanelButton(Repository<LessonEntity> repository, ControlView view) : IParametersButtons<LessonAddingPanelUI>
 {
     public List<ButtonInfo> GetButtons(LessonAddingPanelUI instance)
         =>
@@ -20,15 +22,15 @@ public class LessonAddingPanelButton(Repository<LessonEntity> repository) : IPar
                 if (Validatoreg.TryValidObject(instance, out var results))
                 {
                     repository.Add(instance.Entity.GetData());
-                    AdminDI.GetService<IView<LessonMangment>>().InitializeComponents(null);
-                }
+                    view.Exit();
+                };
 
                 if (instance is PropertyChange pc)
                     results.ForEach(r => r.MemberNames.ForEach(n => { pc.OnMassegeErrorProvider(r.ErrorMessage, n); }));
             }),
             new("Добавить изображение", _ => instance.OnAddingImg.Execute(null)),
             new("Удалить изображение", _ => instance.OnDeletingImg.Execute(null)),
-            new("Назад", _ => AdminDI.GetService<IView<LessonMangment>>().InitializeComponents(null))
+            new("Назад", _ => view.Exit())
         ];
 }
 

@@ -1,4 +1,5 @@
-﻿using Admin.View.Moduls.UIModel;
+﻿using Admin.View.AdminMain;
+using Admin.View.Moduls.UIModel;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using Admin.ViewModel.Managment;
@@ -28,12 +29,12 @@ public class ManagmentEntityUi<TFieldData, TEntity, TFieldSearch>(
 
     public Control CreateUi()
     {
-        var layout = Layout.CreateColumn()
+        var layout = LayoutPanel.CreateColumn()
             .Row()
             .Column(70).ContentEnd(new CardModule<TEntity, TFieldSearch>(mediator, search, card).CreateControl())
             .Column(30).ContentEnd(new SerchModule<TEntity, TFieldSearch>(search).CreateControl())
             .End()
-            .Row(80, SizeType.Absolute).Content(new ButtonModuleV2(parametersButtons.GetButtons(viewData)).CreateControl()).End()
+            .Row(80, SizeType.Absolute).Content(new ButtonModuleV2(parametersButtons.GetButtons(viewData, this)).CreateControl()).End()
             .Build();
 
         return layout;

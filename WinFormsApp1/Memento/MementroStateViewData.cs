@@ -1,10 +1,13 @@
-﻿using Admin.ViewModel.Interface;
+﻿using Admin.View.ViewForm;
+using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 
 namespace Admin.Memento;
 
-public class MementoStateField<T>
-    where T : IFieldData
+public class MementoView
 {
-    public T? State { get; set; }
+    private readonly Stack<IView> stack= new();
+
+    public void Push(IView view) => stack.Push(view);
+    public IView Pop() => stack.Pop();
 }

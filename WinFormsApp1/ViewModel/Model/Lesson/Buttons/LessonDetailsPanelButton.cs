@@ -1,4 +1,5 @@
 ﻿using Admin.Memento;
+using Admin.View;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Managment;
 using DataAccess.Postgres.Models;
@@ -8,30 +9,28 @@ using MediatR;
 
 public class LessonDetailsPanelButton(
     MementoData<VisitorEntity> mementoSearch, 
-    MementoStateField<LessonDetailsPanelUI> mementoEntiy,  
-    Repository<LessonEntity> repository, 
-    IServiceProvision di) : IParametersButtons<LessonDetailsPanelUI>
+    ControlView mementoView,
+    Repository<LessonEntity> repository) : IParametersButtons<LessonDetailsPanelUI>
 {
     private Action action;
     public List<ButtonInfo> GetButtons(LessonDetailsPanelUI instance)
     => 
     [
-        new("Назад", _ => di.GetService<IView<LessonMangment>>().InitializeComponents(null)),
+        new("Назад", _ => mementoView.Exit()),
         new("Обновить", _ =>
         {
             if (Validatoreg.TryValidObject(instance, out var results))
             {
                 repository.Update(instance.Entity.Id, instance.Entity.GetData());
-                di.GetService<IView<LessonMangment>>().InitializeComponents(null);
+                mementoView.Exit();
             }
             if (instance is PropertyChange pc)
                 results.ForEach(r => r.MemberNames.ForEach(n => { pc.OnMassegeErrorProvider(r.ErrorMessage, n); }));
         }),
         new("Управление посетителями", _ =>
         {
-            mementoEntiy.State = instance;
             mementoSearch.Data = instance.Entity.GetData().Visitors;
-            di.GetService<IView<LessonWordWithVisitor>>().InitializeComponents(null);
+            mementoView.LoadView<LessonWordWithVisitor>();
         }),
         new("Управление посещаемостью", _ => action.Invoke()),
         new("Управление отзывами", _ => action.Invoke()),
@@ -40,7 +39,7 @@ public class LessonDetailsPanelButton(
         new("Удалить", _ =>
         {
             repository.Delete(instance.Entity.Id);
-            di.GetService<IView<LessonMangment>>().InitializeComponents(null);
+            mementoView.Exit(null);
         }),
     ];
 }

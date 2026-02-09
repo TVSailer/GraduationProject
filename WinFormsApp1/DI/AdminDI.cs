@@ -1,5 +1,7 @@
 using Admin.DI;
 using Admin.Memento;
+using Admin.View;
+using Admin.View.AdminMain;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using DataAccess.Postgres;
@@ -9,6 +11,8 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Ninject;
+
+public record AdminPanelUI;
 
 internal static class AdminDI
 {
@@ -32,9 +36,13 @@ internal static class AdminDI
 
         container.Bind<ApplicationDbContext>().ToConstant(db);
 
-        container.Bind<AdminMainView, IView<AdminMainViewModel>>().To<AdminMainView>().InSingletonScope();
-        container.Bind<AdminMainViewModel>().ToSelf();
+        container.Bind<AdminMainView, IView<AdminPanelUI>>().To<AdminMainView>().InSingletonScope();
+        container.Bind<AdminPanelUI>().ToSelf();
+        container.Bind<IParametersButtons<AdminPanelUI>>().To<AdminMainViewButton>();
 
+
+        container.Bind<MementoView>().ToSelf().InSingletonScope();
+        container.Bind<ControlView>().ToSelf().InSingletonScope();
         //container.GetService<Repository<LessonEntity>>().Get()[0].Visitors.Add(new VisitorEntity());
         // db.AddRange(
         //     new TeacherEntity("dsf", "sdf", "lgh", "22.11.2004", "88989988989", ""),

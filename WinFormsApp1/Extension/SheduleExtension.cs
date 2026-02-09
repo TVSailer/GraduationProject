@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
+using Logica.UILayerPanel;
 
 public static class ListExtension
 {
@@ -12,4 +13,10 @@ public static class ListExtension
 
         return value;
     }
+}
+
+public static class TableBuilderExtension
+{
+    public static IRowBuilder RowAutoSize(this IColumnBuilder columnBuilder) => columnBuilder.Row(0, SizeType.AutoSize);
+    public static IColumnBuilder ColumnAutoSize(this IRowBuilder rowBuilder) => rowBuilder.Column(0, SizeType.AutoSize);
 }

@@ -1,4 +1,6 @@
 ﻿using Admin.DI;
+using Admin.Memento;
+using Admin.View;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Managment;
 using DataAccess.Postgres.Models;
@@ -7,18 +9,18 @@ using Logica;
 
 namespace Admin.ViewModel.Model.Visitor.Buttons;
 
-public class VisitorDetailsPanelButton(Repository<VisitorEntity> repository, IServiceProvision di) : IParametersButtons<VisitorDetailsPanelUI>
+public class VisitorDetailsPanelButton(Repository<VisitorEntity> repository, ControlView control) : IParametersButtons<VisitorDetailsPanelUI>
 {
     public List<ButtonInfo> GetButtons(VisitorDetailsPanelUI instance)
         =>
         [
-            new("Назад", _ => di.GetService<IView<LessonWordWithVisitor>>().InitializeComponents(null)),
+            new("Назад", _ => control.Exit()),
             new("Обновить", _ =>
             {
                 if (Validatoreg.TryValidObject(instance, out var results))
                 {
                     repository.Update(instance.Entity.Id, instance.Entity.GetData());
-                    //di.GetService<IView<LessonMangment>>().InitializeComponents(null);
+                    control.Exit();
                 }
                 if (instance is PropertyChange pc)
                     results.ForEach(r => r.MemberNames.ForEach(n => { pc.OnMassegeErrorProvider(r.ErrorMessage, n); }));
@@ -27,7 +29,7 @@ public class VisitorDetailsPanelButton(Repository<VisitorEntity> repository, ISe
                 _ =>
                 {
                     repository.Delete(instance.Entity.Id);
-                    di.GetService<IView<VisitorMangment>>().InitializeComponents(null);
+                    control.Exit();
                 })
         ];
 }

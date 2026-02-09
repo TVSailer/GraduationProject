@@ -18,7 +18,7 @@ namespace Admin.View.Moduls.UIModel
             .With(t => t.BorderStyle = BorderStyle.FixedSingle)
             .With(p => p.Dock = DockStyle.Fill)
             .With(p => p.Controls.Add(
-                Layout.CreateColumn()
+                LayoutPanel.CreateColumn()
                 .With(t => fieldInfos
                     .ForEach(fi => t
                         .Row(60, SizeType.Absolute)

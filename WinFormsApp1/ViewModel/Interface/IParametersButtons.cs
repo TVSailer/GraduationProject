@@ -1,4 +1,5 @@
-﻿using Admin.ViewModel.Managment;
+﻿using Admin.View.ViewForm;
+using Admin.ViewModel.Managment;
 
 public interface IParametersButtons<T>
 {
