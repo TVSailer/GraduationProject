@@ -1,7 +1,7 @@
-﻿using Admin.ViewModels.Lesson;
-using CSharpFunctionalExtensions;
-using System.Reflection;
+﻿using System.Reflection;
 using Admin.ViewModel.Interface;
+using Admin.ViewModels.Lesson;
+using CSharpFunctionalExtensions;
 
 public class GenericRepositoryEntity<TEntity>
     where TEntity : Entity, new()

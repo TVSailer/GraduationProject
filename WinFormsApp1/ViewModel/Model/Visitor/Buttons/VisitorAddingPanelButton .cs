@@ -9,7 +9,7 @@ using Logica;
 
 namespace Admin.ViewModel.Model.Visitor.Buttons;
 
-public class VisitorAddingPanelButton(Repository<LessonEntity> repositoryL, Repository<VisitorEntity> repositoryV, MementoData<VisitorEntity> memento, ControlView control) : IParametersButtons<VisitorAddingPanelUI>
+public class VisitorAddingPanelButton(Repository<LessonEntity> repositoryL, Repository<VisitorEntity> repositoryV, ControlView control) : IParametersButtons<VisitorAddingPanelUI>
 {
     public List<ButtonInfo> GetButtons(VisitorAddingPanelUI instance)
         => 
@@ -33,12 +33,10 @@ public class VisitorAddingPanelButton(Repository<LessonEntity> repositoryL, Repo
                         entity.Login = auth.Login;
                         entity.Password = BCrypt.Net.BCrypt.HashPassword(auth.Password);
                         repositoryV.Add(entity);
-                        memento.Data.Add(entity);
                         control.Exit();
                     }
                     if (instance is PropertyChange pc)
                         results.ForEach(r => r.MemberNames.ForEach(n => { pc.OnMassegeErrorProvider(r.ErrorMessage, n); }));
-                    
                 })
         ];
 }

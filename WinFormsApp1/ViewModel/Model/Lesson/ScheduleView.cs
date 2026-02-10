@@ -74,9 +74,7 @@ namespace Admin.ViewModels.Lesson
             }
 
             scheduleEntities.Add(item: new LessonScheduleEntity(start: timeStart.HousMinute(), end: timeEnd.HousMinute(), day: (Day)dayComboBox.SelectedValue));
-
-            scheduleGrid.Rows.Add(values: [dayComboBox.Text, $"{timeStart.Text}-{timeEnd.Text}"]
-            );
+            scheduleGrid.Rows.Add(values: [dayComboBox.Text, $"{timeStart.Text}-{timeEnd.Text}"]);
         }
 
         private void DeleteButton_Click()

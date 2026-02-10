@@ -7,7 +7,7 @@ public class LessonCard : ObjectCard<LessonEntity>
 
     public LessonCard()
     {
-        Size = new Size(400, 240);
+        Size = new Size(400, 180);
     }
 
     public override ObjectCard<LessonEntity> Initialize(LessonEntity obj)
@@ -28,8 +28,6 @@ public class LessonCard : ObjectCard<LessonEntity>
         .ControlAddIsRowsPercent(FactoryElements.Label_09($"🏷️ {entity.Category}")
             .With(l => l.ForeColor = Color.Gray), 30)
         .ControlAddIsRowsPercent(FactoryElements.Label_09($"👨‍🏫 {entity.Teacher}")
-            .With(l => l.ForeColor = Color.Gray), 30)
-        .ControlAddIsRowsPercent(FactoryElements.Label_09($"🕒 {entity.Schedule.ParseSchedule()}")
             .With(l => l.ForeColor = Color.Gray), 30)
         .ControlAddIsRowsPercent(FactoryElements.Label_09($"👥 {entity.Visitors.Count}/{entity.MaxParticipants}")
             .With(l => l.ForeColor = Color.DarkGreen), 30)

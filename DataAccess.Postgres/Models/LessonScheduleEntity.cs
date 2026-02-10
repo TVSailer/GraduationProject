@@ -22,6 +22,8 @@ namespace DataAccess.Postgres.Models
         public LessonScheduleEntity(TimeOnly start, TimeOnly end, Day day)
         {
             Day = day;
+            Start = start;
+            End = end;
         }
 
         public override string ToString()

@@ -19,11 +19,11 @@ namespace DataAccess.Postgres.Models
         public long TeacherId { get; set; }
         public TeacherEntity Teacher { get; set; }
 
-        public List<DateAttendanceEntity>? AttendanceDates { get; set; } = new();
-        public List<LessonScheduleEntity>? Schedule { get; set; } = new();
-        public List<VisitorEntity>? Visitors { get; set; } = new();
-        public List<ReviewEntity>? Reviews { get; set; } = new();
-        public List<ImgLessonEntity>? Imgs { get; set; } = new();
+        public List<DateAttendanceEntity> AttendanceDates { get; set; } = new();
+        public List<LessonScheduleEntity> Schedule { get; set; } = new();
+        public List<VisitorEntity> Visitors { get; set; } = new();
+        public List<ReviewEntity> Reviews { get; set; } = new();
+        public List<ImgLessonEntity> Imgs { get; set; } = new();
 
         public LessonEntity() { }
 

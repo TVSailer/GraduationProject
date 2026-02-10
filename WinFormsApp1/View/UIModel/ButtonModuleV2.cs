@@ -25,7 +25,7 @@ public class ButtonModuleV2 : IUIModel
                         t.ControlAddIsRowsAbsolute(new TableLayoutPanel() { Dock = DockStyle.Fill }, 70);
 
                     if (t.Controls[^1] is TableLayoutPanel table)
-                        table.ControlAddIsColumnPercent(FactoryElements.Button(context[i].LabelText, context[i].Command));
+                        table.ControlAddIsColumnPercent(FactoryElements.Button(context[i].LabelText, context[i].Command, context[i].Enabled));
                 }
 
                 if (t.Controls[^1].Controls.Count >= 4) return;

@@ -1,13 +1,9 @@
-﻿using Admin.Commands_Handlers.Managment;
-using Admin.Memento;
-using Admin.View;
-using Admin.View.ViewForm;
+﻿using Admin.View;
 using Admin.ViewModel.Managment;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
-using MediatR;
 
 namespace Admin.ViewModel.Managmetn;
 

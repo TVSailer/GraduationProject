@@ -291,23 +291,16 @@ public static class FactoryElements
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold));
     
-    public static Button Button(ButtonInfoUIAttribute buttonInfo, object context)
-        => new Button()
-            .With(c => c.Text = buttonInfo.Text)
-            .With(c => c.BackColor = Color.White)
-            .With(c => c.DataBindings.Add(new Binding("Command", context, buttonInfo.ButtonName, true)))
-            .With(c => c.Dock = DockStyle.Fill)
-            .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold));
-
     public static Button Button(string text, Action action)
         => Button(text, _ => action.Invoke());
     
-    public static Button Button(string text, Action<object> action)
+    public static Button Button(string text, Action<Button> action, Func<Button, bool>? enabled = null)
         => new Button()
             .With(c => c.Text = text)
+            .With(c => c.Enabled = enabled?.Invoke(c) ?? true)
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
-            .With(c => c.Click += (s, e) => action?.Invoke(null));
+            .With(c => c.Click += (s, e) => action?.Invoke(c));
     
     public static Button Button(string text, int size, Action action)
         => Button(text, size)

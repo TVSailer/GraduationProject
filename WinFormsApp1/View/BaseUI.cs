@@ -1,11 +1,11 @@
-﻿using Admin.View.Moduls.UIModel;
+﻿using System.Windows.Forms;
+using Admin.View.AdminMain;
+using Admin.View.Moduls.UIModel;
 using Admin.View.ViewForm;
+using Admin.ViewModel.AbstractViewModel;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 using Logica.UILayerPanel;
-using System.Windows.Forms;
-using Admin.View.AdminMain;
-using Admin.ViewModel.AbstractViewModel;
 
 public class BaseUI<TViewData, TEntity>(
     AdminMainView form, 
@@ -32,7 +32,7 @@ public class BaseUI<TViewData, TEntity>(
                         c.Row().ContentEnd(new ImageModule<TEntity>(vm).CreateControl());
                     else c.Row().End();
                 })
-                .Row(0, SizeType.AutoSize).ContentEnd(new ButtonModuleV2(parametersButtons.GetButtons(ViewField, this)).CreateControl())
+                .Row(0, SizeType.AutoSize).ContentEnd(new ButtonModuleV2(parametersButtons.GetButtons(ViewField)).CreateControl())
             .Build();
     }
 

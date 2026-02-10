@@ -1,4 +1,5 @@
-using Admin.Commands_Handlers.Managment;
+using System.ComponentModel;
+using Admin.DI;
 using Admin.Memento;
 using Admin.View;
 using Admin.View.Moduls.UIModel;
@@ -12,9 +13,9 @@ using Admin.ViewModel.Model.Visitor.Buttons;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
+using Logica.UILayerPanel;
 using MediatR;
 using Ninject.Modules;
-using System.ComponentModel;
 
 public record LessonMangment;
 public record LessonWordWithVisitor;
@@ -30,12 +31,6 @@ public class LessonModule : NinjectModule
 {
     public override void Load()
     {
-        
-        Kernel.Bind<MementoData<VisitorEntity>>().ToSelf().InSingletonScope();
-
-        Kernel.Bind<IRequestHandler<InitializeDetailsPanelRequest<LessonEntity>>>().To<InitializeDetailsPanelHandler<LessonEntity, LessonDetailsPanelUI>>();
-        //Kernel.Bind<IRequestHandler<RecoveryPanelRequest<LessonDetailsPanelUI>>>().To<RecoveryPanelHandler<LessonEntity, LessonDetailsPanelUI>>();
-
         Kernel.Bind<Repository<LessonEntity>>().To<LessonsRepository>();
         Kernel.Bind<Repository<LessonCategoryEntity>>().To<LessonCategoryRepositroy>();
 
@@ -49,11 +44,10 @@ public class LessonModule : NinjectModule
 
         Kernel.Bind<IView<LessonAddingPanelUI>, IView<LessonAddingPanelUI, LessonEntity>>().To<BaseUI<LessonAddingPanelUI, LessonEntity>>();
         Kernel.Bind<IView<LessonDetailsPanelUI>, IView<LessonDetailsPanelUI, LessonEntity>>().To<BaseUI<LessonDetailsPanelUI, LessonEntity>>();
-        Kernel.Bind<IView<LessonMangment>>().To<ManagmentEntityUi<LessonMangment, LessonEntity, LessonFieldSearch>>();
-        Kernel.Bind<IView<LessonWordWithVisitor>>().To<ManagmentEntityUi<LessonWordWithVisitor, VisitorEntity, VisitorFieldSearch>>();
+        Kernel.Bind<IView<LessonMangment>>().To<ManagmentEntityUi<LessonMangment, LessonEntity, LessonFieldSearch, LessonDetailsPanelUI>>();
+        Kernel.Bind<IView<LessonWordWithVisitor>>().To<ManagmentEntityUi<LessonWordWithVisitor, VisitorEntity, VisitorFieldSearch, VisitorDetailsPanelUI>>();
 
         Kernel.Bind<ObjectCard<LessonEntity>>().To<LessonCard>();
-        Kernel.Bind<CardModule<LessonEntity, LessonFieldSearch>>().ToSelf();
 
         Kernel.Bind<IParametersButtons<LessonMangment>>().To<ManagmentButton<LessonMangment, LessonEntity, LessonAddingPanelUI>>();
         Kernel.Bind<IParametersButtons<LessonAddingPanelUI>>().To<LessonAddingPanelButton>();

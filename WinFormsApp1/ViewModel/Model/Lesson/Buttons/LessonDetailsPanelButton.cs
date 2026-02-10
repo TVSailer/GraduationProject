@@ -2,15 +2,17 @@
 using Admin.View;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Managment;
+using Admin.ViewModels.Lesson;
+using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using MediatR;
 
 public class LessonDetailsPanelButton(
-    MementoData<VisitorEntity> mementoSearch, 
     ControlView mementoView,
-    Repository<LessonEntity> repository) : IParametersButtons<LessonDetailsPanelUI>
+    VisitorsRepository repositoryV,
+    Repository<LessonEntity> repositoryL) : IParametersButtons<LessonDetailsPanelUI>
 {
     private Action action;
     public List<ButtonInfo> GetButtons(LessonDetailsPanelUI instance)
@@ -21,7 +23,7 @@ public class LessonDetailsPanelButton(
         {
             if (Validatoreg.TryValidObject(instance, out var results))
             {
-                repository.Update(instance.Entity.Id, instance.Entity.GetData());
+                repositoryL.Update(instance.Entity.Id, instance.Entity.GetData());
                 mementoView.Exit();
             }
             if (instance is PropertyChange pc)
@@ -29,17 +31,18 @@ public class LessonDetailsPanelButton(
         }),
         new("Управление посетителями", _ =>
         {
-            mementoSearch.Data = instance.Entity.GetData().Visitors;
+            repositoryV.Lesson = instance.Entity.GetData();
             mementoView.LoadView<LessonWordWithVisitor>();
         }),
         new("Управление посещаемостью", _ => action.Invoke()),
         new("Управление отзывами", _ => action.Invoke()),
         new("Добавить изображение", _=> instance.OnAddingImg.Execute(null)),
         new("Удалить изображение", _ => instance.OnDeletingImg.Execute(null)),
+        new("Обновить расписание", _ => new ScheduleView(instance).ShowDialog()),
         new("Удалить", _ =>
         {
-            repository.Delete(instance.Entity.Id);
-            mementoView.Exit(null);
+            repositoryL.Delete(instance.Entity.Id);
+            mementoView.Exit();
         }),
     ];
 }

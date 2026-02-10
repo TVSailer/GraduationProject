@@ -1,4 +1,6 @@
-﻿using DataAccess.Postgres.Models;
+﻿using DataAccess.Postgres;
+using DataAccess.Postgres.Models;
+using DataAccess.Postgres.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
@@ -66,3 +68,4 @@ namespace DataAccess.Postgres.Repository
 
     }
 }
+

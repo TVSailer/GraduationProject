@@ -1,9 +1,10 @@
-﻿using CSharpFunctionalExtensions;
-using Logica;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows.Input;
 using Admin.Memento;
 using Admin.ViewModel.Interface;
+using CSharpFunctionalExtensions;
+using DataAccess.Postgres.Repository;
+using Logica;
 
 namespace Admin.ViewModel.Managment;
 
@@ -41,9 +42,9 @@ public class SearchEntity<TEntity, T> : PropertyChange
                 .ForEach(p => p.SetValue(Field, p.GetCustomAttribute<FieldStateAttribute>().Data));
         });
 
-    public SearchEntity(T field, MementoData<TEntity> memento, IParametersSearch<TEntity, T> parameters)
+    public SearchEntity(T field, Repository<TEntity> memento, IParametersSearch<TEntity, T> parameters)
     {
-        data = memento.Data;
+        data = memento.Get();
         Field = field;
         DataEntitys = data;
         Field.PropertyChanged += (s, e) => DataEntitys = parameters.SearchFunc(Field, data);

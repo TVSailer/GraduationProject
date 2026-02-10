@@ -1,3 +1,3 @@
 ﻿namespace Admin.ViewModel.Managment;
 
-public record ButtonInfo(string LabelText, Action<object> Command);
+public record ButtonInfo(string LabelText, Action<Button> Command, Func<Button, bool>? Enabled = null);

@@ -1,14 +1,10 @@
-using Admin.Commands_Handlers.Managment;
-using Admin.Memento;
 using Admin.View;
 using Admin.View.Moduls.UIModel;
 using Admin.View.Moduls.Visitor;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Managment;
-using Admin.ViewModel.Managmetn;
 using Admin.ViewModel.Model.Visitor;
 using Admin.ViewModel.Model.Visitor.Buttons;
-using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using MediatR;
@@ -24,10 +20,7 @@ public class VisitorModule : NinjectModule
 {
     public override void Load()
     {
-        Kernel.Bind<IRequestHandler<InitializeDetailsPanelRequest<VisitorEntity>>>()
-            .To<InitializeDetailsPanelHandler<VisitorEntity, VisitorDetailsPanelUI>>();
-
-        Kernel.Bind<Repository<VisitorEntity>>().To<VisitorsRepository>();
+        Kernel.Bind<VisitorsRepository, Repository<VisitorEntity>>().To<VisitorsRepository>().InSingletonScope();
 
         Kernel.Bind<VisitorAddingPanelUI>().ToSelf();
         Kernel.Bind<VisitorDetailsPanelUI>().ToSelf();
@@ -39,10 +32,9 @@ public class VisitorModule : NinjectModule
 
         Kernel.Bind<IView<VisitorAddingPanelUI>, IView<VisitorAddingPanelUI, VisitorEntity>>().To<BaseUI<VisitorAddingPanelUI, VisitorEntity>>();
         Kernel.Bind<IView<VisitorDetailsPanelUI>, IView<VisitorDetailsPanelUI, VisitorEntity>>().To<BaseUI<VisitorDetailsPanelUI, VisitorEntity>>();
-        Kernel.Bind<IView<VisitorMangment>>().To<ManagmentEntityUi<VisitorMangment, VisitorEntity, VisitorFieldSearch>>();
+        Kernel.Bind<IView<VisitorMangment>>().To<ManagmentEntityUi<VisitorMangment, VisitorEntity, VisitorFieldSearch, VisitorDetailsPanelUI>>();
 
         Kernel.Bind<ObjectCard<VisitorEntity>>().To<VisitorCard>();
-        Kernel.Bind<CardModule<VisitorEntity, VisitorFieldSearch>>().ToSelf();
 
         Kernel.Bind<IParametersButtons<VisitorMangment>>().To<ManagmentButton<VisitorMangment, VisitorEntity, VisitorAddingPanelUI>>();
         Kernel.Bind<IParametersButtons<VisitorAddingPanelUI>>().To<VisitorAddingPanelButton>();

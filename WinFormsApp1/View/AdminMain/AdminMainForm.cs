@@ -11,7 +11,7 @@ public class AdminMainView : Form, IView<AdminPanelUI>
 
     public AdminMainView(IParametersButtons<AdminPanelUI> buttons, AdminPanelUI model)
     {
-        buttonInfos = buttons.GetButtons(model, this);
+        buttonInfos = buttons.GetButtons(model);
     }
 
     public Form InitializeComponents(object? data)
