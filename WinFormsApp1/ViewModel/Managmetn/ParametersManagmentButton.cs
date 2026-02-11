@@ -1,4 +1,5 @@
-﻿using Admin.Memento;
+﻿using Admin.DI;
+using Admin.Memento;
 using Admin.View;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
@@ -16,4 +17,13 @@ public class ManagmentButton<T, TEntity, TAddingPanel>(ControlView view) : IPara
         new("Назад", _ => view.Exit()),
         new("Добавить", _ => view.LoadView<TAddingPanel>())
     ];
+}
+
+public class ManagmentVisitorButton(ControlView view) : IParametersButtons<VisitorMangment>
+{
+    public List<ButtonInfo> GetButtons(VisitorMangment instance)
+        =>
+        [
+            new("Назад", _ => view.Exit()),
+        ];
 }

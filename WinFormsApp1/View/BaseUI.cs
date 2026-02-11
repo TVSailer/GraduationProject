@@ -1,19 +1,21 @@
 ﻿using System.Windows.Forms;
 using Admin.View.AdminMain;
 using Admin.View.Moduls.UIModel;
+using Admin.View.UIModel;
 using Admin.View.ViewForm;
 using Admin.ViewModel.AbstractViewModel;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
+using DataAccess.Postgres.Repository;
 using Logica.UILayerPanel;
 
-public class BaseUI<TViewData, TEntity>(
+public class BaseUI<TFieldData, TEntity>(
     AdminMainView form, 
-    TViewData viewData,
-    IParametersButtons<TViewData> parametersButtons)
-    : IView<TViewData, TEntity>
+    TFieldData viewData,
+    IParametersButtons<TFieldData> parametersButtons)
+    : IView<TFieldData, TEntity>
     where TEntity : Entity, new()
-    where TViewData : IFieldData<TEntity>
+    where TFieldData : IFieldData<TEntity>
 {
     public Form InitializeComponents(object? data)
     {
@@ -36,5 +38,5 @@ public class BaseUI<TViewData, TEntity>(
             .Build();
     }
 
-    public TViewData ViewField { get; set; } = viewData;
+    public TFieldData ViewField { get; set; } = viewData;
 }

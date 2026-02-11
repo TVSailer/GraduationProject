@@ -28,7 +28,7 @@ public class ControlView(MementoView mementoView, IServiceProvision di)
         View = view;
         return View.InitializeComponents(data);
     }
-
+    
     public Form Exit(object? data = null)
     {
         View = mementoView.Pop();

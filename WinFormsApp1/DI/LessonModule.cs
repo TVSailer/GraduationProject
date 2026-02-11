@@ -31,21 +31,15 @@ public class LessonModule : NinjectModule
 {
     public override void Load()
     {
-        Kernel.Bind<Repository<LessonEntity>>().To<LessonsRepository>();
-        Kernel.Bind<Repository<LessonCategoryEntity>>().To<LessonCategoryRepositroy>();
-
-        Kernel.Bind<LessonAddingPanelUI>().ToSelf();
-        Kernel.Bind<LessonDetailsPanelUI>().ToSelf();
-        Kernel.Bind<LessonMangment>().ToSelf();
+        Kernel.Bind<Repository<LessonEntity>>().To<LessonsRepository>().InSingletonScope();
+        Kernel.Bind<Repository<LessonCategoryEntity>>().To<LessonCategoryRepositroy>().InSingletonScope();
 
         Kernel.Bind<IParametersSearch<LessonEntity, LessonFieldSearch>>().To<LessonSearch>();
-        Kernel.Bind<LessonFieldSearch>().ToSelf();
-        Kernel.Bind<SearchEntity<LessonEntity, LessonFieldSearch>>().ToSelf();
 
         Kernel.Bind<IView<LessonAddingPanelUI>, IView<LessonAddingPanelUI, LessonEntity>>().To<BaseUI<LessonAddingPanelUI, LessonEntity>>();
         Kernel.Bind<IView<LessonDetailsPanelUI>, IView<LessonDetailsPanelUI, LessonEntity>>().To<BaseUI<LessonDetailsPanelUI, LessonEntity>>();
         Kernel.Bind<IView<LessonMangment>>().To<ManagmentEntityUi<LessonMangment, LessonEntity, LessonFieldSearch, LessonDetailsPanelUI>>();
-        Kernel.Bind<IView<LessonWordWithVisitor>>().To<ManagmentEntityUi<LessonWordWithVisitor, VisitorEntity, VisitorFieldSearch, VisitorDetailsPanelUI>>();
+        Kernel.Bind<IView<LessonWordWithVisitor>>().To<ManagmentEntityUi<LessonWordWithVisitor, VisitorEntity, VisitorFieldSearch, VisitorDetailsPanelUi>>();
 
         Kernel.Bind<ObjectCard<LessonEntity>>().To<LessonCard>();
 

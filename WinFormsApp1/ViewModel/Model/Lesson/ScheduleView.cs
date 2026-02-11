@@ -16,7 +16,7 @@ namespace Admin.ViewModels.Lesson
         public ScheduleView(LessonFieldData instance)
         {
             Text = "Создание расписания";
-            Size = new Size(width: 1000, height: 500);
+            Size = new Size(width: 1100, height: 500);
             StartPosition = FormStartPosition.CenterScreen;
 
             if (instance.Schedule != null)
@@ -51,15 +51,20 @@ namespace Admin.ViewModels.Lesson
 
             Controls.Add(
                 Logica.UILayerPanel.LayoutPanel.CreateColumn()
-                    .Row(40, SizeType.Absolute)
-                        .Column(dayComboBox.PreferredSize.Width, SizeType.Absolute).ContentEnd(dayComboBox)
-                        .Column(timeStart.PreferredSize.Width, SizeType.Absolute).ContentEnd(timeStart)
-                        .Column(timeEnd.PreferredSize.Width, SizeType.Absolute).ContentEnd(timeEnd)
-                        .Column(150, SizeType.Absolute).ContentEnd(FactoryElements.Button(text: "Добавить", action: AddButton_Click))
-                        .Column(150, SizeType.Absolute).ContentEnd(FactoryElements.Button(text: "Удалить", action: DeleteButton_Click))
-                        .Column().ContentEnd(new EmptyPanel())
+                    .Row(55, SizeType.Absolute)
+                        .Column()
+                            .Row()
+                                .Column(dayComboBox.PreferredSize.Width + 55, SizeType.Absolute).ContentEnd(dayComboBox)
+                                .Column(timeStart.PreferredSize.Width, SizeType.Absolute).ContentEnd(timeStart)
+                                .Column(timeEnd.PreferredSize.Width, SizeType.Absolute).ContentEnd(timeEnd)
+                                .Column(150, SizeType.Absolute).ContentEnd(FactoryElements.Button(text: "Добавить", action: AddButton_Click))
+                                .Column(150, SizeType.Absolute).ContentEnd(FactoryElements.Button(text: "Удалить", action: DeleteButton_Click))
+                                .Column(150, SizeType.Absolute).ContentEnd(FactoryElements.Button(text: "Сохранить", action: Close))
+                                .Column().ContentEnd(new EmptyPanel())
+                            .End()
+                        .End()
                     .End()
-                    .Row().ContentEnd(scheduleGrid)
+                    .Row(99).ContentEnd(scheduleGrid)
                     .Build());
         }
 

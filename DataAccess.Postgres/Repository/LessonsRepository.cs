@@ -1,4 +1,5 @@
-﻿using DataAccess.Postgres.Models;
+﻿using DataAccess.Postgres.Extensions;
+using DataAccess.Postgres.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -18,37 +19,6 @@ namespace DataAccess.Postgres.Repository
             .Include(l => l.Schedule)
             .Include(l => l.Imgs)
             .ToList() ?? throw new ArgumentNullException();
-
-        public LessonEntity Get(int id)
-            => DbContext.Lessons
-            .Include(l => l.Visitors)
-            .Include(l => l.Teacher)
-            .Include(l => l.AttendanceDates)
-            .AsNoTracking()
-            .FirstOrDefault(l => l.Id == id) ?? throw new ArgumentNullException();
-
-        //public LessonEntity Get(string name)
-        //    => DbContext.Lessons
-        //    .Include(l => l.Visitors)
-        //    .Include(l => l.Teacher)
-        //    .Include(l => l.AttendanceDates)
-        //    .AsNoTracking()
-        //    .FirstOrDefault(l => l.Name == name) ?? throw new ArgumentNullException();
-
-        //public List<LessonEntity> Get(string name, string surnameTeacher)
-        //    => DbContext.Lessons
-        //    .Include(l => l.Teacher)
-        //    .AsNoTracking()
-        //    .Where(l => l.Name.StartsWith(name))
-        //    .Where(l => l.Teacher. Surname.StartsWith(surnameTeacher))
-        //    .ToList() ?? throw new ArgumentNullException();
-
-        //public List<VisitorEntity> GetVisitors(int lessonId, string name, string surname, string patro)
-        //    => Get(lessonId).Visitors
-        //    .Where(v => v.Name.StartsWith(name))
-        //    .Where(v => v.Surname.StartsWith(surname))
-        //    .Where(v => v.Patronymic.StartsWith(patro))
-        //    .ToList() ?? throw new ArgumentNullException();
 
         public void AddRelationWithVisitor(LessonEntity lesson, VisitorEntity visitor)
         {
@@ -113,17 +83,6 @@ namespace DataAccess.Postgres.Repository
                 foreach (var img in lesson.Imgs)
                     if (!existingUrls.Contains(img.Url))
                         lessonDb.Imgs.Add(img);
-                // lesson.Imgs.ForEach(imgl => DbContext.ImgLesson
-                // .Where(img => img.Id == imgl.Id)
-                // .ExecuteUpdate(s => s
-                //     .SetProperty(i => i.Url, imgl.Url)));
-                //
-                // lesson.Imgs
-                //     .Where(imgL => !DbContext.ImgLesson
-                //         .Select(i => i.Id)
-                //         .Contains(imgL.Id))
-                //     .ToList()
-                //     .ForEach(img => DbContext.Add(img));
             }
 
             DbContext.SaveChanges();

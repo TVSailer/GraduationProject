@@ -2,6 +2,7 @@ using Admin.DI;
 using Admin.Memento;
 using Admin.View;
 using Admin.View.AdminMain;
+using Admin.View.Moduls.UIModel;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using DataAccess.Postgres;
@@ -39,7 +40,6 @@ internal static class AdminDI
         container.Bind<AdminMainView, IView<AdminPanelUI>>().To<AdminMainView>().InSingletonScope();
         container.Bind<AdminPanelUI>().ToSelf();
         container.Bind<IParametersButtons<AdminPanelUI>>().To<AdminMainViewButton>();
-
 
         container.Bind<MementoView>().ToSelf().InSingletonScope();
         container.Bind<ControlView>().ToSelf().InSingletonScope();

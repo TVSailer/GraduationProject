@@ -15,38 +15,44 @@ public interface IParametersSearch<TEntiy, TFieldData>
     public Func<TFieldData, List<TEntiy>, List<TEntiy>> SearchFunc { get; }
 }
 
-public class SearchEntity<TEntity, T> : PropertyChange
+public class SearchEntity<TEntity, T>
     where T : PropertyChange, IFieldData
     where TEntity : Entity, new()
 {
-    private readonly List<TEntity> data;
     public readonly T Field;
+    private readonly Repository<TEntity> repository;
+    public Action<List<TEntity>> OnSortEntity { get; set; }
 
     public List<TEntity> DataEntitys
     {
         get;
-        set
+        private set
         {
             field = value;
-            OnPropertyChanged();
+            OnSortEntity?.Invoke(field);
         }
     }
 
     public ICommand OnClearSerch => new MainCommand(
         _ =>
         {
-            DataEntitys = data;
+            DataEntitys = repository.Get();
             Field.GetType()
                 .GetProperties()
                 .Where(p => p.GetCustomAttribute<FieldStateAttribute>() != null)
                 .ForEach(p => p.SetValue(Field, p.GetCustomAttribute<FieldStateAttribute>().Data));
         });
 
-    public SearchEntity(T field, Repository<TEntity> memento, IParametersSearch<TEntity, T> parameters)
+    public SearchEntity(T field, Repository<TEntity> repository, IParametersSearch<TEntity, T> parameters)
     {
-        data = memento.Get();
+        DataEntitys = repository.Get();
         Field = field;
-        DataEntitys = data;
-        Field.PropertyChanged += (s, e) => DataEntitys = parameters.SearchFunc(Field, data);
+        this.repository = repository;
+        Field.PropertyChanged += (s, e) => DataEntitys = parameters.SearchFunc(Field, repository.Get());
+    }
+
+    public List<TEntity> GetEntities()
+    {
+        return repository.Get();
     }
 }

@@ -9,9 +9,9 @@ using Logica;
 
 namespace Admin.ViewModel.Model.Visitor.Buttons;
 
-public class VisitorDetailsPanelButton(Repository<VisitorEntity> repository, ControlView control) : IParametersButtons<VisitorDetailsPanelUI>
+public class VisitorDetailsPanelButton(Repository<VisitorEntity> repository, ControlView control) : IParametersButtons<VisitorDetailsPanelUi>
 {
-    public List<ButtonInfo> GetButtons(VisitorDetailsPanelUI instance)
+    public List<ButtonInfo> GetButtons(VisitorDetailsPanelUi instance)
         =>
         [
             new("Назад", _ => control.Exit()),

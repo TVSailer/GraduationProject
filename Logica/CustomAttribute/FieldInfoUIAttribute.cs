@@ -11,8 +11,9 @@ namespace Admin.ViewModels.Lesson
         public string PropertyName { get; protected set; }
         public string? FieldDataName { get; protected set; }
         public string PropertyNameControl { get; protected set; }
-        private Control? Control { get; }
+        private Control? Control { get; set; }
         private readonly Func<object?, Control>? creatingControl;
+        private bool isBinding;
 
         public FieldInfoUiAttribute(
             string text, 
@@ -38,17 +39,27 @@ namespace Admin.ViewModels.Lesson
             Control = control;
         }
 
-        public Control GetContol(object data)
+        public Control GetControl(object data)
         {
-            if (Control != null) return Control.Binding(PropertyNameControl, data, PropertyName);
+            if (isBinding) return Control!;
+
+            if (Control != null)
+            {
+                isBinding = true;
+                return Control.Binding(PropertyNameControl, data, PropertyName);
+            }
 
             var type = data.GetType();
-            var field = type.GetProperty(FieldDataName) ?? throw new ArgumentException();
+            var field = type.GetProperty(FieldDataName!) ?? throw new ArgumentException();
             var value = field.GetValue(data);
 
-            return creatingControl
+            Control = creatingControl!
                 .Invoke(value)
                 .Binding(PropertyNameControl, data, PropertyName);
+
+            isBinding = true;
+
+            return Control;
         }
     }
 

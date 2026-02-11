@@ -1,5 +1,6 @@
 ﻿using DataAccess.Postgres.Models;
 using Logica;
+using Logica.UILayerPanel;
 
 namespace Admin.View.Moduls.Visitor
 {
@@ -7,25 +8,19 @@ namespace Admin.View.Moduls.Visitor
     {
         public VisitorCard()
         {
-            Size = new Size(1200, 50);
-            Margin = new Padding(1);
-            Padding = new Padding(1);
-        }
-
-        public override ObjectCard<VisitorEntity> Initialize(VisitorEntity obj)
-        {
-            return base.Initialize(obj);
+            Size = new Size(450, 150);
         }
 
         public override Control Content()
-           => FactoryElements.TableLayoutPanel()
-            .ControlAddIsColumnPercent(FactoryElements.Label_11($"{entity.ToString()}")
-                .With(l => l.ForeColor = Color.DarkBlue), 40)
-            .ControlAddIsColumnPercent(FactoryElements.Label_11($"🎂 {entity.DateBirth}")
-                .With(l => l.ForeColor = Color.Gray), 25)
-            .ControlAddIsColumnPercent(FactoryElements.Label_11($"📞 {entity.NumberPhone}")
-                .With(l => l.ForeColor = Color.Gray), 25)
-            .ControlAddIsColumnPercent(FactoryElements.Label_11($"🎯 Посещает кружков: {entity.Lessons.Count}")
-                .With(l => l.ForeColor = Color.DarkGreen), 30);
+           => LayoutPanel.CreateColumn()
+               .Row(30).ContentEnd(FactoryElements.Label_11($"{entity}")
+                .With(l => l.ForeColor = Color.DarkBlue))
+               .Row(23).ContentEnd(FactoryElements.Label_09($"🎂 {entity.DateBirth}")
+                .With(l => l.ForeColor = Color.Gray))
+               .Row(23).ContentEnd(FactoryElements.Label_09($"📞 {entity.NumberPhone}")
+                .With(l => l.ForeColor = Color.Gray))
+               .Row(24).ContentEnd(FactoryElements.Label_09($"🎯 {entity.Lessons.Count}")
+                .With(l => l.ForeColor = Color.DarkGreen))
+               .Build();
     }
 }

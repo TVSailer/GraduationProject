@@ -8,10 +8,14 @@ namespace DataAccess.Postgres.Repository
         public LessonEntity? Lesson { get; set; }
         public bool IsAdd => Lesson is not null && Lesson.MaxParticipants > Lesson.Visitors.Count;
 
+        public List<VisitorEntity> GetVisitors()
+            => DbContext.Visitors
+                .Include(v => v.Lessons)
+                .ToList() ?? throw new ArgumentNullException();
+
         public override List<VisitorEntity> Get()
         {
-            return Lesson is not null ? Lesson.Visitors : DbContext.Visitors
-                .ToList() ?? throw new ArgumentNullException();
+            return Lesson is not null ? Lesson.Visitors : GetVisitors();
         }
 
         public bool TryAdd(VisitorEntity obj)
@@ -31,11 +35,6 @@ namespace DataAccess.Postgres.Repository
             Lesson.Visitors.Add(obj);
             dbContext.SaveChanges();
         }
-
-        public List<VisitorEntity> Get(int id)
-            => DbContext.Visitors
-            .Where(v => v.Id == id)
-            .ToList() ?? throw new ArgumentNullException();
 
         public override void Update(long id, VisitorEntity visitor)
             => DbContext.Visitors

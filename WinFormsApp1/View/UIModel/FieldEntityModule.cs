@@ -34,7 +34,7 @@ public class FieldEntityModule : IUIModel
         return LayoutPanel.CreateRow(fieldInfoAttribute.Size, SizeType.Absolute)
             .Column(30).ContentEnd(FactoryElements.Label_11(fieldInfoAttribute.LabelText))
             .Column(70).ContentEnd(fieldInfoAttribute
-                .GetContol(context)
+                .GetControl(context)
                 .OnErrorProvider(fieldInfoAttribute.PropertyName, context))
             .Column(20, SizeType.Absolute).ContentEnd(new EmptyPanel())
             .Build();

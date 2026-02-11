@@ -9,9 +9,9 @@ using Logica;
 
 namespace Admin.ViewModel.Model.Visitor.Buttons;
 
-public class VisitorAddingPanelButton(Repository<LessonEntity> repositoryL, Repository<VisitorEntity> repositoryV, ControlView control) : IParametersButtons<VisitorAddingPanelUI>
+public class VisitorAddingPanelButton(Repository<LessonEntity> repositoryL, Repository<VisitorEntity> repositoryV, ControlView control) : IParametersButtons<VisitorAddingPanelUi>
 {
-    public List<ButtonInfo> GetButtons(VisitorAddingPanelUI instance)
+    public List<ButtonInfo> GetButtons(VisitorAddingPanelUi instance)
         => 
         [
             new("Назад", _ => control.Exit()),
@@ -28,7 +28,7 @@ public class VisitorAddingPanelButton(Repository<LessonEntity> repositoryL, Repo
                                 .Select(t => t.Password)
                                 .ToArray());
 
-                        LogicaMessage.MessageInfo($" Логин: {auth.Login}\nПароль: {auth.Password}");
+                        LogicaMessage.MessageInfo($"Логин: {auth.Login}\nПароль: {auth.Password}");
 
                         entity.Login = auth.Login;
                         entity.Password = BCrypt.Net.BCrypt.HashPassword(auth.Password);

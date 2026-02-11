@@ -1,31 +1,25 @@
 ﻿using Admin.ViewModel.Managment;
 using Logica;
 using Logica.UILayerPanel;
+using Ninject.Activation;
 
 namespace Admin.View.Moduls.UIModel;
 
-public class ButtonModuleV2 : IUIModel
+public class ButtonModuleV2(List<ButtonInfo> button) : IUIModel
 {
-    private readonly List<ButtonInfo> context;
-
-    public ButtonModuleV2(List<ButtonInfo> context)
-    {
-        this.context = context;
-    }
-
     public Control CreateControl()
         => FactoryElements.TableLayoutPanel()
             .With(t =>
             {
-                if (context.Count == 0) return;
+                if (button.Count == 0) return;
 
-                for (int i = 0; i < context.Count; i++)
+                for (int i = 0; i < button.Count; i++)
                 {
                     if (i % 4 == 0 || i == 0)
                         t.ControlAddIsRowsAbsolute(new TableLayoutPanel() { Dock = DockStyle.Fill }, 70);
 
                     if (t.Controls[^1] is TableLayoutPanel table)
-                        table.ControlAddIsColumnPercent(FactoryElements.Button(context[i].LabelText, context[i].Command, context[i].Enabled));
+                        table.ControlAddIsColumnPercent(FactoryElements.Button(button[i].LabelText, button[i].Command, button[i].Enabled));
                 }
 
                 if (t.Controls[^1].Controls.Count >= 4) return;

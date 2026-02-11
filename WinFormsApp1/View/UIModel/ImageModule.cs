@@ -1,32 +1,27 @@
 ﻿using System.ComponentModel;
-using Admin.View.Moduls.UIModel;
 using Admin.ViewModel.AbstractViewModel;
 using CSharpFunctionalExtensions;
-using Logica;
 using Logica.UILayerPanel;
 
-public class ImageModule<TEntity> : IUIModel
+namespace Admin.View.UIModel;
+
+public class ImageModule<TEntity>(FieldModelWithImages<TEntity> fieldModele) : IUIModel
     where TEntity : Entity, new()
 {
-    public readonly FieldModelWithImages<TEntity> context;
+    public readonly FieldModelWithImages<TEntity> Context = fieldModele;
 
-    public ImageModule(FieldModelWithImages<TEntity> fieldModele)
-    {
-        context = fieldModele;
-    }
-
-    public Control? CreateControl()
-    => LayoutPanel.CreateColumn()
-        .Row(50, SizeType.Absolute).ContentEnd(FactoryElements.Label_12("📷 Изображения:"))
-        .Row().ContentEnd(FactoryElements.FlowLayoutPanel()
-                    .With(fp => context.PropertyChanged += AddingImages(fp)))
-        .Build();
+    public Control CreateControl()
+        => LayoutPanel.CreateColumn()
+            .Row(50, SizeType.Absolute).ContentEnd(FactoryElements.Label_12("📷 Изображения:"))
+            .Row().ContentEnd(FactoryElements.FlowLayoutPanel()
+                .With(fp => Context.PropertyChanged += AddingImages(fp)))
+            .Build();
 
     private PropertyChangedEventHandler AddingImages(FlowLayoutPanel fp)
     {
         return (obj, propCh) =>
         {
-            if (propCh.PropertyName != nameof(context.ListImgs)) return;
+            if (propCh.PropertyName != nameof(Context.ListImgs)) return;
 
             fp.Controls.Clear();
             AddImages(fp);
@@ -35,11 +30,11 @@ public class ImageModule<TEntity> : IUIModel
 
     private void AddImages(FlowLayoutPanel fp)
     {
-        context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.PictureBox(url.Key)
+        Context.SelectedImg.ForEach(url => fp.Controls.Add(FactoryElements.PictureBox(url.Key)
             .With(i => i.MouseClick += (s, e) =>
             {
-                context.SelectedImg[url.Key] = !context.SelectedImg[url.Key];
-                i.BackColor = context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
+                Context.SelectedImg[url.Key] = !Context.SelectedImg[url.Key];
+                i.BackColor = Context.SelectedImg[url.Key] ? Color.Gray : Color.Black;
             })));
     }
 }

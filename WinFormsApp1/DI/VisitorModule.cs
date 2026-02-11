@@ -12,8 +12,9 @@ using Ninject.Modules;
 
 namespace Admin.DI;
 
-public class VisitorDetailsPanelUI : VisitorFieldData{}
-public class VisitorAddingPanelUI : VisitorFieldData{}
+public class VisitorDetailsPanelUi : VisitorFieldData;
+public class VisitorAddingPanelUi : VisitorFieldData;
+public class VisitorCardPanelUi : VisitorFieldData;
 public record VisitorMangment {}
 
 public class VisitorModule : NinjectModule
@@ -22,23 +23,19 @@ public class VisitorModule : NinjectModule
     {
         Kernel.Bind<VisitorsRepository, Repository<VisitorEntity>>().To<VisitorsRepository>().InSingletonScope();
 
-        Kernel.Bind<VisitorAddingPanelUI>().ToSelf();
-        Kernel.Bind<VisitorDetailsPanelUI>().ToSelf();
-        Kernel.Bind<VisitorMangment>().ToSelf();
-
         Kernel.Bind<IParametersSearch<VisitorEntity, VisitorFieldSearch>>().To<VisitorSearch>();
-        Kernel.Bind<VisitorFieldSearch>().ToSelf();
-        Kernel.Bind<SearchEntity<VisitorEntity, VisitorFieldSearch>>().ToSelf();
 
-        Kernel.Bind<IView<VisitorAddingPanelUI>, IView<VisitorAddingPanelUI, VisitorEntity>>().To<BaseUI<VisitorAddingPanelUI, VisitorEntity>>();
-        Kernel.Bind<IView<VisitorDetailsPanelUI>, IView<VisitorDetailsPanelUI, VisitorEntity>>().To<BaseUI<VisitorDetailsPanelUI, VisitorEntity>>();
-        Kernel.Bind<IView<VisitorMangment>>().To<ManagmentEntityUi<VisitorMangment, VisitorEntity, VisitorFieldSearch, VisitorDetailsPanelUI>>();
+        Kernel.Bind<IView<VisitorAddingPanelUi>, IView<VisitorAddingPanelUi, VisitorEntity>>().To<BaseUI<VisitorAddingPanelUi, VisitorEntity>>();
+        Kernel.Bind<IView<VisitorDetailsPanelUi>, IView<VisitorDetailsPanelUi, VisitorEntity>>().To<VisitorDetailsUi>();
+        Kernel.Bind<IView<VisitorCardPanelUi>, IView<VisitorCardPanelUi, VisitorEntity>>().To<VisitorCardUi>();
+        Kernel.Bind<IView<VisitorMangment>>().To<ManagmentEntityUi<VisitorMangment, VisitorEntity, VisitorFieldSearch, VisitorDetailsPanelUi>>();
 
         Kernel.Bind<ObjectCard<VisitorEntity>>().To<VisitorCard>();
 
-        Kernel.Bind<IParametersButtons<VisitorMangment>>().To<ManagmentButton<VisitorMangment, VisitorEntity, VisitorAddingPanelUI>>();
-        Kernel.Bind<IParametersButtons<VisitorAddingPanelUI>>().To<VisitorAddingPanelButton>();
-        Kernel.Bind<IParametersButtons<VisitorDetailsPanelUI>>().To<VisitorDetailsPanelButton>();
+        Kernel.Bind<IParametersButtons<VisitorMangment>>().To<ManagmentVisitorButton>();
+        Kernel.Bind<IParametersButtons<VisitorAddingPanelUi>>().To<VisitorAddingPanelButton>();
+        Kernel.Bind<IParametersButtons<VisitorDetailsPanelUi>>().To<VisitorDetailsPanelButton>();
+        Kernel.Bind<IParametersButtons<VisitorCardPanelUi>>().To<VisitorCardPanelButton>();
         
     }
 }
