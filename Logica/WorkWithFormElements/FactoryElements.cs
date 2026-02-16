@@ -57,13 +57,13 @@ public static class FactoryElements
     //        cb.Items.Add(attribute);
     //    return cb;
     //}
-    
+
     public static ComboBox ComboBox()
         => new ComboBox()
         .With(cb => cb.Dock = DockStyle.Fill)
         .With(cb => cb.DropDownStyle = ComboBoxStyle.DropDownList)
         .With(cb => cb.Font = new Font("Times New Roman", 11, FontStyle.Bold));
-    
+
     public static ComboBox ComboBox(object[] items)
         => ComboBox()
         .With(cb => cb.Items.AddRange(items));
@@ -137,7 +137,7 @@ public static class FactoryElements
     //}
 
     public static DateTimePicker DateTimePicker(CustomFormatDatePicker custom)
-        => new ()
+        => new()
         {
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
@@ -146,9 +146,9 @@ public static class FactoryElements
             CustomFormat = custom.ToDescriptionString(),
             ShowUpDown = true,
         };
-    
+
     public static MaskedTextBox MaskedTextBox(string mask)
-        => new ()
+        => new()
         {
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
@@ -157,7 +157,7 @@ public static class FactoryElements
         };
 
     public static LinkLabel LinkLabel(string text, int size)
-        => new ()
+        => new()
         {
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", size, FontStyle.Bold),
@@ -166,7 +166,7 @@ public static class FactoryElements
             LinkColor = Color.DarkBlue,
             LinkBehavior = LinkBehavior.HoverUnderline,
         };
-    
+
     public static LinkLabel LinkLabelTitle(string text, Action actionClick)
         => LinkLabel(text, 18)
         .With(l => l.Click += (s, e) => actionClick?.Invoke());
@@ -194,7 +194,7 @@ public static class FactoryElements
     public static TextBox TextBoxMultiline(string placeholderText)
         => TextBox(placeholderText)
         .With(t => t.Multiline = true);
-    
+
     public static TextBox TextBoxReadOnle(string placeholderText)
         => TextBox(placeholderText)
         .With(t => t.ReadOnly = true)
@@ -244,7 +244,7 @@ public static class FactoryElements
             //MultiSelect = false,
             //ScrollBars = ScrollBars.Horizontal
         };
-    
+
     public static TableLayoutPanel TableLayoutPanel()
         => new TableLayoutPanel()
             .With(t => t.Padding = new Padding(0))
@@ -275,9 +275,10 @@ public static class FactoryElements
     //}
 
 
-    public static Button Button(string text)
+    public static Button Button(string text, bool enable = true)
         => new Button()
             .With(c => c.Text = text)
+            .With(c => c.Enabled = enable)
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
             .With(c => c.BackColor = SystemColors.ButtonFace)
@@ -290,18 +291,18 @@ public static class FactoryElements
             .With(c => c.DataBindings.Add(new Binding("Command", context, dataMember, true)))
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold));
-    
+
     public static Button Button(string text, Action action)
         => Button(text, _ => action.Invoke());
-    
-    public static Button Button(string text, Action<Button> action, Func<Button, bool>? enabled = null)
+
+    public static Button Button(string text, Action<object?> action, bool enabled = true)
         => new Button()
             .With(c => c.Text = text)
-            .With(c => c.Enabled = enabled?.Invoke(c) ?? true)
+            .With(c => c.Enabled = enabled)
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
-            .With(c => c.Click += (s, e) => action?.Invoke(c));
-    
+            .With(c => c.Click += (_, _) => action.Invoke(c));
+
     public static Button Button(string text, int size, Action action)
         => Button(text, size)
             .With(c => c.Click += (s, e) => action?.Invoke());
@@ -348,7 +349,7 @@ public static class FactoryElements
             .With(l => l.TextAlign = ContentAlignment.TopLeft)
             .With(l => l.BorderStyle = BorderStyle.None)
             .With(l => l.Padding = new Padding(5));
-    
+
     public static FlowLayoutPanel FlowLayoutPanel()
         => new FlowLayoutPanel()
             .With(p => p.Dock = DockStyle.Fill)

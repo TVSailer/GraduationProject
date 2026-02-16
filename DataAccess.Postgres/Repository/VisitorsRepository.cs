@@ -1,57 +1,31 @@
-﻿using DataAccess.Postgres.Models;
+﻿using System.Diagnostics;
+using DataAccess.Postgres.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Postgres.Repository
+namespace DataAccess.Postgres.Repository;
+
+public class VisitorsRepository(ApplicationDbContext dbContext) : Repository<VisitorEntity>(dbContext)
 {
-    public class VisitorsRepository(ApplicationDbContext dbContext) : Repository<VisitorEntity>(dbContext)
+    public override List<VisitorEntity> Get()
     {
-        public LessonEntity? Lesson { get; set; }
-        public bool IsAdd => Lesson is not null && Lesson.MaxParticipants > Lesson.Visitors.Count;
+        return DbContext.Visitors
+            .Include(v => v.Lessons)
+            .ToList() ?? throw new ArgumentNullException();
+    }
 
-        public List<VisitorEntity> GetVisitors()
-            => DbContext.Visitors
-                .Include(v => v.Lessons)
-                .ToList() ?? throw new ArgumentNullException();
+    public override void Update(long id, VisitorEntity visitor)
+        => DbContext.Visitors
+            .Where(v => v.Id == id)
+            .ExecuteUpdate(v => v
+                .SetProperty(v => v.FIO, visitor.FIO)
+                .SetProperty(v => v.DateBirth, visitor.DateBirth)
+                .SetProperty(v => v.NumberPhone, visitor.NumberPhone)
+                .SetProperty(v => v.Login, visitor.Login)
+                .SetProperty(v => v.Password, visitor.Password));
 
-        public override List<VisitorEntity> Get()
-        {
-            return Lesson is not null ? Lesson.Visitors : GetVisitors();
-        }
-
-        public bool TryAdd(VisitorEntity obj)
-        {
-            if (Lesson is null) return false;
-            if (Lesson.MaxParticipants <= Lesson.Visitors.Count) return false;
-
-            Add(obj);
-            return true;
-        }
-
-        public override void Add(VisitorEntity obj)
-        {
-            if (Lesson is null) throw new ArgumentNullException();
-            if (Lesson.MaxParticipants <= Lesson.Visitors.Count) throw new ArgumentOutOfRangeException();
-
-            Lesson.Visitors.Add(obj);
-            dbContext.SaveChanges();
-        }
-
-        public override void Update(long id, VisitorEntity visitor)
-            => DbContext.Visitors
-                .Where(v => v.Id == id)
-                .ExecuteUpdate(v => v
-                    .SetProperty(v => v.FIO, visitor.FIO)
-                    .SetProperty(v => v.DateBirth, visitor.DateBirth)
-                    .SetProperty(v => v.NumberPhone, visitor.NumberPhone)
-                    .SetProperty(v => v.Login, visitor.Login)
-                    .SetProperty(v => v.Password, visitor.Password));
-
-        public override void Delete(long idEntity)
-        {
-            Lesson?.Visitors.RemoveAll(v => v.Id == idEntity);
-            DbContext.Visitors
-                .Where(v => v.Id == idEntity)
-                .ExecuteDelete();
-        }
+    public override void Delete(long idEntity)
+    {
+        DbContext.Remove(DbContext.Visitors.Single(v => v.Id == idEntity));
+        DbContext.SaveChanges();
     }
 }

@@ -20,17 +20,6 @@ namespace DataAccess.Postgres.Repository
             .Include(l => l.Imgs)
             .ToList() ?? throw new ArgumentNullException();
 
-        public void AddRelationWithVisitor(LessonEntity lesson, VisitorEntity visitor)
-        {
-            DbContext.Lessons.FirstOrDefault(l => l.Id == lesson.Id).Visitors.Add(visitor);
-            DbContext.SaveChanges();
-        }
-        public void AddRelationWithDateAttendance(LessonEntity lesson, DateAttendanceEntity date)
-        {
-            DbContext.Lessons.FirstOrDefault(l => l.Id == lesson.Id).AttendanceDates.Add(date);
-            DbContext.SaveChanges();
-        }
-
         public override void Update(long id, LessonEntity lesson)
         {
             DbContext.Lessons

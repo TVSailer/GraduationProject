@@ -24,8 +24,8 @@ public class FIO
 
         if (list.Length != 3) throw new ArgumentNullException();
 
-        Name = list[0];
-        Surname = list[1];
+        Surname = list[0];
+        Name = list[1];
         Patronymic = list[2];
     }
 
