@@ -12,7 +12,6 @@ using Logica.UILayerPanel;
 namespace Admin.View;
 
 public class VisitorNotBelongingLessonCardUi(
-    AdminMainUi form,
     VisitorsLessonRepository repository,
     VisitorNotBelongingLessonCardPanelUi viewData,
     VisitorNotBelongingLessonButton parametersButtons)

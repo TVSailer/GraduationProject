@@ -9,7 +9,7 @@ namespace Admin.ViewModel.Model.Visitor.Buttons;
 
 public class VisitorNotBelongingLessonButton(ControlView control, VisitorsLessonRepository repository) : 
     IButtons<ViewButtonClickArgs<VisitorNotBelongingLessonCardPanelUi>>, 
-    IButtons<CardClickedArgs<VisitorEntity>>
+    IButtons<CardClickedToolStripArgs<VisitorEntity>>
 {
     public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<VisitorNotBelongingLessonCardPanelUi>? e)
         =>
@@ -18,7 +18,7 @@ public class VisitorNotBelongingLessonButton(ControlView control, VisitorsLesson
                 .CommandClick(() => control.Exit())
         ];
 
-    public List<CustomButton> GetButtons(object? data, CardClickedArgs<VisitorEntity>? e)
+    public List<CustomButton> GetButtons(object? data, CardClickedToolStripArgs<VisitorEntity>? e)
         => [
             new CustomButton()
                 .CommandClick(() =>

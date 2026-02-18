@@ -36,13 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DataAccess.Postgres\DataAccess.Postgres.csproj" />
-    <ProjectReference Include="..\..\..\Logica\Logica.csproj" />
-    <ProjectReference Include="..\DataAccess.Postgres\DataAccess.Postgres.csproj" />
-    <ProjectReference Include="..\Logica\Logica.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -51,6 +44,12 @@
 
   <ItemGroup>
     <Folder Include="ViewModel\Model\News\" />
+    <Folder Include="View\Moduls\Review\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DataAccess.Postgres\DataAccess.Postgres.csproj" />
+    <ProjectReference Include="..\..\..\Logica\Logica.csproj" />
   </ItemGroup>
 
   <ItemGroup>

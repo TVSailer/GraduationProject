@@ -1,5 +1,4 @@
 using Admin.View;
-using Admin.View.Moduls.UIModel;
 using Admin.View.Moduls.Visitor;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
@@ -9,15 +8,14 @@ using Admin.ViewModel.Model.Visitor;
 using Admin.ViewModel.Model.Visitor.Buttons;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using MediatR;
-using Ninject;
 using Ninject.Modules;
 
 namespace Admin.DI;
 
 public class VisitorDetailsFieldData : VisitorFieldData;
 public class VisitorAddingFieldData : VisitorFieldData;
-public class VisitorNotBelongingLessonCardPanelUi : VisitorFieldData;
+public class VisitorNotBelongingLessonCardPanelUi : IFieldData;
+public record VisitorBelongingLesson : IFieldData;
 public record VisitorManagment : IFieldData;
 
 public class VisitorModule : NinjectModule
@@ -39,12 +37,11 @@ public class VisitorModule : NinjectModule
             VisitorManagment, 
             VisitorEntity, 
             VisitorFieldSearch, 
-            VisitorDetailsFieldData, 
             VisitorCard,
-            ManagmentVisitorButton>>();
+            VisitorManagmentButton>>();
         Kernel.Bind<IView<VisitorBelongingLesson>>().To<VisitorBelongingLessonCardUi>();
 
-        Kernel.Bind<ManagmentVisitorButton>().ToSelf();
+        Kernel.Bind<VisitorManagmentButton>().ToSelf();
         Kernel.Bind<VisitorAddingButton>().ToSelf();
         Kernel.Bind<VisitorDetailsButton>().ToSelf();
         Kernel.Bind<VisitorNotBelongingLessonButton>().ToSelf();

@@ -11,3 +11,4 @@ public class MementoView
     public void Push(IView view) => stack.Push(view);
     public IView Pop() => stack.Pop();
 }
+

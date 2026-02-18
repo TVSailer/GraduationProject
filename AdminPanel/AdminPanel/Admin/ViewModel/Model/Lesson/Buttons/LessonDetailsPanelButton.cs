@@ -1,4 +1,5 @@
 ﻿using Admin.Args;
+using Admin.DI;
 using Admin.View;
 using Admin.ViewModel.Interface;
 using DataAccess.Postgres.Models;
@@ -7,20 +8,21 @@ using DataAccess.Postgres.Repository;
 namespace Admin.ViewModel.Model.Lesson.Buttons;
 
 public class LessonManagmentButton(ControlView controlView, VisitorsLessonRepository repositoryV) : 
-    IButtons<ViewButtonClickArgs<LessonMangment>>,
-    IButtons<CardClickedArgs<LessonEntity>>
+    IButtons<ViewButtonClickArgs<LessonManagment>>,
+    IButtons<CardClickedToolStripArgs<LessonEntity>>, 
+    IButton<CardClickedArgs<LessonEntity>>
 {
-    public List<CustomButton> GetButtons(object? data, CardClickedArgs<LessonEntity> eventArgs)
+    public List<CustomButton> GetButtons(object? data, CardClickedToolStripArgs<LessonEntity> eventToolStripArgs)
         => [
             new CustomButton("Управление поситителями")
-                .CommandClick(() => ControlVisitors(eventArgs.Entity)),
+                .CommandClick(() => ControlVisitors<VisitorBelongingLesson>(eventToolStripArgs.Entity)),
             new CustomButton("Управление посещаемостью")
                 .CommandClick(() => controlView.Exit()),
             new CustomButton("Управление отзывами")
-                .CommandClick(() => controlView.Exit()),
+                .CommandClick(() => ControlVisitors<LessonReviewManagment>(eventToolStripArgs.Entity)),
         ];
 
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<LessonMangment> eventArgs)
+    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<LessonManagment> eventArgs)
         => [
             new CustomButton("Назад")
                 .CommandClick(() => controlView.Exit()),
@@ -28,10 +30,14 @@ public class LessonManagmentButton(ControlView controlView, VisitorsLessonReposi
                 .CommandClick(() => controlView.LoadView<LessonAddingFieldData>()),
         ];
 
-    private void ControlVisitors(LessonEntity arg2FieldData)
+    public CustomButton? GetButton(object? send, CardClickedArgs<LessonEntity> eventArgs)
+        => new CustomButton()
+            .CommandClick(() => controlView.LoadView<LessonDetailsFieldData, LessonEntity>(eventArgs.Entity));
+
+    private void ControlVisitors<T>(LessonEntity arg2FieldData) where T : IFieldData
     {
         repositoryV.Lesson = arg2FieldData;
-        controlView.LoadView<VisitorBelongingLesson>();
+        controlView.LoadView<T>();
     }
 }
 

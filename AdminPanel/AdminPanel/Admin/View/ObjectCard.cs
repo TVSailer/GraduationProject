@@ -1,4 +1,5 @@
 ﻿using Admin.Args;
+using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 
 public abstract class ObjectCard<T> : Panel
@@ -95,19 +96,15 @@ public abstract class ObjectCard<T> : Panel
     {
         control.MouseEnter += (s, args) =>
         {
-            if (!_isMouseOver && !_isContextMenuShowing)
-            {
-                OnMouseEnterCard(s, args);
-            }
+            if (_isMouseOver || _isContextMenuShowing) return;
+            OnMouseEnterCard(s, args);
         };
 
         control.MouseLeave += (s, args) =>
         {
             var pos = PointToClient(Cursor.Position);
-            if (!ClientRectangle.Contains(pos) && !_isContextMenuShowing)
-            {
-                OnMouseLeaveCard(s, args);
-            }
+            if (ClientRectangle.Contains(pos) || _isContextMenuShowing) return;
+            OnMouseLeaveCard(s, args);
         };
 
         control.MouseClick += (s, args) =>
@@ -176,9 +173,9 @@ public abstract class ObjectCard<T> : Panel
     
     public abstract Control Content();
 
-    public ObjectCard<T> OnContextMenu(IButtons<CardClickedArgs<T>>? buttonsContextMenu)
+    public ObjectCard<T> OnContextMenu(IButtons<CardClickedToolStripArgs<T>>? buttonsContextMenu)
     {
-        var buttons = buttonsContextMenu?.GetButtons(this, new CardClickedArgs<T>(entity));
+        var buttons = buttonsContextMenu?.GetButtons(this, new CardClickedToolStripArgs<T>(entity));
         buttons?.ForEach(b => AddToolStrip(b.Text, b.PerformClick, b.Enabled));
         return this;
     }
@@ -199,10 +196,10 @@ public abstract class ObjectCard<T> : Panel
         return this;
     }
 
-    public ObjectCard<T> OnClickedCard(IButtons<CardClickedArgs<T>>? buttonsContextMenu)
+    public ObjectCard<T> OnClickedCard(IButton<CardClickedArgs<T>>? buttonsContextMenu)
     {
-        var buttons = buttonsContextMenu?.GetButtons(this, new CardClickedArgs<T>(entity));
-        OnCardClicked += (s, e) => buttons?.ForEach(b => b.PerformClick());
+        var button = buttonsContextMenu?.GetButton(this, new CardClickedArgs<T>(entity));
+        OnCardClicked += (s, e) => button?.PerformClick();
         return this;
     }
 }

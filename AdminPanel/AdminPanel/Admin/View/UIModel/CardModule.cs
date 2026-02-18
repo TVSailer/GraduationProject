@@ -1,4 +1,5 @@
 ﻿using Admin.Args;
+using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 
 namespace Admin.View.Moduls.UIModel;
@@ -7,8 +8,8 @@ public sealed class CardLayoutPanel<TEntity, TCard> : FlowLayoutPanel
     where TEntity : Entity, new()
     where TCard : ObjectCard<TEntity>, new()
 {
-    private IButtons<CardClickedArgs<TEntity>>? _menuStrip;
-    private IButtons<CardClickedArgs<TEntity>>? _onClick;
+    private IButtons<CardClickedToolStripArgs<TEntity>>? _menuStrip;
+    private IButton<CardClickedArgs<TEntity>>? _onClick;
 
     public CardLayoutPanel()
     {
@@ -28,6 +29,6 @@ public sealed class CardLayoutPanel<TEntity, TCard> : FlowLayoutPanel
     }
 
     public CardLayoutPanel<TEntity, TCard> SetObjects(List<TEntity> entities) => this.With(_ => Initialize(entities));
-    public CardLayoutPanel<TEntity, TCard> SetClickedCard(IButtons<CardClickedArgs<TEntity>> buttons) => this.With(_ => _onClick =buttons);
-    public CardLayoutPanel<TEntity, TCard> SetContextMenu(IButtons<CardClickedArgs<TEntity>> buttons) => this.With(_ => _menuStrip = buttons);
+    public CardLayoutPanel<TEntity, TCard> SetClickedCard(IButton<CardClickedArgs<TEntity>> buttons) => this.With(_ => _onClick =buttons);
+    public CardLayoutPanel<TEntity, TCard> SetContextMenu(IButtons<CardClickedToolStripArgs<TEntity>> buttons) => this.With(_ => _menuStrip = buttons);
 }

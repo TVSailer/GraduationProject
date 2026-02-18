@@ -4,7 +4,10 @@ using Admin.View.AdminMain;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using DataAccess.Postgres;
+using DataAccess.Postgres.Models;
+using DataAccess.Postgres.Repository;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Ninject;
 
@@ -40,15 +43,6 @@ internal static class AdminDi
 
         container.Bind<MementoView>().ToSelf().InSingletonScope();
         container.Bind<ControlView>().ToSelf().InSingletonScope();
-        //container.GetService<Repository<LessonEntity>>().Get()[0].Visitors.Add(new VisitorEntity());
-        // db.AddRange(
-        //     new TeacherEntity("dsf", "sdf", "lgh", "22.11.2004", "88989988989", ""),
-        //     new TeacherEntity("jtr", "D", "DT", "22.11.2004", "88989988989", ""),
-        //     new TeacherEntity("SREG", "AERF", "SASF", "22.11.2004", "88989988989", "")
-        //     );
-
-        // db.Teachers.ExecuteUpdate(t => t.SetProperty(t => t.Password, BCrypt.Net.BCrypt.HashPassword("1234")));
-        //db.SaveChanges();
 
         return container;
     }

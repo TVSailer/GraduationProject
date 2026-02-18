@@ -295,7 +295,7 @@ namespace Visitor.View
                     .With(l => l.Cursor = Cursors.Hand)
                     .With(l => l.Click += (s, e) => _onDetailsClick?.Invoke(_event));
 
-                var dateLabel = FactoryElements.Label_09($"{_event.Date} • {_event.Location}")
+                var dateLabel = FactoryElements.Label_09($"{_event.Schedule} • {_event.Location}")
                     .With(l => l.ForeColor = Color.DarkGreen);
 
                 return FactoryElements.TableLayoutPanel()
@@ -311,7 +311,7 @@ namespace Visitor.View
                 var organizerLabel = FactoryElements.Label_09($"👨‍💼 {_event.Organizer}")
                     .With(l => l.ForeColor = Color.Gray);
 
-                var participantsLabel = FactoryElements.Label_09($"👥 {_event.Participants}")
+                var participantsLabel = FactoryElements.Label_09($"👥 {_event.CurrentParticipants}")
                     .With(l => l.ForeColor =
                         _event.CurrentParticipants < _event.MaxParticipants ?
                         Color.DarkGreen : Color.Red);
@@ -401,7 +401,7 @@ namespace Visitor.View
                     .With(l => l.ForeColor = Color.DarkBlue)
                     .With(l => l.TextAlign = ContentAlignment.MiddleCenter);
 
-                var dateLocationLabel = FactoryElements.Label($"{_event.Date} • {_event.Location}")
+                var dateLocationLabel = FactoryElements.Label($"{_event.Schedule} • {_event.Location}")
                     .With(l => l.Font = new Font("Times New Roman", 14, FontStyle.Regular))
                     .With(l => l.ForeColor = Color.DarkGreen)
                     .With(l => l.TextAlign = ContentAlignment.MiddleCenter);
@@ -450,7 +450,7 @@ namespace Visitor.View
                         .With(l => l.ForeColor = Color.DarkSlateGray),
                     0, 1);
 
-                var participantsLabel = FactoryElements.Label(_event.Participants)
+                var participantsLabel = FactoryElements.Label(_event.CurrentParticipants.ToString())
                     .With(l => l.Font = new Font("Times New Roman", 11, FontStyle.Bold))
                     .With(l => l.TextAlign = ContentAlignment.MiddleLeft)
                     .With(l => l.ForeColor =
@@ -505,7 +505,7 @@ namespace Visitor.View
                     {
                         try
                         {
-                            Validatoreg.OpenLink(_event.RegistrationLink);
+                            Validatoreg.TryOpenLink(_event.RegistrationLink);
                         }
                         catch (Exception ex)
                         {
@@ -563,13 +563,13 @@ namespace Visitor.View
                     .With(p => p.Height = 180);
 
                 // Загрузка изображений
-                if (_event.ImgsEvent != null && _event.ImgsEvent.Any())
+                if (_event.Imgs != null && _event.Imgs.Any())
                 {
-                    foreach (var img in _event.ImgsEvent)
+                    foreach (var img in _event.Imgs)
                     {
                         if (!string.IsNullOrWhiteSpace(img.Url))
                         {
-                            var pictureBox = FactoryElements.Image(img.Url)
+                            var pictureBox = FactoryElements.PictureBox(img.Url)
                                 .With(pb => pb.Size = new Size(200, 150))
                                 .With(pb => pb.Cursor = Cursors.Hand);
 
@@ -720,9 +720,7 @@ namespace Visitor.View
             {
                 var visitor = new DataAccess.Postgres.Models.VisitorEntity
                 {
-                    Name = "Иван",
-                    Surname = "Иванов",
-                    Patronymic = "Иванович"
+                    FIO = new ("asdfa", "fasdf", "lasdjf")
                 };
 
                 var viewModel = new VisitorViewModel(dbContext, visitor);

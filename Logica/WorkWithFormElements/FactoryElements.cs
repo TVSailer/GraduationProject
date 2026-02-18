@@ -20,13 +20,13 @@ public static class FactoryElements
         set => style = value;
     }
 
-    //public static MenuStrip CreateMenuStrip(params ToolStripDropDownItem[] toolStripMenuItems)
-    //{
-    //    var menuStrip = new MenuStrip();
-    //    foreach (var tool in toolStripMenuItems)
-    //        menuStrip.Items.Add(tool);
-    //    return menuStrip;
-    //}
+    public static MenuStrip CreateMenuStrip(params ToolStripDropDownItem[] toolStripMenuItems)
+    {
+        var menuStrip = new MenuStrip();
+        foreach (var tool in toolStripMenuItems)
+            menuStrip.Items.Add(tool);
+        return menuStrip;
+    }
 
     public static Control Control(string nameMethod, object[] parametrs)
     {
@@ -42,13 +42,13 @@ public static class FactoryElements
         return method;
     }
 
-    //public static ToolStripMenuItem CreateToolStripMenu(string attributeMenu, params string[] attributes)
-    //{
-    //    var toolStripMenu = new ToolStripMenuItem(attributeMenu);
-    //    foreach (var attribute in attributes)
-    //        toolStripMenu.DropDownItems.Add(attribute);
-    //    return toolStripMenu;
-    //}
+    public static ToolStripMenuItem CreateToolStripMenu(string attributeMenu, params string[] attributes)
+    {
+        var toolStripMenu = new ToolStripMenuItem(attributeMenu);
+        foreach (var attribute in attributes)
+            toolStripMenu.DropDownItems.Add(attribute);
+        return toolStripMenu;
+    }
 
     //public static ComboBox CreateComboBox(object text, params object[] attributes)
     //{
@@ -250,20 +250,20 @@ public static class FactoryElements
             .With(t => t.Padding = new Padding(0))
             .With(t => t.Dock = DockStyle.Fill);
 
-    //public static ToolStripMenuItem CreateToolStripMenu(string attributeMenu, params StripMenuItem[] stripMenuItems)
-    //{
-    //    var toolStripMenu = new ToolStripMenuItem(attributeMenu);
+    public static ToolStripMenuItem CreateToolStripMenu(string attributeMenu, params StripMenuItem[] stripMenuItems)
+    {
+        var toolStripMenu = new ToolStripMenuItem(attributeMenu);
 
-    //    if (stripMenuItems != null)
-    //    {
-    //        foreach (var strip in stripMenuItems)
-    //        {
-    //            toolStripMenu.DropDownItems.Add(strip.Name);
-    //            toolStripMenu.DropDownItems[^1].Click += (send, e) => strip.Action?.Invoke();
-    //        }
-    //    }
-    //    return toolStripMenu;
-    //}
+        if (stripMenuItems != null)
+        {
+            foreach (var strip in stripMenuItems)
+            {
+                toolStripMenu.DropDownItems.Add(strip.Name);
+                toolStripMenu.DropDownItems[^1].Click += (send, e) => strip.Action?.Invoke();
+            }
+        }
+        return toolStripMenu;
+    }
 
     //public static MenuStrip CreateMenuStrip(params ToolStripMenuItem[] toolStripMenuItems)
     //{

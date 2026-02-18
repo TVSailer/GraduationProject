@@ -13,7 +13,6 @@ namespace DataAccess.Postgres.Repository
             => DbContext.Event
             .Include(e => e.Imgs)
             .Include(e => e.Category)
-            //.AsNoTracking()
             .AsTracking()
             .ToList() ?? throw new ArgumentNullException();
 

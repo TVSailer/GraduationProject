@@ -12,13 +12,11 @@ public class LessonCard : ObjectCard<LessonEntity>
 
     public override ObjectCard<LessonEntity> Initialize(LessonEntity obj)
     {
-        base.Initialize(obj);
+        if (obj.Reviews.Count <= 0) return base.Initialize(obj);
+        obj.Reviews.ForEach(r => reting += r.Rating);
+        reting /= obj.Reviews.Count;
 
-        if (entity.Reviews == null || entity.Reviews.Count <= 0) return this;
-        entity.Reviews.ForEach(r => reting += r.Rating);
-        reting /= entity.Reviews.Count;
-
-        return this;
+        return base.Initialize(obj);
     }
 
     public override Control Content()
@@ -32,7 +30,8 @@ public class LessonCard : ObjectCard<LessonEntity>
         .ControlAddIsRowsPercent(FactoryElements.Label_09($"👥 {entity.Visitors.Count}/{entity.MaxParticipants}")
             .With(l => l.ForeColor = Color.DarkGreen), 30)
         .ControlAddIsRowsPercent(FactoryElements.Label_09($"★ {reting}")
-            .With(l => l.ForeColor = Color.Red), 30);
+            .With(l => 
+                l.ForeColor = Color.Red), 30);
 }
 
 

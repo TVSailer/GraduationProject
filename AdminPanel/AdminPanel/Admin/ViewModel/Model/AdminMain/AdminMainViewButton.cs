@@ -12,7 +12,7 @@ public class AdminMainViewButton(ControlView controlView) : IButtons<ViewButtonC
             new CustomButton("🎭 Управление мероприятиями")
                 .CommandClick(() => controlView.LoadView<VisitorManagment>()),
             new CustomButton("🎨 Управление кружками")
-                .CommandClick(() => controlView.LoadView<LessonMangment>()),
+                .CommandClick(() => controlView.LoadView<LessonManagment>()),
             new CustomButton("👥 Управление посетителями")
                 .CommandClick(() => controlView.LoadView<VisitorManagment>()),
             new CustomButton("👨‍🏫 Управление преподавателями")
