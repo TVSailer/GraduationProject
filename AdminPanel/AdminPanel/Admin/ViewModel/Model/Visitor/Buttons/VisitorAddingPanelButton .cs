@@ -35,7 +35,7 @@ public class VisitorAddingButton(MementoLesson v, ControlView controlView) : IBu
 
             entity.Login = auth.Login;
             entity.Password = BCrypt.Net.BCrypt.HashPassword(auth.Password);
-            v.Add(entity);
+            v.AddVisitor(entity);
             controlView.Exit();
         }
          

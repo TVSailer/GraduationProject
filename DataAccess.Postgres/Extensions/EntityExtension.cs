@@ -23,6 +23,7 @@ namespace DataAccess.Postgres.Extensions
                         .ToList()
                         .ForEach(p =>
                         {
+                            if (p.GetValue(entity) == null) return;
                             var idProp = p.PropertyType.GetProperty("Id");
                             var id = idProp.GetValue(p.GetValue(entity));
                             pAtr.p.SetValue(entity, id);

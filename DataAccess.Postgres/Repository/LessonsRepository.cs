@@ -16,6 +16,7 @@ namespace DataAccess.Postgres.Repository
             .Include(l => l.Teacher)
             .Include(l => l.Reviews)
             .Include(l => l.Visitors)
+            .Include(l => l.AttendanceDates)
             .Include(l => l.Category)
             .Include(l => l.Schedule)
             .Include(l => l.Imgs)

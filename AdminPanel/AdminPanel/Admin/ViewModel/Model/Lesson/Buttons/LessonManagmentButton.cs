@@ -15,11 +15,11 @@ public class LessonManagmentButton(ControlView controlView, MementoLesson v) :
     public List<CustomButton> GetButtons(object? data, CardClickedToolStripArgs<LessonEntity> eventToolStripArgs)
         => [
             new CustomButton("Управление поситителями")
-                .CommandClick(() => ControlVisitors<VisitorBelongingLesson>(eventToolStripArgs.Entity)),
+                .CommandClick(() => ControlLesson<VisitorBelongingLesson>(eventToolStripArgs.Entity)),
             new CustomButton("Управление посещаемостью")
-                .CommandClick(() => controlView.Exit()),
+                .CommandClick(() => ControlLesson<DateAttendanceManagment>(eventToolStripArgs.Entity)),
             new CustomButton("Управление отзывами")
-                .CommandClick(() => ControlVisitors<ReviewManagment>(eventToolStripArgs.Entity)),
+                .CommandClick(() => ControlLesson<ReviewManagment>(eventToolStripArgs.Entity)),
         ];
 
     public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<LessonManagment> eventArgs)
@@ -34,7 +34,7 @@ public class LessonManagmentButton(ControlView controlView, MementoLesson v) :
         => new CustomButton()
             .CommandClick(() => controlView.LoadView<LessonDetailsFieldData, LessonEntity>(eventArgs.Entity));
 
-    private void ControlVisitors<T>(LessonEntity arg2FieldData) where T : IFieldData
+    private void ControlLesson<T>(LessonEntity arg2FieldData) where T : IFieldData
     {
         v.Lesson = arg2FieldData;
         controlView.LoadView<T>();

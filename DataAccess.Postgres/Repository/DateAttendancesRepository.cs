@@ -5,63 +5,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
 {
-    public class DateAttendancesRepository
+    public class DateAttendancesRepository : Repository<DateAttendanceEntity>
     {
-        public readonly ApplicationDbContext DbContext;
-
-        public DateAttendancesRepository(ApplicationDbContext dbContext)
+        public DateAttendancesRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-            this.DbContext = dbContext;
         }
 
-        public List<DateAttendanceEntity> Get(int idLesson)
+        public override List<DateAttendanceEntity> Get()
            => DbContext.DateAttendances
-            //.Include(d => d.Lesson)
             .Include(d => d.Visitors)
-            .Where(d => d.Lesson.Id == idLesson)
-            .AsNoTracking()
             .ToList() ?? throw new ArgumentNullException();
         
-        public List<DateAttendanceEntity>? Get(string startDate, string endDate)
-            => DbContext.DateAttendances
-            .AsNoTracking()
-            //.Where(d => d.Schedule.DateMatchingTheInterval(startDate, endDate))
-            .ToList();
-
-        public void Add(DateAttendanceEntity dateAttendance)
-        {
-            DbContext.Add(dateAttendance);
-            DbContext.SaveChanges();
-        }
-
-        public void AddRelationWithLesson(DateAttendanceEntity date, LessonEntity lesson)
-        {
-            DbContext.DateAttendances.FirstOrDefault(d => d.Id == date.Id).LessonId = lesson.Id;
-            DbContext.SaveChanges();
-        }
-
-        public void AddRelationWithVisitor(DateAttendanceEntity date, VisitorEntity visitor)
-        {
-            DbContext.DateAttendances.FirstOrDefault(d => d.Id == date.Id)
-                .Visitors.Add(DbContext.Visitors.FirstOrDefault(v => v.Id == visitor.Id));
-            DbContext.SaveChanges();
-        }
-
-        //public void Update(int id, string date, LessonEntity lesson)
-        //    => DbContext.DateAttendances
-        //        .Where(d => d.Id == id)
-        //        .ExecuteUpdate(v => v
-        //            .SetProperty(v => v.Schedule, date)
-        //            .SetProperty(v => v.Lesson, lesson));
-        
-        public void Update(int id, DateAttendanceEntity dateAttendance)
+        public override void Update(long id, DateAttendanceEntity dateAttendance)
             => DbContext.DateAttendances
                 .Where(d => d.Id == id)
                 .ExecuteUpdate(v => v
                     .SetProperty(v => v.Date, dateAttendance.Date)
                     .SetProperty(v => v.Lesson, dateAttendance.Lesson));
 
-        public void Delete(int id)
+        public override void Delete(long id)
             => DbContext.DateAttendances
             .Where(v => v.Id == id)
             .ExecuteDelete();

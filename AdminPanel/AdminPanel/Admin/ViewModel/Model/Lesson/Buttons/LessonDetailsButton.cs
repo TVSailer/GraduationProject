@@ -35,8 +35,6 @@ public class LessonDetailsButton(
         controlView.Exit();
     }
 
-
-
     private void UpdateEntity(LessonDetailsFieldData fieldData)
     {
         if (Validatoreg.TryValidObject(fieldData, out var results))

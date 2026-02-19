@@ -5,17 +5,14 @@ namespace DataAccess.Postgres.Models
 {
     public class DateAttendanceEntity : Entity
     {
-        public string Date { get; private set; }
+        public string Date { get; set; } = DateTime.Now.ToString("dd/MM/yyyy");
 
         [ForeignKey(nameof(LessonEntity))]
         public long LessonId { get; set; }
-        public LessonEntity Lesson { get; private set; }
+        public LessonEntity? Lesson { get; set; }
 
-        public List<VisitorEntity>? Visitors { get; private set; } = new();
+        public List<VisitorEntity>? Visitors { get; set; } = [];
 
-        public DateAttendanceEntity() { }
-
-        public override string ToString()
-            => Date.ToString();
+        public override string ToString() => Date;
     }
 }

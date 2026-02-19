@@ -4,7 +4,7 @@ using DataAccess.Postgres.Models;
 
 namespace Admin.ViewModel.Model.Review;
 
-public class ReviewDetailsFieldData : IFieldData<ReviewEntity>
+public class ReviewFieldData : IFieldData<ReviewEntity>
 {
     public GenericRepositoryEntity<ReviewEntity> Entity { get; set; } = new();
 
@@ -20,7 +20,7 @@ public class ReviewDetailsFieldData : IFieldData<ReviewEntity>
     [ReadOnlyMultilineFieldUi("Комментарий: ")]
     public string Comment { get; set; } = "";
 
-    public ReviewDetailsFieldData()
+    public ReviewFieldData()
     {
         Entity.Initialize(this);
     }

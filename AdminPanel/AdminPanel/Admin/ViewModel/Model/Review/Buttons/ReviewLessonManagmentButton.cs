@@ -17,5 +17,5 @@ public class ReviewManagmentButton(ControlView controlView)
 
     public CustomButton? GetButton(object? send, CardClickedArgs<ReviewEntity> eventArgs)
         => new CustomButton()
-                .CommandClick(() => controlView.LoadView<ReviewDetailsFieldData, ReviewEntity>(eventArgs.Entity));
+                .CommandClick(() => controlView.LoadView<ReviewFieldData, ReviewEntity>(eventArgs.Entity));
 }

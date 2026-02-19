@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository;
 
-public class MementoLesson(ApplicationDbContext DbContext)
+public class MementoLesson(ApplicationDbContext DbContext, Repository<DateAttendanceEntity> repositoryD)
 {
     public LessonEntity? Lesson { get; set; }
     public bool IsAdd => Lesson is not null && Lesson.MaxParticipants > Lesson.Visitors.Count;
@@ -26,8 +26,12 @@ public class MementoLesson(ApplicationDbContext DbContext)
     {
         return Lesson is null ? throw new ArgumentNullException() : Lesson.Reviews;
     }
+    public List<DateAttendanceEntity> GetDateAttendance()
+    {
+        return Lesson is null ? throw new ArgumentNullException() : repositoryD.Get().Where(d => d.Lesson.Id == Lesson.Id).ToList();
+    }
 
-    public void Add(VisitorEntity obj)
+    public void AddVisitor(VisitorEntity obj)
     {
         if (Lesson is null) throw new ArgumentNullException();
         if (Lesson.MaxParticipants <= Lesson.Visitors.Count) throw new ArgumentOutOfRangeException();
@@ -35,6 +39,14 @@ public class MementoLesson(ApplicationDbContext DbContext)
 
         Lesson.Visitors.Add(obj);
         DbContext.SaveChanges();
+    }
+    
+    public void AddDateAttendance(DateAttendanceEntity obj)
+    {
+        if (Lesson is null) throw new ArgumentNullException();
+
+        obj.LessonId = Lesson.Id;
+        repositoryD.Add(obj);
     }
 
     public void DeleteVisitor(long idEntity)

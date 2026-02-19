@@ -13,9 +13,7 @@ public class ReviewModule : NinjectModule
 {
     public override void Load()
     {
-        Kernel.Bind<IParametersSearch<ReviewEntity, ReviewFieldSearch>>().To<ReviewSearch>();
-
-        Kernel.Bind<IView<ReviewDetailsFieldData, ReviewEntity>>().To<BaseUI<ReviewDetailsFieldData, ReviewEntity, ReviewDetailsButton>>();
+        Kernel.Bind<IView<ReviewFieldData, ReviewEntity>>().To<BaseUI<ReviewFieldData, ReviewEntity, ReviewDetailsButton>>();
         Kernel.Bind<IView<ReviewManagment>>().To<ReviewsCardUi>();
 
         Kernel.Bind<ReviewManagmentButton>().ToSelf();
