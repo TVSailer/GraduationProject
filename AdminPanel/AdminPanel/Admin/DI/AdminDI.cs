@@ -25,7 +25,8 @@ internal static class AdminDi
     {
         var container = new StandardKernel(
             new LessonModule(),
-            new VisitorModule());
+            new VisitorModule(),
+            new ReviewModule());
 
         var db = new ApplicationDbContext();
         var serviceProvader = new ServiceProviderDI(container);

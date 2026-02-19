@@ -7,11 +7,11 @@ using Logica.UILayerPanel;
 
 namespace Admin.View.Moduls.Lesson;
 
-public class LessonReviewCardUi(VisitorsLessonRepository repositoryV) : View<LessonReviewManagment>
+public class ReviewLessonCardUi(MementoLesson v) : View<ReviewManagment>
 {
     protected override Control? CreateUi()
         => LayoutPanel.CreateColumn()
             .Row().ContentEnd(new CardLayoutPanel<ReviewEntity, ReviewCard>()
-                .SetObjects(repositoryV.Lesson.Reviews))
+                .SetObjects(v.Lesson.Reviews))
             .Build();
 }

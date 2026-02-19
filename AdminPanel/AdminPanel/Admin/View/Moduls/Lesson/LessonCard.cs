@@ -30,8 +30,7 @@ public class LessonCard : ObjectCard<LessonEntity>
         .ControlAddIsRowsPercent(FactoryElements.Label_09($"👥 {entity.Visitors.Count}/{entity.MaxParticipants}")
             .With(l => l.ForeColor = Color.DarkGreen), 30)
         .ControlAddIsRowsPercent(FactoryElements.Label_09($"★ {reting}")
-            .With(l => 
-                l.ForeColor = Color.Red), 30);
+            .With(l => l.ForeColor = Color.Red), 30);
 }
 
 

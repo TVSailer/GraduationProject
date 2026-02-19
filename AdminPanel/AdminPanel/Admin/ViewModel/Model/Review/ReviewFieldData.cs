@@ -4,23 +4,23 @@ using DataAccess.Postgres.Models;
 
 namespace Admin.ViewModel.Model.Review;
 
-public class ReviewFieldData : IFieldData<ReviewEntity>
+public class ReviewDetailsFieldData : IFieldData<ReviewEntity>
 {
     public GenericRepositoryEntity<ReviewEntity> Entity { get; set; } = new();
 
     [LinkingEntity(nameof(ReviewEntity.Rating))]
-    [BaseFieldUi("Рейтинг")]
+    [ReadOnlyFieldUi("Рейтинг: ")]
     public int Rating { get; set; }
 
-    [LinkingEntity(nameof(ReviewEntity.Comment))]
-    [BaseFieldUi("Комментарий")]
-    public string Comment { get; set; } = "";
-
     [LinkingEntity(nameof(ReviewEntity.Visitor))]
-    [BaseFieldUi("Автор")]
+    [ReadOnlyFieldUi("Автор: ")]
     public VisitorEntity Visitor { get; set; }
 
-    public ReviewFieldData()
+    [LinkingEntity(nameof(ReviewEntity.Comment))]
+    [ReadOnlyMultilineFieldUi("Комментарий: ")]
+    public string Comment { get; set; } = "";
+
+    public ReviewDetailsFieldData()
     {
         Entity.Initialize(this);
     }

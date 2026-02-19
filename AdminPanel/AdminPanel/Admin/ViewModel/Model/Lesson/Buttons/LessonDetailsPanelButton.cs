@@ -7,7 +7,7 @@ using DataAccess.Postgres.Repository;
 
 namespace Admin.ViewModel.Model.Lesson.Buttons;
 
-public class LessonManagmentButton(ControlView controlView, VisitorsLessonRepository repositoryV) : 
+public class LessonManagmentButton(ControlView controlView, MementoLesson v) : 
     IButtons<ViewButtonClickArgs<LessonManagment>>,
     IButtons<CardClickedToolStripArgs<LessonEntity>>, 
     IButton<CardClickedArgs<LessonEntity>>
@@ -19,7 +19,7 @@ public class LessonManagmentButton(ControlView controlView, VisitorsLessonReposi
             new CustomButton("Управление посещаемостью")
                 .CommandClick(() => controlView.Exit()),
             new CustomButton("Управление отзывами")
-                .CommandClick(() => ControlVisitors<LessonReviewManagment>(eventToolStripArgs.Entity)),
+                .CommandClick(() => ControlVisitors<ReviewManagment>(eventToolStripArgs.Entity)),
         ];
 
     public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<LessonManagment> eventArgs)
@@ -36,7 +36,7 @@ public class LessonManagmentButton(ControlView controlView, VisitorsLessonReposi
 
     private void ControlVisitors<T>(LessonEntity arg2FieldData) where T : IFieldData
     {
-        repositoryV.Lesson = arg2FieldData;
+        v.Lesson = arg2FieldData;
         controlView.LoadView<T>();
     }
 }

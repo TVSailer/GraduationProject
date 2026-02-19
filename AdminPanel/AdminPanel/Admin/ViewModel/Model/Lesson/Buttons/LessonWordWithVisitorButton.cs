@@ -7,7 +7,7 @@ using DataAccess.Postgres.Repository;
 
 namespace Admin.ViewModel.Model.Lesson.Buttons;
 
-public class VisitorBelongingLessonButton(ControlView controlView, VisitorsLessonRepository repositoryV) : IButtons<ViewButtonClickArgs<VisitorBelongingLesson>>, IButtons<CardClickedToolStripArgs<VisitorEntity>>
+public class VisitorBelongingLessonButton(ControlView controlView, MementoLesson v) : IButtons<ViewButtonClickArgs<VisitorBelongingLesson>>, IButtons<CardClickedToolStripArgs<VisitorEntity>>
 {
     public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<VisitorBelongingLesson>? e)
         =>
@@ -15,10 +15,10 @@ public class VisitorBelongingLessonButton(ControlView controlView, VisitorsLesso
             new CustomButton("Назад")
                 .CommandClick(() => controlView.Exit()),
             new CustomButton("Добавить нового")
-                .Enablede(repositoryV.IsAdd)
+                .Enablede(v.IsAdd)
                 .CommandClick(() => controlView.LoadView<VisitorAddingFieldData>()),
             new CustomButton("Добавить существуещегося")
-                .Enablede(repositoryV.IsAdd)
+                .Enablede(v.IsAdd)
                 .CommandClick(() => controlView.LoadView<VisitorNotBelongingLessonCardPanelUi>()),
         ];
 
@@ -27,7 +27,7 @@ public class VisitorBelongingLessonButton(ControlView controlView, VisitorsLesso
             new CustomButton("Удалить")
                 .CommandClick(() =>
                 {
-                    repositoryV.Delete(e.Entity.Id);
+                    v.DeleteVisitor(e.Entity.Id);
                     controlView.UpdateGUI();
                 }),
         ];

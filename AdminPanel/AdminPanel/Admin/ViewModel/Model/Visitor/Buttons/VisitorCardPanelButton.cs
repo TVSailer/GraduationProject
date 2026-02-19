@@ -7,9 +7,9 @@ using DataAccess.Postgres.Repository;
 
 namespace Admin.ViewModel.Model.Visitor.Buttons;
 
-public class VisitorNotBelongingLessonButton(ControlView control, VisitorsLessonRepository repository) : 
+public class VisitorNotBelongingLessonButton(ControlView control, MementoLesson repository) : 
     IButtons<ViewButtonClickArgs<VisitorNotBelongingLessonCardPanelUi>>, 
-    IButtons<CardClickedToolStripArgs<VisitorEntity>>
+    IButton<CardClickedArgs<VisitorEntity>>
 {
     public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<VisitorNotBelongingLessonCardPanelUi>? e)
         =>
@@ -18,13 +18,11 @@ public class VisitorNotBelongingLessonButton(ControlView control, VisitorsLesson
                 .CommandClick(() => control.Exit())
         ];
 
-    public List<CustomButton> GetButtons(object? data, CardClickedToolStripArgs<VisitorEntity>? e)
-        => [
-            new CustomButton()
+    public CustomButton? GetButton(object? send, CardClickedArgs<VisitorEntity> eventArgs)
+        => new CustomButton()
                 .CommandClick(() =>
                 {
-                    repository.Add(e.Entity);
+                    repository.Add(eventArgs.Entity);
                     control.Exit();
-                }),
-        ];
+                });
 }

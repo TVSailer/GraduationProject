@@ -8,7 +8,7 @@ using Logica;
 
 namespace Admin.ViewModel.Model.Visitor.Buttons;
 
-public class VisitorAddingButton(VisitorsLessonRepository repositoryV, ControlView controlView) : IButtons<ViewButtonClickArgs<VisitorEntity, VisitorAddingFieldData>>
+public class VisitorAddingButton(MementoLesson v, ControlView controlView) : IButtons<ViewButtonClickArgs<VisitorEntity, VisitorAddingFieldData>>
 {
     public List<CustomButton> GetButtons(
         object? data, ViewButtonClickArgs<VisitorEntity, VisitorAddingFieldData>? e)
@@ -26,8 +26,8 @@ public class VisitorAddingButton(VisitorsLessonRepository repositoryV, ControlVi
             var entity = arg2FieldData.Entity.GetData();
 
             var auth = UserAuthService.CreateAuthUser(entity.FIO.Name,
-                repositoryV
-                    .Get()
+                v
+                    .GetVisitorsBelongingLesson()
                     .Select(t => t.Password)
                     .ToArray());
 
@@ -35,7 +35,7 @@ public class VisitorAddingButton(VisitorsLessonRepository repositoryV, ControlVi
 
             entity.Login = auth.Login;
             entity.Password = BCrypt.Net.BCrypt.HashPassword(auth.Password);
-            repositoryV.Add(entity);
+            v.Add(entity);
             controlView.Exit();
         }
          

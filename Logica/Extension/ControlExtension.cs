@@ -11,9 +11,10 @@
                 c.DataBindings.Add(propertyNameControl, context, nameMember, false, DataSourceUpdateMode.OnPropertyChanged));
         }
 
-        public static Control OnErrorProvider(this Control control, string propertyName, PropertyChange context)
+        public static Control OnErrorProvider(this Control control, string propertyName, object context)
         {
-            context.ErrorMassegeProvider += (s, e) =>
+            if (context is not PropertyChange pc) return control;
+            pc.ErrorMassegeProvider += (_, e) =>
             {
                 if (!propertyName.Equals(e.PropertyName)) return;
                 errorProvider.SetError(control, e.ErrorMessage);

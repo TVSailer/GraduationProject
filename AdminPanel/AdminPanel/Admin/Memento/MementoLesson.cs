@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository;
 
-public class MementoLesson(ApplicationDbContext DbContext)
+public class MementoLessonRepository(Repository<VisitorEntity> repositoryV, ApplicationDbContext DbContext)
 {
     public LessonEntity? Lesson { get; set; }
     public bool IsAdd => Lesson is not null && Lesson.MaxParticipants > Lesson.Visitors.Count;
@@ -18,13 +18,18 @@ public class MementoLesson(ApplicationDbContext DbContext)
             .ToList() ?? throw new ArgumentNullException();
     }
 
-    public List<VisitorEntity> GetVisitorsBelongingLesson()
+    public List<VisitorEntity> Get()
     {
         return Lesson is null ? throw new ArgumentNullException() : Lesson.Visitors;
     }
-    public List<ReviewEntity> GetReviews()
+
+    public bool TryAdd(VisitorEntity obj)
     {
-        return Lesson is null ? throw new ArgumentNullException() : Lesson.Reviews;
+        if (Lesson is null) return false;
+        if (Lesson.MaxParticipants <= Lesson.Visitors.Count) return false;
+
+        Add(obj);
+        return true;
     }
 
     public void Add(VisitorEntity obj)
@@ -37,17 +42,15 @@ public class MementoLesson(ApplicationDbContext DbContext)
         DbContext.SaveChanges();
     }
 
-    public void DeleteVisitor(long idEntity)
+    public void Update(long id, VisitorEntity entity)
+    {
+        repositoryV.Update(id, entity);
+    }
+
+    public void Delete(long idEntity)
     {
         if (Lesson is null) throw new ArgumentNullException();
         Lesson.Visitors.RemoveAll(v => v.Id == idEntity);
-        DbContext.SaveChanges();
-    }
-
-    public void DeleteReview(long idEntity)
-    {
-        if (Lesson is null) throw new ArgumentNullException();
-        Lesson.Reviews.RemoveAll(v => v.Id == idEntity);
         DbContext.SaveChanges();
     }
 }

@@ -46,7 +46,9 @@ namespace Admin.ViewModels.Lesson
             if (Control != null)
             {
                 isBinding = true;
-                return Control.Binding(PropertyNameControl, data, PropertyName);
+                return Control
+                    .OnErrorProvider(PropertyName, data)
+                    .Binding(PropertyNameControl, data, PropertyName);
             }
 
             var type = data.GetType();
@@ -55,7 +57,8 @@ namespace Admin.ViewModels.Lesson
 
             Control = creatingControl!
                 .Invoke(value)
-                .Binding(PropertyNameControl, data, PropertyName);
+                .Binding(PropertyNameControl, data, PropertyName)
+                .OnErrorProvider(PropertyName, data);
 
             isBinding = true;
 
@@ -64,7 +67,7 @@ namespace Admin.ViewModels.Lesson
     }
 
     public class MultilineFieldUiAttribute([CallerMemberName] string prop = "") : FieldInfoUiAttribute("Описание:*",
-        prop, FactoryElements.TextBoxMultiline("Введите описание"), 100);
+        prop, FactoryElements.TextBox("Введите описание", true, false), 100);
     
     public class BaseFieldUiAttribute(string labelText, string placeholder = "", [CallerMemberName] string prop = "")
         : FieldInfoUiAttribute(labelText, prop, FactoryElements.TextBox(placeholder));
@@ -86,7 +89,13 @@ namespace Admin.ViewModels.Lesson
         string labelText,
         string placeholder = "",
         [CallerMemberName] string prop = "")
-        : FieldInfoUiAttribute(labelText, prop, FactoryElements.TextBoxReadOnle(placeholder));
+        : FieldInfoUiAttribute(labelText, prop, FactoryElements.TextBox(placeholder, false, true));
+    
+    public class ReadOnlyMultilineFieldUiAttribute(
+        string labelText,
+        string placeholder = "",
+        [CallerMemberName] string prop = "")
+        : FieldInfoUiAttribute(labelText, prop, FactoryElements.TextBox(placeholder, true, true), 170);
     
     public class DateFieldUiAttribute(string labelText, CustomFormatDatePicker format, [CallerMemberName] string prop = "")
         : FieldInfoUiAttribute(labelText, prop, FactoryElements.DateTimePicker(format)); 

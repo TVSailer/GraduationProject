@@ -11,4 +11,8 @@ public sealed class CustomButton : Button
     public CustomButton CommandClick(Action action) => this.With(b => Click += (s, e) => action());
     public CustomButton NoEnabled() => this.With(_ => Enabled = false);
     public CustomButton Enablede(bool enable = true) => this.With(_ => Enabled = enable);
+    public IEnumerator<CustomButton> GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
 }

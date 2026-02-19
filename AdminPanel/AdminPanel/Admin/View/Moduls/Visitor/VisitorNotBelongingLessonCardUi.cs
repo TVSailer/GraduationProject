@@ -12,7 +12,7 @@ using Logica.UILayerPanel;
 namespace Admin.View;
 
 public class VisitorNotBelongingLessonCardUi(
-    VisitorsLessonRepository repository,
+    MementoLesson repository,
     VisitorNotBelongingLessonCardPanelUi viewData,
     VisitorNotBelongingLessonButton parametersButtons)
     : View<VisitorNotBelongingLessonCardPanelUi>

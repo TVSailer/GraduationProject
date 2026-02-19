@@ -5,9 +5,10 @@ using Admin.ViewModel.Interface;
 
 namespace Admin.ViewModel.Model.Review.Buttons;
 
-public class ReviewLessonDetailsButton(ControlView controlView) : IButtons<ViewButtonClickArgs<LessonReviewManagment>>
+public class ReviewDetailsButton(ControlView controlView) : 
+    IButtons<ViewButtonClickArgs<ReviewEntity, ReviewDetailsFieldData>>
 {
-    public List<CustomButton>? GetButtons(object? data, ViewButtonClickArgs<LessonReviewManagment>? eventArgs)
+    public List<CustomButton>? GetButtons(object? send, ViewButtonClickArgs<ReviewEntity, ReviewDetailsFieldData>? eventArgs)
         => [
             new CustomButton("Назад")
                 .CommandClick(() => controlView.Exit()),

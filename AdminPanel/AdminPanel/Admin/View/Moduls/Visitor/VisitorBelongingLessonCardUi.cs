@@ -1,6 +1,5 @@
 ﻿using Admin.Args;
 using Admin.DI;
-using Admin.View.AdminMain;
 using Admin.View.Moduls.UIModel;
 using Admin.View.Moduls.Visitor;
 using Admin.View.ViewForm;
@@ -12,8 +11,7 @@ using Logica.UILayerPanel;
 namespace Admin.View;
 
 public class VisitorBelongingLessonCardUi(
-    AdminMainUi form,
-    VisitorsLessonRepository repository,
+    MementoLesson repository,
     VisitorBelongingLesson viewData,
     VisitorBelongingLessonButton parametersButtons)
     : View<VisitorBelongingLesson>
@@ -25,7 +23,7 @@ public class VisitorBelongingLessonCardUi(
             .Row()
             .ContentEnd(new CardLayoutPanel<VisitorEntity, VisitorCard>()
                 .SetContextMenu(parametersButtons)
-                .SetObjects(repository.Get()))
+                .SetObjects(repository.GetVisitorsBelongingLesson()))
             .RowAutoSize().ContentEnd(new ButtonLayoutPanel<ViewButtonClickArgs<VisitorBelongingLesson>>()
                 .SetClickedData(this, new ViewButtonClickArgs<VisitorBelongingLesson>(viewData))
                 .SetButtons(parametersButtons))

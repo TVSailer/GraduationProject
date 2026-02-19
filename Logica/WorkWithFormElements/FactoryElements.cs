@@ -50,343 +50,276 @@ public static class FactoryElements
         return toolStripMenu;
     }
 
-    //public static ComboBox CreateComboBox(object text, params object[] attributes)
-    //{
-    //    var cb = CreateComboBoxBase(text);    
-    //    foreach (var attribute in attributes)
-    //        cb.Items.Add(attribute);
-    //    return cb;
-    //}
-
     public static ComboBox ComboBox()
-        => new ComboBox()
-        .With(cb => cb.Dock = DockStyle.Fill)
-        .With(cb => cb.DropDownStyle = ComboBoxStyle.DropDownList)
-        .With(cb => cb.Font = new Font("Times New Roman", 11, FontStyle.Bold));
+    {
+        return new ComboBox()
+            .With(cb => cb.Dock = DockStyle.Fill)
+            .With(cb => cb.DropDownStyle = ComboBoxStyle.DropDownList)
+            .With(cb => cb.Font = new Font("Times New Roman", 11, FontStyle.Bold));
+    }
 
     public static ComboBox ComboBox(object[] items)
-        => ComboBox()
-        .With(cb => cb.Items.AddRange(items));
-
-    //public static CheckedListBox CheckedListBox(params object[] attributes)
-    //{
-    //    var clb = CheckedListBoxBase();
-    //    foreach (var attribute in attributes)
-    //        clb.Items.Add(attribute);
-    //    return clb;
-    //}
-
-    //public static DataGridView DataGridView(params string[] attributes)
-    //{
-    //    var dgv = DataGridView();
-    //    foreach (var attribute in attributes)
-    //    {
-    //        dgv.Columns.Add(attribute, attribute);
-    //        dgv.Columns[attribute].ReadOnly = true;
-    //    }
-    //    return dgv;
-    //}
-
-    //public static TableLayoutPanel CreateTableLayoutPanel(int countColum, params int[] heinghs)
-    //{
-    //    var table = CreateTableLayoutPanel();
-    //    foreach (var heingh in heinghs)
-    //        table.RowStyles.Add(new RowStyle(SizeType.Absolute, heingh));
-    //    for (int i = 0; i < countColum; i++)
-    //        table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100 / countColum));
-    //    return table;
-    //}
-
-    //public static TableLayoutPanel CreateTableLayoutPanel(ColumnStyle[] columns, RowStyle[] rows)
-    //{
-    //    var table = CreateTableLayoutPanel();
-    //    foreach (var row in rows)
-    //        table.RowStyles.Add(row);
-    //    foreach (var column in columns)
-    //        table.ColumnStyles.Add(column);
-
-    //    return table;
-    //}
-
-
-    //public static Button CreateButton(string text)
-    //    => new Button()
-    //    {
-    //        Name = text.Replace(" ", "") + "Button",
-    //        Text = text,
-    //        Dock = Style.DockStyle,
-    //        Font = Style.Font,
-    //        BackColor = Style.ButtonBackColor,
-    //        ForeColor = Style.ButtonForeColor,
-    //    };
-
-    //public static Button CreateButton<T>(string text, Action<T> action, T obj)
-    //{
-    //    var button = CreateButton(text);
-    //    button.Click += (send, e) => action?.Invoke(obj);
-
-    //    return button;
-    //}
-
-    //public static Button CreateButton(string text, Action action)
-    //{
-    //    var button = CreateButton(text);
-    //    button.Click += (send, e) => action?.Invoke();
-
-    //    return button;
-    //}
+    {
+        return ComboBox()
+            .With(cb => cb.Items.AddRange(items));
+    }
 
     public static DateTimePicker DateTimePicker(CustomFormatDatePicker custom)
-        => new()
+    {
+        return new DateTimePicker
         {
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
             Padding = new Padding(5),
             Format = DateTimePickerFormat.Custom,
             CustomFormat = custom.ToDescriptionString(),
-            ShowUpDown = true,
+            ShowUpDown = true
         };
+    }
 
     public static MaskedTextBox MaskedTextBox(string mask)
-        => new()
+    {
+        return new MaskedTextBox
         {
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
             Padding = new Padding(5),
-            Mask = mask,
+            Mask = mask
         };
+    }
 
     public static LinkLabel LinkLabel(string text, int size)
-        => new()
+    {
+        return new LinkLabel
         {
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", size, FontStyle.Bold),
             Text = text,
             TextAlign = ContentAlignment.TopLeft,
             LinkColor = Color.DarkBlue,
-            LinkBehavior = LinkBehavior.HoverUnderline,
+            LinkBehavior = LinkBehavior.HoverUnderline
         };
+    }
 
     public static LinkLabel LinkLabelTitle(string text, Action actionClick)
-        => LinkLabel(text, 18)
-        .With(l => l.Click += (s, e) => actionClick?.Invoke());
+    {
+        return LinkLabel(text, 18)
+            .With(l => l.Click += (s, e) => actionClick?.Invoke());
+    }
 
     public static LinkLabel LinkLabel_10(string text, Action actionClick)
-        => LinkLabel(text, 10)
-        .With(l => l.Click += (s, e) => actionClick?.Invoke())
-        .With(l => l.LinkBehavior = LinkBehavior.AlwaysUnderline);
+    {
+        return LinkLabel(text, 10)
+            .With(l => l.Click += (s, e) => actionClick?.Invoke())
+            .With(l => l.LinkBehavior = LinkBehavior.AlwaysUnderline);
+    }
 
     public static TextBox TextBox(string placeholderText = "")
-        => new TextBox()
+    {
+        return new TextBox
         {
             Text = "",
             PlaceholderText = placeholderText,
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
             BorderStyle = BorderStyle.FixedSingle,
-            ScrollBars = ScrollBars.Vertical,
-        };
-
-    //public static TextBox TextBox(string text)
-    //    => TextBox()
-    //    .With(t => t.Text = text);
-
-    public static TextBox TextBoxMultiline(string placeholderText)
-        => TextBox(placeholderText)
-        .With(t => t.Multiline = true);
-
-    public static TextBox TextBoxReadOnle(string placeholderText)
-        => TextBox(placeholderText)
-        .With(t => t.ReadOnly = true)
-        .With(t => t.Enabled = false)
-        ;
-
-    public static TextBox CreateTextBox(string attribute, Action<object> action)
-    {
-        var tb = new TextBox()
-        {
-            Name = attribute.Replace(" ", "") + "TextBox",
-            Dock = DockStyle.Fill,
-            Multiline = true,
             ScrollBars = ScrollBars.Vertical
         };
-
-        tb.TextChanged += (send, e) => action.Invoke(tb.Text);
-
-        return tb;
     }
 
-    //public static CheckedListBox CheckedListBoxBase(params object[] attributes)
-    //    => new CheckedListBox()
-    //    {
-    //        Dock = Style.DockStyle,
-    //        Font = Style.Font,
-    //        CheckOnClick = true,
-    //        Padding = Style.ControlPadding
-    //    };
-
-    //public static ComboBox CreateComboBoxBase(object selectObject, params object[] attributes)
-    //    => new ComboBox()
-    //    {
-    //        SelectedItem = selectObject,
-    //        Text = selectObject.ToString(),
-    //        Dock = Style.DockStyle,
-    //        Padding = Style.ControlPadding
-    //    };
+    public static TextBox TextBox(string placeholderText, bool multiline, bool readOnly)
+    {
+        return TextBox(placeholderText)
+            .With(t => t.ReadOnly = readOnly)
+            .With(t => t.Multiline = multiline);
+    }
 
     public static DataGridView DataGridView(params string[] attributes)
-        => new DataGridView()
+    {
+        return new DataGridView
         {
             Dock = DockStyle.Fill,
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
             SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-            AllowUserToAddRows = false,
+            AllowUserToAddRows = false
             //MultiSelect = false,
             //ScrollBars = ScrollBars.Horizontal
         };
+    }
 
     public static TableLayoutPanel TableLayoutPanel()
-        => new TableLayoutPanel()
+    {
+        return new TableLayoutPanel()
             .With(t => t.Padding = new Padding(0))
             .With(t => t.Dock = DockStyle.Fill);
+    }
 
     public static ToolStripMenuItem CreateToolStripMenu(string attributeMenu, params StripMenuItem[] stripMenuItems)
     {
         var toolStripMenu = new ToolStripMenuItem(attributeMenu);
 
         if (stripMenuItems != null)
-        {
             foreach (var strip in stripMenuItems)
             {
                 toolStripMenu.DropDownItems.Add(strip.Name);
                 toolStripMenu.DropDownItems[^1].Click += (send, e) => strip.Action?.Invoke();
             }
-        }
+
         return toolStripMenu;
     }
 
-    //public static MenuStrip CreateMenuStrip(params ToolStripMenuItem[] toolStripMenuItems)
-    //{
-    //    var menuStrip = new MenuStrip();
-    //    if (toolStripMenuItems != null)
-    //        foreach (var tool in toolStripMenuItems)
-    //            menuStrip.Items.Add(tool);
-    //    return menuStrip;
-    //}
-
-
     public static Button Button(string text, bool enable = true)
-        => new Button()
+    {
+        return new Button()
             .With(c => c.Text = text)
             .With(c => c.Enabled = enable)
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
             .With(c => c.BackColor = SystemColors.ButtonFace)
             .With(c => c.ForeColor = SystemColors.ControlText);
+    }
 
     public static Button Button(string text, object context, string dataMember)
-        => new Button()
+    {
+        return new Button()
             .With(c => c.Text = text)
             .With(c => c.BackColor = Color.White)
             .With(c => c.DataBindings.Add(new Binding("Command", context, dataMember, true)))
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold));
+    }
 
     public static Button Button(string text, Action action)
-        => Button(text, _ => action.Invoke());
+    {
+        return Button(text, _ => action.Invoke());
+    }
 
     public static Button Button(string text, Action<object?> action, bool enabled = true)
-        => new Button()
+    {
+        return new Button()
             .With(c => c.Text = text)
             .With(c => c.Enabled = enabled)
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", 11, FontStyle.Bold))
             .With(c => c.Click += (_, _) => action.Invoke(c));
+    }
 
     public static Button Button(string text, int size, Action action)
-        => Button(text, size)
+    {
+        return Button(text, size)
             .With(c => c.Click += (s, e) => action?.Invoke());
+    }
 
     public static Button Button(string text, int size, object context, string dataMember)
-        => Button(text, size)
+    {
+        return Button(text, size)
             .With(c => c.DataBindings.Add(new Binding("Command", context, dataMember, true)));
+    }
 
     public static Button Button(string text, int size)
-        => new Button()
+    {
+        return new Button()
             .With(c => c.Text = text)
             .With(c => c.Dock = DockStyle.Fill)
             .With(c => c.Font = new Font("Times New Roman", size, FontStyle.Bold));
+    }
 
     public static Label LabelTitle(string text)
-        => Label(text)
+    {
+        return Label(text)
             .With(l => l.Font = new Font("Times New Roman", 18, FontStyle.Bold))
             .With(l => l.ForeColor = Color.DarkBlue)
             .With(l => l.TextAlign = ContentAlignment.TopCenter);
+    }
 
     public static Label Label_12(string text)
-        => Label(text)
+    {
+        return Label(text)
             .With(l => l.Font = new Font("Times New Roman", 12, FontStyle.Bold));
+    }
 
     public static Label Label_11(string text)
-        => Label(text)
+    {
+        return Label(text)
             .With(l => l.Font = new Font("Times New Roman", 11, FontStyle.Bold));
+    }
 
     public static Label Label_10(string text)
-        => Label(text)
+    {
+        return Label(text)
             .With(l => l.Font = new Font("Times New Roman", 10, FontStyle.Bold));
+    }
+
     public static Label Label_09(string text)
-        => Label(text)
+    {
+        return Label(text)
             .With(l => l.Font = new Font("Times New Roman", 9, FontStyle.Bold));
+    }
+
     public static Label Label_08(string text)
-        => Label(text)
+    {
+        return Label(text)
             .With(l => l.Font = new Font("Times New Roman", 8, FontStyle.Bold));
+    }
 
     public static Label Label(string text)
-        => new Label()
+    {
+        return new Label()
             .With(l => l.Text = text)
             .With(l => l.Dock = DockStyle.Fill)
             .With(l => l.Height = 40)
             .With(l => l.TextAlign = ContentAlignment.TopLeft)
             .With(l => l.BorderStyle = BorderStyle.None)
             .With(l => l.Padding = new Padding(5));
+    }
 
     public static FlowLayoutPanel FlowLayoutPanel()
-        => new FlowLayoutPanel()
+    {
+        return new FlowLayoutPanel()
             .With(p => p.Dock = DockStyle.Fill)
             .With(p => p.AutoScroll = true)
             .With(p => p.Padding = new Padding(10));
+    }
 
     public static PictureBox PictureBox(string imgUrl)
-        => new PictureBox()
+    {
+        return new PictureBox()
             .With(pb => pb.Size = new Size(300, 200))
             .With(pb => pb.Margin = new Padding(5))
             .With(pb => pb.SizeMode = PictureBoxSizeMode.Zoom)
             .With(pb => pb.BackColor = Color.Black)
             .With(pb => pb.ImageLocation = imgUrl)
             .With(img => img.MouseDoubleClick += (s, e) => FullSizeImage(imgUrl));
+    }
 
     public static void FullSizeImage(string imgUrl)
-           => new Form()
-               .With(f => f.Text = $"Просмотр изображения: {System.IO.Path.GetFileName(imgUrl)}")
-               .With(f => f.Size = new Size(800, 600))
-               .With(f => f.StartPosition = FormStartPosition.CenterParent)
-               .With(f => f.BackColor = Color.Black)
-               .With(f => f.Controls.Add(
-                   new PictureBox()
-                   .With(pb => pb.Dock = DockStyle.Fill)
-                   .With(pb => pb.SizeMode = PictureBoxSizeMode.Zoom)
-                   .With(pb => pb.ImageLocation = imgUrl)))
-               .ShowDialog();
+    {
+        new Form()
+            .With(f => f.Text = $"Просмотр изображения: {Path.GetFileName(imgUrl)}")
+            .With(f => f.Size = new Size(800, 600))
+            .With(f => f.StartPosition = FormStartPosition.CenterParent)
+            .With(f => f.BackColor = Color.Black)
+            .With(f => f.Controls.Add(
+                new PictureBox()
+                    .With(pb => pb.Dock = DockStyle.Fill)
+                    .With(pb => pb.SizeMode = PictureBoxSizeMode.Zoom)
+                    .With(pb => pb.ImageLocation = imgUrl)))
+            .ShowDialog();
+    }
 
     public static Control NumericUpDown()
-        => new NumericUpDown()
+    {
+        return new NumericUpDown()
             .With(n => n.Minimum = 1)
             .With(n => n.Maximum = 1000)
             .With(n => n.Value = 50)
             .With(n => n.Font = new Font("Times New Roman", 11))
             .With(n => n.Dock = DockStyle.Fill);
+    }
 
     public static ListBox ListBox()
-        => new ListBox()
-        .With(l => l.Dock = DockStyle.Fill);
+    {
+        return new ListBox()
+            .With(l => l.Dock = DockStyle.Fill);
+    }
 }
