@@ -10,16 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ViewModel\Model\Event\**" />
     <Compile Remove="ViewModel\Model\Teacher\**" />
-    <EmbeddedResource Remove="ViewModel\Model\Event\**" />
     <EmbeddedResource Remove="ViewModel\Model\Teacher\**" />
-    <None Remove="ViewModel\Model\Event\**" />
     <None Remove="ViewModel\Model\Teacher\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="DI\EventModule.cs" />
     <Compile Remove="DI\TeacherModule.cs" />
     <Compile Remove="View\ManagementView.cs" />
     <Compile Remove="View\UI.cs" />

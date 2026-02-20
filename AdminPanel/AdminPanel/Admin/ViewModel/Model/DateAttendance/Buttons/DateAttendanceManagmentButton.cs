@@ -9,8 +9,7 @@ using DataAccess.Postgres.Repository;
 namespace Admin.ViewModel.Model.DateAttendance.Buttons;
 
 public class DateAttendanceManagmentButton(ControlView controlView, MementoLesson memento) :
-    IButtons<ViewButtonClickArgs<DateAttendanceManagment>>,
-    IButton<CardClickedArgs<DateAttendanceEntity>>
+    IButtons<ViewButtonClickArgs<DateAttendanceManagment>>
 {
     public List<CustomButton>? GetButtons(object? send, ViewButtonClickArgs<DateAttendanceManagment>? eventArgs)
         => [
@@ -23,9 +22,4 @@ public class DateAttendanceManagmentButton(ControlView controlView, MementoLesso
                     controlView.UpdateGUI();
                 }),
         ];
-
-    public CustomButton? GetButton(object? send, CardClickedArgs<DateAttendanceEntity> eventArgs)
-        => new CustomButton()
-            .CommandClick(() => controlView.LoadView<DateAttendanceFieldData, DateAttendanceEntity>(eventArgs.Entity));
-
 }

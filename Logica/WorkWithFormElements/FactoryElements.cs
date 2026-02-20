@@ -138,12 +138,13 @@ public static class FactoryElements
     {
         return new DataGridView
         {
-            Dock = DockStyle.Fill,
-            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+            //Dock = DockStyle.Fill,
+            AutoSize = true,
+            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells,
+            AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders,
             SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-            AllowUserToAddRows = false
-            //MultiSelect = false,
-            //ScrollBars = ScrollBars.Horizontal
+            AllowUserToAddRows = false,
+            ScrollBars = ScrollBars.Both
         };
     }
 

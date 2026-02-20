@@ -107,27 +107,25 @@ public abstract class ObjectCard<T> : Panel
             OnMouseLeaveCard(s, args);
         };
 
+        // ReSharper disable once ComplexConditionExpression
         control.MouseClick += (s, args) =>
         {
-            if (args.Button == MouseButtons.Left && !_isContextMenuShowing)
+            switch (args.Button)
             {
-                OnCardClicked?.Invoke(this, EventArgs.Empty);
-                OnMouseLeaveCard(s, args);
-            }
-            else if (args.Button == MouseButtons.Right)
-            {
-                if (Parent != null)
+                case MouseButtons.Left when !_isContextMenuShowing:
+                    OnCardClicked?.Invoke(this, EventArgs.Empty);
+                    OnMouseLeaveCard(s, args);
+                    break;
+                case MouseButtons.Right:
                 {
-                    foreach (Control parentControl in Parent.Controls)
-                    {
-                        if (parentControl is ObjectCard<T> card && card != this)
-                        {
-                            card.ResetHighlight();
-                        }
-                    }
-                }
+                    if (Parent != null)
+                        foreach (Control parentControl in Parent.Controls)
+                            if (parentControl is ObjectCard<T> card && card != this)
+                                card.ResetHighlight();
 
-                ContextMenuStrip?.Show(control, args.Location);
+                    ContextMenuStrip?.Show(control, args.Location);
+                    break;
+                }
             }
         };
 
@@ -151,16 +149,12 @@ public abstract class ObjectCard<T> : Panel
         base.OnParentChanged(e);
 
         if (Parent != null)
-        {
             Parent.MouseClick += (s, args) =>
             {
                 var hitControl = Parent.GetChildAtPoint(args.Location);
                 if (hitControl is not ObjectCard<T>)
-                {
                     ResetHighlight();
-                }
             };
-        }
     }
     
     public virtual ObjectCard<T> Initialize(T obj)
