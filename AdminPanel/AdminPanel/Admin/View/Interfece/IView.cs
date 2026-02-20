@@ -1,5 +1,6 @@
 ﻿using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
+using Logica.Interface;
 using Logica.UILayerPanel;
 
 namespace Admin.View.ViewForm

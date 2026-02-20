@@ -1,6 +1,6 @@
 ﻿using Admin.Args;
-using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
+using Logica.Interface;
 
 public abstract class ObjectCard<T> : Panel
     where T : Entity, new()

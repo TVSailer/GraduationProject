@@ -1,6 +1,7 @@
 ﻿using Admin.ViewModel.Interface;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
+using Logica.Interface;
 
 namespace Admin.ViewModels.Lesson;
 

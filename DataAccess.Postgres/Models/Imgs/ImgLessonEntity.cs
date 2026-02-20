@@ -1,5 +1,5 @@
-﻿using DataAccess.Postgres.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using DataAccess.Postgres.Models;
 
 public class ImgLessonEntity : ImgEntity
 {

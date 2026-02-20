@@ -31,9 +31,6 @@ public class DateAttendanceCardUi(
 
     internal DataGridView OnLoadData(DataGridView gridView)
     {
-        gridView.Columns.Clear();
-        gridView.Rows.Clear();
-
         var lesson = repository.Lesson;
         var dates = repository.GetDateAttendance();
 
@@ -50,7 +47,7 @@ public class DateAttendanceCardUi(
                 if (!gridView.Columns.Contains(date.Date + date.Id))
                 {
                     var split = date.Date.Split(".");
-                    gridView.Columns.Add(date.Date + date.Id, $"{split[0]}.{split[1]}\n{split[2]}");
+                    gridView.Columns.Add(date.Date + date.Id, $"{split[0]}.{split[1]}");
                 }
 
                 var rez = date.Visitors

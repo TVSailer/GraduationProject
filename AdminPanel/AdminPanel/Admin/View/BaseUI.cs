@@ -6,6 +6,7 @@ using Admin.View.ViewForm;
 using Admin.ViewModel.AbstractViewModel;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
+using Logica.Interface;
 using Logica.UILayerPanel;
 
 public class BaseUI<TFieldData, TEntity, TButtons>(

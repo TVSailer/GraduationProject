@@ -1,4 +1,4 @@
-﻿namespace Admin.ViewModel.Interface;
+﻿namespace Logica.UI;
 
 public sealed class CustomButton : Button
 {

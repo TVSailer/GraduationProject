@@ -1,21 +1,19 @@
 ﻿using Admin.Args;
 using Admin.DI;
 using Admin.View;
-using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.Interface;
 using Logica.UI;
 
-namespace Admin.ViewModel.Managment;
+namespace Admin.ViewModel.Model.Event.Buttons;
 
-public class LessonAddingButton(Repository<LessonEntity> repository, ControlView controlView) : IButtons<ViewButtonClickArgs<LessonEntity, LessonAddingFieldData>>
+public class EventAddingButton(Repository<EventEntity> repository, ControlView controlView) : 
+    IButtons<ViewButtonClickArgs<EventEntity, EventAddingFieldData>>
 {
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<LessonEntity, LessonAddingFieldData>? e)
+    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<EventEntity, EventAddingFieldData>? e)
         => [
-            new CustomButton("Создать расписание")
-                .CommandClick(() => new ScheduleView(e.FieldData).ShowDialog()),
             new CustomButton("Сохранить")
                 .CommandClick(() => AddEntity(e.FieldData)),
             new CustomButton("Добавить изображение")
@@ -26,16 +24,16 @@ public class LessonAddingButton(Repository<LessonEntity> repository, ControlView
                 .CommandClick(() => controlView.Exit()),
         ];
 
-    private void AddEntity(LessonAddingFieldData fieldData)
+    private void AddEntity(EventAddingFieldData fieldData)
     {
         if (Validatoreg.TryValidObject(fieldData, out var results))
         {
             repository.Add(fieldData.Entity.GetData());
             controlView.Exit();
-        };
+        }
+        ;
 
         if (fieldData is PropertyChange pc)
             results.ForEach(r => r.MemberNames.ForEach(n => { pc.OnMassegeErrorProvider(r.ErrorMessage, n); }));
     }
 }
-

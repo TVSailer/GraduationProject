@@ -1,6 +1,6 @@
 ﻿using Admin.Args;
-using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
+using Logica.Interface;
 
 namespace Admin.View.Moduls.UIModel;
 

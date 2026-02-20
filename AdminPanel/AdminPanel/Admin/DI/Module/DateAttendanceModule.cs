@@ -3,10 +3,9 @@ using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using Admin.ViewModel.Model.DateAttendance;
 using Admin.ViewModel.Model.DateAttendance.Buttons;
-using Admin.ViewModel.Model.Review;
-using Admin.ViewModel.Model.Review.Buttons;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
+using Logica.Interface;
 using Ninject.Modules;
 
 namespace Admin.DI;

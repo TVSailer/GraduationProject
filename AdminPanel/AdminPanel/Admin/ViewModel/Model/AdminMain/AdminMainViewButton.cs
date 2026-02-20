@@ -1,7 +1,8 @@
 ﻿using Admin.Args;
 using Admin.DI;
 using Admin.View;
-using Admin.ViewModel.Interface;
+using Logica.Interface;
+using Logica.UI;
 
 public class AdminMainViewButton(ControlView controlView) : IButtons<ViewButtonClickArgs<AdminFieldData>>
 {
@@ -10,7 +11,7 @@ public class AdminMainViewButton(ControlView controlView) : IButtons<ViewButtonC
             new CustomButton("📰 Управление новостями")
                 .CommandClick(() => controlView.LoadView<VisitorManagment>()),
             new CustomButton("🎭 Управление мероприятиями")
-                .CommandClick(() => controlView.LoadView<VisitorManagment>()),
+                .CommandClick(() => controlView.LoadView<EventManagment>()),
             new CustomButton("🎨 Управление кружками")
                 .CommandClick(() => controlView.LoadView<LessonManagment>()),
             new CustomButton("👥 Управление посетителями")

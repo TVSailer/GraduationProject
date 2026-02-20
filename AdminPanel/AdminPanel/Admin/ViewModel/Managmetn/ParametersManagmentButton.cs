@@ -2,6 +2,8 @@
 using Admin.View;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
+using Logica.Interface;
+using Logica.UI;
 
 public class BaseManagmentButton<T, TEntity, TAddingPanel>(ControlView controlView) : IButtons<ViewButtonClickArgs<T>>
     where TEntity : Entity, new()

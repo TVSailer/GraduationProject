@@ -5,6 +5,7 @@ using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Repository;
 using Logica;
+using Logica.Interface;
 
 namespace Admin.ViewModel.Managment;
 

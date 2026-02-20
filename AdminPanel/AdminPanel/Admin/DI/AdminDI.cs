@@ -6,6 +6,7 @@ using Admin.ViewModel.Interface;
 using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
+using Logica.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -27,7 +28,8 @@ internal static class AdminDi
             new LessonModule(),
             new VisitorModule(),
             new ReviewModule(),
-            new DateAttendanceModule());
+            new DateAttendanceModule(),
+            new EventModule());
 
         var db = new ApplicationDbContext();
         var serviceProvader = new ServiceProviderDI(container);

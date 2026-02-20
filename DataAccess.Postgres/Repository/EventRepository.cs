@@ -3,12 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
 {
-    public class EventRepository : Repository<EventEntity>
+    public class EventRepository(ApplicationDbContext dbContext) : Repository<EventEntity>(dbContext)
     {
-        public EventRepository(ApplicationDbContext dbContext) : base(dbContext)
-        {
-        }
-        
         public override List<EventEntity> Get()
             => DbContext.Event
             .Include(e => e.Imgs)

@@ -1,8 +1,9 @@
 ﻿using Admin.Args;
 using Admin.DI;
 using Admin.View;
-using Admin.ViewModel.Interface;
 using DataAccess.Postgres.Models;
+using Logica.Interface;
+using Logica.UI;
 
 namespace Admin.ViewModel.Model.DateAttendance.Buttons;
 

@@ -1,14 +1,12 @@
 ﻿using Admin.ViewModel.Interface;
 using Admin.ViewModels.Lesson;
-using Logica.Interface;
 
-namespace Admin.ViewModel.Model.Visitor;
+namespace WinFormsApp1.ViewModel.Model.Teacher;
 
-public class  VisitorFieldSearch : PropertyChange, IFieldData
+public class TeacherFieldSearch : PropertyChange, IFieldData
 {
-    [BaseFieldUi("Имя")]
-    [FieldState("")]
-    public string VisitorName
+    [BaseFieldUi("Имя преподователя")]
+    public string TeacherName
     {
         get;
         set
@@ -19,9 +17,8 @@ public class  VisitorFieldSearch : PropertyChange, IFieldData
         }
     } = "";
 
-    [BaseFieldUi("Фамилия")]
-    [FieldState("")]
-    public string VisitorSurname
+    [BaseFieldUi("Фамилия преподователя")]
+    public string TeacherSurname
     {
         get;
         set
@@ -32,3 +29,4 @@ public class  VisitorFieldSearch : PropertyChange, IFieldData
         }
     } = "";
 }
+

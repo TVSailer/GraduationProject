@@ -2,6 +2,7 @@
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
+using Logica.Interface;
 
 namespace Admin.View;
 

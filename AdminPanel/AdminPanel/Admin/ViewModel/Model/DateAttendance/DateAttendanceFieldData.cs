@@ -1,6 +1,7 @@
 ﻿using Admin.ViewModel.Interface;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
+using Logica.Interface;
 
 namespace Admin.ViewModel.Model.DateAttendance;
 

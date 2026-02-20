@@ -1,5 +1,5 @@
-﻿using Microsoft.Office.Interop.Word;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using Microsoft.Office.Interop.Word;
 
 namespace Logica
 {

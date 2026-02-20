@@ -1,6 +1,6 @@
-﻿using CSharpFunctionalExtensions;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using CSharpFunctionalExtensions;
 
 namespace DataAccess.Postgres.Extensions
 {

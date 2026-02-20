@@ -3,6 +3,7 @@ using Admin.ViewModel.Managment;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
 using Logica;
+using Logica.Interface;
 using Logica.UILayerPanel;
 
 namespace Admin.View.Moduls.UIModel

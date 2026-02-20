@@ -1,13 +1,12 @@
-﻿using System.Windows.Input;
-using Admin.View;
+﻿using Admin.ViewModel.AbstractViewModel;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.CustomAttribute;
-using WinFormsApp1;
 
-public abstract class TeacherData : ViewModele<TeacherEntity>
+LogicaMessage.MessageYesNo("Для удаления преподователь не должен вести ни каких урков!");
+
+public class TeacherData : FieldData<TeacherEntity>
 {
     [LinkingEntity(nameof(TeacherEntity.FIO))]
     public FIO FIO
@@ -17,21 +16,11 @@ public abstract class TeacherData : ViewModele<TeacherEntity>
     }
 
     [FIO, BaseFieldUi("ФИО", "Введите ФИО преподователя")] 
-    public string? FIOTeacher
-    {
-        get;
-        set => TryValidProperty(ref field, value);
-    }
+    public string? FIOTeacher { get; set => TryValidProperty(ref field, value); }
 
     [DateBirthday, LinkingEntity(nameof(TeacherEntity.DateBirth)) , DateFieldUi("Дата рождения", CustomFormatDatePicker.dd_MM_yyyy)] 
     public string DateBirth { get; set => TryValidProperty(ref field, value); }
 
     [PhoneNumber, LinkingEntity(nameof(TeacherEntity.NumberPhone)), MaskedTextBoxFieldUi("Номер телефона", "+7 (000)-000-00-00")] 
     public string NumberPhone { get; set => TryValidProperty(ref field, value); }
-
-    public TeacherData() : base(
-        new MainCommand(_ => AdminDI.GetService<ManagementView<TeacherEntity, TeacherCard>>().InitializeComponents(null)))
-    {
-        
-    }
 }

@@ -4,6 +4,8 @@ using Admin.View;
 using Admin.ViewModel.Interface;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
+using Logica.Interface;
+using Logica.UI;
 
 namespace Admin.ViewModel.Model.Lesson.Buttons;
 
@@ -40,4 +42,3 @@ public class LessonManagmentButton(ControlView controlView, MementoLesson v) :
         controlView.LoadView<T>();
     }
 }
-

@@ -6,6 +6,7 @@ using Admin.ViewModel.Model.Lesson.Buttons;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
+using Logica.Interface;
 using Ninject.Modules;
 
 namespace Admin.DI;

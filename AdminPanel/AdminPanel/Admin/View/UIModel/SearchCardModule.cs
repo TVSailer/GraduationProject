@@ -2,6 +2,7 @@
 using Admin.ViewModel.Interface;
 using Admin.ViewModel.Managment;
 using CSharpFunctionalExtensions;
+using Logica.Interface;
 using Logica.UILayerPanel;
 
 namespace Admin.View.Moduls.UIModel;

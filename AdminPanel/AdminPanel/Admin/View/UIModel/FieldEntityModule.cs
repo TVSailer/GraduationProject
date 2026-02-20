@@ -1,5 +1,4 @@
-﻿using Admin.ViewModel.Interface;
-using Admin.ViewModels.Lesson;
+﻿using Admin.ViewModels.Lesson;
 using Logica.Extension;
 using Logica.UILayerPanel;
 

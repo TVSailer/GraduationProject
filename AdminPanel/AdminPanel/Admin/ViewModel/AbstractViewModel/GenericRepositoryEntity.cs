@@ -2,6 +2,7 @@
 using Admin.ViewModel.Interface;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
+using Logica.Interface;
 
 public class GenericRepositoryEntity<TEntity>
     where TEntity : Entity, new()

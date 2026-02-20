@@ -1,6 +1,7 @@
-﻿using Admin.ViewModel.Interface;
-using Admin.ViewModel.Managment;
+﻿using Admin.ViewModel.Managment;
 using Logica;
+using Logica.Interface;
+using Logica.UI;
 
 namespace Admin.View.Moduls.UIModel;
 

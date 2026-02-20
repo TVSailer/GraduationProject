@@ -1,7 +1,8 @@
 ﻿using Admin.Args;
 using Admin.DI;
 using Admin.View;
-using Admin.ViewModel.Interface;
+using Logica.Interface;
+using Logica.UI;
 
 namespace Admin.ViewModel.Model.Review.Buttons;
 

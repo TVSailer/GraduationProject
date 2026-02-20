@@ -10,12 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ViewModel\Model\Teacher\**" />
-    <EmbeddedResource Remove="ViewModel\Model\Teacher\**" />
-    <None Remove="ViewModel\Model\Teacher\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="DI\TeacherModule.cs" />
     <Compile Remove="View\ManagementView.cs" />
     <Compile Remove="View\UI.cs" />
@@ -40,6 +34,7 @@
 
   <ItemGroup>
     <Folder Include="ViewModel\Model\News\" />
+    <Folder Include="ViewModel\Model\Teacher\Buttons\" />
   </ItemGroup>
 
   <ItemGroup>

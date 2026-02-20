@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository;
 
-public class EventCategoryRepositroy : Repository<EventCategoryEntity>
+public class EventCategoryRepository : Repository<EventCategoryEntity>
 {
-    public EventCategoryRepositroy(ApplicationDbContext dbContext) : base(dbContext)
+    public EventCategoryRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
     }
 

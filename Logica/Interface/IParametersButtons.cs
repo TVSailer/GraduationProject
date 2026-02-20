@@ -1,4 +1,6 @@
-﻿namespace Admin.ViewModel.Interface;
+﻿using Logica.UI;
+
+namespace Logica.Interface;
 
 public interface IButtons<in TEventArgs>
 {
