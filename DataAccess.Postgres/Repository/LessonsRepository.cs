@@ -7,26 +7,26 @@ namespace DataAccess.Postgres.Repository
 {
     public class LessonsRepository : Repository<LessonEntity>
     {
-        public LessonsRepository(ApplicationDbContext dbContext) :  base(dbContext)
+        public LessonsRepository(ApplicationDbContext dbContext) :  base(dbContext: dbContext)
         {
         }
 
         public override List<LessonEntity> Get()
           => DbContext.Lessons
-            .Include(l => l.Teacher)
-            .Include(l => l.Reviews)
-            .Include(l => l.Visitors)
-            .Include(l => l.AttendanceDates)
-            .Include(l => l.Category)
-            .Include(l => l.Schedule)
-            .Include(l => l.Imgs)
+            .Include(navigationPropertyPath: l => l.Teacher)
+            .Include(navigationPropertyPath: l => l.Reviews)
+            .Include(navigationPropertyPath: l => l.Visitors)
+            .Include(navigationPropertyPath: l => l.AttendanceDates)
+            .Include(navigationPropertyPath: l => l.Category)
+            .Include(navigationPropertyPath: l => l.Schedule)
+            .Include(navigationPropertyPath: l => l.Imgs)
             .ToList() ?? throw new ArgumentNullException();
 
         public override void Update(long id, LessonEntity lesson)
         {
             DbContext.Lessons
-                .Where(l => l.Id == id)
-                .ExecuteUpdate(l => l
+                .Where(predicate: l => l.Id == id)
+                .ExecuteUpdate(setPropertyCalls: l => l
                     .SetProperty(l => l.Name, lesson.Name)
                     .SetProperty(l => l.Description, lesson.Description)
                     .SetProperty(l => l.MaxParticipants, lesson.MaxParticipants)
@@ -35,25 +35,25 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(l => l.TeacherId, lesson.Teacher.Id));
 
 
-            lesson.Schedule.ForEach(ls => DbContext.LessonSchedule
-                .Where(s => s.Id == ls.Id)
-                .ExecuteUpdate(s => s
+            lesson.Schedule.ForEach(action: ls => DbContext.LessonSchedule
+                .Where(predicate: s => s.Id == ls.Id)
+                .ExecuteUpdate(setPropertyCalls: s => s
                     .SetProperty(s => s.Start, ls.Start)
                     .SetProperty(s => s.End, ls.End)
                     .SetProperty(s => s.Day, ls.Day)));
 
             lesson.Schedule
-                .Where(ls => !DbContext.LessonSchedule
-                    .Select(s => s.Id)
-                    .Contains(ls.Id))
+                .Where(predicate: ls => !DbContext.LessonSchedule
+                    .Select(selector: s => s.Id)
+                    .Contains(item: ls.Id))
                 .ToList()
-                .ForEach(ls => DbContext.Add(ls));
+                .ForEach(action: ls => DbContext.Add(entity: ls));
 
             if (lesson.Imgs != null && lesson.Imgs.Count > 0)
             {
                 var lessonDb = DbContext.Lessons
-                    .Include(e => e.Imgs)
-                    .FirstOrDefault(e => e.Id == id);
+                    .Include(navigationPropertyPath: e => e.Imgs)
+                    .FirstOrDefault(predicate: e => e.Id == id);
 
                 if (lessonDb == null)
                 {
@@ -61,19 +61,19 @@ namespace DataAccess.Postgres.Repository
                     return;
                 }
 
-                var existingUrls = lessonDb.Imgs.Select(i => i.Url).ToHashSet();
-                var newUrls = lesson.Imgs.Select(i => i.Url).ToHashSet();
+                var existingUrls = lessonDb.Imgs.Select(selector: i => i.Url).ToHashSet();
+                var newUrls = lesson.Imgs.Select(selector: i => i.Url).ToHashSet();
 
                 var imgsToRemove = lessonDb.Imgs
-                    .Where(img => !newUrls.Contains(img.Url))
+                    .Where(predicate: img => !newUrls.Contains(item: img.Url))
                     .ToList();
 
                 foreach (var img in imgsToRemove)
-                    lessonDb.Imgs.Remove(img);
+                    lessonDb.Imgs.Remove(item: img);
 
                 foreach (var img in lesson.Imgs)
-                    if (!existingUrls.Contains(img.Url))
-                        lessonDb.Imgs.Add(img);
+                    if (!existingUrls.Contains(item: img.Url))
+                        lessonDb.Imgs.Add(item: img);
             }
 
             DbContext.SaveChanges();
@@ -82,7 +82,7 @@ namespace DataAccess.Postgres.Repository
         public override void Delete(long idEntity)
         {
             DbContext.Lessons
-                .Where(l => l.Id == idEntity)
+                .Where(predicate: l => l.Id == idEntity)
                 .ExecuteDelete();
         }
     }

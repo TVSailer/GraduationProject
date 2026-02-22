@@ -3,12 +3,8 @@ using Admin.DI;
 using Admin.View.Moduls.UIModel;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Model.DateAttendance.Buttons;
-using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica;
 using Logica.UILayerPanel;
-using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Admin.View.Moduls.DateAttendance;
 
@@ -50,10 +46,7 @@ public class DateAttendanceCardUi(
                     gridView.Columns.Add(date.Date + date.Id, $"{split[0]}.{split[1]}");
                 }
 
-                var rez = date.Visitors
-                    .FirstOrDefault(d => d.Id == visitor.Id) == null;
-
-                objs.Add(!rez ? "нб" : "");
+                objs.Add(date.Visitors!.Contains(visitor) ? "нб" : "");
             }
             gridView.Rows.Add(objs.ToArray());
             objs.Clear();

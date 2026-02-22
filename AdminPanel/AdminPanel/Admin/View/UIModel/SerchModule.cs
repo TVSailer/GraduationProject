@@ -1,12 +1,11 @@
-﻿using Admin.ViewModel.Interface;
+﻿using Admin.View.Moduls.UIModel;
+using Admin.ViewModel.Interface;
 using Admin.ViewModel.Managment;
 using Admin.ViewModels.Lesson;
 using CSharpFunctionalExtensions;
-using Logica;
-using Logica.Interface;
 using Logica.UILayerPanel;
 
-namespace Admin.View.Moduls.UIModel
+namespace Admin.View.UIModel
 {
     public sealed class SearchPanel<TEntity, TField> : Panel
         where TEntity : Entity, new()

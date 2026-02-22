@@ -1,7 +1,7 @@
 ﻿using Admin.ViewModel.Managment;
 using DataAccess.Postgres.Models;
 
-namespace WinFormsApp1.ViewModel.Model.Teacher;
+namespace Admin.ViewModel.Model.Teacher;
 
 public class TeacherSearch : IParametersSearch<TeacherEntity, TeacherFieldSearch>
 {

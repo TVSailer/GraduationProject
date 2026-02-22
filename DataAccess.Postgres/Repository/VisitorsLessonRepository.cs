@@ -13,8 +13,8 @@ public class MementoLesson(ApplicationDbContext DbContext, Repository<DateAttend
         if (Lesson is null) throw new ArgumentNullException();
 
         return DbContext.Visitors
-            .Include(v => v.Lessons)
-            .Where(v => !Lesson.Visitors.Contains(v))
+            .Include(navigationPropertyPath: v => v.Lessons)
+            .Where(predicate: v => !Lesson.Visitors.Contains(v))
             .ToList() ?? throw new ArgumentNullException();
     }
 
@@ -28,7 +28,7 @@ public class MementoLesson(ApplicationDbContext DbContext, Repository<DateAttend
     }
     public List<DateAttendanceEntity> GetDateAttendance()
     {
-        return Lesson is null ? throw new ArgumentNullException() : repositoryD.Get().Where(d => d.Lesson.Id == Lesson.Id).ToList();
+        return Lesson is null ? throw new ArgumentNullException() : repositoryD.Get().Where(predicate: d => d.Lesson.Id == Lesson.Id).ToList();
     }
 
     public void AddVisitor(VisitorEntity obj)
@@ -37,7 +37,7 @@ public class MementoLesson(ApplicationDbContext DbContext, Repository<DateAttend
         if (Lesson.MaxParticipants <= Lesson.Visitors.Count) throw new ArgumentOutOfRangeException();
 
 
-        Lesson.Visitors.Add(obj);
+        Lesson.Visitors.Add(item: obj);
         DbContext.SaveChanges();
     }
     
@@ -46,20 +46,20 @@ public class MementoLesson(ApplicationDbContext DbContext, Repository<DateAttend
         if (Lesson is null) throw new ArgumentNullException();
 
         obj.LessonId = Lesson.Id;
-        repositoryD.Add(obj);
+        repositoryD.Add(obj: obj);
     }
 
     public void DeleteVisitor(long idEntity)
     {
         if (Lesson is null) throw new ArgumentNullException();
-        Lesson.Visitors.RemoveAll(v => v.Id == idEntity);
+        Lesson.Visitors.RemoveAll(match: v => v.Id == idEntity);
         DbContext.SaveChanges();
     }
 
     public void DeleteReview(long idEntity)
     {
         if (Lesson is null) throw new ArgumentNullException();
-        Lesson.Reviews.RemoveAll(v => v.Id == idEntity);
+        Lesson.Reviews.RemoveAll(match: v => v.Id == idEntity);
         DbContext.SaveChanges();
     }
 }

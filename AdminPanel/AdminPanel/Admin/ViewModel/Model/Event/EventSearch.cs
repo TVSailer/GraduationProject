@@ -10,8 +10,7 @@ public class EventSearch : IParametersSearch<EventEntity, EventFieldSearch>
                 .Where(e => obj.Category.Equals(obj.category[0]) || e.Category.Equals(obj.Category))
                 .Where(e => e.Title.StartsWith(obj.Title))
                 .Where(e =>
-                    !DateTime.TryParse(obj.StartDate, out _) || !DateTime.TryParse(obj.EndDate, out _) ||
-                    DateTime.Parse(e.Schedule.Date) >= DateTime.Parse(obj.StartDate!) &&
-                    DateTime.Parse(e.Schedule.Date) <= DateTime.Parse(obj.EndDate!))
+                    e.Schedule.DateT() >= obj.StartDateTime() && 
+                    e.Schedule.DateT() <= obj.EndDateTime())
                 .ToList();
 }

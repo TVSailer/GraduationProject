@@ -2,30 +2,31 @@
 using CSharpFunctionalExtensions;
 using Logica.Interface;
 
+namespace Admin.View;
+
 public abstract class ObjectCard<T> : Panel
     where T : Entity, new()
 {
-    protected T entity;
+    protected T Entity = null!;
 
     private bool _isMouseOver;
     private bool _isContextMenuShowing;
 
-    public event EventHandler OnCardClicked;
+    public event EventHandler OnCardClicked = null!;
 
-    public ObjectCard()
+    protected ObjectCard()
     {
         BorderStyle = BorderStyle.FixedSingle;
+        // ReSharper disable once VirtualMemberCallInConstructor
         BackColor = Color.White;
-        Margin = new Padding(5);
-        Padding = new Padding(10);
-        Size = new Size(400, 150);
+        // ReSharper disable once VirtualMemberCallInConstructor
         Cursor = Cursors.Hand;
 
         MouseEnter += OnMouseEnterCard;
         MouseLeave += OnMouseLeaveCard;
         MouseClick += OnMouseClickCard;
 
-        ControlAdded += (s, e) => SetupChildControl(e.Control);
+        ControlAdded += (_, e) => SetupChildControl(e.Control);
     }
 
     private void OnContextMenuOpening(object? sender, System.ComponentModel.CancelEventArgs e)
@@ -43,36 +44,30 @@ public abstract class ObjectCard<T> : Panel
         _isContextMenuShowing = false;
 
         var mousePosition = PointToClient(Cursor.Position);
-        if (!ClientRectangle.Contains(mousePosition))
-        {
-            _isMouseOver = false;
-            BackColor = Color.White;
-        }
+        if (ClientRectangle.Contains(mousePosition)) return;
+        _isMouseOver = false;
+        BackColor = Color.White;
     }
 
     private void OnMouseEnterCard(object? sender, EventArgs e)
     {
-        if (!_isContextMenuShowing)
-        {
-            _isMouseOver = true;
-            BackColor = Color.LightCyan;
-        }
+        if (_isContextMenuShowing) return;
+        _isMouseOver = true;
+        BackColor = Color.LightCyan;
     }
 
     private void OnMouseLeaveCard(object? sender, EventArgs e)
     {
-        if (!_isContextMenuShowing)
-        {
-            _isMouseOver = false;
-            BackColor = Color.White;
-        }
+        if (_isContextMenuShowing) return;
+        _isMouseOver = false;
+        BackColor = Color.White;
     }
 
     private void OnMouseClickCard(object? sender, MouseEventArgs e)
     {
         if (e.Button == MouseButtons.Left)
         {
-            OnCardClicked?.Invoke(this, EventArgs.Empty);
+            OnCardClicked.Invoke(this, EventArgs.Empty);
             OnMouseLeaveCard(sender, e);
         }
         else if (e.Button == MouseButtons.Right)
@@ -92,15 +87,15 @@ public abstract class ObjectCard<T> : Panel
         }
     }
 
-    private void SetupChildControl(Control control)
+    private void SetupChildControl(Control? control)
     {
-        control.MouseEnter += (s, args) =>
+        control?.MouseEnter += (s, args) =>
         {
             if (_isMouseOver || _isContextMenuShowing) return;
             OnMouseEnterCard(s, args);
         };
 
-        control.MouseLeave += (s, args) =>
+        control?.MouseLeave += (s, args) =>
         {
             var pos = PointToClient(Cursor.Position);
             if (ClientRectangle.Contains(pos) || _isContextMenuShowing) return;
@@ -108,12 +103,12 @@ public abstract class ObjectCard<T> : Panel
         };
 
         // ReSharper disable once ComplexConditionExpression
-        control.MouseClick += (s, args) =>
+        control?.MouseClick += (s, args) =>
         {
             switch (args.Button)
             {
                 case MouseButtons.Left when !_isContextMenuShowing:
-                    OnCardClicked?.Invoke(this, EventArgs.Empty);
+                    OnCardClicked.Invoke(this, EventArgs.Empty);
                     OnMouseLeaveCard(s, args);
                     break;
                 case MouseButtons.Right:
@@ -129,12 +124,10 @@ public abstract class ObjectCard<T> : Panel
             }
         };
 
-        control.Cursor = Cursors.Hand;
+        control?.Cursor = Cursors.Hand;
 
-        foreach (Control childControl in control.Controls)
-        {
+        foreach (Control childControl in control?.Controls!)
             SetupChildControl(childControl);
-        }
     }
 
     public void ResetHighlight()
@@ -149,7 +142,7 @@ public abstract class ObjectCard<T> : Panel
         base.OnParentChanged(e);
 
         if (Parent != null)
-            Parent.MouseClick += (s, args) =>
+            Parent.MouseClick += (_, args) =>
             {
                 var hitControl = Parent.GetChildAtPoint(args.Location);
                 if (hitControl is not ObjectCard<T>)
@@ -159,8 +152,10 @@ public abstract class ObjectCard<T> : Panel
     
     public virtual ObjectCard<T> Initialize(T obj)
     {
-        entity = obj;
-        Controls.Add(Content());
+        Entity = obj;
+        var content = Content();
+        Size = content.PreferredSize with { Width = content.PreferredSize.Width + 10 };
+        Controls.Add(content);
 
         return this;
     }
@@ -169,33 +164,32 @@ public abstract class ObjectCard<T> : Panel
 
     public ObjectCard<T> OnContextMenu(IButtons<CardClickedToolStripArgs<T>>? buttonsContextMenu)
     {
-        var buttons = buttonsContextMenu?.GetButtons(this, new CardClickedToolStripArgs<T>(entity));
+        if (buttonsContextMenu is null) return this;
+
+        var buttons = buttonsContextMenu.GetButtons(this, new CardClickedToolStripArgs<T>(Entity));
+
+        ContextMenuStrip = new ContextMenuStrip();
+        ContextMenuStrip.Opening += OnContextMenuOpening;
+        ContextMenuStrip.Closed += OnContextMenuClosed;
+
         buttons?.ForEach(b => AddToolStrip(b.Text, b.PerformClick, b.Enabled));
         return this;
     }
 
     public ObjectCard<T> AddToolStrip(string name, Action action, bool enabled = true)
     {
-        if (ContextMenuStrip is null)
-        {
-            ContextMenuStrip = new ContextMenuStrip();
-            ContextMenuStrip.Opening += OnContextMenuOpening;
-            ContextMenuStrip.Closed += OnContextMenuClosed;
-        }
         var toolStrip = new ToolStripMenuItem(name);
-        toolStrip.Click += (s, e) => action.Invoke();
+        toolStrip.Click += (_, _) => action.Invoke();
         toolStrip.Enabled = enabled;
-        ContextMenuStrip.Items.Add(toolStrip);
+        ContextMenuStrip?.Items.Add(toolStrip);
 
         return this;
     }
 
     public ObjectCard<T> OnClickedCard(IButton<CardClickedArgs<T>>? buttonsContextMenu)
     {
-        var button = buttonsContextMenu?.GetButton(this, new CardClickedArgs<T>(entity));
-        OnCardClicked += (s, e) => button?.PerformClick();
+        var button = buttonsContextMenu?.GetButton(this, new CardClickedArgs<T>(Entity));
+        OnCardClicked += (_, _) => button?.PerformClick();
         return this;
     }
 }
-
-

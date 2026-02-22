@@ -11,23 +11,23 @@ namespace DataAccess.Postgres.Extensions
             entity
                 .GetType()
                 .GetProperties()
-                .Select(p => new { p, atr = p.GetCustomAttribute<ForeignKeyAttribute>()})
-                .Where(p => p.atr != null)
+                .Select(selector: p => new { p, atr = p.GetCustomAttribute<ForeignKeyAttribute>()})
+                .Where(predicate: p => p.atr != null)
                 .ToList()
-                .ForEach(pAtr =>
+                .ForEach(action: pAtr =>
                 {
                     entity
                         .GetType()
                         .GetProperties()
-                        .Where(p => p.PropertyType.Name.Equals(pAtr.atr.Name))
+                        .Where(predicate: p => p.PropertyType.Name.Equals(value: pAtr.atr.Name))
                         .ToList()
-                        .ForEach(p =>
+                        .ForEach(action: p =>
                         {
-                            if (p.GetValue(entity) == null) return;
-                            var idProp = p.PropertyType.GetProperty("Id");
-                            var id = idProp.GetValue(p.GetValue(entity));
-                            pAtr.p.SetValue(entity, id);
-                            p.SetValue(entity, null);
+                            if (p.GetValue(obj: entity) == null) return;
+                            var idProp = p.PropertyType.GetProperty(name: "Id");
+                            var id = idProp.GetValue(obj: p.GetValue(obj: entity));
+                            pAtr.p.SetValue(obj: entity, value: id);
+                            p.SetValue(obj: entity, value: null);
                         });
                 });
 

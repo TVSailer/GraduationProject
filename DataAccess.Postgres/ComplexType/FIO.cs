@@ -20,7 +20,7 @@ public class FIO
     {
         if (fio is null) throw new ArgumentNullException();
 
-        var list = fio.Split(" ");
+        var list = fio.Split(separator: " ");
 
         if (list.Length != 3) throw new ArgumentNullException();
 
@@ -33,7 +33,7 @@ public class FIO
     {
         if (fio is null) return false;
 
-        var list = fio.Split(" ");
+        var list = fio.Split(separator: " ");
 
         return list.Length == 3;
     }

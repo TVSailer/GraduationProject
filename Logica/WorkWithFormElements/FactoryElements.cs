@@ -134,11 +134,10 @@ public static class FactoryElements
             .With(t => t.Multiline = multiline);
     }
 
-    public static DataGridView DataGridView(params string[] attributes)
+    public static DataGridView DataGridView()
     {
         return new DataGridView
         {
-            //Dock = DockStyle.Fill,
             AutoSize = true,
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells,
             AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders,
@@ -268,7 +267,7 @@ public static class FactoryElements
         return new Label()
             .With(l => l.Text = text)
             .With(l => l.Dock = DockStyle.Fill)
-            .With(l => l.Height = 40)
+            .With(l => l.AutoSize = true)
             .With(l => l.TextAlign = ContentAlignment.TopLeft)
             .With(l => l.BorderStyle = BorderStyle.None)
             .With(l => l.Padding = new Padding(5));

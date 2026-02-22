@@ -4,7 +4,7 @@ using Admin.View.ViewForm;
 using Logica.UI;
 using Logica.UILayerPanel;
 
-namespace Admin.View.AdminMain;
+namespace Admin.View.Moduls.AdminMain;
 
 public sealed class AdminMainUi : View<AdminFieldData>
 {

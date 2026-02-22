@@ -1,5 +1,5 @@
 ﻿using Admin.Args;
-using Admin.View.AdminMain;
+using Admin.View.Moduls.AdminMain;
 using Admin.View.Moduls.UIModel;
 using Admin.View.UIModel;
 using Admin.View.ViewForm;

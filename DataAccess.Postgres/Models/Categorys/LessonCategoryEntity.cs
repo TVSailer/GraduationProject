@@ -6,7 +6,7 @@
 
         public LessonCategoryEntity() { }
 
-        public LessonCategoryEntity(string category) : base(category)
+        public LessonCategoryEntity(string category) : base(category: category)
         {
         }
 

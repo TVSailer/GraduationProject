@@ -5,7 +5,7 @@ namespace DataAccess.Postgres.Repository;
 
 public class EventCategoryRepository : Repository<EventCategoryEntity>
 {
-    public EventCategoryRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public EventCategoryRepository(ApplicationDbContext dbContext) : base(dbContext: dbContext)
     {
     }
 

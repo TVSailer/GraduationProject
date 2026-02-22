@@ -11,7 +11,7 @@ public class ControlView(MementoView mementoView, IServiceProvision di)
     public Form Form { get; } = new();
     public IView? View { get; private set; }
 
-    public IView<T> LoadView<T>(object? data = null)
+    public IView<T> LoadView<T>()
     {
         if (View is not null) mementoView.Push(View);
 
@@ -20,7 +20,7 @@ public class ControlView(MementoView mementoView, IServiceProvision di)
         return (IView<T>)View;
     }
 
-    public IView<T, TEntity> LoadView<T, TEntity>(TEntity entity, object? data = null) 
+    public IView<T, TEntity> LoadView<T, TEntity>(TEntity entity) 
         where TEntity : Entity, new()
         where T : IFieldData<TEntity>
     {
@@ -33,11 +33,17 @@ public class ControlView(MementoView mementoView, IServiceProvision di)
         return (IView<T, TEntity>)View;
     }
 
-    public void UpdateGUI(object? data = null) => View.InitializeComponents(Form);
+    public Form UpdateGUI() => View.InitializeComponents(Form);
 
-    public Form Exit(object? data = null)
+    public void Exit()
     {
         View = mementoView.Pop();
-        return View.InitializeComponents(Form);
+        UpdateGUI();
+    }
+
+    public void ShowDialog<T>() where T : Form
+    {
+        di.GetService<T>().ShowDialog();
+        UpdateGUI();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Admin.View.Moduls.UIModel;
 using DataAccess.Postgres.Models;
-using Logica;
+using Day = DataAccess.Postgres.Enum.Day;
 
 namespace Admin.ViewModels.Lesson
 {

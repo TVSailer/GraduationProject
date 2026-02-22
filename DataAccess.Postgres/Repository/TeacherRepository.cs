@@ -5,32 +5,32 @@ namespace DataAccess.Postgres.Repository
 {
     public class TeacherRepository : Repository<TeacherEntity>
     {
-        public TeacherRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public TeacherRepository(ApplicationDbContext dbContext) : base(dbContext: dbContext)
         {
         }
 
         public List<TeacherEntity> GetIncludeLessons()
             => DbContext.Teachers
-                .Include(t => t.Lessons)
+                .Include(navigationPropertyPath: t => t.Lessons)
                 .ToList() ?? throw new ArgumentNullException();
 
         public override List<TeacherEntity> Get()
             => DbContext.Teachers
-                .Include(t => t.Lessons)
+                .Include(navigationPropertyPath: t => t.Lessons)
                 .ToList() ?? throw new ArgumentNullException();
 
 
         public List<TeacherEntity>? Get(int id)
             => DbContext.Teachers
             .AsNoTracking()
-            .Where(t => t.Id == id)
+            .Where(predicate: t => t.Id == id)
             .ToList();
 
         public override void Update(long id, TeacherEntity teacher)
         {
             DbContext.Teachers
-                .Where(v => v.Id == id)
-                .ExecuteUpdate(v => v
+                .Where(predicate: v => v.Id == id)
+                .ExecuteUpdate(setPropertyCalls: v => v
                     .SetProperty(v => v.FIO, teacher.FIO)
                     .SetProperty(v => v.DateBirth, teacher.DateBirth)
                     .SetProperty(v => v.NumberPhone, teacher.NumberPhone)
@@ -41,7 +41,7 @@ namespace DataAccess.Postgres.Repository
         public override void Delete(long idEntity)
         {
             DbContext.Teachers
-                .Where(v => v.Id == idEntity)
+                .Where(predicate: v => v.Id == idEntity)
                 .ExecuteDelete();
         }
     }

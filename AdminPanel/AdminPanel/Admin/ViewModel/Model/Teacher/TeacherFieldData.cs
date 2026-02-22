@@ -1,12 +1,12 @@
 ﻿using Admin.ViewModel.AbstractViewModel;
+using Admin.ViewModel.Model.Visitor.Buttons;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
+using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.CustomAttribute;
 
-LogicaMessage.MessageYesNo("Для удаления преподователь не должен вести ни каких урков!");
-
-public class TeacherData : FieldData<TeacherEntity>
+public class TeacherFieldData : FieldData<TeacherEntity>
 {
     [LinkingEntity(nameof(TeacherEntity.FIO))]
     public FIO FIO

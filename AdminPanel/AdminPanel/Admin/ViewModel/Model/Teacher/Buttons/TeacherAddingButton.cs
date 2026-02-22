@@ -7,12 +7,13 @@ using Logica;
 using Logica.Interface;
 using Logica.UI;
 
-namespace Admin.ViewModel.Model.Visitor.Buttons;
+namespace Admin.ViewModel.Model.Teacher.Buttons;
 
-public class VisitorAddingButton(Repository<VisitorEntity> repository, MementoLesson mementoLesson, ControlView controlView) : IButtons<ViewButtonClickArgs<VisitorEntity, VisitorAddingFieldData>>
+public class TeacherAddingButton(Repository<TeacherEntity> repository, ControlView controlView) : 
+    IButtons<ViewButtonClickArgs<TeacherEntity, TeacherAddingFieldData>>
 {
     public List<CustomButton> GetButtons(
-        object? data, ViewButtonClickArgs<VisitorEntity, VisitorAddingFieldData>? e)
+        object? data, ViewButtonClickArgs<TeacherEntity, TeacherAddingFieldData>? e)
         => [
             new CustomButton("Назад")
                 .CommandClick(() => controlView.Exit()),
@@ -20,7 +21,7 @@ public class VisitorAddingButton(Repository<VisitorEntity> repository, MementoLe
                 .CommandClick(() => SaveEntity(e.FieldData)),
         ];
 
-    private void SaveEntity(VisitorAddingFieldData arg2FieldData)
+    private void SaveEntity(TeacherAddingFieldData arg2FieldData)
     {
         if (Validatoreg.TryValidObject(arg2FieldData, out var results))
         {
@@ -36,10 +37,10 @@ public class VisitorAddingButton(Repository<VisitorEntity> repository, MementoLe
 
             entity.Login = auth.Login;
             entity.Password = BCrypt.Net.BCrypt.HashPassword(auth.Password);
-            mementoLesson.AddVisitor(entity);
+            repository.Add(entity);
             controlView.Exit();
         }
-         
+
         if (arg2FieldData is PropertyChange pc)
             results.ForEach(r => r.MemberNames.ForEach(n => { pc.OnMassegeErrorProvider(r.ErrorMessage, n); }));
     }

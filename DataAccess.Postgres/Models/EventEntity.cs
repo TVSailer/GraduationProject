@@ -11,7 +11,7 @@ public class EventEntity : Entity
     public string Location { get; set; }
 
 
-    [ForeignKey(nameof(EventCategoryEntity))]
+    [ForeignKey(name: nameof(EventCategoryEntity))]
     public long CategoryId { get; set; }
     public EventCategoryEntity Category { get; set; }
 
@@ -20,30 +20,6 @@ public class EventEntity : Entity
     public int MaxParticipants { get; set; }
     public int CurrentParticipants { get;  set; }
     public List<ImgEventEntity>? Imgs { get; set; } = new();
-
-    public EventEntity() { }
-
-    public EventEntity(string title, 
-        string description,
-        EventScheduleEntity date, 
-        string location, 
-        EventCategoryEntity category, 
-        string regisLink, 
-        string organizer, 
-        int maxParticipants, 
-        List<ImgEventEntity> imgEventEntities) 
-    {
-        Title = title;
-        Description = description;
-        Schedule = date;
-        Location = location;
-        Category = category;
-        RegistrationLink = regisLink;
-        Organizer = organizer;
-        MaxParticipants = maxParticipants;
-        CurrentParticipants = 0;
-        Imgs = imgEventEntities;
-    }
 
     public override string ToString()
         => $"Мероприятие: {Title} {Schedule}";

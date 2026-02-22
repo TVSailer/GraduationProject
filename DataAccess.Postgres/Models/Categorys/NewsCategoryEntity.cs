@@ -6,7 +6,7 @@
 
         public NewsCategoryEntity() { }
 
-        public NewsCategoryEntity(string category) : base(category)
+        public NewsCategoryEntity(string category) : base(category: category)
         {
         }
 

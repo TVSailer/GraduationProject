@@ -3,26 +3,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
 {
-    public class EventRepository(ApplicationDbContext dbContext) : Repository<EventEntity>(dbContext)
+    public class EventRepository(ApplicationDbContext dbContext) : Repository<EventEntity>(dbContext: dbContext)
     {
         public override List<EventEntity> Get()
             => DbContext.Event
             .Include(e => e.Imgs)
             .Include(e => e.Category)
-            .AsTracking()
             .ToList() ?? throw new ArgumentNullException();
 
         public EventEntity Get(long id)
             => DbContext.Event
             .AsNoTracking()
-            .Include(e => e.Imgs)
-            .FirstOrDefault(v => v.Id == id) ?? throw new ArgumentNullException();
+            .Include(navigationPropertyPath: e => e.Imgs)
+            .FirstOrDefault(predicate: v => v.Id == id) ?? throw new ArgumentNullException();
 
         public override void Update(long id, EventEntity @event)
         {
             DbContext.Event
-                .Where(v => v.Id == id)
-                .ExecuteUpdate(v => v
+                .Where(predicate: v => v.Id == id)
+                .ExecuteUpdate(setPropertyCalls: v => v
                     .SetProperty(v => v.Title, @event.Title)
                     .SetProperty(v => v.CategoryId, @event.Category.Id)
                     .SetProperty(v => v.Schedule, @event.Schedule)
@@ -36,8 +35,8 @@ namespace DataAccess.Postgres.Repository
             if (@event.Imgs is { Count: > 0 })
             {
                 var eventDb = DbContext.Event
-                    .Include(e => e.Imgs) 
-                    .FirstOrDefault(e => e.Id == id);
+                    .Include(navigationPropertyPath: e => e.Imgs) 
+                    .FirstOrDefault(predicate: e => e.Id == id);
 
                 if (eventDb == null)
                 {
@@ -45,19 +44,19 @@ namespace DataAccess.Postgres.Repository
                     return;
                 }
 
-                var existingUrls = eventDb.Imgs.Select(i => i.Url).ToHashSet();
-                var newUrls = @event.Imgs.Select(i => i.Url).ToHashSet();
+                var existingUrls = eventDb.Imgs.Select(selector: i => i.Url).ToHashSet();
+                var newUrls = @event.Imgs.Select(selector: i => i.Url).ToHashSet();
 
                 var imgsToRemove = eventDb.Imgs
-                    .Where(img => !newUrls.Contains(img.Url))
+                    .Where(predicate: img => !newUrls.Contains(item: img.Url))
                     .ToList();
 
                 foreach (var img in imgsToRemove)
-                    eventDb.Imgs.Remove(img);
+                    eventDb.Imgs.Remove(item: img);
 
                 foreach (var img in @event.Imgs)
-                    if (!existingUrls.Contains(img.Url))
-                        eventDb.Imgs.Add(img);
+                    if (!existingUrls.Contains(item: img.Url))
+                        eventDb.Imgs.Add(item: img);
 
                 // var listImgDb = DbContext.ImgEvent
                 //     .Where(img => img.EventId == id)
@@ -116,7 +115,7 @@ namespace DataAccess.Postgres.Repository
 
         public override void Delete(long idEntity)
             => DbContext.Event
-            .Where(v => v.Id == idEntity)
+            .Where(predicate: v => v.Id == idEntity)
             .ExecuteDelete();
     }
 }

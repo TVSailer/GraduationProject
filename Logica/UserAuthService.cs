@@ -14,6 +14,7 @@ namespace Logica
             var login = surname + random.Next(10000);
             var length = 12;
 
+            // ReSharper disable once ComplexConditionExpression
             var password = string.Join("",                                // создаем строку
                 Enumerable.Range(0, length)                             // из последовательности длины length
                     .Select(i =>
@@ -24,10 +25,7 @@ namespace Logica
 
             var rezult = hash.FirstOrDefault(h => Validatoreg.TryValidPassword(h, password));
         
-            if (rezult != null)
-                return CreateAuthUser(surname, hash);
-        
-            return new UserAuth(login, password);
+            return rezult != null ? CreateAuthUser(surname, hash) : new UserAuth(login, password);
         }
     }
 }

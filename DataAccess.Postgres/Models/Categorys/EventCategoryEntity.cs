@@ -6,7 +6,7 @@
 
         public EventCategoryEntity() { }
 
-        public EventCategoryEntity(string category) : base(category)
+        public EventCategoryEntity(string category) : base(category: category)
         {
         }
 

@@ -12,7 +12,8 @@ internal static class Program
     {
         ApplicationConfiguration.Initialize();
 
-        var controlView = AdminDi.GetService<ControlView>();
+        var di = new AdminDi();
+        var controlView = di.GetService<ControlView>();
         controlView.LoadView<AdminFieldData>();
 
         Application.Run(controlView.Form);

@@ -22,23 +22,10 @@ namespace DataAccess.Postgres
         public DbSet<LessonCategoryEntity> LessonCategory { get; set; }
         public DbSet<EventCategoryEntity> EventCategory { get; set; }
 
-        public ApplicationDbContext() : base()
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //Database.EnsureCreated();
-            //Database.Migrate();
-        }
-
-        protected async override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //var host = "rc1a-0n5rrnadr54pkbh1.mdb.yandexcloud.net";
-            //var port = "6432";
-            //var db = "Cursovik";
-            //var username = "user1";
-            //var password = "Sailer22_8";
-            //var connString = $"host={host};port={port};database={db};username={username};password={password};";
-            //optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
-            optionsBuilder.UseNpgsql(@"host=localhost;port=5432;database=db;username=postgres;password=Sailer22_8");
-            optionsBuilder.LogTo(message => Debug.WriteLine(message));
+            optionsBuilder.UseNpgsql(LocalResource.ConectionString);
+            optionsBuilder.LogTo(message => Debug.WriteLine(message: message));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

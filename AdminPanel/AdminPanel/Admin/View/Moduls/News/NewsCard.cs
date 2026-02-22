@@ -1,26 +1,17 @@
-﻿using DataAccess.Postgres.Models;
+﻿using Admin.View;
+using DataAccess.Postgres.Models;
 using Logica;
 
 public class NewsCard : ObjectCard<NewsEntity>
 {
-    public NewsCard()
-    {
-        Size = new Size(400, 170);
-    }
-
-    public override ObjectCard<NewsEntity> Initialize(NewsEntity obj)
-    {
-        return base.Initialize(obj);
-    }
-
     public override Control Content()
         => FactoryElements.TableLayoutPanel()
-        .ControlAddIsRowsPercent(FactoryElements.Label_11(entity.Title)
+        .ControlAddIsRowsPercent(FactoryElements.Label_11(Entity.Title)
             .With(l => l.ForeColor = Color.DarkBlue), 40)
-        .ControlAddIsRowsPercent(FactoryElements.Label_09($"👤 {entity.Author}")
+        .ControlAddIsRowsPercent(FactoryElements.Label_09($"👤 {Entity.Author}")
             .With(l => l.ForeColor = Color.Gray), 30)
-        .ControlAddIsRowsPercent(FactoryElements.Label_09($"📅 {entity.Date}")
+        .ControlAddIsRowsPercent(FactoryElements.Label_09($"📅 {Entity.Date}")
             .With(l => l.ForeColor = Color.Gray), 30)
-        .ControlAddIsRowsPercent(FactoryElements.Label_09($"🏷️ {entity.Category}")
+        .ControlAddIsRowsPercent(FactoryElements.Label_09($"🏷️ {Entity.Category}")
             .With(l => l.ForeColor = Color.DarkGreen), 30);
 }

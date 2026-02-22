@@ -4,12 +4,12 @@ namespace DataAccess.Postgres.Models;
 
 public class ImgNewsEntity : ImgEntity
 {
-    [ForeignKey(nameof(NewsEntity))]
+    [ForeignKey(name: nameof(NewsEntity))]
     public long NewsId { get; private set; }
     public NewsEntity News { get; private set; }
 
     public ImgNewsEntity() { }
-    public ImgNewsEntity(string url) : base(url)
+    public ImgNewsEntity(string url) : base(url: url)
     {
     }
 }

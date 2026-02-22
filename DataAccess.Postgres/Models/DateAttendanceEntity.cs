@@ -5,9 +5,9 @@ namespace DataAccess.Postgres.Models
 {
     public class DateAttendanceEntity : Entity
     {
-        public string Date { get; set; } = DateTime.Now.ToString("dd/MM/yyyy");
+        public string Date { get; set; } = DateTime.Now.ToString(format: "dd/MM/yyyy");
 
-        [ForeignKey(nameof(LessonEntity))]
+        [ForeignKey(name: nameof(LessonEntity))]
         public long LessonId { get; set; }
         public LessonEntity? Lesson { get; set; }
 

@@ -27,4 +27,14 @@ public abstract class FieldData<TEntity> : PropertyChange, IFieldData<TEntity>
 
         return value;
     }
+    
+    public T OnPropertyChange<T>(ref T field, T value, [CallerMemberName] string prop = "")
+    {
+        if (field.Equals(value))
+            return value;
+        field = value;
+        OnPropertyChanged(prop);
+
+        return value;
+    }
 }

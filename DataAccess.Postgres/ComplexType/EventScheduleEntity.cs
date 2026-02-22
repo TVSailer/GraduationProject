@@ -7,33 +7,34 @@ namespace DataAccess.Postgres.Models;
 public class EventScheduleEntity
 {
     public TimeOnly Start { get; private set; }
-
     public TimeOnly End { get; private set; }
-
     public string Date { get; private set; }
 
     public EventScheduleEntity()
     {
-
+        
     }
 
-    public EventScheduleEntity(TimeOnly start, TimeOnly end, DateTime dateTime)
+    public EventScheduleEntity(TimeOnly start, TimeOnly end, DateOnly dateTime)
     {
         Start = start;
         End = end;
-        Date = dateTime.Date.ToString();
+        Date = dateTime.ToString();
     }
+
+    public DateTime DateT() => DateTime.Parse(Date);
+
     protected bool Equals(EventScheduleEntity other)
     {
-        return Start.Equals(other.Start) && End.Equals(other.End) && Date == other.Date;
+        return Start.Equals(value: other.Start) && End.Equals(value: other.End) && Date == other.Date;
     }
 
     public override bool Equals(object? obj)
     {
         if (obj is null) return false;
-        if (ReferenceEquals(this, obj)) return true;
+        if (ReferenceEquals(objA: this, objB: obj)) return true;
         if (obj.GetType() != GetType()) return false;
-        return Equals((EventScheduleEntity)obj);
+        return Equals(other: (EventScheduleEntity)obj);
     }
 
     public override int GetHashCode()
@@ -49,17 +50,16 @@ public class EventScheduleEntity
 
     public static bool operator ==(EventScheduleEntity? left, EventScheduleEntity? right)
     {
-        return Equals(left, right);
+        return Equals(objA: left, objB: right);
     }
 
     public static bool operator !=(EventScheduleEntity? left, EventScheduleEntity? right)
     {
-        return !Equals(left, right);
+        return !Equals(objA: left, objB: right);
     }
 
     public override string ToString()
     {
-        var date = DateTime.Parse(Date);
-        return $"{date.Day}.{date.Month}.{date.Year}: {Start}-{End}";
+        return $"{Date}: {Start}-{End}";
     }
 }

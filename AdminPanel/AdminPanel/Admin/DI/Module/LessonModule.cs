@@ -18,7 +18,6 @@ public class LessonAddingFieldData(TeacherRepository teacherRepository, LessonCa
 public class LessonDetailsFieldData(TeacherRepository teacherRepository, LessonCategoryRepositroy eventCategoryRepositroy)
     : LessonFieldData(teacherRepository, eventCategoryRepositroy);
 
-
 public class LessonModule : NinjectModule
 {
     public override void Load()

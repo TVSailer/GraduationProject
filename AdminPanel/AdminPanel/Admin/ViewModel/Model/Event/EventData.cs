@@ -23,7 +23,7 @@ public class EventFieldData(EventCategoryRepository repository) : FieldModelWith
     [LinkingEntity(nameof(EventEntity.Schedule))]
     public EventScheduleEntity? Schedule
     {
-        get => new (TimeOnly.Parse(Start), TimeOnly.Parse(End), DateTime.Parse(Date));
+        get => new (TimeOnly.Parse(Start), TimeOnly.Parse(End), DateOnly.Parse(Date));
         set
         {
             Date = value.Date;
@@ -34,42 +34,15 @@ public class EventFieldData(EventCategoryRepository repository) : FieldModelWith
     [DateFieldUi("Дата:", CustomFormatDatePicker.dd_MM_yyyy)]
     public string Date
     {
-        get => DateTime.Parse(field) < DateTime.Now.Date ? DateTime.Now.Date.ToString() : field;
-        set
-        {
-            if (field == value)
-                return;
-            field = value;
-            OnPropertyChanged();
-
-        }
-    } = DateTime.Now.Date.ToString();
+        get => DateTime.Parse(field) < DateTime.Now.Date ? DateTime.Now.Date.ToString("dd/MM/yyyy") : field;
+        set => OnPropertyChange(ref field, value);
+    } = DateTime.Now.Date.ToString("dd/MM/yyyy");
 
     [DateFieldUi("Начало:", CustomFormatDatePicker.HH_mm)]
-    public string Start
-    {
-        get;
-        set
-        {
-            if (field == value)
-                return;
-            field = value;
-            OnPropertyChanged();
-        }
-    } = "10:00";
+    public string Start { get; set => OnPropertyChange(ref field, value); } = "10:00";
 
     [DateFieldUi("Конец", CustomFormatDatePicker.HH_mm)]
-    public string End
-    {
-        get;
-        set
-        {
-            if (field == value)
-                return;
-            field = value;
-            OnPropertyChanged();
-        }
-    } = "12:00";
+    public string End { get; set => OnPropertyChange(ref field, value); } = "12:00";
 
     [RequiredCustom]
     [LinkingEntity(nameof(EventEntity.Location))]

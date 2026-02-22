@@ -1,36 +1,27 @@
-﻿using DataAccess.Postgres.Models;
+﻿using Admin.View;
+using DataAccess.Postgres.Models;
 using Logica;
+using Logica.UILayerPanel;
 
 public class LessonCard : ObjectCard<LessonEntity>
 {
-    private double reting;
-
-    public LessonCard()
-    {
-        Size = new Size(400, 180);
-    }
+    private double _reting;
 
     public override ObjectCard<LessonEntity> Initialize(LessonEntity obj)
     {
         if (obj.Reviews.Count <= 0) return base.Initialize(obj);
-        obj.Reviews.ForEach(r => reting += r.Rating);
-        reting /= obj.Reviews.Count;
+        obj.Reviews.ForEach(r => _reting += r.Rating);
+        _reting /= obj.Reviews.Count;
 
         return base.Initialize(obj);
     }
 
     public override Control Content()
-        => FactoryElements.TableLayoutPanel()
-        .ControlAddIsRowsPercent(FactoryElements.Label_11(entity.Name)
-            .With(l => l.ForeColor = Color.DarkBlue), 40)
-        .ControlAddIsRowsPercent(FactoryElements.Label_09($"🏷️ {entity.Category}")
-            .With(l => l.ForeColor = Color.Gray), 30)
-        .ControlAddIsRowsPercent(FactoryElements.Label_09($"👨‍🏫 {entity.Teacher}")
-            .With(l => l.ForeColor = Color.Gray), 30)
-        .ControlAddIsRowsPercent(FactoryElements.Label_09($"👥 {entity.Visitors.Count}/{entity.MaxParticipants}")
-            .With(l => l.ForeColor = Color.DarkGreen), 30)
-        .ControlAddIsRowsPercent(FactoryElements.Label_09($"★ {reting}")
-            .With(l => l.ForeColor = Color.Red), 30);
+        => LayoutPanel.CreateColumn()
+        .RowAutoSize().ContentEnd(FactoryElements.Label_11(Entity.Name).With(l => l.ForeColor = Color.DarkBlue))
+        .RowAutoSize().ContentEnd(FactoryElements.Label_09($"🏷️ {Entity.Category}").With(l => l.ForeColor = Color.Gray))
+        .RowAutoSize().ContentEnd(FactoryElements.Label_09($"👨‍🏫 {Entity.Teacher}").With(l => l.ForeColor = Color.Gray))
+        .RowAutoSize().ContentEnd(FactoryElements.Label_09($"👥 {Entity.Visitors.Count}/{Entity.MaxParticipants}").With(l => l.ForeColor = Color.DarkGreen))
+        .RowAutoSize().ContentEnd(FactoryElements.Label_09($"★ {_reting}").With(l => l.ForeColor = Color.Red))
+        .Build();
 }
-
-

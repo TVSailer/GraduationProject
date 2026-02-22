@@ -4,7 +4,7 @@ namespace DataAccess.Postgres.Repository
 {
     public class LessonCategoryRepositroy : Repository<LessonCategoryEntity>
     {
-        public LessonCategoryRepositroy(ApplicationDbContext dbContext) : base(dbContext)
+        public LessonCategoryRepositroy(ApplicationDbContext dbContext) : base(dbContext: dbContext)
         {
         }
 

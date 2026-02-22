@@ -1,7 +1,7 @@
 ﻿using Admin.ViewModel.Interface;
 using Admin.ViewModels.Lesson;
 
-namespace WinFormsApp1.ViewModel.Model.Teacher;
+namespace Admin.ViewModel.Model.Teacher;
 
 public class TeacherFieldSearch : PropertyChange, IFieldData
 {

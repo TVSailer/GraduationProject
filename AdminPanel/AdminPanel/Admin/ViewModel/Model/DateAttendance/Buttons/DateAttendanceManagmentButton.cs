@@ -2,7 +2,6 @@
 using Admin.DI;
 using Admin.View;
 using Admin.View.Moduls.DateAttendance;
-using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica.Interface;
 using Logica.UI;
@@ -15,12 +14,9 @@ public class DateAttendanceManagmentButton(ControlView controlView, MementoLesso
     public List<CustomButton>? GetButtons(object? send, ViewButtonClickArgs<DateAttendanceManagment>? eventArgs)
         => [
             new CustomButton("Назад")
-                .CommandClick(() => controlView.Exit()),
+                .CommandClick(controlView.Exit),
             new CustomButton("Добавить")
-                .CommandClick(() =>
-                {
-                    new DateAttendanceAddingUi(memento).ShowDialog();
-                    controlView.UpdateGUI();
-                }),
+                .CommandClick(controlView.ShowDialog<DateAttendanceAddingUi>)
+                .Enablede(memento.Lesson!.TryRangeScheduleNow()),
         ];
 }

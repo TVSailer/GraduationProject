@@ -20,7 +20,8 @@ namespace WinFormsApp1.ViewModelEntity.Event
         }
 
         [ComboBoxFieldUi("Категория", nameof(category))]
-        public EventCategoryEntity Category
+        [FieldState("")]
+        public string Category
         {
             get;
             set
@@ -29,9 +30,10 @@ namespace WinFormsApp1.ViewModelEntity.Event
                 field = value;
                 OnPropertyChanged();
             }
-        } = new("");
+        } = "";
 
         [BaseFieldUi("Название")]
+        [FieldState("")]
         public string Title
         {
             get;
@@ -44,6 +46,7 @@ namespace WinFormsApp1.ViewModelEntity.Event
         } = "";
 
         [MaskedTextBoxFieldUi("с", "00/00/0000")]
+        [FieldState("")]
         public string? StartDate
         {
             get;
@@ -54,9 +57,10 @@ namespace WinFormsApp1.ViewModelEntity.Event
                 field = value;
                 OnPropertyChanged();
             }
-        }
-        
+        } = "";
+
         [MaskedTextBoxFieldUi("по", "00/00/0000")]
+        [FieldState("")]
         public string? EndDate
         {
             get;
@@ -66,6 +70,20 @@ namespace WinFormsApp1.ViewModelEntity.Event
                 field = value;
                 OnPropertyChanged();
             }
-        } 
+        } = "";
+
+        public DateTime StartDateTime()
+        {
+            if (DateTime.TryParse(StartDate, out var date))
+                return date;
+            return DateTime.MinValue;
+        }
+        
+        public DateTime EndDateTime()
+        {
+            if (DateTime.TryParse(EndDate, out var date))
+                return date;
+            return DateTime.MaxValue;
+        }
     }
 }

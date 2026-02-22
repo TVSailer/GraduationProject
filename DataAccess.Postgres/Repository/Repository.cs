@@ -12,7 +12,7 @@ namespace DataAccess.Postgres.Repository
         {
             if (obj is null) throw new ArgumentNullException();
 
-            DbContext.Add(obj.Entity());
+            DbContext.Add(entity: obj.Entity());
             DbContext.SaveChanges();
         }
 
