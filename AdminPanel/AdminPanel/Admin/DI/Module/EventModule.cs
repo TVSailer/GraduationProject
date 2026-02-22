@@ -25,6 +25,7 @@ public class EventModule : NinjectModule
     public override void Load()
     {
         Kernel.Bind<Repository<EventEntity>>().To<EventRepository>().InSingletonScope();
+        Kernel.Bind<Repository<EventCategoryEntity>>().To<EventCategoryRepository>().InSingletonScope();
 
         Kernel.Bind<IParametersSearch<EventEntity, EventFieldSearch>>().To<EventSearch>();
 

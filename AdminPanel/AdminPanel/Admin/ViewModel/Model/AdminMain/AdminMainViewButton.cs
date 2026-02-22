@@ -8,7 +8,7 @@ public class AdminMainViewButton(ControlView controlView) : IButtons<ViewButtonC
 {
     public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<AdminFieldData> eventArgs)
         => [
-            new CustomButton("📰 Управление новостями").CommandClick(() => controlView.LoadView<VisitorManagment>()),
+            new CustomButton("📰 Управление новостями").CommandClick(() => controlView.LoadView<NewsManagment>()),
             new CustomButton("🎭 Управление мероприятиями").CommandClick(() => controlView.LoadView<EventManagment>()),
             new CustomButton("🎨 Управление кружками").CommandClick(() => controlView.LoadView<LessonManagment>()),
             new CustomButton("👥 Управление посетителями").CommandClick(() => controlView.LoadView<VisitorManagment>()),

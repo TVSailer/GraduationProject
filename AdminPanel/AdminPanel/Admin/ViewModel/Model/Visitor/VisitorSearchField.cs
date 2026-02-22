@@ -1,5 +1,6 @@
 ﻿using Admin.ViewModel.Interface;
 using Admin.ViewModels.Lesson;
+using Logica.CustomAttribute;
 using Logica.Interface;
 
 namespace Admin.ViewModel.Model.Visitor;

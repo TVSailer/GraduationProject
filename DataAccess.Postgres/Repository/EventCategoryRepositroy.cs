@@ -3,15 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository;
 
-public class EventCategoryRepository : Repository<EventCategoryEntity>
+public class EventCategoryRepository(ApplicationDbContext dbContext)
+    : Repository<EventCategoryEntity>(dbContext: dbContext)
 {
-    public EventCategoryRepository(ApplicationDbContext dbContext) : base(dbContext: dbContext)
-    {
-    }
-
     public override List<EventCategoryEntity> Get()
-        => DbContext.EventCategory
-            .ToList();
+        => DbContext.EventCategory.ToList();
 
     public override void Update(long id, EventCategoryEntity entity)
     {

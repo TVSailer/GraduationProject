@@ -5,6 +5,7 @@ using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Repository;
 using Logica;
+using Logica.CustomAttribute;
 using Logica.Interface;
 
 namespace Admin.ViewModel.Managment;
@@ -41,7 +42,8 @@ public class SearchEntity<TEntity, T>
             Field.GetType()
                 .GetProperties()
                 .Where(p => p.GetCustomAttribute<FieldStateAttribute>() != null)
-                .ForEach(p => p.SetValue(Field, p.GetCustomAttribute<FieldStateAttribute>()?.Data));
+                .ForEach(p => 
+                    p.SetValue(Field, p.GetCustomAttribute<FieldStateAttribute>()?.Data));
         });
 
     public SearchEntity(T field, Repository<TEntity> repository, IParametersSearch<TEntity, T> parameters)
@@ -51,4 +53,6 @@ public class SearchEntity<TEntity, T>
         this.repository = repository;
         Field.PropertyChanged += (s, e) => DataEntitys = parameters.SearchFunc(Field, repository.Get());
     }
+
+    public List<TEntity> GetData() => repository.Get();
 }

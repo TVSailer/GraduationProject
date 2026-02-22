@@ -31,7 +31,7 @@ public class SearchCardPanel<TEntity, TFieldSearch, TCard>
     public Control CreateControl()
     {
         return LayoutPanel.CreateRow()
-            .Column(75).ContentEnd(_cardPanel.SetObjects(_context.DataEntitys))
+            .Column(75).ContentEnd(_cardPanel.SetObjects(_context.GetData()))
             .Column(25).ContentEnd(new SearchPanel<TEntity, TFieldSearch>(_context))
             .Build();
     }

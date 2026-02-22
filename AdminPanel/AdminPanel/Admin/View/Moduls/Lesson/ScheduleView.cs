@@ -39,8 +39,8 @@ namespace Admin.ViewModels.Lesson
             dayComboBox.DisplayMember = "Description";
             dayComboBox.ValueMember = "Value";
             
-            timeStart = FactoryElements.DateTimePicker(custom: CustomFormatDatePicker.HH_mm);
-            timeEnd = FactoryElements.DateTimePicker(custom: CustomFormatDatePicker.HH_mm);
+            timeStart = FactoryElements.DateTimePicker(custom: "HH:mm");
+            timeEnd = FactoryElements.DateTimePicker(custom: "HH:mm");
             scheduleGrid = FactoryElements.DataGridView();
 
             scheduleGrid.Columns.Add(columnName: "Day", headerText: "День недели");

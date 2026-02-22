@@ -11,6 +11,7 @@ namespace Admin.View;
 public class ManagmentEntityUi<T, TEntity, TFieldSearch, TCard, TButtons>(
     T viewData,
     TButtons parametersButtons,
+
     SearchCardPanel<TEntity, TFieldSearch, TCard> searchCardPanel) : View<T> where TEntity : Entity, new()
     where TFieldSearch : PropertyChange, IFieldData
     where TCard : ObjectCard<TEntity>, new()

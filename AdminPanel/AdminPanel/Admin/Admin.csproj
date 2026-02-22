@@ -19,7 +19,7 @@
     <Compile Remove="DI\TeacherModule.cs" />
     <Compile Remove="View\ManagementView.cs" />
     <Compile Remove="View\UI.cs" />
-    <Compile Remove="View\UIModel\ButtonModule.cs" />
+    <Compile Remove="View\UIModeles\ButtonModule.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,10 +29,6 @@
     <PackageReference Include="Ninject" Version="3.3.6" />
     <PackageReference Include="ninject.extensions.conventions" Version="3.3.0" />
     <PackageReference Include="Ninject.Extensions.Factory" Version="3.3.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModel\Model\News\" />
   </ItemGroup>
 
   <ItemGroup>

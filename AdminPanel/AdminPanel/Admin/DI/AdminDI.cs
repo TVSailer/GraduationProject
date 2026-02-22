@@ -18,6 +18,7 @@ public class AdminDi
             new AdminModule(),
             new LessonModule(),
             new VisitorModule(),
+            new NewsModule(),
             new ReviewModule(),
             new DateAttendanceModule(),
             new EventModule(),

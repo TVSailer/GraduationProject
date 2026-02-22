@@ -1,10 +1,12 @@
-﻿using Admin.ViewModel.Interface;
+﻿using Admin.ViewModel.AbstractViewModel;
+using Admin.ViewModel.Interface;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
+using Logica.CustomAttribute;
 
 namespace Admin.ViewModels.Lesson;
 
-public class LessonFieldSearch(Repository<LessonCategoryEntity> repository) : PropertyChange, IFieldData
+public class LessonFieldSearch(Repository<LessonCategoryEntity> repository) : SearchFieldData
 {
     public List<string> category
     {

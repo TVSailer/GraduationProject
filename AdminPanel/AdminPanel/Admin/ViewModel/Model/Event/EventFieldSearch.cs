@@ -1,12 +1,11 @@
-﻿using Admin.ViewModel.Interface;
+﻿using Admin.ViewModel.AbstractViewModel;
 using Admin.ViewModels.Lesson;
-using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.Interface;
+using Logica.CustomAttribute;
 
 namespace WinFormsApp1.ViewModelEntity.Event
 {
-    public class EventFieldSearch(EventCategoryRepository repository) : PropertyChange, IFieldData
+    public class EventFieldSearch(EventCategoryRepository repository) : SearchFieldData
     {
         public List<string> category
         {
@@ -21,56 +20,20 @@ namespace WinFormsApp1.ViewModelEntity.Event
 
         [ComboBoxFieldUi("Категория", nameof(category))]
         [FieldState("")]
-        public string Category
-        {
-            get;
-            set
-            {
-                if (value == field) return;
-                field = value;
-                OnPropertyChanged();
-            }
-        } = "";
+        public string Category { get; set => OnPropertyChange(ref field, value); } = "";
 
         [BaseFieldUi("Название")]
         [FieldState("")]
-        public string Title
-        {
-            get;
-            set
-            {
-                if (value == field) return;
-                field = value;
-                OnPropertyChanged();
-            }
-        } = "";
+        public string Title { get; set => 
+            OnPropertyChange(ref field, value); } = "";
 
         [MaskedTextBoxFieldUi("с", "00/00/0000")]
-        [FieldState("")]
-        public string? StartDate
-        {
-            get;
-            set
-            {
-                if (value == field) return;
-
-                field = value;
-                OnPropertyChanged();
-            }
-        } = "";
+        [FieldState("00.00.0000")]
+        public string? StartDate { get; set => OnPropertyChange(ref field, value); } = "";
 
         [MaskedTextBoxFieldUi("по", "00/00/0000")]
-        [FieldState("")]
-        public string? EndDate
-        {
-            get;
-            set
-            {
-                if (value == field) return;
-                field = value;
-                OnPropertyChanged();
-            }
-        } = "";
+        [FieldState("00.00.0000")]
+        public string? EndDate { get; set => OnPropertyChange(ref field, value); } = "";
 
         public DateTime StartDateTime()
         {

@@ -20,8 +20,8 @@ public class VisitorFieldData : FieldData<VisitorEntity>
         get;
         set => TryValidProperty(ref field, value);
     }
-
-    [DateBirthday, LinkingEntity(nameof(VisitorEntity.DateBirth)), DateFieldUi("Дата рождения", CustomFormatDatePicker.dd_MM_yyyy)]
+    
+    [DateBirthday, LinkingEntity(nameof(VisitorEntity.DateBirth)), DateFieldUi("Дата рождения", "dd.MM.yyyy")]
     public string DateBirth { get; set => TryValidProperty(ref field, value); }
 
     [PhoneNumber, LinkingEntity(nameof(VisitorEntity.NumberPhone)), MaskedTextBoxFieldUi("Номер телефона", "+7 (000)-000-00-00")]

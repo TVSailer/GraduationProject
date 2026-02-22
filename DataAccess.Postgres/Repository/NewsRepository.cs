@@ -8,14 +8,8 @@ namespace DataAccess.Postgres.Repository
         public override List<NewsEntity> Get()
             => DbContext.News
             .Include(navigationPropertyPath: e => e.Imgs)
-            .AsNoTracking()
+            .Include(navigationPropertyPath: e => e.Category)
             .ToList();
-
-        public NewsEntity Get(int id)
-            => DbContext.News
-            .AsNoTracking()
-            .Include(navigationPropertyPath: e => e.Imgs)
-            .FirstOrDefault(predicate: v => v.Id == id) ?? throw new ArgumentNullException();
 
         public override void Update(long id, NewsEntity news)
         {

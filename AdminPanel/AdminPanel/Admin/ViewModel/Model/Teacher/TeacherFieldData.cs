@@ -1,9 +1,6 @@
 ﻿using Admin.ViewModel.AbstractViewModel;
-using Admin.ViewModel.Model.Visitor.Buttons;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Repository;
-using Logica;
 using Logica.CustomAttribute;
 
 public class TeacherFieldData : FieldData<TeacherEntity>
@@ -18,7 +15,7 @@ public class TeacherFieldData : FieldData<TeacherEntity>
     [FIO, BaseFieldUi("ФИО", "Введите ФИО преподователя")] 
     public string? FIOTeacher { get; set => TryValidProperty(ref field, value); }
 
-    [DateBirthday, LinkingEntity(nameof(TeacherEntity.DateBirth)) , DateFieldUi("Дата рождения", CustomFormatDatePicker.dd_MM_yyyy)] 
+    [DateBirthday, LinkingEntity(nameof(TeacherEntity.DateBirth)) , DateFieldUi("Дата рождения", "dd.MM.yyyy")] 
     public string DateBirth { get; set => TryValidProperty(ref field, value); }
 
     [PhoneNumber, LinkingEntity(nameof(TeacherEntity.NumberPhone)), MaskedTextBoxFieldUi("Номер телефона", "+7 (000)-000-00-00")] 

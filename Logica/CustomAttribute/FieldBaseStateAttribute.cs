@@ -1,9 +1,6 @@
-﻿public class FieldStateAttribute : Attribute
-{
-    public string Data { get; private set; }
+﻿namespace Logica.CustomAttribute;
 
-    public FieldStateAttribute(string data)
-    {
-        Data = data;
-    }
+public class FieldStateAttribute(string data) : Attribute
+{
+    public string Data { get; private set; } = data;
 }

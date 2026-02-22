@@ -64,7 +64,7 @@ public static class FactoryElements
             .With(cb => cb.Items.AddRange(items));
     }
 
-    public static DateTimePicker DateTimePicker(CustomFormatDatePicker custom)
+    public static DateTimePicker DateTimePicker(string custom)
     {
         return new DateTimePicker
         {
@@ -72,7 +72,7 @@ public static class FactoryElements
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
             Padding = new Padding(5),
             Format = DateTimePickerFormat.Custom,
-            CustomFormat = custom.ToDescriptionString(),
+            CustomFormat = custom,
             ShowUpDown = true
         };
     }

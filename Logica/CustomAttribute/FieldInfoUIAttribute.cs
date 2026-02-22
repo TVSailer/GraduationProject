@@ -97,7 +97,7 @@ namespace Admin.ViewModels.Lesson
         [CallerMemberName] string prop = "")
         : FieldInfoUiAttribute(labelText, prop, FactoryElements.TextBox(placeholder, true, true), 170);
     
-    public class DateFieldUiAttribute(string labelText, CustomFormatDatePicker format, [CallerMemberName] string prop = "")
+    public class DateFieldUiAttribute(string labelText, string format, [CallerMemberName] string prop = "")
         : FieldInfoUiAttribute(labelText, prop, FactoryElements.DateTimePicker(format)); 
     
     public class MaskedTextBoxFieldUiAttribute(string labelText, string mask, [CallerMemberName] string prop = "")

@@ -31,17 +31,17 @@ public class EventFieldData(EventCategoryRepository repository) : FieldModelWith
             End = value.End.ToString();
         }
     }
-    [DateFieldUi("Дата:", CustomFormatDatePicker.dd_MM_yyyy)]
+    [DateFieldUi("Дата:", "dd.MM.yyyy")]
     public string Date
     {
         get => DateTime.Parse(field) < DateTime.Now.Date ? DateTime.Now.Date.ToString("dd/MM/yyyy") : field;
         set => OnPropertyChange(ref field, value);
     } = DateTime.Now.Date.ToString("dd/MM/yyyy");
 
-    [DateFieldUi("Начало:", CustomFormatDatePicker.HH_mm)]
+    [DateFieldUi("Начало:", "HH:mm")]
     public string Start { get; set => OnPropertyChange(ref field, value); } = "10:00";
 
-    [DateFieldUi("Конец", CustomFormatDatePicker.HH_mm)]
+    [DateFieldUi("Конец", "HH:mm")]
     public string End { get; set => OnPropertyChange(ref field, value); } = "12:00";
 
     [RequiredCustom]
