@@ -1,5 +1,4 @@
 ﻿using Admin.ViewModel.AbstractViewModel;
-using Admin.ViewModel.Interface;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica.CustomAttribute;
@@ -8,66 +7,29 @@ namespace Admin.ViewModels.Lesson;
 
 public class LessonFieldSearch(Repository<LessonCategoryEntity> repository) : SearchFieldData
 {
-    public List<string> category
+    public List<string> Categorys
     {
         get
         {
-            var list = new List<string>();
-            list.Add("");
-            repository.Get().Select(c => c.Category).ForEach(t => list.Add(t));
+            var list = new List<string> { "" };
+            list.AddRange(repository.Get().Select(c => c.Category));
             return list;
         }
     }
 
-    [ComboBoxFieldUi("Категория", nameof(category))]
+    [ComboBoxFieldUi("Категория", nameof(Categorys))]
     [FieldState("")]
-    public string Category
-    {
-        get;
-        set
-        {
-            if (value == field) return;
-            field = value;
-            OnPropertyChanged();
-        }
-    } = "";
+    public string? Category { get; set => OnPropertyChange(ref field, value); } 
 
     [BaseFieldUi("Название")]
     [FieldState("")]
-    public string Name
-    {
-        get;
-        set
-        {
-            if (value == field) return;
-            field = value;
-            OnPropertyChanged();
-        }
-    } = "";
+    public string? Name { get; set => OnPropertyChange(ref field, value); }
 
     [BaseFieldUi("Имя преподователя")]
     [FieldState("")]
-    public string TeacherName
-    {
-        get;
-        set
-        {
-            if (value == field) return;
-            field = value;
-            OnPropertyChanged();
-        }
-    } = "";
+    public string? TeacherName { get; set => OnPropertyChange(ref field, value); }
 
     [BaseFieldUi("Фамилия преподователя")]
     [FieldState("")]
-    public string TeacherSurname
-    {
-        get;
-        set
-        {
-            if (value == field) return;
-            field = value;
-            OnPropertyChanged();
-        }
-    } = "";
+    public string? TeacherSurname { get; set => OnPropertyChange(ref field, value); }
 }

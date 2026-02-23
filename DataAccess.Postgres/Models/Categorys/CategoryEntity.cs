@@ -4,7 +4,7 @@ namespace DataAccess.Postgres.Models
 {
     public class CategoryEntity : Entity
     {
-        public string Category { get; private set; }
+        public string Category { get; set; }
 
         public CategoryEntity() { }
 
@@ -20,12 +20,14 @@ namespace DataAccess.Postgres.Models
 
         protected bool Equals(CategoryEntity other)
         {
+            if (Category == null) return false;
             return Category.Equals(value: other.Category);
         }
 
         public override bool Equals(object? obj)
         {
             if (obj is null) return false;
+            if (obj is string str) return Category.Equals(str);
             if (ReferenceEquals(objA: this, objB: obj)) return true;
             if (obj.GetType() != GetType()) return false;
             return Equals(other: (CategoryEntity)obj);

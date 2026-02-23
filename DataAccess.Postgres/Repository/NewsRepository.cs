@@ -15,9 +15,9 @@ namespace DataAccess.Postgres.Repository
         {
             DbContext.News
                 .Where(predicate: n => n.Id == id)
-                .ExecuteUpdate(setPropertyCalls: n => n
+                .ExecuteUpdate(n => n
                     .SetProperty(n => n.Title, news.Title)
-                    .SetProperty(n => n.Category, news.Category)
+                    .SetProperty(n => n.CategoryId, news.Category.Id)
                     .SetProperty(n => n.Date, news.Date)
                     .SetProperty(n => n.Content, news.Content)
                     .SetProperty(n => n.Author, news.Author));

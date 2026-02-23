@@ -36,4 +36,8 @@
     <ProjectReference Include="..\..\..\Logica\Logica.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>

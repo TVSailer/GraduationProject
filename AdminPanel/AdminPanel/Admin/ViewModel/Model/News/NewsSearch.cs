@@ -8,9 +8,9 @@ public class NewsSearch : IParametersSearch<NewsEntity, NewsFieldSearch>
     public Func<NewsFieldSearch, List<NewsEntity>, List<NewsEntity>> SearchFunc =>
         (obj, entitys) =>
             entitys
-                .Where(e => obj.Category.Equals(obj.category[0]) || e.Category.Equals(obj.Category))
-                .Where(e => e.Title.StartsWith(obj.Title))
-                .Where(e => e.Author.StartsWith(obj.Author))
+                .Where(e => obj.Category == null || obj.Category.Equals(obj.Categorys[0]) || e.Category.Equals(obj.Category))
+                .Where(e => e.Title.StartsWith(obj.Title ?? ""))
+                .Where(e => e.Author.StartsWith(obj.Author ?? ""))
                 .Where(e =>
                     e.DateT() >= obj.StartDateTime() &&
                     e.DateT() <= obj.EndDateTime())

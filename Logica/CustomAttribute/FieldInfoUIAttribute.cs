@@ -55,11 +55,12 @@ namespace Admin.ViewModels.Lesson
             var field = type.GetProperty(FieldDataName!) ?? throw new ArgumentException();
             var value = field.GetValue(data);
 
+
             Control = creatingControl!
                 .Invoke(value)
-                .Binding(PropertyNameControl, data, PropertyName)
-                .OnErrorProvider(PropertyName, data);
-
+                .OnErrorProvider(PropertyName, data)
+                .Binding(PropertyNameControl, data, PropertyName);
+                
             isBinding = true;
 
             return Control;
@@ -77,9 +78,9 @@ namespace Admin.ViewModels.Lesson
         {
             if (obj is not ICollection array) throw new ArgumentException();
             var cb = FactoryElements.ComboBox();
-            array.ForEach(a => cb.Items.Add(a));
+            cb.DataSource = array;
+            cb.SelectedIndexChanged += (s, e) => cb.DataBindings["SelectedItem"]?.WriteValue();
             return cb;
-
         });
     
     public class NumericFieldUiAttribute(string labelText, [CallerMemberName] string prop = "")

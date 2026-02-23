@@ -20,7 +20,8 @@ public class NewsFieldData(NewsCategoryRepository repository) : FieldModelWithIm
     [RequiredCustom]
     [LinkingEntity(nameof(NewsEntity.Title))]
     [BaseFieldUi("Название:", "Введите название")]
-    public string? Title { get; set => TryValidProperty(ref field, value); }
+    public string? Title { get; set => 
+        TryValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity(nameof(NewsEntity.Content))]

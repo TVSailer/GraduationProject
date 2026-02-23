@@ -1,32 +1,17 @@
-﻿using Admin.ViewModel.Interface;
+﻿using Admin.ViewModel.AbstractViewModel;
+using Admin.ViewModel.Interface;
 using Admin.ViewModels.Lesson;
+using Logica.CustomAttribute;
 
 namespace Admin.ViewModel.Model.Teacher;
 
-public class TeacherFieldSearch : PropertyChange, IFieldData
+public class TeacherFieldSearch : SearchFieldData
 {
     [BaseFieldUi("Имя преподователя")]
-    public string TeacherName
-    {
-        get;
-        set
-        {
-            if (value == field) return;
-            field = value;
-            OnPropertyChanged();
-        }
-    } = "";
+    [FieldState("")]
+    public string? TeacherName { get; set => OnPropertyChange(ref field, value); }
 
     [BaseFieldUi("Фамилия преподователя")]
-    public string TeacherSurname
-    {
-        get;
-        set
-        {
-            if (value == field) return;
-            field = value;
-            OnPropertyChanged();
-        }
-    } = "";
+    [FieldState("")]
+    public string? TeacherSurname { get; set => OnPropertyChange(ref field, value); }
 }
-
