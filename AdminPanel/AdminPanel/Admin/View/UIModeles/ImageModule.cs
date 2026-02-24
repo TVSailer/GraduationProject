@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Admin.ViewModel.AbstractFieldData;
 using Admin.ViewModel.AbstractViewModel;
 using CSharpFunctionalExtensions;
 using Logica.UILayerPanel;

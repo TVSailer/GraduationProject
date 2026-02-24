@@ -1,5 +1,4 @@
-﻿using Logica.Message;
-namespace Logica.Massage;
+﻿namespace Logica.Message;
 
 public interface IMessageErrorProvider
 {

@@ -47,7 +47,7 @@ namespace Admin.ViewModels.Lesson
             {
                 isBinding = true;
                 return Control
-                    .OnErrorProvider(PropertyName, data)
+                    //.OnErrorProvider(PropertyName, data)
                     .Binding(PropertyNameControl, data, PropertyName);
             }
 
@@ -58,7 +58,7 @@ namespace Admin.ViewModels.Lesson
 
             Control = creatingControl!
                 .Invoke(value)
-                .OnErrorProvider(PropertyName, data)
+                //.OnErrorProvider(PropertyName, data)
                 .Binding(PropertyNameControl, data, PropertyName);
                 
             isBinding = true;

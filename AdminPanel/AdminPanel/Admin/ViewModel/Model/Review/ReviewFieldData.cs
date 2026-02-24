@@ -1,7 +1,7 @@
-﻿using Admin.ViewModel.Interface;
+﻿using Admin.ViewModel.GenericEntity;
+using Admin.ViewModel.Interface;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
-using Logica.Interface;
 
 namespace Admin.ViewModel.Model.Review;
 
@@ -15,7 +15,7 @@ public class ReviewFieldData : IFieldData<ReviewEntity>
 
     [LinkingEntity(nameof(ReviewEntity.Visitor))]
     [ReadOnlyFieldUi("Автор: ")]
-    public VisitorEntity Visitor { get; set; }
+    public VisitorEntity? Visitor { get; set; }
 
     [LinkingEntity(nameof(ReviewEntity.Comment))]
     [ReadOnlyMultilineFieldUi("Комментарий: ")]

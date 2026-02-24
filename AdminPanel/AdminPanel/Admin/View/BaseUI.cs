@@ -3,6 +3,7 @@ using Admin.View.Moduls.AdminMain;
 using Admin.View.Moduls.UIModel;
 using Admin.View.UIModel;
 using Admin.View.ViewForm;
+using Admin.ViewModel.AbstractFieldData;
 using Admin.ViewModel.AbstractViewModel;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;

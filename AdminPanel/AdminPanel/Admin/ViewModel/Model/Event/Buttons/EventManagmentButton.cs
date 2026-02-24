@@ -1,7 +1,6 @@
 ﻿using Admin.Args;
 using Admin.DI;
 using Admin.View;
-using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using Logica.Interface;
 using Logica.UI;
@@ -13,19 +12,16 @@ public class EventManagmentButton(ControlView controlView) :
     IButtons<CardClickedToolStripArgs<EventEntity>>, 
     IButton<CardClickedArgs<EventEntity>>
 {
-    public List<CustomButton> GetButtons(object? data, CardClickedToolStripArgs<EventEntity> eventToolStripArgs)
+    public List<CustomButton> GetButtons(object? data, CardClickedToolStripArgs<EventEntity>? eventToolStripArgs)
         => [
         ];
 
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<EventManagment> eventArgs)
+    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<EventManagment>? eventArgs)
         => [
-            new CustomButton("Назад")
-                .CommandClick(() => controlView.Exit()),
-            new CustomButton("Добавить")
-                .CommandClick(() => controlView.LoadView<EventAddingFieldData>()),
+            new CustomButton("Назад").CommandClick(controlView.Exit),
+            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<EventAddingFieldData>()),
         ];
 
     public CustomButton? GetButton(object? send, CardClickedArgs<EventEntity> eventArgs)
-        => new CustomButton()
-            .CommandClick(() => controlView.LoadView<EventDetailsFieldData, EventEntity>(eventArgs.Entity));
+        => new CustomButton().CommandClick(() => controlView.LoadView<EventDetailsFieldData, EventEntity>(eventArgs.Entity));
 }

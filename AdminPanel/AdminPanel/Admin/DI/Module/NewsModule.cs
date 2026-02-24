@@ -37,9 +37,5 @@ public class NewsModule : NinjectModule
             NewsFieldSearch,
             NewsCard,
             NewsManagmentButton>>();
-
-        Kernel.Bind<NewsManagmentButton>().ToSelf();
-        Kernel.Bind<NewsAddingButton>().ToSelf();
-        Kernel.Bind<NewsDetailsButton>().ToSelf();
     }
 }

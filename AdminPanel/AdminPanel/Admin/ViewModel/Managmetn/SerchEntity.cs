@@ -7,6 +7,7 @@ using DataAccess.Postgres.Repository;
 using Logica;
 using Logica.CustomAttribute;
 using Logica.Interface;
+using Logica.Message;
 
 namespace Admin.ViewModel.Managment;
 

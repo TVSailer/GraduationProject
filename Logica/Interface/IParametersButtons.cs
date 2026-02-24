@@ -4,7 +4,7 @@ namespace Logica.Interface;
 
 public interface IButtons<in TEventArgs>
 {
-    public List<CustomButton>? GetButtons(object? send, TEventArgs? eventArgs);
+    public List<CustomButton>? GetButtons(object? send, TEventArgs eventArgs);
 }
 
 public interface IButton<in TEventArgs>

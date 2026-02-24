@@ -16,8 +16,5 @@ public class ReviewModule : NinjectModule
     {
         Kernel.Bind<IView<ReviewFieldData, ReviewEntity>>().To<BaseUI<ReviewFieldData, ReviewEntity, ReviewDetailsButton>>();
         Kernel.Bind<IView<ReviewManagment>>().To<ReviewsCardUi>();
-
-        Kernel.Bind<ReviewManagmentButton>().ToSelf();
-        Kernel.Bind<ReviewDetailsButton>().ToSelf();
     }
 }

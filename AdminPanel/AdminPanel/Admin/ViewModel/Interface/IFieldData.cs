@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using Admin.ViewModel.GenericEntity;
+using CSharpFunctionalExtensions;
 
 namespace Admin.ViewModel.Interface;
 

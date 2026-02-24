@@ -13,8 +13,9 @@ namespace Admin.ViewModels.Lesson
         private DateTimePicker timeStart;
         private DateTimePicker timeEnd;
 
-        public ScheduleView(LessonFieldData instance)
+        public ScheduleView(LessonFieldData? instance)
         {
+            if (instance is null) throw new ArgumentNullException();
             Text = "Создание расписания";
             Size = new Size(width: 1100, height: 500);
             StartPosition = FormStartPosition.CenterScreen;

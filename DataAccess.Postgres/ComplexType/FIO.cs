@@ -1,41 +1,42 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
+
 [ComplexType]
 public class FIO 
 {
     public string Name { get; private set; }
-    public string Surname { get; private set; }
-    public string Patronymic { get; private set; }
+    public string Surname { get; set; }
+    public string Patronymic { get; set; }
 
     public FIO() { }
 
-    public FIO(string name, string surname, string patronymic)
+    public FIO(string? fio)
     {
-        Name = name;
-        Surname = surname;
-        Patronymic = patronymic;
+        if (!TryValidFio(fio, out var result)) throw new ArgumentException();
+
+        Surname = result[0];
+        Name = result[1];
+        Patronymic = result[2];
     }
-    
-    public FIO(string fio)
+
+    public static bool TryValidFio(string? fio, out string[]? result)
     {
-        if (fio is null) throw new ArgumentNullException();
+        if (fio is null)
+        {
+            result = null;
+            return false;
+        }
 
         var list = fio.Split(separator: " ");
 
-        if (list.Length != 3) throw new ArgumentNullException();
+        if (list.Length != 3)
+        {
+            result = null;
+            return false;
+        }
 
-        Surname = list[0];
-        Name = list[1];
-        Patronymic = list[2];
-    }
-
-    public static bool TryValidFIO(string fio)
-    {
-        if (fio is null) return false;
-
-        var list = fio.Split(separator: " ");
-
-        return list.Length == 3;
+        result = list;
+        return true;
     }
 
     public override string ToString()

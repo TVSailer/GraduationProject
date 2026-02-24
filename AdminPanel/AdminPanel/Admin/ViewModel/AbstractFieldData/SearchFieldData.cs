@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
+using Logica.Message;
 
 namespace Admin.ViewModel.AbstractViewModel;
 

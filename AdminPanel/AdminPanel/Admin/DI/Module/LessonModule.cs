@@ -38,9 +38,5 @@ public class LessonModule : NinjectModule
             LessonFieldSearch, 
             LessonCard, 
             LessonManagmentButton>>();
-        
-        Kernel.Bind<LessonManagmentButton>().ToSelf();
-        Kernel.Bind<LessonAddingButton>().ToSelf();
-        Kernel.Bind<LessonDetailsButton>().ToSelf();
     }
 }

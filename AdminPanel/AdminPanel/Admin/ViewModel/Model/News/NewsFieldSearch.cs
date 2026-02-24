@@ -1,10 +1,7 @@
 ﻿using Admin.ViewModel.AbstractViewModel;
 using Admin.ViewModels.Lesson;
-using Castle.Components.DictionaryAdapter;
 using DataAccess.Postgres.Repository;
 using Logica.CustomAttribute;
-using System.Collections.ObjectModel;
-using DataAccess.Postgres.Models;
 
 namespace Admin.ViewModel.Model.News;
 

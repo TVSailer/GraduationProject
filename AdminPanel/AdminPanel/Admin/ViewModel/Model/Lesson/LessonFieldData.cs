@@ -1,4 +1,5 @@
-﻿using Admin.ViewModel.AbstractViewModel;
+﻿using Admin.ViewModel.AbstractFieldData;
+using Admin.ViewModel.AbstractViewModel;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Logica.CustomAttribute;
@@ -17,12 +18,12 @@ public class LessonFieldData(
     [RequiredCustom]
     [LinkingEntity("Name")]
     [BaseFieldUi("Название:*", "Введите название")]
-    public string? Name { get; set => TryValidProperty(ref field, value); }
+    public string? Name { get; set => ValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity("Description")]
     [MultilineFieldUi]
-    public string? Description { get; set => TryValidProperty(ref field, value); }
+    public string? Description { get; set => ValidProperty(ref field, value); }
 
     [LinkingEntity("Schedule")]
     public List<LessonScheduleEntity>? Schedule
@@ -30,7 +31,7 @@ public class LessonFieldData(
         get;
         set
         {
-            TryValidProperty(ref field, value);
+            ValidProperty(ref field, value);
             OnPropertyChanged(nameof(ScheduleParse));
         }
     }
@@ -42,20 +43,20 @@ public class LessonFieldData(
     [RequiredCustom]
     [LinkingEntity("Location")]
     [BaseFieldUi("Место проведения:*", "Введите место проведения")]
-    public string? Location { get; set => TryValidProperty(ref field, value); }
+    public string? Location { get; set => ValidProperty(ref field, value); }
 
     [MaxParticipants]
     [LinkingEntity("MaxParticipants")]
     [NumericFieldUi("Кол. участников:*")]
-    public int MaxParticipants { get; set => TryValidProperty(ref field, value); } = 1;
+    public int MaxParticipants { get; set => ValidProperty(ref field, value); } = 1;
 
     [RequiredCustom]
     [LinkingEntity("Category")]
     [ComboBoxFieldUi("Категория:*", nameof(Categories))]
-    public LessonCategoryEntity? Category { get; set => TryValidProperty(ref field, value); }
+    public LessonCategoryEntity? Category { get; set => ValidProperty(ref field, value); }
 
     [NotNull]
     [LinkingEntity("Teacher")]
     [ComboBoxFieldUi("Преподователь:*", nameof(teachers))]
-    public TeacherEntity? Teacher { get; set => TryValidProperty(ref field, value); }
+    public TeacherEntity? Teacher { get; set => ValidProperty(ref field, value); }
 }

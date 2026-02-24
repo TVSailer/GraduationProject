@@ -15,11 +15,10 @@ public class VisitorNotBelongingLessonButton(ControlView control, MementoLesson 
     public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<VisitorNotBelongingLessonCardPanelUi>? e)
         =>
         [
-            new CustomButton("Назад")
-                .CommandClick(() => control.Exit())
+            new CustomButton("Назад").CommandClick(control.Exit)
         ];
 
-    public CustomButton? GetButton(object? send, CardClickedArgs<VisitorEntity> eventArgs)
+    public CustomButton GetButton(object? send, CardClickedArgs<VisitorEntity> eventArgs)
         => new CustomButton()
                 .CommandClick(() =>
                 {

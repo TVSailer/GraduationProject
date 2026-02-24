@@ -1,4 +1,5 @@
-﻿using Admin.ViewModel.AbstractViewModel;
+﻿using Admin.ViewModel.AbstractFieldData;
+using Admin.ViewModel.AbstractViewModel;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
@@ -15,29 +16,29 @@ public class NewsFieldData(NewsCategoryRepository repository) : FieldModelWithIm
     [RequiredCustom]
     [LinkingEntity(nameof(NewsEntity.Category))]
     [ComboBoxFieldUi("Категория:", nameof(Categorys))]
-    public NewsCategoryEntity Category { get; set => TryValidProperty(ref field, value); }
+    public NewsCategoryEntity Category { get; set => ValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity(nameof(NewsEntity.Title))]
     [BaseFieldUi("Название:", "Введите название")]
     public string? Title { get; set => 
-        TryValidProperty(ref field, value); }
+        ValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity(nameof(NewsEntity.Content))]
     [MultilineFieldUi]
-    public string? Content { get; set => TryValidProperty(ref field, value); }
+    public string? Content { get; set => ValidProperty(ref field, value); }
 
     [LinkingEntity(nameof(NewsEntity.Date))]
     [DateFieldUi("Дата:", "dd.MM.yyyy HH:mm")]
     public string? Date
     {
         get;
-        set => TryValidProperty(ref field, value);
+        set => ValidProperty(ref field, value);
     } = DateTime.Now.ToString();
 
     [RequiredCustom]
     [LinkingEntity(nameof(NewsEntity.Author))]
     [BaseFieldUi("Автор:", "Введите автора")]
-    public string Location { get; set => TryValidProperty(ref field, value); }
+    public string Location { get; set => ValidProperty(ref field, value); }
 }

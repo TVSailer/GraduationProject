@@ -6,18 +6,18 @@ using Logica.UI;
 
 namespace Admin.ViewModel.Model.Review.Buttons;
 
-public class ReviewDetailsButton(ControlView controlView, MementoLesson memento) : 
+public class ReviewDetailsButton(
+    Repository<ReviewEntity> repository,
+    ControlView controlView) : 
     IButtons<ViewButtonClickArgs<ReviewEntity, ReviewFieldData>>
 {
-    public List<CustomButton>? GetButtons(object? send, ViewButtonClickArgs<ReviewEntity, ReviewFieldData>? eventArgs)
+    public List<CustomButton> GetButtons(object? send, ViewButtonClickArgs<ReviewEntity, ReviewFieldData> e)
         => [
-            new CustomButton("Назад")
-                .CommandClick(() => controlView.Exit()),
-            new CustomButton("Удалить")
-                .CommandClick(() =>
-                {
-                    memento.DeleteReview(eventArgs!.FieldData.Entity.Id);
-                    controlView.Exit();
-                })
+            new CustomButton("Назад").CommandClick(controlView.Exit),
+            new CustomButton("Удалить").CommandClick(() =>
+            {
+                repository.Delete(e.FieldData.Entity.Id);
+                controlView.Exit();
+            })
         ];
 }

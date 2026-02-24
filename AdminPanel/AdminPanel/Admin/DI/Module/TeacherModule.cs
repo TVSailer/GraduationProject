@@ -12,7 +12,6 @@ using Ninject.Modules;
 namespace Admin.DI;
 
 public record TeacherManagment : IFieldData;
-
 public class TeacherAddingFieldData : TeacherFieldData;
 public class TeacherDetailsFieldData : TeacherFieldData;
 
@@ -32,9 +31,5 @@ public class TeacherModule : NinjectModule
             TeacherFieldSearch,
             TeacherCard,
             TeacherManagmentButton>>();
-
-        Kernel.Bind<TeacherManagmentButton>().ToSelf();
-        Kernel.Bind<TeacherAddingButton>().ToSelf();
-        Kernel.Bind<TeacherDetailsButton>().ToSelf();
     }
 }

@@ -2,14 +2,8 @@
 
 namespace Logica.Massage;
 
-public class ErrorMessagePropertyArgs
+public class ErrorMessagePropertyArgs(string? errorText, PropertyChangedEventArgs propertyName)
 {
-    public string? ErrorMessage { get; private set; }
-    public string? PropertyName { get; private set; }
-
-    public ErrorMessagePropertyArgs(string? errorText, PropertyChangedEventArgs propertyName)
-    {
-        ErrorMessage = errorText;
-        PropertyName = propertyName.PropertyName;
-    }
+    public string? ErrorMessage { get; private set; } = errorText;
+    public string? PropertyName { get; private set; } = propertyName.PropertyName;
 }

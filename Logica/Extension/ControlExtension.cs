@@ -1,4 +1,7 @@
-﻿namespace Logica.Extension
+﻿using Logica.Massage;
+using Logica.Message;
+
+namespace Logica.Extension
 {
     public static class ControlExtension
     {
@@ -11,10 +14,9 @@
                 c.DataBindings.Add(propertyNameControl, context, nameMember, false, DataSourceUpdateMode.OnPropertyChanged));
         }
 
-        public static Control OnErrorProvider(this Control control, string propertyName, object context)
+        public static Control OnErrorProvider<T>(this Control control, string propertyName, T context) where T : IMessageErrorProvider
         {
-            if (context is not PropertyChange pc) return control;
-            pc.ErrorMassegeProvider += (_, e) =>
+            context.ErrorMassegeProvider += (_, e) =>
             {
                 if (!propertyName.Equals(e.PropertyName)) return;
                 errorProvider.SetError(control, e.ErrorMessage);

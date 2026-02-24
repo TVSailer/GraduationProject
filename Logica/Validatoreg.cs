@@ -120,9 +120,4 @@ public static class Validatoreg
             return false;
         }
     }
-
-    public static bool TryValidPassword(string hash, string inputPassword)
-    {
-        return BCrypt.Net.BCrypt.Verify(inputPassword, hash);
-    }
 }

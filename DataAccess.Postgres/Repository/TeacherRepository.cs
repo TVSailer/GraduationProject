@@ -12,6 +12,7 @@ namespace DataAccess.Postgres.Repository
         public List<TeacherEntity> GetIncludeLessons()
             => DbContext.Teachers
                 .Include(navigationPropertyPath: t => t.Lessons)
+                .Include(navigationPropertyPath: t => t.AuthEntity)
                 .ToList() ?? throw new ArgumentNullException();
 
         public override List<TeacherEntity> Get()
@@ -34,8 +35,7 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(v => v.FIO, teacher.FIO)
                     .SetProperty(v => v.DateBirth, teacher.DateBirth)
                     .SetProperty(v => v.NumberPhone, teacher.NumberPhone)
-                    .SetProperty(v => v.Login, teacher.Login)
-                    .SetProperty(v => v.Password, teacher.Password));
+                    .SetProperty(v => v.AuthEntity, teacher.AuthEntity));
         }
 
         public override void Delete(long idEntity)

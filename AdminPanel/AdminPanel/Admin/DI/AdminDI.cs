@@ -2,7 +2,6 @@ using Admin.Memento;
 using Admin.View;
 using DataAccess.Postgres;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Ninject;
 

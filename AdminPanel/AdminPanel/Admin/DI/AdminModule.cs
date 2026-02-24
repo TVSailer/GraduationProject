@@ -13,7 +13,5 @@ public class AdminModule : NinjectModule
     public override void Load()
     {
         Kernel.Bind<IView<AdminFieldData>>().To<AdminMainUi>();
-        Kernel.Bind<AdminFieldData>().ToSelf();
-        Kernel.Bind<AdminMainViewButton>().ToSelf();
     }
 }

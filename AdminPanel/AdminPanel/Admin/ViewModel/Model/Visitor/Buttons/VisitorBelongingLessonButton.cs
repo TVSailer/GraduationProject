@@ -6,15 +6,14 @@ using DataAccess.Postgres.Repository;
 using Logica.Interface;
 using Logica.UI;
 
-namespace Admin.ViewModel.Model.Lesson.Buttons;
+namespace Admin.ViewModel.Model.Visitor.Buttons;
 
 public class VisitorBelongingLessonButton(ControlView controlView, MementoLesson v) : IButtons<ViewButtonClickArgs<VisitorBelongingLesson>>, IButtons<CardClickedToolStripArgs<VisitorEntity>>
 {
     public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<VisitorBelongingLesson>? e)
         =>
         [
-            new CustomButton("Назад")
-                .CommandClick(() => controlView.Exit()),
+            new CustomButton("Назад").CommandClick(controlView.Exit),
             new CustomButton("Добавить нового")
                 .Enablede(v.IsAdd)
                 .CommandClick(() => controlView.LoadView<VisitorAddingFieldData>()),
@@ -28,6 +27,7 @@ public class VisitorBelongingLessonButton(ControlView controlView, MementoLesson
             new CustomButton("Удалить")
                 .CommandClick(() =>
                 {
+                    if (e == null) return;
                     v.DeleteVisitor(e.Entity.Id);
                     controlView.UpdateGUI();
                 }),

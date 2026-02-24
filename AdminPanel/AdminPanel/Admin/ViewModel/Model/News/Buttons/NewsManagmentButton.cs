@@ -18,13 +18,10 @@ public class NewsManagmentButton(ControlView controlView) :
 
     public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<NewsManagment> eventArgs)
         => [
-            new CustomButton("Назад")
-                .CommandClick(() => controlView.Exit()),
-            new CustomButton("Добавить")
-                .CommandClick(() => controlView.LoadView<NewsAddingFieldData>()),
+            new CustomButton("Назад").CommandClick(controlView.Exit),
+            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<NewsAddingFieldData>()),
         ];
 
     public CustomButton? GetButton(object? send, CardClickedArgs<NewsEntity> eventArgs)
-        => new CustomButton()
-            .CommandClick(() => controlView.LoadView<NewsDetailsFieldData, NewsEntity>(eventArgs.Entity));
+        => new CustomButton().CommandClick(() => controlView.LoadView<NewsDetailsFieldData, NewsEntity>(eventArgs.Entity));
 }

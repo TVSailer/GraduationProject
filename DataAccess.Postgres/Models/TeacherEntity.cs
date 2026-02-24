@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Postgres.Models
 {
@@ -7,10 +8,12 @@ namespace DataAccess.Postgres.Models
         public FIO FIO { get; set; }
         public string DateBirth { get; set; }
         public string NumberPhone { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
+
+        [ForeignKey(nameof(AuthEntity))]
+        public long AuthId { get; set; }
+        public AuthEntity AuthEntity { get; set; }
+        
         public List<LessonEntity> Lessons { get; set; } = [];
-        public string UrlFaceImg { get; set; }
         public override string ToString() => FIO.ToString();
     }
 }

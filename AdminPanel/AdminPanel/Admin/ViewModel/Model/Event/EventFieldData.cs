@@ -1,4 +1,5 @@
-﻿using Admin.ViewModel.AbstractViewModel;
+﻿using Admin.ViewModel.AbstractFieldData;
+using Admin.ViewModel.AbstractViewModel;
 using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
@@ -13,12 +14,12 @@ public class EventFieldData(EventCategoryRepository repository) : FieldModelWith
     [RequiredCustom]
     [LinkingEntity(nameof(EventEntity.Title))]
     [BaseFieldUi("Название:*", "Введите название")]
-    public string Title { get; set => TryValidProperty(ref field, value); }
+    public string Title { get; set => ValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity(nameof(EventEntity.Description))]
     [MultilineFieldUi()]
-    public string Description { get; set => TryValidProperty(ref field, value); }
+    public string Description { get; set => ValidProperty(ref field, value); }
 
     [LinkingEntity(nameof(EventEntity.Schedule))]
     public EventScheduleEntity? Schedule
@@ -47,24 +48,24 @@ public class EventFieldData(EventCategoryRepository repository) : FieldModelWith
     [RequiredCustom]
     [LinkingEntity(nameof(EventEntity.Location))]
     [BaseFieldUi("Место:*", "Введите место проведения")]
-    public string Location { get; set => TryValidProperty(ref field, value); }
+    public string Location { get; set => ValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity(nameof(EventEntity.Category))]
     [ComboBoxFieldUi("Категория:*", nameof(Categorys))]
-    public EventCategoryEntity Category { get; set => TryValidProperty(ref field, value); }
+    public EventCategoryEntity Category { get; set => ValidProperty(ref field, value); }
 
     [HttpsLink]
     [LinkingEntity(nameof(EventEntity.RegistrationLink))]
     [BaseFieldUi("Ссылка на регистрацию:*", "Введите ссылку на регистрацию")]
-    public string RegisLink { get; set => TryValidProperty(ref field, value); }
+    public string RegisLink { get; set => ValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity(nameof(EventEntity.Organizer))]
     [BaseFieldUi("Организатор:*", "Введите фио организатора")]
-    public string Organizer { get; set => TryValidProperty(ref field, value); }
+    public string Organizer { get; set => ValidProperty(ref field, value); }
 
     [LinkingEntity(nameof(EventEntity.MaxParticipants))]
     [NumericFieldUi("Кол. участников:*")]
-    public int MaxParticipants { get; set => TryValidProperty(ref field, value); } = 1;
+    public int MaxParticipants { get; set => ValidProperty(ref field, value); } = 1;
 }

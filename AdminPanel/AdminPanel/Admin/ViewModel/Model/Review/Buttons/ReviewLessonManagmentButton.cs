@@ -10,13 +10,11 @@ public class ReviewManagmentButton(ControlView controlView)
     : IButtons<ViewButtonClickArgs<ReviewManagment>>,
         IButton<CardClickedArgs<ReviewEntity>>
 {
-    public List<CustomButton>? GetButtons(object? data, ViewButtonClickArgs<ReviewManagment>? eventArgs)
+    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<ReviewManagment>? eventArgs)
         => [
-            new CustomButton("Назад")
-                .CommandClick(() => controlView.Exit()),
+            new CustomButton("Назад").CommandClick(controlView.Exit),
         ];
 
-    public CustomButton? GetButton(object? send, CardClickedArgs<ReviewEntity> eventArgs)
-        => new CustomButton()
-                .CommandClick(() => controlView.LoadView<ReviewFieldData, ReviewEntity>(eventArgs.Entity));
+    public CustomButton GetButton(object? send, CardClickedArgs<ReviewEntity> eventArgs)
+        => new CustomButton().CommandClick(() => controlView.LoadView<ReviewFieldData, ReviewEntity>(eventArgs.Entity));
 }

@@ -4,6 +4,7 @@ using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
 using Logica.Interface;
+using Logica.Message;
 using Logica.UILayerPanel;
 
 namespace Admin.View;

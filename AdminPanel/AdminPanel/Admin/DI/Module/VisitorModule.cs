@@ -41,11 +41,5 @@ public class VisitorModule : NinjectModule
             VisitorCard,
             VisitorManagmentButton>>();
         Kernel.Bind<IView<VisitorBelongingLesson>>().To<VisitorBelongingLessonCardUi>();
-
-        Kernel.Bind<VisitorManagmentButton>().ToSelf();
-        Kernel.Bind<VisitorAddingButton>().ToSelf();
-        Kernel.Bind<VisitorDetailsButton>().ToSelf();
-        Kernel.Bind<VisitorNotBelongingLessonButton>().ToSelf();
-        Kernel.Bind<VisitorBelongingLessonButton>().ToSelf();
     }
 }

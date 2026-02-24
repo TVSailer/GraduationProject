@@ -6,7 +6,7 @@ using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Models;
 using Logica;
 
-namespace Admin.ViewModel.AbstractViewModel;
+namespace Admin.ViewModel.AbstractFieldData;
 
 public class FieldModelWithImages<TEntity> : FieldData<TEntity>
     where TEntity : Entity, new()

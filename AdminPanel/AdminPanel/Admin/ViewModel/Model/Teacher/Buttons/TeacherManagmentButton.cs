@@ -12,18 +12,15 @@ public class TeacherManagmentButton(ControlView controlView) :
     IButtons<CardClickedToolStripArgs<TeacherEntity>>, 
     IButton<CardClickedArgs<TeacherEntity>>
 {
-    public List<CustomButton> GetButtons(object? data, CardClickedToolStripArgs<TeacherEntity> eventToolStripArgs)
+    public List<CustomButton> GetButtons(object? data, CardClickedToolStripArgs<TeacherEntity>? eventToolStripArgs)
         => [];
 
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<TeacherManagment> eventArgs)
+    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<TeacherManagment>? eventArgs)
         => [
-            new CustomButton("Назад")
-                .CommandClick(() => controlView.Exit()),
-            new CustomButton("Добавить")
-                .CommandClick(() => controlView.LoadView<TeacherAddingFieldData>()),
+            new CustomButton("Назад").CommandClick(controlView.Exit),
+            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<TeacherAddingFieldData>()),
         ];
 
-    public CustomButton? GetButton(object? send, CardClickedArgs<TeacherEntity> eventArgs)
-        => new CustomButton()
-            .CommandClick(() => controlView.LoadView<TeacherDetailsFieldData, TeacherEntity>(eventArgs.Entity));
+    public CustomButton GetButton(object? send, CardClickedArgs<TeacherEntity> eventArgs)
+        => new CustomButton().CommandClick(() => controlView.LoadView<TeacherDetailsFieldData, TeacherEntity>(eventArgs.Entity));
 }

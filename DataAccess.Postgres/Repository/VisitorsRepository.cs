@@ -12,6 +12,7 @@ public class VisitorsRepository(ApplicationDbContext dbContext) : Repository<Vis
             .Include(navigationPropertyPath: v => v.Lessons)
             .Include(navigationPropertyPath: v => v.Dates)
             .Include(navigationPropertyPath: v => v.Reviews)
+            .Include(navigationPropertyPath: v => v.AuthEntity)
             .ToList() ?? throw new ArgumentNullException();
     }
 
@@ -22,8 +23,7 @@ public class VisitorsRepository(ApplicationDbContext dbContext) : Repository<Vis
                 .SetProperty(v => v.FIO, visitor.FIO)
                 .SetProperty(v => v.DateBirth, visitor.DateBirth)
                 .SetProperty(v => v.NumberPhone, visitor.NumberPhone)
-                .SetProperty(v => v.Login, visitor.Login)
-                .SetProperty(v => v.Password, visitor.Password));
+                .SetProperty(v => v.AuthEntity, visitor.AuthEntity));
 
     public override void Delete(long idEntity)
     {

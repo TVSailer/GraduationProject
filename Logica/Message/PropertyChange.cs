@@ -1,7 +1,10 @@
-﻿using System.ComponentModel;
+﻿using Logica.Massage;
+using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
-using Logica.Massage;
-using Logica.Message;
+
+namespace Logica.Message;
 
 public class PropertyChange : INotifyPropertyChanged, IMessageErrorProvider
 {
@@ -13,10 +16,9 @@ public class PropertyChange : INotifyPropertyChanged, IMessageErrorProvider
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 
-    public void OnMassegeErrorProvider(string? errorMesege, [CallerMemberName] string prop = "")
+    public void OnMassageErrorProvider(string? errorMassage, [CallerMemberName] string prop = "")
     {
         ErrorMassegeProvider?.Invoke(this,
-            new ErrorMessagePropertyArgs(errorMesege, new PropertyChangedEventArgs(prop)));
+            new ErrorMessagePropertyArgs(errorMassage, new PropertyChangedEventArgs(prop)));
     }
 }
-

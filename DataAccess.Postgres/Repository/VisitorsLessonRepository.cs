@@ -55,11 +55,4 @@ public class MementoLesson(ApplicationDbContext DbContext, Repository<DateAttend
         Lesson.Visitors.RemoveAll(match: v => v.Id == idEntity);
         DbContext.SaveChanges();
     }
-
-    public void DeleteReview(long idEntity)
-    {
-        if (Lesson is null) throw new ArgumentNullException();
-        Lesson.Reviews.RemoveAll(match: v => v.Id == idEntity);
-        DbContext.SaveChanges();
-    }
 }

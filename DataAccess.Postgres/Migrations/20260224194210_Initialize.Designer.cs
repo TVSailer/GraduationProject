@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260124131812_UpdateSchedule2")]
-    partial class UpdateSchedule2
+    [Migration("20260224194210_Initialize")]
+    partial class Initialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,27 @@ namespace DataAccess.Postgres.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("DataAccess.Postgres.Models.AuthEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Auths");
+                });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.DateAttendanceEntity", b =>
                 {
@@ -102,9 +123,6 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("idCategory")
-                        .HasColumnType("bigint");
-
                     b.ComplexProperty<Dictionary<string, object>>("Schedule", "DataAccess.Postgres.Models.EventEntity.Schedule#EventScheduleEntity", b1 =>
                         {
                             b1.IsRequired();
@@ -116,9 +134,6 @@ namespace DataAccess.Postgres.Migrations
                             b1.Property<TimeOnly>("End")
                                 .HasColumnType("time without time zone");
 
-                            b1.Property<long>("Id")
-                                .HasColumnType("bigint");
-
                             b1.Property<TimeOnly>("Start")
                                 .HasColumnType("time without time zone");
                         });
@@ -127,7 +142,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Event");
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.ImgEventEntity", b =>
@@ -300,9 +315,6 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("idCategory")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -318,23 +330,14 @@ namespace DataAccess.Postgres.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("AuthId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("DateBirth")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("NumberPhone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UrlFaceImg")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -357,6 +360,8 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthId");
+
                     b.ToTable("Teachers");
                 });
 
@@ -368,23 +373,14 @@ namespace DataAccess.Postgres.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("AuthId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("DateBirth")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("NumberPhone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UrlFaceImg")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -406,6 +402,8 @@ namespace DataAccess.Postgres.Migrations
                         });
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthId");
 
                     b.ToTable("Visitors");
                 });
@@ -493,7 +491,7 @@ namespace DataAccess.Postgres.Migrations
 
                     b.HasIndex("VisitorId");
 
-                    b.ToTable("Review");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Models.DateAttendanceEntity", b =>
@@ -579,6 +577,28 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Models.TeacherEntity", b =>
+                {
+                    b.HasOne("DataAccess.Postgres.Models.AuthEntity", "AuthEntity")
+                        .WithMany()
+                        .HasForeignKey("AuthId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AuthEntity");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Models.VisitorEntity", b =>
+                {
+                    b.HasOne("DataAccess.Postgres.Models.AuthEntity", "AuthEntity")
+                        .WithMany()
+                        .HasForeignKey("AuthId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AuthEntity");
                 });
 
             modelBuilder.Entity("DateAttendanceEntityVisitorEntity", b =>

@@ -1,5 +1,6 @@
 using Admin.View;
 using Admin.View.ViewForm;
+using Admin.ViewModel.GenericEntity;
 using Admin.ViewModel.Interface;
 using Admin.ViewModel.Managment;
 using Admin.ViewModel.Model.Event;
@@ -37,9 +38,5 @@ public class EventModule : NinjectModule
             EventFieldSearch,
             EventCard,
             EventManagmentButton>>();
-
-        Kernel.Bind<EventManagmentButton>().ToSelf();
-        Kernel.Bind<EventAddingButton>().ToSelf();
-        Kernel.Bind<EventDetailsButton>().ToSelf();
     }
 }

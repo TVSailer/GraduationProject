@@ -6,20 +6,20 @@ namespace DataAccess.Postgres.Repository
     public class EventRepository(ApplicationDbContext dbContext) : Repository<EventEntity>(dbContext: dbContext)
     {
         public override List<EventEntity> Get()
-            => DbContext.Event
+            => DbContext.Events
             .Include(e => e.Imgs)
             .Include(e => e.Category)
             .ToList() ?? throw new ArgumentNullException();
 
         public EventEntity Get(long id)
-            => DbContext.Event
+            => DbContext.Events
             .AsNoTracking()
             .Include(navigationPropertyPath: e => e.Imgs)
             .FirstOrDefault(predicate: v => v.Id == id) ?? throw new ArgumentNullException();
 
         public override void Update(long id, EventEntity @event)
         {
-            DbContext.Event
+            DbContext.Events
                 .Where(predicate: v => v.Id == id)
                 .ExecuteUpdate(setPropertyCalls: v => v
                     .SetProperty(v => v.Title, @event.Title)
@@ -34,7 +34,7 @@ namespace DataAccess.Postgres.Repository
 
             if (@event.Imgs is { Count: > 0 })
             {
-                var eventDb = DbContext.Event
+                var eventDb = DbContext.Events
                     .Include(navigationPropertyPath: e => e.Imgs) 
                     .FirstOrDefault(predicate: e => e.Id == id);
 
@@ -114,7 +114,7 @@ namespace DataAccess.Postgres.Repository
         }
 
         public override void Delete(long idEntity)
-            => DbContext.Event
+            => DbContext.Events
             .Where(predicate: v => v.Id == idEntity)
             .ExecuteDelete();
     }

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logica", "..\..\Logica\Logi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin", "Admin\Admin.csproj", "{A315F99C-037E-687F-5376-8EFA338F3D2E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User_Interfase_Library", "..\..\User_Interfase_Library\User_Interfase_Library.csproj", "{B2E6D37F-D7EB-430E-BEDA-0FFC1E9A95A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A315F99C-037E-687F-5376-8EFA338F3D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A315F99C-037E-687F-5376-8EFA338F3D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A315F99C-037E-687F-5376-8EFA338F3D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2E6D37F-D7EB-430E-BEDA-0FFC1E9A95A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2E6D37F-D7EB-430E-BEDA-0FFC1E9A95A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2E6D37F-D7EB-430E-BEDA-0FFC1E9A95A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2E6D37F-D7EB-430E-BEDA-0FFC1E9A95A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
