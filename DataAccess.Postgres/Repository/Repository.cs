@@ -4,7 +4,6 @@ using DataAccess.Postgres.Extensions;
 namespace DataAccess.Postgres.Repository
 {
     public abstract class Repository<T>(ApplicationDbContext dbContext)
-        where T : Entity
     {
         public readonly ApplicationDbContext DbContext = dbContext;
 

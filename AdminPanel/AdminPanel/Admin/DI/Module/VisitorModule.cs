@@ -29,7 +29,7 @@ public class VisitorModule : NinjectModule
 
         Kernel.Bind<
             IView<VisitorAddingFieldData>, 
-            IView<VisitorAddingFieldData, VisitorEntity>>().To<BaseUI<VisitorAddingFieldData, VisitorEntity, VisitorAddingButton>>();
+            IView<VisitorAddingFieldData, VisitorEntity>>().To<BaseUi<VisitorAddingFieldData, VisitorEntity, VisitorAddingButton>>();
         Kernel.Bind<
             IView<VisitorDetailsFieldData>, 
             IView<VisitorDetailsFieldData, VisitorEntity>>().To<VisitorDetailsUi>();

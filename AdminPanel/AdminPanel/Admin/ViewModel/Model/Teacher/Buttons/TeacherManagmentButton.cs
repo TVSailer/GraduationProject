@@ -22,5 +22,7 @@ public class TeacherManagmentButton(ControlView controlView) :
         ];
 
     public CustomButton GetButton(object? send, CardClickedArgs<TeacherEntity> eventArgs)
-        => new CustomButton().CommandClick(() => controlView.LoadView<TeacherDetailsFieldData, TeacherEntity>(eventArgs.Entity));
+        => new CustomButton().CommandClick(() => controlView
+            .LoadView<TeacherDetailsFieldData, TeacherEntity>().FieldData.MementoEntity
+            .SetData(eventArgs.Entity));
 }

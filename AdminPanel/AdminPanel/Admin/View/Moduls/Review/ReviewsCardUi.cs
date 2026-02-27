@@ -2,10 +2,13 @@
 using Admin.DI;
 using Admin.View.Moduls.Review;
 using Admin.View.Moduls.UIModel;
+using Admin.View.UIModeles;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Model.Review.Buttons;
 using DataAccess.Postgres.Repository;
 using Logica.UILayerPanel;
+using User_Interface_Library.LayerPanel;
+using User_Interfase_Library.LayerPanel;
 
 namespace Admin.ViewModel.Model.Review;
 
@@ -13,7 +16,7 @@ public class ReviewsCardUi(
     MementoLesson repository,
     ReviewManagment viewData,
     ReviewManagmentButton parametersButtons)
-    : View<ReviewManagment>
+    : UiView<ReviewManagment>
 {
     protected override Control CreateUi()
     {

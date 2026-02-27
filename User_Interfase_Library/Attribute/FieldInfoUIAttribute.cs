@@ -1,0 +1,74 @@
+﻿using System.Windows.Forms;
+using Extension_Func_Library;
+
+namespace User_Interface_Library.Attribute;
+
+public class FieldInfoUiAttribute : System.Attribute
+{
+    public string LabelText { get; protected set; }
+    public int Size { get; protected set; } = 54;
+    public string PropertyName { get; protected set; }
+    public string? FieldDataName { get; protected set; }
+    public string PropertyNameControl { get; protected set; }
+    private Control? Control { get; set; }
+    private readonly Func<object?, Control>? creatingControl;
+    private bool isBinding;
+
+    public FieldInfoUiAttribute(
+        string text,
+        string prop, 
+        string propertyNameControl, 
+        string nameFieldData, 
+        Func<object?, Control> creatingControl, int size = 54)
+    {
+        LabelText = text;
+        PropertyName = prop;
+        FieldDataName = nameFieldData;
+        PropertyNameControl = propertyNameControl;
+        Size = size;
+        this.creatingControl = creatingControl;
+    }
+        
+    public FieldInfoUiAttribute(string text, string prop, Control control, int size = 54)
+    {
+        LabelText = text;
+        PropertyName = prop;
+        PropertyNameControl = "Text";
+        Size = size;
+        Control = control;
+    }
+
+    public Control GetControl(object data)
+    {
+        if (isBinding) return Control!;
+
+        if (Control != null)
+        {
+            isBinding = true;
+            return Control
+                //.OnErrorProvider(PropertyName, data)
+                .Binding(PropertyNameControl, data, PropertyName);
+        }
+
+        var type = data.GetType();
+        var field = type.GetProperty(FieldDataName!) ?? throw new ArgumentException();
+        var value = field.GetValue(data);
+
+
+        Control = creatingControl!
+            .Invoke(value)
+            //.OnErrorProvider(PropertyName, data)
+            .Binding(PropertyNameControl, data, PropertyName);
+                
+        isBinding = true;
+
+        return Control;
+    }
+
+    public override object TypeId { get; }
+
+    public override bool Match(object? obj)
+    {
+        return base.Match(obj);
+    }
+}

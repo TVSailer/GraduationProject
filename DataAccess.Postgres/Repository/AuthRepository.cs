@@ -17,8 +17,6 @@ public class AuthRepository(ApplicationDbContext dbContext) : Repository<AuthEnt
             .ExecuteUpdate(setPropertyCalls: v => v
                 .SetProperty(v => v.Login, entity.Login)
                 .SetProperty(v => v.Password, entity.Password));
-
-        DbContext.SaveChanges();
     }
 
     public override void Delete(long idEntity)

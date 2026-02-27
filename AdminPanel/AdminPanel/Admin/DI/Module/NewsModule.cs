@@ -29,8 +29,8 @@ public class NewsModule : NinjectModule
 
         Kernel.Bind<IParametersSearch<NewsEntity, NewsFieldSearch>>().To<NewsSearch>();
 
-        Kernel.Bind<IView<NewsAddingFieldData>>().To<BaseUI<NewsAddingFieldData, NewsEntity, NewsAddingButton>>();
-        Kernel.Bind<IView<NewsDetailsFieldData, NewsEntity>>().To<BaseUI<NewsDetailsFieldData, NewsEntity, NewsDetailsButton>>();
+        Kernel.Bind<IView<NewsAddingFieldData>>().To<BaseUi<NewsAddingFieldData, NewsEntity, NewsAddingButton>>();
+        Kernel.Bind<IView<NewsDetailsFieldData, NewsEntity>>().To<BaseUi<NewsDetailsFieldData, NewsEntity, NewsDetailsButton>>();
         Kernel.Bind<IView<NewsManagment>>().To<ManagmentEntityUi<
             NewsManagment,
             NewsEntity,

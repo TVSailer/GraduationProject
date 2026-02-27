@@ -1,17 +1,21 @@
-﻿using Admin.View.Moduls.UIModel;
+﻿using Admin.ViewModel.Model.Lesson;
 using DataAccess.Postgres.Models;
+using Extension_Func_Library;
+using User_Interface_Library;
+using User_Interface_Library.LayerPanel;
+using User_Interface_Library.UiLayoutPanel;
 using Day = DataAccess.Postgres.Enum.Day;
 
-namespace Admin.ViewModels.Lesson
+namespace Admin.View.Moduls.Lesson
 {
     public class ScheduleView : Form
     {
-        private List<LessonScheduleEntity> scheduleEntities = new();
+        private readonly List<LessonScheduleEntity> _scheduleEntities;
 
-        private DataGridView scheduleGrid;
-        private ComboBox dayComboBox;
-        private DateTimePicker timeStart;
-        private DateTimePicker timeEnd;
+        private DataGridView _scheduleGrid;
+        private ComboBox _dayComboBox;
+        private DateTimePicker _timeStart;
+        private DateTimePicker _timeEnd;
 
         public ScheduleView(LessonFieldData? instance)
         {
@@ -21,43 +25,43 @@ namespace Admin.ViewModels.Lesson
             StartPosition = FormStartPosition.CenterScreen;
 
             if (instance.Schedule != null)
-                scheduleEntities = instance.Schedule;
+                _scheduleEntities = instance.Schedule;
 
             CreateControls();
 
-            FormClosed += (s, e) => instance.Schedule = scheduleEntities;
+            FormClosed += (s, e) => instance.Schedule = _scheduleEntities;
         }
 
         private void CreateControls()
         {
 
-            dayComboBox = FactoryElements.ComboBox();
-            dayComboBox.DataSource = Enum.GetValues(enumType: typeof(Day))
+            _dayComboBox = FactoryElements.ComboBox();
+            _dayComboBox.DataSource = Enum.GetValues(enumType: typeof(Day))
                 .Cast<Day>()
                 .Select(selector: d => new { Description = d.ToDescriptionString(), Value = d})
                 .ToList();
 
-            dayComboBox.DisplayMember = "Description";
-            dayComboBox.ValueMember = "Value";
+            _dayComboBox.DisplayMember = "Description";
+            _dayComboBox.ValueMember = "Value";
             
-            timeStart = FactoryElements.DateTimePicker(custom: "HH:mm");
-            timeEnd = FactoryElements.DateTimePicker(custom: "HH:mm");
-            scheduleGrid = FactoryElements.DataGridView();
+            _timeStart = FactoryElements.DateTimePicker(custom: "HH:mm");
+            _timeEnd = FactoryElements.DateTimePicker(custom: "HH:mm");
+            _scheduleGrid = FactoryElements.DataGridView();
 
-            scheduleGrid.Columns.Add(columnName: "Day", headerText: "День недели");
-            scheduleGrid.Columns.Add(columnName: "Time", headerText: "Время");
+            _scheduleGrid.Columns.Add(columnName: "Day", headerText: "День недели");
+            _scheduleGrid.Columns.Add(columnName: "Time", headerText: "Время");
 
-            if (scheduleEntities.Count != 0)
-                scheduleEntities.ForEach(action: s => scheduleGrid.Rows.Add(values: [s.Day.ToDescriptionString(), $"{s.Start}-{s.End}"]));
+            if (_scheduleEntities.Count != 0)
+                _scheduleEntities.ForEach(action: s => _scheduleGrid.Rows.Add(values: [s.Day.ToDescriptionString(), $"{s.Start}-{s.End}"]));
 
             Controls.Add(
-                Logica.UILayerPanel.LayoutPanel.CreateColumn()
+                LayoutPanel.CreateColumn()
                     .Row(55, SizeType.Absolute)
                         .Column()
                             .Row()
-                                .Column(dayComboBox.PreferredSize.Width + 55, SizeType.Absolute).ContentEnd(dayComboBox)
-                                .Column(timeStart.PreferredSize.Width, SizeType.Absolute).ContentEnd(timeStart)
-                                .Column(timeEnd.PreferredSize.Width, SizeType.Absolute).ContentEnd(timeEnd)
+                                .Column(_dayComboBox.PreferredSize.Width + 55, SizeType.Absolute).ContentEnd(_dayComboBox)
+                                .Column(_timeStart.PreferredSize.Width, SizeType.Absolute).ContentEnd(_timeStart)
+                                .Column(_timeEnd.PreferredSize.Width, SizeType.Absolute).ContentEnd(_timeEnd)
                                 .Column(150, SizeType.Absolute).ContentEnd(FactoryElements.Button(text: "Добавить", action: AddButton_Click))
                                 .Column(150, SizeType.Absolute).ContentEnd(FactoryElements.Button(text: "Удалить", action: DeleteButton_Click))
                                 .Column(150, SizeType.Absolute).ContentEnd(FactoryElements.Button(text: "Сохранить", action: Close))
@@ -65,31 +69,31 @@ namespace Admin.ViewModels.Lesson
                             .End()
                         .End()
                     .End()
-                    .Row(99).ContentEnd(scheduleGrid)
+                    .Row(99).ContentEnd(_scheduleGrid)
                     .Build());
         }
 
         private void AddButton_Click()
         {
-            if (string.IsNullOrWhiteSpace(value: dayComboBox.Text) ||
-                string.IsNullOrWhiteSpace(value: timeStart.Text) ||
-                string.IsNullOrWhiteSpace(value: timeEnd.Text))
+            if (string.IsNullOrWhiteSpace(value: _dayComboBox.Text) ||
+                string.IsNullOrWhiteSpace(value: _timeStart.Text) ||
+                string.IsNullOrWhiteSpace(value: _timeEnd.Text))
             {
                 MessageBox.Show(text: "Заполните обязательные поля: день, время");
                 return;
             }
 
-            scheduleEntities.Add(item: new LessonScheduleEntity(start: timeStart.HousMinute(), end: timeEnd.HousMinute(), day: (Day)dayComboBox.SelectedValue));
-            scheduleGrid.Rows.Add(values: [dayComboBox.Text, $"{timeStart.Text}-{timeEnd.Text}"]);
+            _scheduleEntities.Add(item: new LessonScheduleEntity(start: _timeStart.HousMinute(), end: _timeEnd.HousMinute(), day: (Day)_dayComboBox.SelectedValue));
+            _scheduleGrid.Rows.Add(values: [_dayComboBox.Text, $"{_timeStart.Text}-{_timeEnd.Text}"]);
         }
 
         private void DeleteButton_Click()
         {
-            if (scheduleGrid.SelectedRows.Count > 0)
+            if (_scheduleGrid.SelectedRows.Count > 0)
             {
-                var index = scheduleGrid.SelectedRows[index: 0].Index;
-                scheduleEntities.RemoveAt(index: index);
-                scheduleGrid.Rows.RemoveAt(index: index);
+                var index = _scheduleGrid.SelectedRows[index: 0].Index;
+                _scheduleEntities.RemoveAt(index: index);
+                _scheduleGrid.Rows.RemoveAt(index: index);
             }
             else
                 MessageBox.Show(text: "Выберите строку для удаления");

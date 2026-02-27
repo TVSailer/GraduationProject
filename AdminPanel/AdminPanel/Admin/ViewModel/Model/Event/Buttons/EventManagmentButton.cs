@@ -23,5 +23,7 @@ public class EventManagmentButton(ControlView controlView) :
         ];
 
     public CustomButton? GetButton(object? send, CardClickedArgs<EventEntity> eventArgs)
-        => new CustomButton().CommandClick(() => controlView.LoadView<EventDetailsFieldData, EventEntity>(eventArgs.Entity));
+        => new CustomButton().CommandClick(() => controlView
+            .LoadView<EventDetailsFieldData, EventEntity>().FieldData.MementoEntity
+            .SetData(eventArgs.Entity));
 }

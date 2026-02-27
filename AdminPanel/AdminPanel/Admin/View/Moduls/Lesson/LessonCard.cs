@@ -1,7 +1,10 @@
-﻿using Admin.View;
-using DataAccess.Postgres.Models;
-using Logica;
-using Logica.UILayerPanel;
+﻿using DataAccess.Postgres.Models;
+using Extension_Func_Library;
+using User_Interface_Library;
+using User_Interface_Library.LayerPanel;
+using User_Interface_Library.UiLayoutPanel.CardPanel;
+
+namespace Admin.View.Moduls.Lesson;
 
 public class LessonCard : ObjectCard<LessonEntity>
 {
@@ -18,10 +21,10 @@ public class LessonCard : ObjectCard<LessonEntity>
 
     public override Control Content()
         => LayoutPanel.CreateColumn()
-        .RowAutoSize().ContentEnd(FactoryElements.Label_11(Entity.Name).With(l => l.ForeColor = Color.DarkBlue))
-        .RowAutoSize().ContentEnd(FactoryElements.Label_09($"🏷️ {Entity.Category}").With(l => l.ForeColor = Color.Gray))
-        .RowAutoSize().ContentEnd(FactoryElements.Label_09($"👨‍🏫 {Entity.Teacher}").With(l => l.ForeColor = Color.Gray))
-        .RowAutoSize().ContentEnd(FactoryElements.Label_09($"👥 {Entity.Visitors.Count}/{Entity.MaxParticipants}").With(l => l.ForeColor = Color.DarkGreen))
-        .RowAutoSize().ContentEnd(FactoryElements.Label_09($"★ {_reting}").With(l => l.ForeColor = Color.Red))
-        .Build();
+            .RowAutoSize().ContentEnd(FactoryElements.Label_11(Entity.Name).With(l => l.ForeColor = Color.DarkBlue))
+            .RowAutoSize().ContentEnd(FactoryElements.Label_09($"🏷️ {Entity.Category}").With(l => l.ForeColor = Color.Gray))
+            .RowAutoSize().ContentEnd(FactoryElements.Label_09($"👨‍🏫 {Entity.Teacher}").With(l => l.ForeColor = Color.Gray))
+            .RowAutoSize().ContentEnd(FactoryElements.Label_09($"👥 {Entity.Visitors.Count}/{Entity.MaxParticipants}").With(l => l.ForeColor = Color.DarkGreen))
+            .RowAutoSize().ContentEnd(FactoryElements.Label_09($"★ {_reting}").With(l => l.ForeColor = Color.Red))
+            .Build();
 }

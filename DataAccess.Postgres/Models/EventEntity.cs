@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using CSharpFunctionalExtensions;
+using DataAccess.Postgres.Models.Imgs;
 
 namespace DataAccess.Postgres.Models;
 
@@ -11,15 +12,15 @@ public class EventEntity : Entity
     public string Location { get; set; }
 
 
-    [ForeignKey(name: nameof(EventCategoryEntity))]
+    [ForeignKey(nameof(CategoryEntity))]
     public long CategoryId { get; set; }
-    public EventCategoryEntity Category { get; set; }
+    public CategoryEntity Category { get; set; }
 
     public string RegistrationLink { get; set; }
     public string Organizer { get;  set; }
     public int MaxParticipants { get; set; }
     public int CurrentParticipants { get;  set; }
-    public List<ImgEventEntity>? Imgs { get; set; } = new();
+    public List<ImgEventEntity> Imgs { get; set; } = [];
 
     public override string ToString()
         => $"Мероприятие: {Title} {Schedule}";

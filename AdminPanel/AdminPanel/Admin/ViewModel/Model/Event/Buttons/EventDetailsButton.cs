@@ -25,7 +25,7 @@ public class EventDetailsButton(
             new CustomButton("Удалить изображения").CommandClick(() => e.FieldData.OnDeletingImg.Execute(null)),
             new CustomButton("Удалить").CommandClick(() =>
                 {
-                    repository.Delete(e.FieldData.Entity.Id);
+                    repository.Delete(e.FieldData.MementoEntity.Id);
                     controlView.Exit();
                 }),
         ];

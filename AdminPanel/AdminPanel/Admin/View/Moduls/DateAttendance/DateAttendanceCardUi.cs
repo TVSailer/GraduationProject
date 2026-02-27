@@ -1,10 +1,12 @@
 ﻿using Admin.Args;
 using Admin.DI;
 using Admin.View.Moduls.UIModel;
+using Admin.View.UIModeles;
 using Admin.View.ViewForm;
-using Admin.ViewModel.Model.DateAttendance.Buttons;
 using DataAccess.Postgres.Repository;
-using Logica.UILayerPanel;
+using User_Interface_Library;
+using User_Interface_Library.LayerPanel;
+using User_Interfase_Library.LayerPanel;
 
 namespace Admin.View.Moduls.DateAttendance;
 
@@ -12,7 +14,7 @@ public class DateAttendanceCardUi(
     MementoLesson repository,
     DateAttendanceManagment viewData,
     DateAttendanceManagmentButton parametersButtons)
-    : View<DateAttendanceManagment>
+    : UiView<DateAttendanceManagment>
 {
     protected override Control CreateUi()
     {

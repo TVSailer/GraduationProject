@@ -7,7 +7,7 @@ namespace Admin.ViewModel.Model.Review;
 
 public class ReviewFieldData : IFieldData<ReviewEntity>
 {
-    public GenericRepositoryEntity<ReviewEntity> Entity { get; set; } = new();
+    public GenericRepositoryEntity<ReviewEntity> MementoEntity { get; set; } = new();
 
     [LinkingEntity(nameof(ReviewEntity.Rating))]
     [ReadOnlyFieldUi("Рейтинг: ")]
@@ -23,6 +23,6 @@ public class ReviewFieldData : IFieldData<ReviewEntity>
 
     public ReviewFieldData()
     {
-        Entity.Initialize(this);
+        MementoEntity.Initialize(this);
     }
 }

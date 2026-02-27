@@ -1,48 +1,43 @@
 ﻿using Admin.ViewModel.GenericEntity;
 using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
+using Extension_Func_Library;
 using Logica;
 using Logica.Message;
 using System.Runtime.CompilerServices;
+using User_Interface_Library.GenericEntity;
+using User_Interface_Library.Interface;
+using Validaiger;
 
 namespace Admin.ViewModel.AbstractFieldData;
 
-public abstract class FieldData<TEntity> : PropertyChange, IFieldData<TEntity>
+public abstract class FieldData<TEntity> : PropertyChange, IDataUi<TEntity>
     where TEntity : Entity, new()
 {
-    public GenericRepositoryEntity<TEntity> Entity { get; set; } = new();
-
-    protected FieldData()
+    public GenericRepositoryEntity<TEntity> MementoEntity
     {
-        Entity.Initialize(this);
+        get
+        {
+            field ??= new GenericRepositoryEntity<TEntity>(this);
+            return field;
+        } 
+        set;
     }
 
     public T ValidProperty<T>(ref T field, T value, [CallerMemberName] string prop = "")
     {
-        field = value;
-
+        OnPropertyChanged(ref field, value, prop);
         Validatoreg.TryValidProperty(value!, prop, this, out var errorMessage);
         OnMassageErrorProvider(errorMessage, prop);
-        OnPropertyChanged(prop);
-
-        return value;
-    }
-    
-    public T OnPropertyChange<T>(ref T field, T value, [CallerMemberName] string prop = "")
-    {
-        if (field!.Equals(value))
-            return value;
-        field = value;
-        OnPropertyChanged(prop);
 
         return value;
     }
 
-    public bool TryWordWithEntity(Action<GenericRepositoryEntity<TEntity>> action)
+    public bool ValidObject(Action<GenericRepositoryEntity<TEntity>> action)
     {
         if (Validatoreg.TryValidObject(this, out var results))
         {
-            action.Invoke(Entity);
+            action.Invoke(MementoEntity);
             return true;
         }
 

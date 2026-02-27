@@ -1,3 +1,4 @@
+using Admin.View;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
 using Admin.ViewModel.Managment;
@@ -14,7 +15,7 @@ public class ReviewModule : NinjectModule
 {
     public override void Load()
     {
-        Kernel.Bind<IView<ReviewFieldData, ReviewEntity>>().To<BaseUI<ReviewFieldData, ReviewEntity, ReviewDetailsButton>>();
+        Kernel.Bind<IView<ReviewFieldData, ReviewEntity>>().To<BaseUi<ReviewFieldData, ReviewEntity, ReviewDetailsButton>>();
         Kernel.Bind<IView<ReviewManagment>>().To<ReviewsCardUi>();
     }
 }

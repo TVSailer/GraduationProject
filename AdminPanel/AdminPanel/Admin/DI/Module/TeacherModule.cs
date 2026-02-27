@@ -23,7 +23,7 @@ public class TeacherModule : NinjectModule
 
         Kernel.Bind<IParametersSearch<TeacherEntity, TeacherFieldSearch>>().To<TeacherSearch>();
 
-        Kernel.Bind<IView<TeacherAddingFieldData>>().To<BaseUI<TeacherAddingFieldData, TeacherEntity, TeacherAddingButton>>();
+        Kernel.Bind<IView<TeacherAddingFieldData>>().To<BaseUi<TeacherAddingFieldData, TeacherEntity, TeacherAddingButton>>();
         Kernel.Bind<IView<TeacherDetailsFieldData, TeacherEntity>>().To<TeacherDetailsUi>();
         Kernel.Bind<IView<TeacherManagment>>().To<ManagmentEntityUi<
             TeacherManagment,

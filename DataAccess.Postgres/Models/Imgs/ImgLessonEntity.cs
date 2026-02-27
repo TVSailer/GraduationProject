@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using DataAccess.Postgres.Models;
+
+namespace DataAccess.Postgres.Models.Imgs;
 
 public class ImgLessonEntity : ImgEntity
 {

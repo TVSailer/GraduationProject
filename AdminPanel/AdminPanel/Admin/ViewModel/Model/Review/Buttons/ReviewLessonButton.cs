@@ -16,7 +16,7 @@ public class ReviewDetailsButton(
             new CustomButton("Назад").CommandClick(controlView.Exit),
             new CustomButton("Удалить").CommandClick(() =>
             {
-                repository.Delete(e.FieldData.Entity.Id);
+                repository.Delete(e.FieldData.MementoEntity.Id);
                 controlView.Exit();
             })
         ];

@@ -1,6 +1,9 @@
 ﻿using Admin.View;
 using DataAccess.Postgres.Models;
-using Logica.UILayerPanel;
+using Extension_Func_Library;
+using User_Interface_Library;
+using User_Interface_Library.LayerPanel;
+using User_Interface_Library.UiLayoutPanel.CardPanel;
 
 public class LessonForTeacherCard : ObjectCard<LessonEntity>
 {

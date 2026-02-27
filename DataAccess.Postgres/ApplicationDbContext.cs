@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using DataAccess.Postgres.Models;
+using DataAccess.Postgres.Models.Imgs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -14,13 +15,11 @@ namespace DataAccess.Postgres
         public DbSet<NewsEntity> News { get; set; }
         public DbSet<EventEntity> Events { get; set; }
         public DbSet<ReviewEntity> Reviews { get; set; }
-        public DbSet<ImgLessonEntity> ImgLesson { get; set; }
-        public DbSet<ImgEventEntity> ImgEvent { get; set; }
-        public DbSet<ImgNewsEntity> ImgNews { get; set; }
         public DbSet<LessonScheduleEntity> LessonSchedule { get; set; }
-        public DbSet<NewsCategoryEntity> NewsCategory { get; set; }
-        public DbSet<LessonCategoryEntity> LessonCategory { get; set; }
-        public DbSet<EventCategoryEntity> EventCategory { get; set; }
+        public DbSet<CategoryEntity> Category { get; set; }
+        public DbSet<ImgLessonEntity> ImagesLesson { get; set; }
+        public DbSet<ImgNewsEntity> ImagesNews { get; set; }
+        public DbSet<ImgEventEntity> ImagesEvent { get; set; }
         public DbSet<AuthEntity> Auths { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

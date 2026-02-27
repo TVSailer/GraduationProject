@@ -1,3 +1,4 @@
+using Admin.View;
 using Admin.View.Moduls.DateAttendance;
 using Admin.View.ViewForm;
 using Admin.ViewModel.Interface;
@@ -17,7 +18,7 @@ public class DateAttendanceModule : NinjectModule
     {
         Kernel.Bind<Repository<DateAttendanceEntity>>().To<DateAttendancesRepository>();
 
-        Kernel.Bind<IView<DateAttendanceFieldData, DateAttendanceEntity>>().To<BaseUI<DateAttendanceFieldData, DateAttendanceEntity, DateAttendanceFieldDataButton>>();
+        Kernel.Bind<IView<DateAttendanceFieldData, DateAttendanceEntity>>().To<BaseUi<DateAttendanceFieldData, DateAttendanceEntity, DateAttendanceFieldDataButton>>();
         Kernel.Bind<IView<DateAttendanceManagment>>().To<DateAttendanceCardUi>();
     }
 }

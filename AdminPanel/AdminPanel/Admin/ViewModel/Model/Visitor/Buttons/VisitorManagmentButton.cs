@@ -19,5 +19,8 @@ public class VisitorManagmentButton(ControlView controlView) :
         => [];
 
     public CustomButton GetButton(object? send, CardClickedArgs<VisitorEntity> eventArgs)
-        => new CustomButton().CommandClick(() => controlView.LoadView<VisitorDetailsFieldData, VisitorEntity>(eventArgs.Entity));
+        => new CustomButton().CommandClick(() => controlView
+            .LoadViewNoInitializeComponents<VisitorDetailsFieldData, VisitorEntity>()
+            .With(v => v.FieldData.MementoEntity.SetData(eventArgs.Entity))
+            .InitializeComponents(controlView.Form));
 }

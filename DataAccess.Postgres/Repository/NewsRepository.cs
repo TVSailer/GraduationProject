@@ -21,32 +21,6 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(n => n.Date, news.Date)
                     .SetProperty(n => n.Content, news.Content)
                     .SetProperty(n => n.Author, news.Author));
-
-            if (news.Imgs == null || news.Imgs.Count == 0) return;
-
-            var listImgDb = DbContext.ImgNews
-                .Where(predicate: img => img.News.Id == id)
-                .ToList();
-
-            var listImg = news.Imgs;
-
-            listImgDb
-                .ForEach(
-                action: imgDb =>
-                {
-                    if (!listImg.Select(selector: img => img.Url).Contains(value: imgDb.Url))
-                        DbContext.ImgNews.Remove(entity: imgDb);
-                });
-
-            listImg
-                .ForEach(
-                action: img =>
-                {
-                    if (!listImgDb.Select(selector: img => img.Url).Contains(value: img.Url))
-                        DbContext.News.FirstOrDefault(predicate: ev => ev.Id == id).Imgs.Add(item: img);
-                });
-
-            DbContext.SaveChanges();
         }
 
         public override void Delete(long idEntity)

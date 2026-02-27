@@ -1,34 +1,34 @@
-﻿using Admin.Args;
-using Admin.View.Moduls.UIModel;
-using Admin.View.ViewForm;
-using Admin.ViewModel.Interface;
+﻿using Admin.ViewModel.Interface;
 using CSharpFunctionalExtensions;
-using Logica.Interface;
+using DataAccess.Postgres.Repository;
 using Logica.Message;
-using Logica.UILayerPanel;
+using User_Interface_Library.LayerPanel;
+using User_Interface_Library.UiLayoutPanel.ButtonPanel;
+using User_Interface_Library.UiLayoutPanel.CardPanel;
+using User_Interface_Library.UiLayoutPanel.CardPanel.Args;
+using User_Interface_Library.UiLayoutPanel.SearchCardPanel;
+using User_Interface_Library.UiLayoutPanel.SearchPanel;
+using User_Interface_Library.View;
 
 namespace Admin.View;
 
 public class ManagmentEntityUi<T, TEntity, TFieldSearch, TCard, TButtons>(
     T viewData,
     TButtons parametersButtons,
-
-    SearchCardPanel<TEntity, TFieldSearch, TCard> searchCardPanel) : View<T> where TEntity : Entity, new()
-    where TFieldSearch : PropertyChange, IFieldData
+    TFieldSearch fieldSearch,
+    Repository<TEntity> repository) : UiView<T> 
+    where TEntity : new()
+    where TFieldSearch : SearchFieldData<TEntity>
     where TCard : ObjectCard<TEntity>, new()
-    where T : IFieldData
-    where TButtons : IButtons<ViewButtonClickArgs<T>>, IButtons<CardClickedToolStripArgs<TEntity>>, IButton<CardClickedArgs<TEntity>>
+    where TButtons : IButtons<T>, IButtons<CardClickedToolStripArgs<TEntity>>, IButton<CardClickedArgs<TEntity>>
 {
     protected override Control CreateUi()
     {
         var layout = LayoutPanel.CreateColumn()
-            .Row().ContentEnd(searchCardPanel
+            .Row().ContentEnd(new SearchCardPanel<TEntity, TFieldSearch, TCard>(fieldSearch, repository.Get().ToArray())
                 .SetClickedPanel(parametersButtons)
-                .SetContextMenu(parametersButtons)
-                .CreateControl())
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel<ViewButtonClickArgs<T>>()
-                .SetClickedData(this, new ViewButtonClickArgs<T>(viewData))
-                .SetButtons(parametersButtons))
+                .SetContextMenu(parametersButtons))
+            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(viewData)))
             .Build();
 
         return layout;

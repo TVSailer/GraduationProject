@@ -1,4 +1,6 @@
-﻿using Logica.UILayerPanel;
+﻿using Extension_Func_Library;
+using User_Interface_Library;
+using User_Interface_Library.LayerPanel;
 
 namespace Admin.View.Moduls.Review;
 

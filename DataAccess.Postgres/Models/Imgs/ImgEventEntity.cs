@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataAccess.Postgres.Models;
+namespace DataAccess.Postgres.Models.Imgs;
 
 public class ImgEventEntity : ImgEntity
 {

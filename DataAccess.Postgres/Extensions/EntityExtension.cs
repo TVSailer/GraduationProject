@@ -1,12 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using CSharpFunctionalExtensions;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
-using CSharpFunctionalExtensions;
 
 namespace DataAccess.Postgres.Extensions
 {
     public static class EntityExtension
     {
-        public static T Entity<T>(this T entity) where T : Entity
+        public static T Entity<T>(this T entity)
         {
             entity
                 .GetType()

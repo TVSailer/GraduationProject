@@ -1,9 +1,11 @@
+using Admin.DI.Module;
 using Admin.Memento;
 using Admin.View;
 using DataAccess.Postgres;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Ninject;
+using User_Interface_Library.View;
 
 namespace Admin.DI;
 
@@ -15,13 +17,7 @@ public class AdminDi
     {
         var container = new StandardKernel(
             new AdminModule(),
-            new LessonModule(),
-            new VisitorModule(),
-            new NewsModule(),
-            new ReviewModule(),
-            new DateAttendanceModule(),
-            new EventModule(),
-            new TeacherModule());
+            new LessonModule());
 
         var serviceProvider = new ServiceProviderDI(container);
 

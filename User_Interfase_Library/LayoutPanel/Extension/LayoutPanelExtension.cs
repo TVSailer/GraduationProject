@@ -1,0 +1,68 @@
+﻿using User_Interface_Library.LayerPanel;
+using User_Interface_Library.LayoutPanel;
+using User_Interface_Library.TableLayerPanel.ControlBuilder;
+
+namespace User_Interface_Library.TableLayerPanel.Extension;
+
+public static class LayoutPanelExtension
+{
+    private static object? _binding;
+
+    public static IColumnBuilder ObjectBinding(this IColumnBuilder columnBuilder, object binding)
+    {
+        _binding = binding;
+        return columnBuilder;
+    }
+    
+    public static IRowBuilder ObjectBinding(this IRowBuilder columnBuilder, object binding)
+    {
+        _binding = binding;
+        return columnBuilder;
+    }
+
+    public static IColumnBuilder LabelTextBox(this IRowBuilder rowBuilder, string labelText, string placeholder, string nameMember)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().TextBox(placeholder).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .End();
+    }
+    
+    public static IColumnBuilder LabelTextBoxMultiline(this IRowBuilder rowBuilder, string labelText, string placeholder, string nameMember)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().TextBox(placeholder).Binding(_binding ?? throw new NullReferenceException(), nameMember).Multiline().End()
+            .End();
+    }
+    
+    public static IColumnBuilder LabelTextBoxReadOnly(this IRowBuilder rowBuilder, string labelText, string placeholder, string nameMember)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().TextBox(placeholder).Binding(_binding ?? throw new NullReferenceException(), nameMember).ReadOnly().End()
+            .End();
+    }
+    
+    public static IColumnBuilder LabelNumeric(this IRowBuilder rowBuilder, string labelText, string nameMember)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().Numeric().Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .End();
+    }
+    
+    public static IColumnBuilder LabelComboBox(this IRowBuilder rowBuilder, string labelText, string nameMember, object dataSource)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().ComboBox().SetData(dataSource).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .End();
+    }
+
+    public static TextBoxBuilder<T> Binding<T>(this TextBoxBuilder<T> textBoxBuilder, string dataMember)
+    {
+        textBoxBuilder.Binding(_binding ?? throw new NullReferenceException(), dataMember);
+        return textBoxBuilder;
+    }
+}

@@ -11,11 +11,11 @@ public class DateAttendanceFieldData : IFieldData<DateAttendanceEntity>
     [ReadOnlyFieldUi("Дата: ")]
     public string? Date { get; set; }
 
-    public GenericRepositoryEntity<DateAttendanceEntity> Entity { get; set; } = new();
+    public GenericRepositoryEntity<DateAttendanceEntity> MementoEntity { get; set; } = new();
 
     public DateAttendanceFieldData()
     {
-        Entity.Initialize(this);
+        MementoEntity.Initialize(this);
     }
 
 }

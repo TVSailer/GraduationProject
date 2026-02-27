@@ -1,19 +1,19 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View.ViewForm;
-using Logica.UI;
-using Logica.UILayerPanel;
+﻿using Admin.DI;
+using User_Interface_Library;
+using User_Interface_Library.LayerPanel;
+using User_Interface_Library.UiLayoutPanel.ButtonPanel;
+using User_Interface_Library.View;
 
 namespace Admin.View.Moduls.AdminMain;
 
-public sealed class AdminMainUi : View<AdminFieldData>
+public sealed class AdminMainUi : UiView<AdminFieldData>
 {
     private readonly List<CustomButton> buttonInfos;
 
 
     public AdminMainUi(AdminMainViewButton buttons, AdminFieldData model)
     {
-        buttonInfos = buttons.GetButtons(this, new ViewButtonClickArgs<AdminFieldData>(model));
+        buttonInfos = buttons.GetButtons(model);
     }
 
     public override Form InitializeForm(Form form)

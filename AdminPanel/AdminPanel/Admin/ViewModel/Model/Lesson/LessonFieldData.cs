@@ -1,62 +1,59 @@
 ﻿using Admin.ViewModel.AbstractFieldData;
-using Admin.ViewModel.AbstractViewModel;
+using Admin.ViewModel.GenericEntity;
+using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Repository;
-using Logica.CustomAttribute;
-using NotNullAttribute = Logica.CustomAttribute.NotNullAttribute;
+using DataAccess.Postgres.Models.Imgs;
+using User_Interface_Library.Attribute;
+using User_Interface_Library.Interface;
+using Validaiger.AttributeValid;
 
-namespace Admin.ViewModels.Lesson;
+namespace Admin.ViewModel.Model.Lesson;
 
-public class LessonFieldData(
-    TeacherRepository teacherRepository,
-    LessonCategoryRepositroy eventCategoryRepository)
-    : FieldModelWithImages<LessonEntity>
+public class LessonFieldData : FieldData<LessonEntity>, IDataWithImgUi
 {
-    public List<LessonCategoryEntity> Categories => eventCategoryRepository.Get();
-    public List<TeacherEntity> teachers => teacherRepository.Get();
+    [LinkingEntity(nameof(LessonEntity.Imgs))]
+    public List<ImgLessonEntity> Images { 
+        get => RepositoryImgEntity.GetData().Select(i => new ImgLessonEntity(i)).ToList();
+        set => RepositoryImgEntity.SetData(value.Select(i => i.Url).ToArray());
+    }
 
     [RequiredCustom]
     [LinkingEntity("Name")]
-    [BaseFieldUi("Название:*", "Введите название")]
     public string? Name { get; set => ValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity("Description")]
-    [MultilineFieldUi]
     public string? Description { get; set => ValidProperty(ref field, value); }
 
     [LinkingEntity("Schedule")]
     public List<LessonScheduleEntity>? Schedule
-    { 
+    {
         get;
         set
         {
-            ValidProperty(ref field, value);
+            field = value;
             OnPropertyChanged(nameof(ScheduleParse));
         }
-    }
+    } = [];
 
     [RequiredCustom]
-    [ReadOnlyFieldUi("Расписание*:", "Создайте расписание")]
     public string? ScheduleParse => Schedule?.ParseSchedule();
 
     [RequiredCustom]
     [LinkingEntity("Location")]
-    [BaseFieldUi("Место проведения:*", "Введите место проведения")]
     public string? Location { get; set => ValidProperty(ref field, value); }
 
     [MaxParticipants]
     [LinkingEntity("MaxParticipants")]
-    [NumericFieldUi("Кол. участников:*")]
     public int MaxParticipants { get; set => ValidProperty(ref field, value); } = 1;
 
     [RequiredCustom]
     [LinkingEntity("Category")]
-    [ComboBoxFieldUi("Категория:*", nameof(Categories))]
-    public LessonCategoryEntity? Category { get; set => ValidProperty(ref field, value); }
+    public CategoryEntity? Category { get; set => ValidProperty(ref field, value); }
 
-    [NotNull]
+    [RequiredCustom]
     [LinkingEntity("Teacher")]
-    [ComboBoxFieldUi("Преподователь:*", nameof(teachers))]
     public TeacherEntity? Teacher { get; set => ValidProperty(ref field, value); }
+
+    public RepositoryImgEntity RepositoryImgEntity { get; set; } = new();
 }

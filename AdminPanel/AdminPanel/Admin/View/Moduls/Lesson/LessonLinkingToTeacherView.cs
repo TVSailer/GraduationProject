@@ -1,5 +1,8 @@
 ﻿using DataAccess.Postgres.Models;
-using Logica;
+using Extension_Func_Library;
+using User_Interface_Library;
+
+namespace Admin.View.Moduls.Lesson;
 
 public class LessonLinkingToTeacherView : Form
 {
@@ -16,11 +19,11 @@ public class LessonLinkingToTeacherView : Form
 
     private LessonLinkingToTeacherView InitializeComponents()
         => this.With(t => this
-        .With(f => f.StartPosition = FormStartPosition.CenterScreen)
-        .With(f => f.Size = new Size(800, 1000))
-        .With(f => f.Controls.Add(FactoryElements.TableLayoutPanel()
-            .ControlAddIsRowsPercent(FactoryElements.ListBox()
-                .With(cb => cb.DataSource = teacherEntities)
-                .With(cb => cb.SelectedIndexChanged += (s, e) => action.Invoke((TeacherEntity)cb.SelectedItem)))
-            .ControlAddIsRowsAbsolute(FactoryElements.Button("Ок", () => f.Close()), 60))));
+            .With(f => f.StartPosition = FormStartPosition.CenterScreen)
+            .With(f => f.Size = new Size(800, 1000))
+            .With(f => f.Controls.Add(FactoryElements.TableLayoutPanel()
+                .ControlAddIsRowsPercent(FactoryElements.ListBox()
+                    .With(cb => cb.DataSource = teacherEntities)
+                    .With(cb => cb.SelectedIndexChanged += (s, e) => action.Invoke((TeacherEntity)cb.SelectedItem)))
+                .ControlAddIsRowsAbsolute(FactoryElements.Button("Ок", f.Close), 60))));
 }

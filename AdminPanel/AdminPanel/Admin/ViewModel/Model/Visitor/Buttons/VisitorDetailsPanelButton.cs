@@ -22,7 +22,7 @@ public class VisitorDetailsButton(
             })),
             new CustomButton("Удалить").CommandClick(() =>
             {
-                repository.Delete(e.FieldData.Entity.Id);
+                repository.Delete(e.FieldData.MementoEntity.Id);
                 controlView.Exit();
             })
         ];

@@ -30,8 +30,8 @@ public class EventModule : NinjectModule
 
         Kernel.Bind<IParametersSearch<EventEntity, EventFieldSearch>>().To<EventSearch>();
 
-        Kernel.Bind<IView<EventAddingFieldData>>().To<BaseUI<EventAddingFieldData, EventEntity, EventAddingButton>>();
-        Kernel.Bind<IView<EventDetailsFieldData, EventEntity>>().To<BaseUI<EventDetailsFieldData, EventEntity, EventDetailsButton>>();
+        Kernel.Bind<IView<EventAddingFieldData>>().To<BaseUi<EventAddingFieldData, EventEntity, EventAddingButton>>();
+        Kernel.Bind<IView<EventDetailsFieldData, EventEntity>>().To<BaseUi<EventDetailsFieldData, EventEntity, EventDetailsButton>>();
         Kernel.Bind<IView<EventManagment>>().To<ManagmentEntityUi<
             EventManagment,
             EventEntity,

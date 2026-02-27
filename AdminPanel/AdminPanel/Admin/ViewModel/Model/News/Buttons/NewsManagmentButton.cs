@@ -23,5 +23,7 @@ public class NewsManagmentButton(ControlView controlView) :
         ];
 
     public CustomButton? GetButton(object? send, CardClickedArgs<NewsEntity> eventArgs)
-        => new CustomButton().CommandClick(() => controlView.LoadView<NewsDetailsFieldData, NewsEntity>(eventArgs.Entity));
+        => new CustomButton().CommandClick(() => controlView
+            .LoadView<NewsDetailsFieldData, NewsEntity>().FieldData.MementoEntity
+            .SetData(eventArgs.Entity));
 }
