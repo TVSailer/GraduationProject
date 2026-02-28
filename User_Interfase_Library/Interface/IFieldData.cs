@@ -1,7 +1,8 @@
-﻿namespace User_Interface_Library.Interface;
+﻿namespace UserInterface.Interface;
 
 
 public interface IDataUi<TEntity>
     where TEntity : new()
 {
+    TEntity Entity { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿
 using System.Windows.Forms;
 
-namespace User_Interface_Library.LayoutPanel;
+namespace UserInterface.LayoutPanel;
 
 public abstract class TableNode(TableLayoutStyle style)
 {
@@ -17,7 +17,7 @@ public abstract class TableNode(TableLayoutStyle style)
         if (Content != null)
             return Content;
 
-        var layerPanel = new TableLayoutPanel() { Dock = DockStyle.Fill };
+        var layerPanel = new TableLayoutPanel { Dock = DockStyle.Fill };
 
         if (Style is ColumnStyle column)
         {

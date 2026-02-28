@@ -2,4 +2,7 @@
 
 namespace UserInterface.LayoutPanel;
 
-public class TableRow(RowStyle style) : TableNode(style);
+public interface IBuilder
+{
+    Control Build();
+}

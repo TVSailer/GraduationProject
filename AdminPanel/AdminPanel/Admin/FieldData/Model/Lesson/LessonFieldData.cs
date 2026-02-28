@@ -1,20 +1,17 @@
 ﻿using Admin.ViewModel.AbstractFieldData;
-using Admin.ViewModel.GenericEntity;
-using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Models.Imgs;
-using User_Interface_Library.Attribute;
-using User_Interface_Library.Interface;
+using UserInterface.Attribute;
 using Validaiger.AttributeValid;
 
 namespace Admin.ViewModel.Model.Lesson;
 
-public class LessonFieldData : FieldData<LessonEntity>, IDataWithImgUi
+public class LessonFieldData : FieldDataWithImages<ImgLessonEntity, LessonEntity>
 {
     [LinkingEntity(nameof(LessonEntity.Imgs))]
     public List<ImgLessonEntity> Images { 
-        get => RepositoryImgEntity.GetData().Select(i => new ImgLessonEntity(i)).ToList();
-        set => RepositoryImgEntity.SetData(value.Select(i => i.Url).ToArray());
+        get => ImagesData;
+        set => ImagesData = value;
     }
 
     [RequiredCustom]
@@ -54,6 +51,4 @@ public class LessonFieldData : FieldData<LessonEntity>, IDataWithImgUi
     [RequiredCustom]
     [LinkingEntity("Teacher")]
     public TeacherEntity? Teacher { get; set => ValidProperty(ref field, value); }
-
-    public RepositoryImgEntity RepositoryImgEntity { get; set; } = new();
 }

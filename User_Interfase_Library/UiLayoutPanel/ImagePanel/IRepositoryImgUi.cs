@@ -1,4 +1,4 @@
-﻿namespace User_Interface_Library.UiLayoutPanel.ImagePanel;
+﻿namespace UserInterface.UiLayoutPanel.ImagePanel;
 
 public interface IRepositoryImgUi
 {

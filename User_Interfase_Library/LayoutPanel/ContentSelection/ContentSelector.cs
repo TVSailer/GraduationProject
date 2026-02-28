@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
-using User_Interface_Library.TableLayerPanel.ControlBuilder;
+using UserInterface.LayoutPanel.ControlBuilder;
 
-namespace User_Interface_Library.TableLayerPanel.ContentSelection;
+namespace UserInterface.LayoutPanel.ContentSelection;
 
 internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Action<Control> setContent)
     : IContentSelector<TParentBuilder>

@@ -1,13 +1,13 @@
 ﻿using System.Windows.Forms;
-using User_Interface_Library.Interface;
+using UserInterface.Interface;
 
-namespace User_Interface_Library.View;
+namespace UserInterface.View;
 
 public class ControlView(IServiceProvision di)
 {
     private readonly Stack<UiView> stack = new();
+    public readonly Form Form = new();
 
-    public Form Form { get; } = new();
     public UiView? View { get; private set; }
 
     public UiView<T> LoadView<T>()
@@ -21,7 +21,7 @@ public class ControlView(IServiceProvision di)
 
     public UiView<T, TEntity> LoadView<T, TEntity>() 
         where TEntity : new()
-        where T : IFieldData<TEntity>
+        where T : IDataUi<TEntity>
     {
         if (View is not null) stack.Push(View);
 

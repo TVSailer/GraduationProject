@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Extension_Func_Library;
 
-namespace User_Interface_Library.UiLayoutPanel.ImagePanel;
+namespace UserInterface.UiLayoutPanel.ImagePanel;
 
 public sealed class ImgUi : PictureBox
 {

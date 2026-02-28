@@ -1,17 +1,18 @@
 ﻿using System.Windows.Forms;
-using Extension_Func_Library;
-using User_Interface_Library.Interface;
+using UserInterface.Interface;
+using UserInterface.LayoutPanel;
 
-namespace User_Interface_Library.View;
+namespace UserInterface.View;
 
-public abstract class UiView<T> : UiView
+public abstract class UiView<T>(T data) : UiView
 {
+    public readonly T DataUi = data;
 }
 
-public abstract class UiView<T, TEntity> : UiView<T>
-    where TEntity : new()
+public abstract class UiView<T, TEntity>(T dataUi) : UiView<T>(dataUi) where TEntity : new()
     where T : IDataUi<TEntity>
 {
+    public new readonly IDataUi<TEntity> DataUi = dataUi;
 }
 
 public abstract class UiView
@@ -23,11 +24,12 @@ public abstract class UiView
 
     public Form InitializeComponents(Form form)
     {
-        return form
-            .With(m => m.Controls.Clear())
-            .With(m => InitializeForm(m))
-            .With(m => m.Controls.Add(CreateUi()));
+        form.Controls.Clear();
+        InitializeForm(form);
+        form.Controls.Add(CreateUi(new BuilderLayoutPanel()).Build());
+        return form;
+
     }
 
-    protected abstract Control? CreateUi();
+    protected abstract IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel);
 }

@@ -1,8 +1,8 @@
 ﻿using System.Windows.Forms;
 using Extension_Func_Library;
-using User_Interface_Library.UiLayoutPanel.ImagePanel;
+using UserInterface.UiLayoutPanel.ImagePanel;
 
-namespace Admin.ViewModel.GenericEntity;
+namespace UserInterface.GenericEntity;
 
 public class RepositoryImgEntity : IRepositoryImg, IRepositoryImgUi
 {

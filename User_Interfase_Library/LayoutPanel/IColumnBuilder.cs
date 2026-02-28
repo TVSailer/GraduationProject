@@ -1,13 +1,12 @@
 ﻿using System.Windows.Forms;
-using User_Interface_Library.TableLayerPanel.ContentSelection;
+using UserInterface.LayoutPanel.ContentSelection;
 
-namespace User_Interface_Library.LayoutPanel;
+namespace UserInterface.LayoutPanel;
 
-public interface IColumnBuilder
+public interface IColumnBuilder : IBuilder
 {
     IRowBuilder Row(float height = 100, SizeType sizeType = SizeType.Percent);
     IContentSelector<IRowBuilder> Content();
     IRowBuilder ContentEnd(Control content);
     IRowBuilder End();
-    Control Build();
 }

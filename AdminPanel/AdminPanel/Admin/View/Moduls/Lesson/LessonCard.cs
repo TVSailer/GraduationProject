@@ -1,8 +1,8 @@
 ﻿using DataAccess.Postgres.Models;
 using Extension_Func_Library;
-using User_Interface_Library;
-using User_Interface_Library.LayerPanel;
-using User_Interface_Library.UiLayoutPanel.CardPanel;
+using UserInterface;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel.CardPanel;
 
 namespace Admin.View.Moduls.Lesson;
 
@@ -12,6 +12,8 @@ public class LessonCard : ObjectCard<LessonEntity>
 
     public override ObjectCard<LessonEntity> Initialize(LessonEntity obj)
     {
+        Size = new Size(300, 125);
+
         if (obj.Reviews.Count <= 0) return base.Initialize(obj);
         obj.Reviews.ForEach(r => _reting += r.Rating);
         _reting /= obj.Reviews.Count;
@@ -20,7 +22,7 @@ public class LessonCard : ObjectCard<LessonEntity>
     }
 
     public override Control Content()
-        => LayoutPanel.CreateColumn()
+        => new BuilderLayoutPanel().CreateColumn()
             .RowAutoSize().ContentEnd(FactoryElements.Label_11(Entity.Name).With(l => l.ForeColor = Color.DarkBlue))
             .RowAutoSize().ContentEnd(FactoryElements.Label_09($"🏷️ {Entity.Category}").With(l => l.ForeColor = Color.Gray))
             .RowAutoSize().ContentEnd(FactoryElements.Label_09($"👨‍🏫 {Entity.Teacher}").With(l => l.ForeColor = Color.Gray))

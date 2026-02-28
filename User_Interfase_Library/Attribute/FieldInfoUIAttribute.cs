@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using Extension_Func_Library;
 
-namespace User_Interface_Library.Attribute;
+namespace UserInterface.Attribute;
 
 public class FieldInfoUiAttribute : System.Attribute
 {

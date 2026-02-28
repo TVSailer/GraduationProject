@@ -1,4 +1,4 @@
-﻿namespace User_Interface_Library.UiLayoutPanel.SearchPanel;
+﻿namespace UserInterface.UiLayoutPanel.SearchPanel;
 
 public interface ISearchEntity
 {

@@ -1,12 +1,8 @@
-﻿using Admin.ViewModel.GenericEntity;
-using Admin.ViewModel.Interface;
+﻿using System.Runtime.CompilerServices;
 using CSharpFunctionalExtensions;
 using Extension_Func_Library;
-using Logica;
-using Logica.Message;
-using System.Runtime.CompilerServices;
-using User_Interface_Library.GenericEntity;
-using User_Interface_Library.Interface;
+using UserInterface.GenericEntity;
+using UserInterface.Interface;
 using Validaiger;
 
 namespace Admin.ViewModel.AbstractFieldData;
@@ -14,11 +10,17 @@ namespace Admin.ViewModel.AbstractFieldData;
 public abstract class FieldData<TEntity> : PropertyChange, IDataUi<TEntity>
     where TEntity : Entity, new()
 {
-    public GenericRepositoryEntity<TEntity> MementoEntity
+    public TEntity Entity
+    {
+        get => MementoEntity.GetEntiyNotNull(); 
+        set => MementoEntity.SetEntity(value.Id, value);
+    }
+
+    public required RepositoryEntity<TEntity> MementoEntity
     {
         get
         {
-            field ??= new GenericRepositoryEntity<TEntity>(this);
+            field ??= new RepositoryEntity<TEntity>(this);
             return field;
         } 
         set;
@@ -33,11 +35,11 @@ public abstract class FieldData<TEntity> : PropertyChange, IDataUi<TEntity>
         return value;
     }
 
-    public bool ValidObject(Action<GenericRepositoryEntity<TEntity>> action)
+    public bool ValidObject(Action<long, TEntity> action)
     {
         if (Validatoreg.TryValidObject(this, out var results))
         {
-            action.Invoke(MementoEntity);
+            action.Invoke(MementoEntity.Id, Entity);
             return true;
         }
 

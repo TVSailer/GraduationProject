@@ -1,4 +1,4 @@
-﻿namespace User_Interface_Library.Attribute;
+﻿namespace UserInterface.Attribute;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class LinkingEntityAttribute(string nameProperty) : System.Attribute

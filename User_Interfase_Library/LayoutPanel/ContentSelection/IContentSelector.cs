@@ -1,6 +1,6 @@
-﻿using User_Interface_Library.TableLayerPanel.ControlBuilder;
+﻿using UserInterface.LayoutPanel.ControlBuilder;
 
-namespace User_Interface_Library.TableLayerPanel.ContentSelection;
+namespace UserInterface.LayoutPanel.ContentSelection;
 
 public interface IContentSelector<TParentBuilder>
 {

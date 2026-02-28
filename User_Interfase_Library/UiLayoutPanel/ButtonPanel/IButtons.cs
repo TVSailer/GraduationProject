@@ -1,4 +1,4 @@
-﻿namespace User_Interface_Library.UiLayoutPanel.ButtonPanel;
+﻿namespace UserInterface.UiLayoutPanel.ButtonPanel;
 
 public interface IButtons<in TEventArgs>
 {

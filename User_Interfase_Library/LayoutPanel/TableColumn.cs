@@ -1,10 +1,5 @@
 ﻿using System.Windows.Forms;
-using User_Interface_Library.LayerPanel;
-using User_Interface_Library.LayoutPanel;
 
-namespace User_Interface_Library.TableLayerPanel;
+namespace UserInterface.LayoutPanel;
 
-public class TableColumn : TableNode
-{
-    public TableColumn(ColumnStyle style) : base(style) { }
-}
+public class TableColumn(ColumnStyle style) : TableNode(style);

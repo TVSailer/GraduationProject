@@ -1,12 +1,13 @@
 ﻿using System.Windows.Forms;
+using UserInterface.LayoutPanel;
 
-namespace User_Interface_Library.UiLayoutPanel.ButtonPanel;
+namespace UserInterface.UiLayoutPanel.ButtonPanel;
 
 public sealed class ButtonLayoutPanel : Panel
 {
     private const int CountButtonsInOneTable = 4;
 
-    public ButtonLayoutPanel(List<CustomButton>? button)
+    public ButtonLayoutPanel(List<CustomButton> button)
     {
         Dock = DockStyle.Fill;
         Initialize(button);
@@ -18,7 +19,7 @@ public sealed class ButtonLayoutPanel : Panel
 
         var index = 0;
 
-        var column = LayerPanel.LayoutPanel.CreateColumn();
+        var column = new BuilderLayoutPanel().CreateColumn();
         var row = column.Row();
 
         for (; index < button.Count; index++)

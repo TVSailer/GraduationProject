@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace User_Interface_Library.TableLayerPanel.ControlBuilder;
+namespace UserInterface.LayoutPanel.ControlBuilder;
 
 public class LabelBuilder<TParentBuilder>(TParentBuilder parentBuilder) : IControlBuilder<Label, TParentBuilder>
 {

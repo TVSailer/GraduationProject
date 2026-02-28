@@ -1,9 +1,6 @@
 
 using Admin.DI;
-using Admin.View;
-using DataAccess.Postgres;
-using DataAccess.Postgres.Models;
-using User_Interface_Library.View;
+using UserInterface.View;
 
 internal static class Program
 {

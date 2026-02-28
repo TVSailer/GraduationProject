@@ -1,6 +1,6 @@
-namespace User_Interface_Library.Interface;
+namespace UserInterface.Interface;
 
-public interface IServiceProvision : IServiceProvider
+public interface IServiceProvision
 {
     public T GetService<T>();
 }

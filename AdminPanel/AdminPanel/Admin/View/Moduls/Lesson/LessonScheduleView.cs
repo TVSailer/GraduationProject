@@ -1,14 +1,14 @@
 ﻿using Admin.ViewModel.Model.Lesson;
 using DataAccess.Postgres.Models;
 using Extension_Func_Library;
-using User_Interface_Library;
-using User_Interface_Library.LayerPanel;
-using User_Interface_Library.UiLayoutPanel;
+using UserInterface;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel;
 using Day = DataAccess.Postgres.Enum.Day;
 
 namespace Admin.View.Moduls.Lesson
 {
-    public class ScheduleView : Form
+    public class LessonScheduleView : Form
     {
         private readonly List<LessonScheduleEntity> _scheduleEntities;
 
@@ -17,7 +17,7 @@ namespace Admin.View.Moduls.Lesson
         private DateTimePicker _timeStart;
         private DateTimePicker _timeEnd;
 
-        public ScheduleView(LessonFieldData? instance)
+        public LessonScheduleView(LessonFieldData? instance)
         {
             if (instance is null) throw new ArgumentNullException();
             Text = "Создание расписания";
@@ -46,6 +46,7 @@ namespace Admin.View.Moduls.Lesson
             
             _timeStart = FactoryElements.DateTimePicker(custom: "HH:mm");
             _timeEnd = FactoryElements.DateTimePicker(custom: "HH:mm");
+
             _scheduleGrid = FactoryElements.DataGridView();
 
             _scheduleGrid.Columns.Add(columnName: "Day", headerText: "День недели");
@@ -55,7 +56,7 @@ namespace Admin.View.Moduls.Lesson
                 _scheduleEntities.ForEach(action: s => _scheduleGrid.Rows.Add(values: [s.Day.ToDescriptionString(), $"{s.Start}-{s.End}"]));
 
             Controls.Add(
-                LayoutPanel.CreateColumn()
+                new BuilderLayoutPanel().CreateColumn()
                     .Row(55, SizeType.Absolute)
                         .Column()
                             .Row()

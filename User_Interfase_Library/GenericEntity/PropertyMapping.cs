@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 
+namespace UserInterface.GenericEntity;
+
 public class PropertyMapping
 {
     public PropertyInfo? FieldDataProperty { get; set; }

@@ -1,9 +1,7 @@
 ﻿using System.Windows.Forms;
-using User_Interface_Library.LayerPanel;
-using User_Interface_Library.TableLayerPanel;
-using User_Interface_Library.TableLayerPanel.ContentSelection;
+using UserInterface.LayoutPanel.ContentSelection;
 
-namespace User_Interface_Library.LayoutPanel;
+namespace UserInterface.LayoutPanel;
 
 internal class TableRowBuilder : IRowBuilder
 {

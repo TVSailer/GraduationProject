@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Extension_Func_Library;
 
-namespace User_Interface_Library.TableLayerPanel.ControlBuilder;
+namespace UserInterface.LayoutPanel.ControlBuilder;
 
 public class NumericBuilder<TParentBuilder>(TParentBuilder parentBuilder) : IControlBuilder<NumericUpDown, TParentBuilder>
 {

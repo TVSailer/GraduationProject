@@ -1,6 +1,9 @@
 using Ninject;
+using UserInterface.Interface;
 
-public class ServiceProviderDI(StandardKernel container) : IServiceProvision
+namespace Admin.DI;
+
+public class ServiceProviderDi(StandardKernel container) : IServiceProvision
 {
     public T GetService<T>() => (T)GetService(typeof(T));
 

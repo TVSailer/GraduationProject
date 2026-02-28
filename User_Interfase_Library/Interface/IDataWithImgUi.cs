@@ -1,6 +1,6 @@
-﻿using Admin.ViewModel.GenericEntity;
+﻿using UserInterface.GenericEntity;
 
-namespace User_Interface_Library.Interface;
+namespace UserInterface.Interface;
 
 public interface IDataWithImgUi
 {

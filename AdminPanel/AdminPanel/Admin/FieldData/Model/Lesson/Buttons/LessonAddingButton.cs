@@ -1,8 +1,8 @@
 ﻿using Admin.View.Moduls.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using User_Interface_Library.UiLayoutPanel.ButtonPanel;
-using User_Interface_Library.View;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
 
 namespace Admin.ViewModel.Model.Lesson.Buttons;
 
@@ -12,12 +12,12 @@ public class LessonAddingButton(
 {
     public List<CustomButton> GetButtons(LessonFieldData e)
         => [
-            new CustomButton("Создать расписание").CommandClick(() => new ScheduleView(e).ShowDialog()),
-            new CustomButton("Сохранить").CommandClick(() => e.ValidObject(entity =>
+            new CustomButton("Создать расписание").CommandClick(() => new LessonScheduleView(e).ShowDialog()),
+            new CustomButton("Сохранить").CommandClick(() =>
             {
-                repository.Add(entity.GetDataNotNull());
+                e.ValidObject((_, entity) => repository.Add(entity));
                 controlView.Exit();
-            })),
+            }),
             new CustomButton("Добавить изображение").CommandClick(() => e.RepositoryImgEntity.OnAddingImg()),
             new CustomButton("Удалить изображение").CommandClick(() => e.RepositoryImgEntity.OnDeletingImg()),
             new CustomButton("Назад").CommandClick(controlView.Exit),

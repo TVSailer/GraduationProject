@@ -1,8 +1,6 @@
-﻿using User_Interface_Library.LayerPanel;
-using User_Interface_Library.LayoutPanel;
-using User_Interface_Library.TableLayerPanel.ControlBuilder;
+﻿using UserInterface.LayoutPanel.ControlBuilder;
 
-namespace User_Interface_Library.TableLayerPanel.Extension;
+namespace UserInterface.LayoutPanel.Extension;
 
 public static class LayoutPanelExtension
 {

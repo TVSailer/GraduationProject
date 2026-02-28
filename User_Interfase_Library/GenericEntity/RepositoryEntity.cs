@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using User_Interface_Library.Attribute;
-using User_Interface_Library.Interface;
+using UserInterface.Attribute;
+using UserInterface.Interface;
 
-namespace User_Interface_Library.GenericEntity;
+namespace UserInterface.GenericEntity;
 
-public class GenericRepositoryEntity<TEntity>
+public class RepositoryEntity<TEntity>
     where TEntity : new()
 {
     private readonly IDataUi<TEntity> _fieldModel;
@@ -14,7 +14,7 @@ public class GenericRepositoryEntity<TEntity>
 
     public TEntity? Entity { get; private set; } = new();
 
-    public GenericRepositoryEntity(IDataUi<TEntity> fieldModel)
+    public RepositoryEntity(IDataUi<TEntity> fieldModel)
     {
         _fieldModel = fieldModel;
         _mappings = GetOrCreateMappings();
@@ -44,15 +44,11 @@ public class GenericRepositoryEntity<TEntity>
             .ToArray();
     }
 
-    public void SetData(TEntity entity)
+    public void SetEntity(long id, TEntity? entity)
     {
-#pragma warning disable CA1510
-#pragma warning disable CA2208
         if (entity == null) throw new ArgumentNullException();
-#pragma warning restore CA2208
-#pragma warning restore CA1510
 
-        Id = (long)(entity.GetType().GetProperty("Id")?.GetValue(entity) ?? throw new Exception());
+        Id = id;
         Entity = entity;
 
         foreach (var mapping in _mappings)
@@ -74,7 +70,7 @@ public class GenericRepositoryEntity<TEntity>
         return Entity;
     }
     
-    public TEntity GetDataNotNull()
+    public TEntity GetEntiyNotNull()
     {
         foreach (var mapping in _mappings)
         {

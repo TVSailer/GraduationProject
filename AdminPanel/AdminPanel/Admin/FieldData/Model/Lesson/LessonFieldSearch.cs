@@ -1,7 +1,7 @@
 ﻿using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using User_Interface_Library.Attribute;
-using User_Interface_Library.UiLayoutPanel.SearchCardPanel;
+using UserInterface.Attribute;
+using UserInterface.UiLayoutPanel.SearchCardPanel;
 
 namespace Admin.ViewModels.Lesson;
 

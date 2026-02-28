@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using User_Interface_Library.UiLayoutPanel.ButtonPanel;
-using User_Interface_Library.UiLayoutPanel.CardPanel.Args;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 
-namespace User_Interface_Library.UiLayoutPanel.CardPanel;
+namespace UserInterface.UiLayoutPanel.CardPanel;
 
 public abstract class ObjectCard<T> : Panel
 {
@@ -150,7 +150,7 @@ public abstract class ObjectCard<T> : Panel
     {
         Entity = obj;
         var content = Content();
-        Size = content.PreferredSize with { Width = content.PreferredSize.Width + 10 };
+        //Size = content.PreferredSize with { Width = content.PreferredSize.Width + 10 };
         Controls.Add(content);
 
         return this;

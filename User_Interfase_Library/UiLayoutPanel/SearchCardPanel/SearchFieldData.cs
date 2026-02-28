@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace User_Interface_Library.UiLayoutPanel.SearchCardPanel;
+namespace UserInterface.UiLayoutPanel.SearchCardPanel;
 
 public abstract class SearchFieldData<T>
 {

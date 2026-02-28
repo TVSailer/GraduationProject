@@ -1,6 +1,6 @@
-﻿using User_Interface_Library.UiLayoutPanel.SearchPanel;
+﻿using UserInterface.UiLayoutPanel.SearchPanel;
 
-namespace User_Interface_Library.UiLayoutPanel.SearchCardPanel;
+namespace UserInterface.UiLayoutPanel.SearchCardPanel;
 
 public class SearchEntity<TEntity, T> : ISearchEntity
     where T : SearchFieldData<TEntity>

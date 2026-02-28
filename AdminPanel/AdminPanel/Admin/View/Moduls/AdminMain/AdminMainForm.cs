@@ -1,20 +1,14 @@
 ﻿using Admin.DI;
-using User_Interface_Library;
-using User_Interface_Library.LayerPanel;
-using User_Interface_Library.UiLayoutPanel.ButtonPanel;
-using User_Interface_Library.View;
+using UserInterface;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
 
 namespace Admin.View.Moduls.AdminMain;
 
-public sealed class AdminMainUi : UiView<AdminFieldData>
+public sealed class AdminMainUi(AdminMainViewButton buttons, AdminFieldData model) : UiView<AdminFieldData>(model)
 {
-    private readonly List<CustomButton> buttonInfos;
-
-
-    public AdminMainUi(AdminMainViewButton buttons, AdminFieldData model)
-    {
-        buttonInfos = buttons.GetButtons(model);
-    }
+    private readonly List<CustomButton> _buttonInfos = buttons.GetButtons(model);
 
     public override Form InitializeForm(Form form)
     {
@@ -26,18 +20,17 @@ public sealed class AdminMainUi : UiView<AdminFieldData>
         return form;
     }
 
-    protected override Control? CreateUi()
-        => LayoutPanel.CreateRow()
+    protected override IBuilder CreateUi(BuilderLayoutPanel layout)
+        => layout.CreateRow()
             .Column(25).End()
             .Column(50)
-            .Row(70, SizeType.Absolute).ContentEnd(FactoryElements.LabelTitle("Панель администратора"))
-            .Row(60, SizeType.Absolute).ContentEnd(buttonInfos[0])
-            .Row(60, SizeType.Absolute).ContentEnd(buttonInfos[1])
-            .Row(60, SizeType.Absolute).ContentEnd(buttonInfos[2])
-            .Row(60, SizeType.Absolute).ContentEnd(buttonInfos[3])
-            .Row(60, SizeType.Absolute).ContentEnd(buttonInfos[4])
-            .Row().End()
+                .Row(70, SizeType.Absolute).ContentEnd(FactoryElements.LabelTitle("Панель администратора"))
+                .Row(60, SizeType.Absolute).ContentEnd(_buttonInfos[0])
+                .Row(60, SizeType.Absolute).ContentEnd(_buttonInfos[1])
+                .Row(60, SizeType.Absolute).ContentEnd(_buttonInfos[2])
+                .Row(60, SizeType.Absolute).ContentEnd(_buttonInfos[3])
+                .Row(60, SizeType.Absolute).ContentEnd(_buttonInfos[4])
+                .Row().End()
             .End()
-            .Column(25).End()
-            .Build();
+            .Column(25).End();
 }

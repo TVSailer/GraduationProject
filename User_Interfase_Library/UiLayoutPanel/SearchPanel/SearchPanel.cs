@@ -1,9 +1,10 @@
 ﻿using System.Windows.Forms;
 using Extension_Func_Library;
-using User_Interface_Library.Attribute;
-using User_Interface_Library.UiLayoutPanel.ButtonPanel;
+using UserInterface.Attribute;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel.ButtonPanel;
 
-namespace User_Interface_Library.UiLayoutPanel.SearchPanel;
+namespace UserInterface.UiLayoutPanel.SearchPanel;
 
 public sealed class SearchPanel : Panel
 {
@@ -23,7 +24,7 @@ public sealed class SearchPanel : Panel
 
     private void Initialize()
         => Controls.Add(
-            LayerPanel.LayoutPanel.CreateColumn()
+            new BuilderLayoutPanel().CreateColumn()
                 .With(t => _fieldInfos
                     .ForEach(fi => t
                         .Row(60, SizeType.Absolute)

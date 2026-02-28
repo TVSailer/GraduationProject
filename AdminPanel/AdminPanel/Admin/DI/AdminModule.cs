@@ -1,20 +1,12 @@
-using Admin.ViewModel.Interface;
-using Ninject.Modules;
-using System.ComponentModel;
 using Admin.View.Moduls.AdminMain;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using User_Interface_Library.View;
+using Ninject.Modules;
+using UserInterface.View;
 
 namespace Admin.DI;
 
-public record AdminFieldData : IFieldData
-{
-    public Control GetUi()
-    {
-        throw new NotImplementedException();
-    }
-}
+public record AdminFieldData;
 
 public class AdminModule : NinjectModule
 {

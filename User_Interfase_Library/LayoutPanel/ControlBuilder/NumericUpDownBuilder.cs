@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace User_Interface_Library.TableLayerPanel.ControlBuilder;
+namespace UserInterface.LayoutPanel.ControlBuilder;
 
 public class NumericUpDownBuilder
 {

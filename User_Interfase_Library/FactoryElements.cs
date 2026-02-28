@@ -6,7 +6,7 @@ using ContentAlignment = System.Drawing.ContentAlignment;
 using Font = System.Drawing.Font;
 
 
-namespace User_Interface_Library;
+namespace UserInterface;
 
 public static class FactoryElements
 {
@@ -247,7 +247,7 @@ public static class FactoryElements
             .With(l => l.AutoSize = true)
             .With(l => l.TextAlign = ContentAlignment.TopLeft)
             .With(l => l.BorderStyle = BorderStyle.None)
-            .With(l => l.Padding = new Padding(5));
+            .With(l => l.Padding = new Padding(2));
     }
 
     public static FlowLayoutPanel FlowLayoutPanel()

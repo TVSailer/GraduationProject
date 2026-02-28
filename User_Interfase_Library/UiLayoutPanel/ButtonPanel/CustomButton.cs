@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Extension_Func_Library;
 
-namespace User_Interface_Library.UiLayoutPanel.ButtonPanel;
+namespace UserInterface.UiLayoutPanel.ButtonPanel;
 
 public sealed class CustomButton : Button
 {
