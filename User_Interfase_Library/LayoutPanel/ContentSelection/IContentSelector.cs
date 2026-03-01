@@ -8,4 +8,6 @@ public interface IContentSelector<TParentBuilder>
     TextBoxBuilder<TParentBuilder> TextBox(string placeholder = "");
     NumericBuilder<TParentBuilder> Numeric();
     ComboBoxBuilder<TParentBuilder> ComboBox();
+    DateTimePickerBuilder<TParentBuilder> DateTimePicker(string format = "");
+    MaskedTextBoxBuilder<TParentBuilder> MaskedTextBox(string mask = "");
 }

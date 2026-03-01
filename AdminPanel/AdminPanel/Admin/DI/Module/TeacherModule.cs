@@ -1,19 +1,15 @@
+using Admin.FieldData.Model.Teacher;
+using Admin.FieldData.Model.Teacher.Buttons;
 using Admin.View;
 using Admin.View.Moduls.Teacher;
-using Admin.View.ViewForm;
-using Admin.ViewModel.Interface;
-using Admin.ViewModel.Managment;
-using Admin.ViewModel.Model.Teacher;
-using Admin.ViewModel.Model.Teacher.Buttons;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Ninject.Modules;
+using UserInterface.View;
 
-namespace Admin.DI;
+namespace Admin.DI.Module;
 
-public record TeacherManagment : IFieldData;
-public class TeacherAddingFieldData : TeacherFieldData;
-public class TeacherDetailsFieldData : TeacherFieldData;
+public record TeacherManager;
 
 public class TeacherModule : NinjectModule
 {
@@ -21,15 +17,13 @@ public class TeacherModule : NinjectModule
     {
         Kernel.Bind<Repository<TeacherEntity>>().To<TeacherRepository>().InSingletonScope();
 
-        Kernel.Bind<IParametersSearch<TeacherEntity, TeacherFieldSearch>>().To<TeacherSearch>();
-
-        Kernel.Bind<IView<TeacherAddingFieldData>>().To<BaseUi<TeacherAddingFieldData, TeacherEntity, TeacherAddingButton>>();
-        Kernel.Bind<IView<TeacherDetailsFieldData, TeacherEntity>>().To<TeacherDetailsUi>();
-        Kernel.Bind<IView<TeacherManagment>>().To<ManagmentEntityUi<
-            TeacherManagment,
+        Kernel.Bind<UiView<TeacherFieldData>>().To<TeacherPanelUi<TeacherAddingButton>>();
+        Kernel.Bind<UiView<TeacherFieldData, TeacherEntity>>().To<TeacherAdditionalPanelUi>();
+        Kernel.Bind<UiView<TeacherManager>>().To<ManagerEntityUi<
+            TeacherManager,
             TeacherEntity,
             TeacherFieldSearch,
             TeacherCard,
-            TeacherManagmentButton>>();
+            TeacherManagerButton>>();
     }
 }

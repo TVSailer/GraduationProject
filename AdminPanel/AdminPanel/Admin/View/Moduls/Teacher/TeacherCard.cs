@@ -1,12 +1,20 @@
-﻿using Admin.View;
-using DataAccess.Postgres.Models;
-using Logica;
-using Logica.UILayerPanel;
+﻿using DataAccess.Postgres.Models;
+using Extension_Func_Library;
+using UserInterface;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel.CardPanel;
+
+namespace Admin.View.Moduls.Teacher;
 
 public class TeacherCard : ObjectCard<TeacherEntity>
 {
+    public TeacherCard()
+    {
+        Size = new Size(300, 100);
+    }
+
     public override Control Content()
-        => LayoutPanel.CreateColumn()
+        => new BuilderLayoutPanel().CreateColumn()
             .Row(30).ContentEnd(FactoryElements.Label_11($"{Entity}")
                 .With(l => l.ForeColor = Color.DarkBlue))
             .Row(23).ContentEnd(FactoryElements.Label_09($"🎂 {Entity.DateBirth}")

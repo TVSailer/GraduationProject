@@ -1,13 +1,15 @@
 ﻿using DataAccess.Postgres.Models;
-using Logica;
-using Logica.UILayerPanel;
+using Extension_Func_Library;
+using UserInterface;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel.CardPanel;
 
 namespace Admin.View.Moduls.Visitor
 {
     public class VisitorCard : ObjectCard<VisitorEntity>
     {
         public override Control Content()
-           => LayoutPanel.CreateColumn()
+           => new BuilderLayoutPanel().CreateColumn()
                .Row(30).ContentEnd(FactoryElements.Label_11($"{Entity}")
                 .With(l => l.ForeColor = Color.DarkBlue))
                .Row(23).ContentEnd(FactoryElements.Label_09($"🎂 {Entity.DateBirth}")

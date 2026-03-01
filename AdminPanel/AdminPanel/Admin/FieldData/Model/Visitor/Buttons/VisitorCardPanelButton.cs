@@ -1,24 +1,25 @@
-﻿using Admin.Args;
-using Admin.DI;
+﻿using Admin.DI.Module;
 using Admin.View;
+using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.Interface;
-using Logica.UI;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
+using UserInterface.View;
 
-namespace Admin.ViewModel.Model.Visitor.Buttons;
+namespace Admin.FieldData.Model.Visitor.Buttons;
 
 public class VisitorNotBelongingLessonButton(ControlView control, MementoLesson repository) : 
-    IButtons<ViewButtonClickArgs<VisitorNotBelongingLessonCardPanelUi>>, 
+    IButtons<VisitorNotBelongingLesson>, 
     IButton<CardClickedArgs<VisitorEntity>>
 {
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<VisitorNotBelongingLessonCardPanelUi>? e)
+    public List<CustomButton> GetButtons(VisitorNotBelongingLesson data)
         =>
         [
             new CustomButton("Назад").CommandClick(control.Exit)
         ];
 
-    public CustomButton GetButton(object? send, CardClickedArgs<VisitorEntity> eventArgs)
+    public CustomButton GetButton(CardClickedArgs<VisitorEntity> eventArgs)
         => new CustomButton()
                 .CommandClick(() =>
                 {

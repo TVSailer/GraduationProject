@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace UserInterface.UiLayoutPanel.SearchCardPanel;
 
-public abstract class SearchFieldData<T>
+public abstract class SearchFieldData<T> : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
     public abstract Func<T[], T[]> SearchFunc { get; }

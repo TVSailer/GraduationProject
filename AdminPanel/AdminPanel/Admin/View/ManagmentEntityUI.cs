@@ -12,7 +12,7 @@ public class ManagerEntityUi<T, TEntity, TFieldSearch, TCard, TButtons>(
     T viewData,
     TButtons parametersButtons,
     TFieldSearch fieldSearch,
-    Repository<TEntity> repository) : UiView<T>(viewData) 
+    Repository<TEntity> repository) : UiView<T>
     where TEntity : new()
     where TFieldSearch : SearchFieldData<TEntity>
     where TCard : ObjectCard<TEntity>, new()

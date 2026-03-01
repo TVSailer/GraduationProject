@@ -18,7 +18,7 @@ public sealed class CardLayoutPanel<T, TCard> : FlowLayoutPanel
         Padding = new Padding(10);
     }
 
-    public void Initialize(T[] entities)
+    public CardLayoutPanel<T, TCard> Initialize(T[] entities)
     {
         entities
             .With(_ => Controls.Clear()).ForEach(en =>
@@ -26,6 +26,8 @@ public sealed class CardLayoutPanel<T, TCard> : FlowLayoutPanel
                     .Initialize(en)
                     .OnContextMenu(_menuStrip)
                     .OnClickedCard(_onClick)));
+
+        return this;
     }
 
     public CardLayoutPanel<T, TCard> SetClickedCard(IButton<CardClickedArgs<T>> buttons)

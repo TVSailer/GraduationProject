@@ -25,9 +25,10 @@ namespace DataAccess.Postgres.Models
         public List<ReviewEntity> Reviews { get; set; } = [];
         public List<ImgLessonEntity> Imgs { get; set; } = [];
         public override string ToString() => Name;
-        //public bool TryRangeScheduleNow() 
-        //    => (AttendanceDates.Count == 0 && Schedule.Any(predicate: s => s.TryRangeScheduleNow())) || 
-        //       (AttendanceDates.All(predicate: d => DateTime.Parse(s: d.Date) != DateTime.Today) && Schedule.Any(predicate: s => s.TryRangeScheduleNow()));
+
+        public bool TryRangeScheduleNow()
+            => (AttendanceDates.Count == 0 && Schedule.Any(predicate: s => s.TryRangeScheduleNow())) ||
+               (AttendanceDates.All(predicate: d => DateTime.Parse(s: d.Date) != DateTime.Today) && Schedule.Any(predicate: s => s.TryRangeScheduleNow()));
     }
 }
 

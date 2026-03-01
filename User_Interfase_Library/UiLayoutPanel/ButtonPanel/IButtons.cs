@@ -1,6 +1,9 @@
-﻿namespace UserInterface.UiLayoutPanel.ButtonPanel;
+﻿using System;
 
-public interface IButtons<in TEventArgs>
+namespace UserInterface.UiLayoutPanel.ButtonPanel;
+
+public interface IButtons<in TEventArgs> 
 {
-    public List<CustomButton>? GetButtons(TEventArgs eventArgs);
+    public List<CustomButton> GetButtons(TEventArgs eventArgs);
 }
+

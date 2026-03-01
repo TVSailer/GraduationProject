@@ -1,21 +1,20 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View;
+﻿using Admin.DI;
+using Admin.DI.Module;
 using Admin.View.Moduls.DateAttendance;
 using DataAccess.Postgres.Repository;
-using Logica.Interface;
-using Logica.UI;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
 
-namespace Admin.ViewModel.Model.DateAttendance.Buttons;
+namespace Admin.FieldData.Model.DateAttendance.Buttons;
 
-public class DateAttendanceManagmentButton(ControlView controlView, MementoLesson memento) :
-    IButtons<ViewButtonClickArgs<DateAttendanceManagment>>
+public class DateAttendanceManagerButton(ControlView controlView, MementoLesson memento) :
+    IButtons<DateAttendanceManager>
 {
-    public List<CustomButton>? GetButtons(object? send, ViewButtonClickArgs<DateAttendanceManagment>? eventArgs)
+    public List<CustomButton> GetButtons(DateAttendanceManager manager)
         => [
             new CustomButton("Назад").CommandClick(controlView.Exit),
             new CustomButton("Добавить")
                 .CommandClick(controlView.ShowDialog<DateAttendanceAddingUi>)
-                .Enablede(memento.Lesson!.TryRangeScheduleNow()),
+                .Enable(memento.Lesson!.TryRangeScheduleNow()),
         ];
 }

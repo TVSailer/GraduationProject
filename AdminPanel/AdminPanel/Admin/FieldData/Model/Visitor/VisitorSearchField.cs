@@ -1,18 +1,28 @@
-﻿using Admin.ViewModel.AbstractViewModel;
-using Admin.ViewModel.Interface;
-using Admin.ViewModels.Lesson;
-using Logica.CustomAttribute;
-using Logica.Interface;
+﻿using DataAccess.Postgres.Models;
+using UserInterface.Attribute;
+using UserInterface.UiLayoutPanel.SearchCardPanel;
 
-namespace Admin.ViewModel.Model.Visitor;
+namespace Admin.FieldData.Model.Visitor;
 
-public class  VisitorFieldSearch : SearchFieldData
+public class  VisitorFieldSearch : SearchFieldData<VisitorEntity>
 {
     [BaseFieldUi("Имя")]
-    [FieldState("")]
-    public string? VisitorName { get; set => OnPropertyChange(ref field, value); }
+    public string? VisitorName { get; set => OnPropertyChanged(ref field, value); }
 
     [BaseFieldUi("Фамилия")]
-    [FieldState("")]
-    public string? VisitorSurname { get; set => OnPropertyChange(ref field, value); } 
+    public string? VisitorSurname { get; set => OnPropertyChanged(ref field, value); }
+
+    public override Func<VisitorEntity[], VisitorEntity[]> SearchFunc =>
+        entitys =>
+            entitys
+                .Where(e => e.FIO.Name.StartsWith(VisitorName ?? ""))
+                .Where(e => e.FIO.Surname.StartsWith(VisitorSurname ?? ""))
+                .ToArray();
+
+    public override Action ClearFunc =>
+        () =>
+        {
+            VisitorName = string.Empty;
+            VisitorSurname = string.Empty;
+        };
 }

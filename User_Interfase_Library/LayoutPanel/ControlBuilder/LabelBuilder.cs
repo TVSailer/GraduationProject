@@ -11,7 +11,7 @@ public class LabelBuilder<TParentBuilder>(TParentBuilder parentBuilder) : IContr
         AutoSize = true,
         TextAlign = ContentAlignment.TopLeft,
         BorderStyle = BorderStyle.None,
-        Padding = new Padding(5),
+        Padding = new Padding(2),
         Dock = DockStyle.Fill
     };
 

@@ -1,24 +1,23 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View;
-using DataAccess.Postgres.Models;
+﻿using Admin.ViewModel.Model.Visitor;
+using DataAccess.Postgres;
 using DataAccess.Postgres.Repository;
-using Logica.Interface;
-using Logica.UI;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
+using Validaiger.Message;
 
-namespace Admin.ViewModel.Model.Visitor.Buttons;
+namespace Admin.FieldData.Model.Visitor.Buttons;
 
-public class VisitorAddingButton(MementoLesson mementoLesson, ControlView controlView) : IButtons<ViewButtonClickArgs<VisitorEntity, VisitorAddingFieldData>>
+public class VisitorAddingButton(MementoLesson mementoLesson, ControlView controlView) : IButtons<VisitorFieldData>
 {
-    public List<CustomButton> GetButtons(
-        object? data, ViewButtonClickArgs<VisitorEntity, VisitorAddingFieldData>? e)
+    public List<CustomButton> GetButtons(VisitorFieldData e)
         => [
             new CustomButton("Назад")
                 .CommandClick(controlView.Exit),
             new CustomButton("Сохранить")
-                .CommandClick(() => e?.FieldData.TryWordWithEntity(entity =>
+                .CommandClick(() => e.ValidObject((id, entity) =>
                 {
-                    mementoLesson.AddVisitor(entity.GetDataNotNull());
+                    mementoLesson.AddVisitor(entity, out var logger);
+                    LogicaMessage.MessageInfo(logger.Log);
                     controlView.Exit();
                 })),
         ];

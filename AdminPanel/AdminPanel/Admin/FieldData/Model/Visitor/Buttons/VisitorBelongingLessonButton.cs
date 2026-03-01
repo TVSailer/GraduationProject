@@ -1,33 +1,37 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View;
+﻿using Admin.DI.Module;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.Interface;
-using Logica.UI;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
+using UserInterface.View;
 
-namespace Admin.ViewModel.Model.Visitor.Buttons;
+namespace Admin.FieldData.Model.Visitor.Buttons;
 
-public class VisitorBelongingLessonButton(ControlView controlView, MementoLesson v) : IButtons<ViewButtonClickArgs<VisitorBelongingLesson>>, IButtons<CardClickedToolStripArgs<VisitorEntity>>
+public class VisitorBelongingLessonButton(
+    ControlView controlView, 
+    VisitorFieldData fieldData,
+    VisitorNotBelongingLesson visitorNotBelongingLesson,
+    MementoLesson v) : 
+    IButtons<VisitorBelongingLesson>, 
+    IButtons<CardClickedToolStripArgs<VisitorEntity>>
 {
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<VisitorBelongingLesson>? e)
+    public List<CustomButton> GetButtons(VisitorBelongingLesson e)
         =>
         [
             new CustomButton("Назад").CommandClick(controlView.Exit),
             new CustomButton("Добавить нового")
-                .Enablede(v.IsAdd)
-                .CommandClick(() => controlView.LoadView<VisitorAddingFieldData>()),
+                .Enable(v.IsAdd)
+                .CommandClick(() => controlView.LoadView(fieldData)),
             new CustomButton("Добавить существуещегося")
-                .Enablede(v.IsAdd)
-                .CommandClick(() => controlView.LoadView<VisitorNotBelongingLessonCardPanelUi>()),
+                .Enable(v.IsAdd)
+                .CommandClick(() => controlView.LoadView(visitorNotBelongingLesson)),
         ];
 
-    public List<CustomButton> GetButtons(object? data, CardClickedToolStripArgs<VisitorEntity>? e)
+    public List<CustomButton> GetButtons(CardClickedToolStripArgs<VisitorEntity> e)
         => [
             new CustomButton("Удалить")
                 .CommandClick(() =>
                 {
-                    if (e == null) return;
                     v.DeleteVisitor(e.Entity.Id);
                     controlView.UpdateGUI();
                 }),

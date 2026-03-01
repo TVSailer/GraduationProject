@@ -2,5 +2,5 @@
 
 public interface IButton<in TEventArgs>
 {
-    public CustomButton? GetButton(TEventArgs eventArgs);
+    public CustomButton GetButton(TEventArgs eventArgs);
 }

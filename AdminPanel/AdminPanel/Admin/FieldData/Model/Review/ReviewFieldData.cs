@@ -1,28 +1,29 @@
-﻿using Admin.ViewModel.GenericEntity;
-using Admin.ViewModel.Interface;
-using Admin.ViewModels.Lesson;
-using DataAccess.Postgres.Models;
+﻿using DataAccess.Postgres.Models;
+using UserInterface.Attribute;
+using UserInterface.Interface;
 
-namespace Admin.ViewModel.Model.Review;
+namespace Admin.FieldData.Model.Review;
 
-public class ReviewFieldData : IFieldData<ReviewEntity>
+public class ReviewFieldData : IDataUi<ReviewEntity>
 {
-    public GenericRepositoryEntity<ReviewEntity> MementoEntity { get; set; } = new();
-
     [LinkingEntity(nameof(ReviewEntity.Rating))]
-    [ReadOnlyFieldUi("Рейтинг: ")]
     public int Rating { get; set; }
 
     [LinkingEntity(nameof(ReviewEntity.Visitor))]
-    [ReadOnlyFieldUi("Автор: ")]
     public VisitorEntity? Visitor { get; set; }
 
     [LinkingEntity(nameof(ReviewEntity.Comment))]
-    [ReadOnlyMultilineFieldUi("Комментарий: ")]
     public string Comment { get; set; } = "";
 
-    public ReviewFieldData()
+    public ReviewEntity Entity
     {
-        MementoEntity.Initialize(this);
+        get;
+        set
+        {
+            EntityId = value.Id;
+            field = value;
+        }
     }
+
+    public long EntityId { get; set; }
 }

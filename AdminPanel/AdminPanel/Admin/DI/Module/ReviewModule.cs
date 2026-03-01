@@ -1,21 +1,18 @@
-using Admin.View;
-using Admin.View.ViewForm;
-using Admin.ViewModel.Interface;
-using Admin.ViewModel.Managment;
+using Admin.FieldData.Model.Review;
+using Admin.View.Moduls.Review;
 using Admin.ViewModel.Model.Review;
-using Admin.ViewModel.Model.Review.Buttons;
-using Logica.Interface;
 using Ninject.Modules;
+using UserInterface.View;
 
-namespace Admin.DI;
+namespace Admin.DI.Module;
 
-public record ReviewManagment : IFieldData;
+public record ReviewManager;
 
 public class ReviewModule : NinjectModule
 {
     public override void Load()
     {
-        Kernel.Bind<IView<ReviewFieldData, ReviewEntity>>().To<BaseUi<ReviewFieldData, ReviewEntity, ReviewDetailsButton>>();
-        Kernel.Bind<IView<ReviewManagment>>().To<ReviewsCardUi>();
+        Kernel.Bind<UiView<ReviewFieldData, ReviewEntity>>().To<ReviewPanelUi>();
+        Kernel.Bind<UiView<ReviewManager>>().To<ReviewsCardUi>();
     }
 }

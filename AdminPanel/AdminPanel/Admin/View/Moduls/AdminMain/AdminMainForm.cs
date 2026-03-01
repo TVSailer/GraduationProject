@@ -1,4 +1,5 @@
 ﻿using Admin.DI;
+using Admin.FieldData.Model.AdminMain;
 using UserInterface;
 using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.ButtonPanel;
@@ -6,10 +7,9 @@ using UserInterface.View;
 
 namespace Admin.View.Moduls.AdminMain;
 
-public sealed class AdminMainUi(AdminMainViewButton buttons, AdminFieldData model) : UiView<AdminFieldData>(model)
+public sealed class AdminMainUi(AdminMainViewButton buttons, AdminFieldData model) : UiView<AdminFieldData>
 {
     private readonly List<CustomButton> _buttonInfos = buttons.GetButtons(model);
-
     public override Form InitializeForm(Form form)
     {
         form.Text = "Панель администратора";

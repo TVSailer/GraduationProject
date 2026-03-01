@@ -1,15 +1,12 @@
-﻿using Admin.Args;
-using Admin.View;
-using DataAccess.Postgres.Models;
-using Logica.Interface;
-using Logica.UI;
+﻿using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
 
-namespace Admin.ViewModel.Model.DateAttendance.Buttons;
+namespace Admin.FieldData.Model.DateAttendance.Buttons;
 
 public class DateAttendanceFieldDataButton(ControlView controlView) :
-    IButtons<ViewButtonClickArgs<DateAttendanceEntity, DateAttendanceFieldData>>
+    IButtons<DateAttendanceFieldData>
 {
-    public List<CustomButton> GetButtons(object? send, ViewButtonClickArgs<DateAttendanceEntity, DateAttendanceFieldData>? eventArgs)
+    public List<CustomButton> GetButtons(DateAttendanceFieldData fieldData)
         => [
             new CustomButton("Назад").CommandClick(controlView.Exit),
         ];

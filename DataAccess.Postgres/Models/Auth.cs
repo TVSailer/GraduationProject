@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using DataAccess.Postgres.Repository;
-using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Postgres.Models;
 
@@ -9,43 +8,37 @@ public class AuthEntity : Entity
     public string Login { get; set; }
     public string Password { get; set; }
 
-    #region CreateAuth
-
-    private readonly Random _random = new();
-    private readonly AuthRepository _repository = new (new ApplicationDbContext());
-
-    public AuthEntity CreateAuthUser(FIO fio, out string pas, out string log)
+    protected bool Equals(AuthEntity other)
     {
-        if (fio is null) throw new ArgumentNullException();
-        var passwords = _repository.Get().Select(a => a.Password).ToArray();
+        return base.Equals(other) && Login == other.Login && Password == other.Password;
+    }
 
-        log = Login = fio?.Surname + _random.Next(10000);
+    public override bool Equals(object? obj)
+    {
+        if (obj is null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+        return Equals((AuthEntity)obj);
+    }
 
-        while (true)
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            var password = GenerationPassword(12);
-            if (passwords.Any(p => BCrypt.Net.BCrypt.Verify(password, p))) continue;
-            pas = password;
-            Password = BCrypt.Net.BCrypt.HashPassword(password);
-            _repository.Add(this);
-            return this;
+            int hashCode = base.GetHashCode();
+            hashCode = (hashCode * 397) ^ Login.GetHashCode();
+            hashCode = (hashCode * 397) ^ Password.GetHashCode();
+            return hashCode;
         }
     }
 
-    private string GenerationPassword(int length)
+    public static bool operator ==(AuthEntity? left, AuthEntity? right)
     {
-        // ReSharper disable once ComplexConditionExpression
-        var password = string.Join("", // создаем строку
-            Enumerable.Range(0, length) // из последовательности длины length
-                .Select(i => i % 2 == 0
-                    ? // на четных местах
-                    (char)('A' + _random.Next(26)) + ""
-                    : // генерируем букву
-                    _random.Next(1, 10) + "") // на нечетных цифру
-        );
-        return password;
+        return Equals(left, right);
     }
 
-    #endregion
-
+    public static bool operator !=(AuthEntity? left, AuthEntity? right)
+    {
+        return !Equals(left, right);
+    }
 }

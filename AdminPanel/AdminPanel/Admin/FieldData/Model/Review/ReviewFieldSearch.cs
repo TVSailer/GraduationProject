@@ -1,17 +1,27 @@
-﻿using Admin.ViewModel.AbstractViewModel;
-using Admin.ViewModel.Interface;
-using Admin.ViewModels.Lesson;
-using Logica.CustomAttribute;
+﻿using UserInterface.Attribute;
+using UserInterface.UiLayoutPanel.SearchCardPanel;
 
-namespace Admin.ViewModel.Model.Review;
+namespace Admin.FieldData.Model.Review;
 
-public class ReviewFieldSearch : SearchFieldData
+public class ReviewFieldSearch : SearchFieldData<ReviewEntity>
 {
     [BaseFieldUi("Имя автора")]
-    [FieldState("")]
-    public string? NameVisitor { get; set => OnPropertyChange(ref field, value); } 
+    public string? NameVisitor { get; set => OnPropertyChanged(ref field, value); } 
     
     [BaseFieldUi("Фамилия автора")]
-    [FieldState("")]
-    public string? SurnameVisitor { get; set => OnPropertyChange(ref field, value); }
+    public string? SurnameVisitor { get; set => OnPropertyChanged(ref field, value); }
+
+    public override Func<ReviewEntity[], ReviewEntity[]> SearchFunc =>
+        entitys =>
+            entitys
+                .Where(e => e.Visitor.FIO.Name.StartsWith(NameVisitor ?? ""))
+                .Where(e => e.Visitor.FIO.Surname.StartsWith(SurnameVisitor ?? ""))
+                .ToArray();
+
+    public override Action ClearFunc =>
+        () =>
+        {
+            NameVisitor = string.Empty;
+            SurnameVisitor = string.Empty;
+        };
 }

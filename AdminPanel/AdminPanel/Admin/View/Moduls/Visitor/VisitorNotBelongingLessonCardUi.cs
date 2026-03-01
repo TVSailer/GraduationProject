@@ -1,34 +1,22 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View.Moduls.UIModel;
-using Admin.View.Moduls.Visitor;
-using Admin.View.UIModeles;
-using Admin.View.ViewForm;
-using Admin.ViewModel.Model.Visitor.Buttons;
+﻿using Admin.DI.Module;
+using Admin.FieldData.Model.Visitor.Buttons;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.UILayerPanel;
-using User_Interfase_Library.LayerPanel;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.View;
 
-namespace Admin.View;
+namespace Admin.View.Moduls.Visitor;
 
 public class VisitorNotBelongingLessonCardUi(
     MementoLesson repository,
-    VisitorNotBelongingLessonCardPanelUi viewData,
-    VisitorNotBelongingLessonButton parametersButtons)
-    : UiView<VisitorNotBelongingLessonCardPanelUi>
+    VisitorNotBelongingLessonButton parametersButtons) : UiView<VisitorNotBelongingLesson>
 {
-    protected override Control CreateUi()
-    {
-        return LayoutPanel
-            .CreateColumn()
-                .Row().ContentEnd(new CardLayoutPanel<VisitorEntity, VisitorCard>()
-                    .SetClickedCard(parametersButtons)
-                    .SetObjects(repository.GetVisitorsNotBelongingLesson()))
-                .RowAutoSize().ContentEnd(new ButtonLayoutPanel<ViewButtonClickArgs<VisitorNotBelongingLessonCardPanelUi>>()
-                    .SetClickedData(this, new ViewButtonClickArgs<VisitorNotBelongingLessonCardPanelUi>(viewData))
-                    .SetButtons(parametersButtons))
-                    
-            .Build();
-    }
+    protected override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.CreateColumn()
+            .Row().ContentEnd(new CardLayoutPanel<VisitorEntity, VisitorCard>()
+                .SetClickedCard(parametersButtons)
+                .Initialize(repository.GetVisitorsNotBelongingLesson().ToArray()))
+            .RowAutoSize().ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
 }

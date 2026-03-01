@@ -4,7 +4,7 @@ using UserInterface.Interface;
 
 namespace UserInterface.GenericEntity;
 
-public class RepositoryEntity<TEntity>
+public class MementoEntity<TEntity>
     where TEntity : new()
 {
     private readonly IDataUi<TEntity> _fieldModel;
@@ -14,7 +14,7 @@ public class RepositoryEntity<TEntity>
 
     public TEntity? Entity { get; private set; } = new();
 
-    public RepositoryEntity(IDataUi<TEntity> fieldModel)
+    public MementoEntity(IDataUi<TEntity> fieldModel)
     {
         _fieldModel = fieldModel;
         _mappings = GetOrCreateMappings();

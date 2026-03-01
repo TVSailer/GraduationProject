@@ -1,35 +1,23 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View.Moduls.UIModel;
-using Admin.View.Moduls.Visitor;
-using Admin.View.UIModeles;
-using Admin.View.ViewForm;
-using Admin.ViewModel.Model.Lesson.Buttons;
-using Admin.ViewModel.Model.Visitor.Buttons;
+﻿using Admin.DI.Module;
+using Admin.FieldData.Model.Visitor.Buttons;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.UILayerPanel;
-using User_Interfase_Library.LayerPanel;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.View;
 
-namespace Admin.View;
+namespace Admin.View.Moduls.Visitor;
 
 public class VisitorBelongingLessonCardUi(
     MementoLesson repository,
-    VisitorBelongingLesson viewData,
-    VisitorBelongingLessonButton parametersButtons)
-    : UiView<VisitorBelongingLesson>
+    VisitorBelongingLessonButton parametersButtons) : UiView<VisitorBelongingLesson>
 {
-    protected override Control CreateUi()
-    {
-        return LayoutPanel
-            .CreateColumn()
+    protected override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.CreateColumn()
             .Row()
             .ContentEnd(new CardLayoutPanel<VisitorEntity, VisitorCard>()
                 .SetContextMenu(parametersButtons)
-                .SetObjects(repository.GetVisitorsBelongingLesson()))
-            .RowAutoSize().ContentEnd(new ButtonLayoutPanel<ViewButtonClickArgs<VisitorBelongingLesson>>()
-                .SetClickedData(this, new ViewButtonClickArgs<VisitorBelongingLesson>(viewData))
-                .SetButtons(parametersButtons))
-            .Build();
-    }
+                .Initialize(repository.GetVisitorsBelongingLesson().ToArray()))
+            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
 }

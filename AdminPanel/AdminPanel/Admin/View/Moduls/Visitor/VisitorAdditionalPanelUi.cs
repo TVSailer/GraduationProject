@@ -1,38 +1,21 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View.Moduls.UIModel;
-using Admin.View.UIModeles;
-using Admin.View.ViewForm;
-using Admin.ViewModel.Model.Visitor.Buttons;
+﻿using Admin.FieldData.Model.Teacher;
+using Admin.FieldData.Model.Visitor.Buttons;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.UILayerPanel;
-using User_Interfase_Library.LayerPanel;
+using UserInterface;
 
-namespace Admin.View;
+namespace Admin.View.Moduls.Visitor;
 
-public class VisitorDetailsUi(
+public class VisitorAdditionalPanelUi(
     Repository<LessonEntity> repositoryL,
-    VisitorDetailsFieldData viewData,
     VisitorDetailsButton parametersButtons)
-    : UiView<VisitorDetailsFieldData, VisitorEntity>(viewData)
+    : VisitorPanelUi(repositoryL, parametersButtons)
 {
-    protected override Control CreateUi()
+    protected override Control AdditionalContent()
     {
-        return LayoutPanel
-            .CreateColumn()
-            .RowAutoSize().ContentEnd(new FieldLayoutPanel(FieldData).CreateControl())
-            .RowAutoSize().ContentEnd(FactoryElements.Label_12(" Посещает:"))
-            .Row().ContentEnd(OnLoadData(FactoryElements.DataGridView()))
-            .RowAutoSize().ContentEnd(new ButtonLayoutPanel<ViewButtonClickArgs<VisitorEntity, VisitorDetailsFieldData>>()
-                    .SetClickedData(this, new ViewButtonClickArgs<VisitorEntity, VisitorDetailsFieldData>(viewData))
-                    .SetButtons(parametersButtons))
-            .Build();
-    }
+        var gridView = FactoryElements.DataGridView();
 
-    internal DataGridView OnLoadData(DataGridView gridView)
-    {
-        var visitorId = FieldData.MementoEntity.Id;
+        var visitorId = DataUi.EntityId;
         var lessons = repositoryL.Get().Where(l => l.Visitors.Select(v => v.Id).Contains(visitorId)).ToList();
 
         List<DateAttendanceEntity> dates = [];

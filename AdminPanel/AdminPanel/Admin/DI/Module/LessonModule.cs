@@ -1,3 +1,4 @@
+using Admin.FieldData.Model.Lesson.Buttons;
 using Admin.View;
 using Admin.View.Moduls.Lesson;
 using Admin.ViewModel.Model.Lesson;
@@ -17,7 +18,6 @@ public class LessonModule : NinjectModule
     public override void Load()
     {
         Kernel.Bind<Repository<LessonEntity>>().To<LessonsRepository>().InSingletonScope();
-        Kernel.Bind<Repository<DateAttendanceEntity>>().To<DateAttendancesRepository>().InSingletonScope();
         Kernel.Bind<MementoLesson>().ToSelf().InSingletonScope();
 
         Kernel.Bind<UiView<LessonFieldData>>().To<LessonPanelUi<LessonAddingButton>>();

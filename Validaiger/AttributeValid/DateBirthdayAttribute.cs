@@ -4,14 +4,16 @@ namespace Validaiger.AttributeValid
 {
     public class DateBirthdayAttribute : ValidationAttribute
     {
+        private readonly int _minYears;
+
         public DateBirthdayAttribute()
         {
-            ErrorMessage = "Неверно набрана дата рождения!";
+            _minYears = 18;
         }
 
-        public DateBirthdayAttribute(string errorMessage)
+        public DateBirthdayAttribute(int minYears)
         {
-            ErrorMessage = errorMessage;
+            _minYears = minYears;
         }
 
         public override bool IsValid(object? value)
@@ -29,15 +31,15 @@ namespace Validaiger.AttributeValid
         {
             if (DateTime.TryParseExact(birthDateStr, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime birthDate))
             {
-                if (birthDate.Year > DateTime.Today.Year - 18)
+                if (birthDate.Year > DateTime.Today.Year - _minYears)
                 {
-                    ErrorMessage = "Сотрудник должен быть младше 18 лет!";
+                    ErrorMessage = $"не может быть младше {_minYears} лет!";
                     return false;
                 }
 
                 if (birthDate.Year < DateTime.Today.Year - 100)
                 {
-                    ErrorMessage = "Сотрудник не может быть старше 100 лет";
+                    ErrorMessage = "не может быть старше 100 лет";
                     return false;
                 }
 

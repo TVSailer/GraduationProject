@@ -14,6 +14,6 @@ public sealed class CustomButton : Button
         Font = new Font("Times New Roman", 11, FontStyle.Bold);
     }
     public CustomButton CommandClick(Action action) => this.With(_ => Click += (_, _) => action());
-    public CustomButton NoEnabled() => this.With(_ => Enabled = false);
-    public CustomButton Enablede(bool enable = true) => this.With(_ => Enabled = enable);
+    public CustomButton NoEnabled() => this.With(_ => Enable(false));
+    public CustomButton Enable(bool enable = true) => this.With(_ => Enabled = enable);
 }

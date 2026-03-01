@@ -1,42 +1,33 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View;
+﻿using DataAccess.Postgres;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica;
-using Logica.Interface;
-using Logica.UI;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
+using Validaiger.Message;
 
-namespace Admin.ViewModel.Model.Teacher.Buttons;
+namespace Admin.FieldData.Model.Teacher.Buttons;
 
 public class TeacherDetailsButton(
     Repository<TeacherEntity> repository,
-    ControlView controlView) : 
-    IButtons<ViewButtonClickArgs<TeacherEntity, TeacherDetailsFieldData>>
+    ControlView controlView) : IButtons<TeacherFieldData>
 {
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<TeacherEntity, TeacherDetailsFieldData>? e)
+    public List<CustomButton> GetButtons(TeacherFieldData fieldData)
         => [
             new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Обновить").CommandClick(() => e?.FieldData.TryWordWithEntity(entity =>
+            new CustomButton("Обновить").CommandClick(() =>
             {
-                repository.Update(entity.Id, entity.GetDataNotNull());
+                fieldData.ValidObject(repository.Update);
                 controlView.Exit();
-            })),
-            new CustomButton("Удалить").CommandClick(() => DeleteEntity(e?.FieldData))
+            }),
+            new CustomButton("Удалить").CommandClick(() =>
+            {
+                if (repository.TryDelete(fieldData.EntityId, out var logger))
+                {
+                    controlView.Exit();
+                    return;
+                }
+
+                LogicaMessage.MessageError(logger.Log);
+            })
         ];
-
-    private void DeleteEntity(TeacherDetailsFieldData? data)
-    {
-#pragma warning disable CA1510
-        if (data is null) throw new ArgumentNullException();
-#pragma warning restore CA1510
-        if (data.MementoEntity.GetData()?.Lessons is not {Count: 0})
-        {
-            LogicaMessage.MessageError("Для удаления преподователь не должен вести ни каких урков!");
-            return;
-        }
-
-        repository.Delete(data.MementoEntity.Id);
-        controlView.Exit();
-    }
 }

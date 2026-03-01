@@ -14,6 +14,5 @@ public class AdminModule : NinjectModule
     {
         Kernel.Bind<UiView<AdminFieldData>>().To<AdminMainUi>();
         Kernel.Bind<Repository<CategoryEntity>>().To<CategoryRepository>();
-        Kernel.Bind<Repository<TeacherEntity>>().To<TeacherRepository>();
     }
 }

@@ -14,6 +14,10 @@ public class AdminDi
     {
         var container = new StandardKernel(
             new AdminModule(),
+            new VisitorModule(),
+            new ReviewModule(),
+            new DateAttendanceModule(),
+            new TeacherModule(),
             new LessonModule());
 
         var serviceProvider = new ServiceProviderDi(container);

@@ -11,40 +11,19 @@
 
   <ItemGroup>
     <Compile Remove="Resources\**" />
-    <Compile Remove="FieldData\Model\DateAttendance\**" />
     <Compile Remove="FieldData\Model\Event\**" />
     <Compile Remove="FieldData\Model\News\**" />
-    <Compile Remove="FieldData\Model\Review\**" />
-    <Compile Remove="FieldData\Model\Visitor\**" />
-    <Compile Remove="View\Moduls\DateAttendance\**" />
-    <Compile Remove="View\Moduls\Review\**" />
-    <Compile Remove="View\Moduls\Visitor\**" />
     <EmbeddedResource Remove="Resources\**" />
-    <EmbeddedResource Remove="FieldData\Model\DateAttendance\**" />
     <EmbeddedResource Remove="FieldData\Model\Event\**" />
     <EmbeddedResource Remove="FieldData\Model\News\**" />
-    <EmbeddedResource Remove="FieldData\Model\Review\**" />
-    <EmbeddedResource Remove="FieldData\Model\Visitor\**" />
-    <EmbeddedResource Remove="View\Moduls\DateAttendance\**" />
-    <EmbeddedResource Remove="View\Moduls\Review\**" />
-    <EmbeddedResource Remove="View\Moduls\Visitor\**" />
     <None Remove="Resources\**" />
-    <None Remove="FieldData\Model\DateAttendance\**" />
     <None Remove="FieldData\Model\Event\**" />
     <None Remove="FieldData\Model\News\**" />
-    <None Remove="FieldData\Model\Review\**" />
-    <None Remove="FieldData\Model\Visitor\**" />
-    <None Remove="View\Moduls\DateAttendance\**" />
-    <None Remove="View\Moduls\Review\**" />
-    <None Remove="View\Moduls\Visitor\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="DI\Module\DateAttendanceModule.cs" />
     <Compile Remove="DI\Module\EventModule.cs" />
     <Compile Remove="DI\Module\NewsModule.cs" />
-    <Compile Remove="DI\Module\ReviewModule.cs" />
-    <Compile Remove="DI\Module\VisitorModule.cs" />
     <Compile Remove="DI\TeacherModule.cs" />
     <Compile Remove="View\ManagementView.cs" />
     <Compile Remove="View\UI.cs" />

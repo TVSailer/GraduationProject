@@ -1,17 +1,29 @@
-﻿using Admin.ViewModel.AbstractViewModel;
-using Admin.ViewModel.Interface;
-using Admin.ViewModels.Lesson;
-using Logica.CustomAttribute;
+﻿using DataAccess.Postgres.Models;
+using UserInterface.Attribute;
+using UserInterface.UiLayoutPanel.SearchCardPanel;
 
-namespace Admin.ViewModel.Model.Teacher;
+namespace Admin.FieldData.Model.Teacher;
 
-public class TeacherFieldSearch : SearchFieldData
+public class TeacherFieldSearch : SearchFieldData<TeacherEntity>
 {
+
     [BaseFieldUi("Имя преподователя")]
-    [FieldState("")]
-    public string? TeacherName { get; set => OnPropertyChange(ref field, value); }
+    public string? TeacherName { get; set => OnPropertyChanged(ref field, value); }
 
     [BaseFieldUi("Фамилия преподователя")]
-    [FieldState("")]
-    public string? TeacherSurname { get; set => OnPropertyChange(ref field, value); }
+    public string? TeacherSurname { get; set => OnPropertyChanged(ref field, value); }
+
+    public override Func<TeacherEntity[], TeacherEntity[]> SearchFunc =>
+        entitys =>
+            entitys
+                .Where(e => e.FIO.Name.StartsWith(TeacherName ?? ""))
+                .Where(e => e.FIO.Surname.StartsWith(TeacherSurname ?? ""))
+                .ToArray();
+
+    public override Action ClearFunc =>
+        () =>
+        {
+            TeacherName = string.Empty;
+            TeacherSurname = string.Empty;
+        };
 }

@@ -1,16 +1,13 @@
-using Admin.View;
+using Admin.FieldData.Model.DateAttendance;
 using Admin.View.Moduls.DateAttendance;
-using Admin.View.ViewForm;
-using Admin.ViewModel.Interface;
-using Admin.ViewModel.Model.DateAttendance;
-using Admin.ViewModel.Model.DateAttendance.Buttons;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using Ninject.Modules;
+using UserInterface.View;
 
-namespace Admin.DI;
+namespace Admin.DI.Module;
 
-public record DateAttendanceManagment() : IFieldData;
+public record DateAttendanceManager;
 
 public class DateAttendanceModule : NinjectModule
 {
@@ -18,7 +15,7 @@ public class DateAttendanceModule : NinjectModule
     {
         Kernel.Bind<Repository<DateAttendanceEntity>>().To<DateAttendancesRepository>();
 
-        Kernel.Bind<IView<DateAttendanceFieldData, DateAttendanceEntity>>().To<BaseUi<DateAttendanceFieldData, DateAttendanceEntity, DateAttendanceFieldDataButton>>();
-        Kernel.Bind<IView<DateAttendanceManagment>>().To<DateAttendanceCardUi>();
+        //Kernel.Bind<UiView<DateAttendanceFieldData, DateAttendanceEntity>>().To<>();
+        Kernel.Bind<UiView<DateAttendanceManager>>().To<DateAttendancePanelUi>();
     }
 }

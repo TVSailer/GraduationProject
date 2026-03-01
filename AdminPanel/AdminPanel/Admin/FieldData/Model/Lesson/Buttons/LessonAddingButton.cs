@@ -12,15 +12,18 @@ public class LessonAddingButton(
 {
     public List<CustomButton> GetButtons(LessonFieldData e)
         => [
+            new CustomButton("Назад").CommandClick(controlView.Exit),
             new CustomButton("Создать расписание").CommandClick(() => new LessonScheduleView(e).ShowDialog()),
             new CustomButton("Сохранить").CommandClick(() =>
             {
-                e.ValidObject((_, entity) => repository.Add(entity));
-                controlView.Exit();
+                e.ValidObject((_, entity) =>
+                {
+                    repository.Add(entity);
+                    controlView.Exit();
+                });
             }),
             new CustomButton("Добавить изображение").CommandClick(() => e.RepositoryImgEntity.OnAddingImg()),
             new CustomButton("Удалить изображение").CommandClick(() => e.RepositoryImgEntity.OnDeletingImg()),
-            new CustomButton("Назад").CommandClick(controlView.Exit),
         ];
 }
 

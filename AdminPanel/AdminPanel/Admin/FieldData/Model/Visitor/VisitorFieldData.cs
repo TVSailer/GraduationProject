@@ -1,11 +1,9 @@
-﻿using Admin.ViewModel.AbstractFieldData;
-using Admin.ViewModels.Lesson;
+﻿using Admin.FieldData.AbstractFieldData;
 using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Repository;
-using Logica;
-using Logica.CustomAttribute;
+using UserInterface.Attribute;
+using Validaiger.AttributeValid;
 
-namespace Admin.ViewModel.Model.Visitor;
+namespace Admin.FieldData.Model.Visitor;
 
 public class VisitorFieldData : FieldData<VisitorEntity>
 {
@@ -16,25 +14,12 @@ public class VisitorFieldData : FieldData<VisitorEntity>
         set => FIOVisitor = value.ToString();
     }
 
-    [LinkingEntity(nameof(VisitorEntity.AuthEntity))]
-    public AuthEntity Auth
-    {
-        get
-        {
-            if (field != null) return field;
-            return new AuthEntity()
-                .CreateAuthUser(FIO, out var pas, out var log)
-                .With(_ => LogicaMessage.MessageInfo($" Логин: {log}\nПароль: {pas}"));
-        }
-        set;
-    }
-
-    [FIO, BaseFieldUi("ФИО", "Введите ФИО")]
+    [FIO]
     public string? FIOVisitor { get; set => ValidProperty(ref field, value); }
 
-    [DateBirthday, LinkingEntity(nameof(VisitorEntity.DateBirth)), DateFieldUi("Дата рождения", "dd.MM.yyyy")]
-    public string DateBirth { get; set => ValidProperty(ref field, value); }
+    [DateBirthday(8), LinkingEntity(nameof(VisitorEntity.DateBirth))]
+    public string? DateBirth { get; set => ValidProperty(ref field, value); }
 
-    [PhoneNumber, LinkingEntity(nameof(VisitorEntity.NumberPhone)), MaskedTextBoxFieldUi("Номер телефона", "+7 (000)-000-00-00")]
-    public string NumberPhone { get; set => ValidProperty(ref field, value); }
+    [PhoneNumber, LinkingEntity(nameof(VisitorEntity.NumberPhone))]
+    public string? NumberPhone { get; set => ValidProperty(ref field, value); }
 }

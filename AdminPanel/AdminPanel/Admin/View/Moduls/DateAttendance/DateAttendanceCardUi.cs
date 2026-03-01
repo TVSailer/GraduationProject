@@ -1,31 +1,24 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View.Moduls.UIModel;
-using Admin.View.UIModeles;
-using Admin.View.ViewForm;
+﻿using Admin.DI;
+using Admin.DI.Module;
+using Admin.FieldData.Model.DateAttendance.Buttons;
 using DataAccess.Postgres.Repository;
-using User_Interface_Library;
-using User_Interface_Library.LayerPanel;
-using User_Interfase_Library.LayerPanel;
+using UserInterface;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
 
 namespace Admin.View.Moduls.DateAttendance;
 
-public class DateAttendanceCardUi(
+public class DateAttendancePanelUi(
     MementoLesson repository,
-    DateAttendanceManagment viewData,
-    DateAttendanceManagmentButton parametersButtons)
-    : UiView<DateAttendanceManagment>
+    DateAttendanceManagerButton parametersButtons)
+    : UiView<DateAttendanceManager>
 {
-    protected override Control CreateUi()
-    {
-        return LayoutPanel.CreateColumn()
+    protected override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.CreateColumn()
             .RowAutoSize().ContentEnd(OnLoadData(FactoryElements.DataGridView()))
             .Row().End()
-            .RowAutoSize().ContentEnd(new ButtonLayoutPanel<ViewButtonClickArgs<DateAttendanceManagment>>()
-                .SetClickedData(this, new ViewButtonClickArgs<DateAttendanceManagment>(viewData))
-                .SetButtons(parametersButtons))
-            .Build();
-    }
+            .RowAutoSize().ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
 
     internal DataGridView OnLoadData(DataGridView gridView)
     {

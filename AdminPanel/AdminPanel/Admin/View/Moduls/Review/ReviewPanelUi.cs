@@ -1,0 +1,27 @@
+﻿using Admin.FieldData.Model.Review;
+using Admin.ViewModel.Model.Review;
+using Admin.ViewModel.Model.Review.Buttons;
+using UserInterface.LayoutPanel;
+using UserInterface.LayoutPanel.Extension;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
+
+namespace Admin.View.Moduls.Review;
+
+public class ReviewPanelUi(ReviewDetailsButton button) : UiView<ReviewFieldData, ReviewEntity>
+{
+    private const int SizeRow = 5;
+
+    protected override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.ObjectBinding(DataUi).CreateColumn()
+            .Row()
+                .Column()
+                    .Row(SizeRow).LabelTextBoxReadOnly("Рейтинг: ", "", nameof(ReviewFieldData.Rating))
+                    .Row(SizeRow).LabelTextBoxReadOnly("Автор: ", "", nameof(ReviewFieldData.Visitor))
+                    .Row(200).LabelMaskTextBox("Комментарий: ", "", nameof(ReviewFieldData.Comment))
+                .End()
+                .Column().End()
+            .End()
+            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(button.GetButtons(DataUi)));
+
+}

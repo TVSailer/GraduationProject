@@ -1,22 +1,21 @@
-﻿using Admin.Args;
-using Admin.View;
+﻿using Admin.FieldData.Model.Review;
 using DataAccess.Postgres.Repository;
-using Logica.Interface;
-using Logica.UI;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
 
 namespace Admin.ViewModel.Model.Review.Buttons;
 
 public class ReviewDetailsButton(
     Repository<ReviewEntity> repository,
     ControlView controlView) : 
-    IButtons<ViewButtonClickArgs<ReviewEntity, ReviewFieldData>>
+    IButtons<ReviewFieldData>
 {
-    public List<CustomButton> GetButtons(object? send, ViewButtonClickArgs<ReviewEntity, ReviewFieldData> e)
+    public List<CustomButton> GetButtons(ReviewFieldData e)
         => [
             new CustomButton("Назад").CommandClick(controlView.Exit),
             new CustomButton("Удалить").CommandClick(() =>
             {
-                repository.Delete(e.FieldData.MementoEntity.Id);
+                repository.Delete(e.EntityId);
                 controlView.Exit();
             })
         ];

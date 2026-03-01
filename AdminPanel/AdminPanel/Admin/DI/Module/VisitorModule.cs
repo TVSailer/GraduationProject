@@ -1,23 +1,17 @@
+using Admin.FieldData.Model.Visitor;
+using Admin.FieldData.Model.Visitor.Buttons;
 using Admin.View;
 using Admin.View.Moduls.Visitor;
-using Admin.View.ViewForm;
-using Admin.ViewModel.Interface;
-using Admin.ViewModel.Managment;
-using Admin.ViewModel.Model.Lesson.Buttons;
-using Admin.ViewModel.Model.Visitor;
-using Admin.ViewModel.Model.Visitor.Buttons;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.Interface;
 using Ninject.Modules;
+using UserInterface.View;
 
-namespace Admin.DI;
+namespace Admin.DI.Module;
 
-public class VisitorDetailsFieldData : VisitorFieldData;
-public class VisitorAddingFieldData : VisitorFieldData;
-public class VisitorNotBelongingLessonCardPanelUi : IFieldData;
-public record VisitorBelongingLesson : IFieldData;
-public record VisitorManagment : IFieldData;
+public record VisitorNotBelongingLesson;
+public record VisitorBelongingLesson;
+public record VisitorManager;
 
 public class VisitorModule : NinjectModule
 {
@@ -25,21 +19,15 @@ public class VisitorModule : NinjectModule
     {
         Kernel.Bind<VisitorsRepository, Repository<VisitorEntity>>().To<VisitorsRepository>().InSingletonScope();
 
-        Kernel.Bind<IParametersSearch<VisitorEntity, VisitorFieldSearch>>().To<VisitorSearch>();
-
-        Kernel.Bind<
-            IView<VisitorAddingFieldData>, 
-            IView<VisitorAddingFieldData, VisitorEntity>>().To<BaseUi<VisitorAddingFieldData, VisitorEntity, VisitorAddingButton>>();
-        Kernel.Bind<
-            IView<VisitorDetailsFieldData>, 
-            IView<VisitorDetailsFieldData, VisitorEntity>>().To<VisitorDetailsUi>();
-        Kernel.Bind<IView<VisitorNotBelongingLessonCardPanelUi>>().To<VisitorNotBelongingLessonCardUi>();
-        Kernel.Bind<IView<VisitorManagment>>().To<ManagmentEntityUi<
-            VisitorManagment, 
+        Kernel.Bind<UiView<VisitorFieldData>>().To<VisitorPanelUi>();
+        Kernel.Bind<UiView<VisitorFieldData, VisitorEntity>>().To<VisitorAdditionalPanelUi>();
+        Kernel.Bind<UiView<VisitorNotBelongingLesson>>().To<VisitorNotBelongingLessonCardUi>();
+        Kernel.Bind<UiView<VisitorBelongingLesson>>().To<VisitorBelongingLessonCardUi>();
+        Kernel.Bind<UiView<VisitorManager>>().To<ManagerEntityUi<
+            VisitorManager, 
             VisitorEntity, 
             VisitorFieldSearch, 
             VisitorCard,
-            VisitorManagmentButton>>();
-        Kernel.Bind<IView<VisitorBelongingLesson>>().To<VisitorBelongingLessonCardUi>();
+            VisitorManagerButton>>();
     }
 }

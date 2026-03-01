@@ -1,10 +1,11 @@
 ﻿using Admin.View.Moduls.Lesson;
+using Admin.ViewModel.Model.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
 
-namespace Admin.ViewModel.Model.Lesson.Buttons;
+namespace Admin.FieldData.Model.Lesson.Buttons;
 
 public class LessonDetailsButton(
     ControlView controlView,

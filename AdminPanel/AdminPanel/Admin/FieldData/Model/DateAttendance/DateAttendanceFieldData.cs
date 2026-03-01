@@ -1,21 +1,14 @@
-﻿using Admin.ViewModel.GenericEntity;
-using Admin.ViewModel.Interface;
-using Admin.ViewModels.Lesson;
-using DataAccess.Postgres.Models;
+﻿using DataAccess.Postgres.Models;
+using UserInterface.Attribute;
+using UserInterface.Interface;
 
-namespace Admin.ViewModel.Model.DateAttendance;
+namespace Admin.FieldData.Model.DateAttendance;
 
-public class DateAttendanceFieldData : IFieldData<DateAttendanceEntity>
+public class DateAttendanceFieldData : IDataUi<DateAttendanceEntity>
 {
     [LinkingEntity(nameof(DateAttendanceEntity.Date))]
-    [ReadOnlyFieldUi("Дата: ")]
     public string? Date { get; set; }
 
-    public GenericRepositoryEntity<DateAttendanceEntity> MementoEntity { get; set; } = new();
-
-    public DateAttendanceFieldData()
-    {
-        MementoEntity.Initialize(this);
-    }
-
+    public DateAttendanceEntity Entity { get; set; }
+    public long EntityId { get; set; }
 }

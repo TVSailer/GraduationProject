@@ -1,34 +1,25 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View.Moduls.Review;
-using Admin.View.Moduls.UIModel;
-using Admin.View.UIModeles;
-using Admin.View.ViewForm;
+﻿using Admin.DI.Module;
+using Admin.FieldData.Model.Teacher;
 using Admin.ViewModel.Model.Review.Buttons;
 using DataAccess.Postgres.Repository;
-using Logica.UILayerPanel;
-using User_Interface_Library.LayerPanel;
-using User_Interfase_Library.LayerPanel;
+using UserInterface;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.View;
 
-namespace Admin.ViewModel.Model.Review;
+namespace Admin.View.Moduls.Review;
 
 public class ReviewsCardUi(
     MementoLesson repository,
-    ReviewManagment viewData,
-    ReviewManagmentButton parametersButtons)
-    : UiView<ReviewManagment>
+    ReviewManagerButton parametersButtons)
+    : UiView<ReviewManager>
 {
-    protected override Control CreateUi()
-    {
-        return LayoutPanel
-            .CreateColumn()
+    protected override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.CreateColumn()
             .Row()
             .ContentEnd(new CardLayoutPanel<ReviewEntity, ReviewCard>()
                 .SetClickedCard(parametersButtons)
-                .SetObjects(repository.GetReviews()))
-            .RowAutoSize().ContentEnd(new ButtonLayoutPanel<ViewButtonClickArgs<ReviewManagment>>()
-                .SetClickedData(this, new ViewButtonClickArgs<ReviewManagment>(viewData))
-                .SetButtons(parametersButtons))
-            .Build();
-    }
+                .Initialize(repository.GetReviews().ToArray()))
+            .RowAutoSize().ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
 }

@@ -14,7 +14,7 @@ internal static class Program
 
         var di = new AdminDi();
         var controlView = di.GetService<ControlView>();
-        controlView.LoadView<AdminFieldData>();
+        controlView.LoadView(new AdminFieldData());
 
         //var f = new FIO("alsdkfj dfjk dks");
         //var d = di.GetService<ApplicationDbContext>();

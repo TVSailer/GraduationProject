@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using UserInterface.LayoutPanel.ControlBuilder;
+using static System.Windows.Forms.DataFormats;
 
 namespace UserInterface.LayoutPanel.ContentSelection;
 
@@ -32,5 +33,19 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         var builder = new ComboBoxBuilder<TParentBuilder>(parentBuilder);
         setContent(builder.Build());
         return builder.WriteValue();
+    }
+
+    public DateTimePickerBuilder<TParentBuilder> DateTimePicker(string format = "")
+    {
+        var builder = new DateTimePickerBuilder<TParentBuilder>(parentBuilder);
+        setContent(builder.Build());
+        return builder.Format(format);
+    }
+
+    public MaskedTextBoxBuilder<TParentBuilder> MaskedTextBox(string mask = "")
+    {
+        var builder = new MaskedTextBoxBuilder<TParentBuilder>(parentBuilder);
+        setContent(builder.Build());
+        return builder.Mask(mask);
     }
 }

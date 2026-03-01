@@ -7,7 +7,13 @@ using UserInterface.View;
 
 namespace Admin.ViewModel.Model.Lesson.Buttons;
 
-public class LessonManagerButton(ControlView controlView, MementoLesson v) :
+public class LessonManagerButton(
+    ControlView controlView, 
+    LessonFieldData fieldData,
+    VisitorBelongingLesson visitorBelongingLesson,
+    DateAttendanceManager dateAttendanceManager,
+    ReviewManager reviewManager,
+    MementoLesson v) :
     IButtons<LessonManager>,
     IButtons<CardClickedToolStripArgs<LessonEntity>>,
     IButton<CardClickedArgs<LessonEntity>>
@@ -15,25 +21,28 @@ public class LessonManagerButton(ControlView controlView, MementoLesson v) :
     public List<CustomButton> GetButtons(CardClickedToolStripArgs<LessonEntity>? eventToolStripArgs)
         =>
         [
-            //new CustomButton("Управление поситителями").CommandClick(() => ControlLesson<VisitorBelongingLesson>(eventToolStripArgs?.Entity)),
-            //new CustomButton("Управление посещаемостью").CommandClick(() => ControlLesson<DateAttendanceManagment>(eventToolStripArgs?.Entity)),
-            //new CustomButton("Управление отзывами").CommandClick(() => ControlLesson<ReviewManagment>(eventToolStripArgs?.Entity)),
+            new CustomButton("Управление поситителями").CommandClick(() => ControlLesson(visitorBelongingLesson, eventToolStripArgs?.Entity)),
+            new CustomButton("Управление посещаемостью").CommandClick(() => ControlLesson(dateAttendanceManager, eventToolStripArgs?.Entity)),
+            new CustomButton("Управление отзывами").CommandClick(() => ControlLesson(reviewManager, eventToolStripArgs?.Entity)),
         ];
 
     public List<CustomButton> GetButtons(LessonManager? eventArgs)
         =>
         [
             new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<LessonFieldData>()),
+            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<LessonFieldData>(fieldData)),
         ];
 
     public CustomButton GetButton(CardClickedArgs<LessonEntity> eventArgs)
         => new CustomButton().CommandClick(() =>
-            controlView.LoadView<LessonFieldData, LessonEntity>().DataUi.Entity = eventArgs.obj);
+        {
+            fieldData.Entity = eventArgs.Entity;
+            controlView.LoadView<LessonFieldData, LessonEntity>(fieldData);
+        });
 
-    private void ControlLesson<T>(LessonEntity? arg2FieldData)
+    private void ControlLesson<T>(T fieldData, LessonEntity? arg2FieldData)
     {
         v.Lesson = arg2FieldData;
-        controlView.LoadView<T>();
+        controlView.LoadView(fieldData);
     }
 }

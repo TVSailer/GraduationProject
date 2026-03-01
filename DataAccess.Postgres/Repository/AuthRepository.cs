@@ -1,5 +1,7 @@
 ﻿using DataAccess.Postgres.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace DataAccess.Postgres.Repository;
 
@@ -23,4 +25,44 @@ public class AuthRepository(ApplicationDbContext dbContext) : Repository<AuthEnt
     {
         throw new NotImplementedException();
     }
+
+    #region CreateAuth
+
+    private readonly Random _random = new();
+
+    public AuthEntity AddAuthUser(FIO fio, out ILogger logger)
+    {
+        if (fio is null) throw new ArgumentNullException();
+
+        var passwords = Get().Select(a => a.Password).ToArray();
+        var login = fio?.Surname + _random.Next(10000);
+
+        while (true)
+        {
+            var password = GenerationPassword(12);
+            if (passwords.Any(p => BCrypt.Net.BCrypt.Verify(password, p))) continue;
+
+            logger = new AuthLogger(login, password);
+
+            var pass = BCrypt.Net.BCrypt.HashPassword(password);
+
+            return Add(new AuthEntity { Login = login, Password = pass });
+        }
+    }
+
+    private string GenerationPassword(int length)
+    {
+        // ReSharper disable once ComplexConditionExpression
+        var password = string.Join("", // создаем строку
+            Enumerable.Range(0, length) // из последовательности длины length
+                .Select(i => i % 2 == 0
+                    ? // на четных местах
+                    (char)('A' + _random.Next(26)) + ""
+                    : // генерируем букву
+                    _random.Next(1, 10) + "") // на нечетных цифру
+        );
+        return password;
+    }
+
+    #endregion
 }

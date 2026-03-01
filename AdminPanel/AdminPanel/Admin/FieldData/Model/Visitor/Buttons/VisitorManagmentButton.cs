@@ -1,26 +1,29 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View;
+﻿using Admin.DI.Module;
+using Admin.ViewModel.Model.Visitor;
 using DataAccess.Postgres.Models;
-using Logica.Interface;
-using Logica.UI;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
+using UserInterface.View;
 
-namespace Admin.ViewModel.Model.Visitor.Buttons;
+namespace Admin.FieldData.Model.Visitor.Buttons;
 
-public class VisitorManagmentButton(ControlView controlView) : 
-    IButtons<ViewButtonClickArgs<VisitorManagment>>, IButtons<CardClickedToolStripArgs<VisitorEntity>>, IButton<CardClickedArgs<VisitorEntity>>
+public class VisitorManagerButton(ControlView controlView, VisitorFieldData fieldData) : 
+    IButtons<VisitorManager>, 
+    IButtons<CardClickedToolStripArgs<VisitorEntity>>, 
+    IButton<CardClickedArgs<VisitorEntity>>
 {
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<VisitorManagment>? eventArgs)
+    public List<CustomButton> GetButtons(VisitorManager eventArgs)
         => [
             new CustomButton("Назад").CommandClick(controlView.Exit)
         ];
 
-    public List<CustomButton>? GetButtons(object? data, CardClickedToolStripArgs<VisitorEntity>? eventArgs)
+    public List<CustomButton> GetButtons(CardClickedToolStripArgs<VisitorEntity> eventArgs)
         => [];
 
-    public CustomButton GetButton(object? send, CardClickedArgs<VisitorEntity> eventArgs)
-        => new CustomButton().CommandClick(() => controlView
-            .LoadViewNoInitializeComponents<VisitorDetailsFieldData, VisitorEntity>()
-            .With(v => v.FieldData.MementoEntity.SetData(eventArgs.Entity))
-            .InitializeComponents(controlView.Form));
+    public CustomButton GetButton(CardClickedArgs<VisitorEntity> eventArgs)
+        => new CustomButton().CommandClick(() =>
+        {
+            fieldData.Entity = eventArgs.Entity;
+            controlView.LoadView<VisitorFieldData, VisitorEntity>(fieldData);
+        });
 }

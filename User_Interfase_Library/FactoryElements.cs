@@ -138,13 +138,6 @@ public static class FactoryElements
         };
     }
 
-    public static TableLayoutPanel TableLayoutPanel()
-    {
-        return new TableLayoutPanel()
-            .With(t => t.Padding = new Padding(0))
-            .With(t => t.Dock = DockStyle.Fill);
-    }
-
     public static Button Button(string text, bool enable = true)
     {
         return new Button()

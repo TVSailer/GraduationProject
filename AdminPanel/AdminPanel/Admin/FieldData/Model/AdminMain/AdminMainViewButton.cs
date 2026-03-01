@@ -3,15 +3,20 @@ using Admin.DI.Module;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
 
-public class AdminMainViewButton(ControlView controlView) : IButtons<AdminFieldData>
+namespace Admin.FieldData.Model.AdminMain;
+
+public class AdminMainViewButton(
+    ControlView controlView,
+    LessonManager fieldDataL,
+    VisitorManager fielDataV,
+    TeacherManager fieldDataT) : IButtons<AdminFieldData>
 {
     public List<CustomButton> GetButtons(AdminFieldData eventArgs)
         => [
-            new CustomButton("📰 Управление новостями").CommandClick(() => controlView.LoadView<LessonManager>()),
-            new CustomButton("🎭 Управление мероприятиями").CommandClick(() => controlView.LoadView<LessonManager>()),
-            new CustomButton("🎨 Управление кружками").CommandClick(() => controlView.LoadView<LessonManager>()),
-            new CustomButton("👥 Управление посетителями").CommandClick(() => controlView.LoadView<LessonManager>()),
-            new CustomButton("👨‍🏫 Управление преподавателями").CommandClick(() => controlView.LoadView<LessonManager>()),
+            new CustomButton("📰 Управление новостями").CommandClick(() => controlView.LoadView(fieldDataL)),
+            new CustomButton("🎭 Управление мероприятиями").CommandClick(() => controlView.LoadView(fieldDataL)),
+            new CustomButton("🎨 Управление кружками").CommandClick(() => controlView.LoadView(fieldDataL)),
+            new CustomButton("👥 Управление посетителями").CommandClick(() => controlView.LoadView(fielDataV)),
+            new CustomButton("👨‍🏫 Управление преподавателями").CommandClick(() => controlView.LoadView(fieldDataT)),
         ];
 }
-

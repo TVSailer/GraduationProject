@@ -1,28 +1,25 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View;
-using DataAccess.Postgres.Models;
+﻿using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.Interface;
-using Logica.UI;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
 
-namespace Admin.ViewModel.Model.Visitor.Buttons;
+namespace Admin.FieldData.Model.Visitor.Buttons;
 
 public class VisitorDetailsButton(
     Repository<VisitorEntity> repository,
-    ControlView controlView) : IButtons<ViewButtonClickArgs<VisitorEntity, VisitorDetailsFieldData>>
+    ControlView controlView) : IButtons<VisitorFieldData>
 {
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<VisitorEntity, VisitorDetailsFieldData> e)
+    public List<CustomButton> GetButtons(VisitorFieldData fieldData)
         => [
             new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Обновить").CommandClick(() => e.FieldData.TryWordWithEntity(entity =>
+            new CustomButton("Обновить").CommandClick(() => fieldData.ValidObject((id, entity) =>
             {
-                repository.Update(entity.Id, entity.GetDataNotNull());
+                repository.Update(entity.Id, entity);
                 controlView.Exit();
             })),
             new CustomButton("Удалить").CommandClick(() =>
             {
-                repository.Delete(e.FieldData.MementoEntity.Id);
+                repository.Delete(fieldData.EntityId);
                 controlView.Exit();
             })
         ];

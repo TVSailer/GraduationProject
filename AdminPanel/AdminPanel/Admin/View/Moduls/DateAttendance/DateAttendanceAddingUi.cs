@@ -1,6 +1,8 @@
 ﻿using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.UILayerPanel;
+using Extension_Func_Library;
+using UserInterface;
+using UserInterface.LayoutPanel;
 
 namespace Admin.View.Moduls.DateAttendance;
 
@@ -16,7 +18,7 @@ public class DateAttendanceAddingUi : Form
         cb.CheckOnClick = true;
 
         Controls.Add(
-            LayoutPanel.CreateColumn()
+            new BuilderLayoutPanel().CreateColumn()
                 .Row().ContentEnd(cb)
                 .Row(70, SizeType.Absolute).ContentEnd(FactoryElements.Button("Сохранить", () =>
                 {

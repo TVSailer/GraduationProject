@@ -3,23 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repository
 {
-    public class TeacherRepository : Repository<TeacherEntity>
+    public class TeacherRepository(ApplicationDbContext dbContext, AuthRepository authRepository) : Repository<TeacherEntity>(dbContext: dbContext)
     {
-        public TeacherRepository(ApplicationDbContext dbContext) : base(dbContext: dbContext)
-        {
-        }
-
-        public List<TeacherEntity> GetIncludeLessons()
+        public override List<TeacherEntity> Get()
             => DbContext.Teachers
                 .Include(navigationPropertyPath: t => t.Lessons)
                 .Include(navigationPropertyPath: t => t.AuthEntity)
                 .ToList() ?? throw new ArgumentNullException();
-
-        public override List<TeacherEntity> Get()
-            => DbContext.Teachers
-                .Include(navigationPropertyPath: t => t.Lessons)
-                .ToList() ?? throw new ArgumentNullException();
-
 
         public List<TeacherEntity>? Get(int id)
             => DbContext.Teachers
@@ -40,9 +30,35 @@ namespace DataAccess.Postgres.Repository
 
         public override void Delete(long idEntity)
         {
-            DbContext.Teachers
-                .Where(predicate: v => v.Id == idEntity)
-                .ExecuteDelete();
+            TryDelete(idEntity, out _);
+        }
+
+        public override TeacherEntity Add(TeacherEntity obj, out ILogger logger)
+        {
+            if (obj is null) throw new ArgumentNullException();
+
+            obj.AuthEntity = authRepository.AddAuthUser(obj.FIO, out logger);
+
+            return Add(obj);
+        }
+
+        public override bool TryDelete(long idEntity, out ILogger log)
+        {
+            var t = DbContext.Teachers
+                .Include(teacherEntity => teacherEntity.Lessons)
+                .Single(predicate: v => v.Id == idEntity);
+
+            if (t.Lessons is not { Count: 0 })
+            {
+                log = new RepositoryLogger("Для удаления преподователь не должен вести ни каких урков!");
+                return false;
+            }
+
+            DbContext.Teachers.Remove(t);
+            DbContext.SaveChanges();
+
+            log = new RepositoryLogger("");
+            return true;
         }
     }
 }

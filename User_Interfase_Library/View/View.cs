@@ -4,15 +4,24 @@ using UserInterface.LayoutPanel;
 
 namespace UserInterface.View;
 
-public abstract class UiView<T>(T data) : UiView
+public abstract class UiView<T> : UiView
 {
-    public readonly T DataUi = data;
+    public T DataUi { get; private set; } = default!;
+    public virtual void SetData(T data)
+    {
+        DataUi = data;
+    }
 }
 
-public abstract class UiView<T, TEntity>(T dataUi) : UiView<T>(dataUi) where TEntity : new()
+public abstract class UiView<T, TEntity> : UiView<T> where TEntity : new()
     where T : IDataUi<TEntity>
 {
-    public new readonly IDataUi<TEntity> DataUi = dataUi;
+    public new T DataUi { get; private set; } = default!;
+
+    public override void SetData(T data)
+    {
+        DataUi = data;
+    }
 }
 
 public abstract class UiView

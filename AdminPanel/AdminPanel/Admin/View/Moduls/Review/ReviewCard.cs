@@ -1,13 +1,14 @@
 ﻿using Extension_Func_Library;
-using User_Interface_Library;
-using User_Interface_Library.LayerPanel;
+using UserInterface;
+using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel.CardPanel;
 
 namespace Admin.View.Moduls.Review;
 
 public class ReviewCard : ObjectCard<ReviewEntity>
 {
     public override Control Content()
-        => LayoutPanel.CreateColumn()
+        => new BuilderLayoutPanel().CreateColumn()
             .Row().ContentEnd(FactoryElements.Label_11(Entity.Date).With(l => l.ForeColor = Color.DarkBlue))
             .Row().ContentEnd(FactoryElements.Label_11(Entity.Visitor.ToString()).With(l => l.ForeColor = Color.Gray))
             .Row().ContentEnd(FactoryElements.Label_11($"★ {Entity.Rating.ToString()}").With(l => l.ForeColor = Color.Orange))

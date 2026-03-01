@@ -6,23 +6,25 @@ public static class LayoutPanelExtension
 {
     private static object? _binding;
 
-    public static IColumnBuilder ObjectBinding(this IColumnBuilder columnBuilder, object binding)
+    public static BuilderLayoutPanel ObjectBinding(this BuilderLayoutPanel columnBuilder, object binding)
     {
         _binding = binding;
         return columnBuilder;
     }
     
-    public static IRowBuilder ObjectBinding(this IRowBuilder columnBuilder, object binding)
-    {
-        _binding = binding;
-        return columnBuilder;
-    }
-
     public static IColumnBuilder LabelTextBox(this IRowBuilder rowBuilder, string labelText, string placeholder, string nameMember)
     {
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().TextBox(placeholder).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .End();
+    }
+    
+    public static IColumnBuilder LabelMaskTextBox(this IRowBuilder rowBuilder, string labelText, string mask, string nameMember)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().MaskedTextBox(mask).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
             .End();
     }
     
@@ -39,6 +41,14 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().TextBox(placeholder).Binding(_binding ?? throw new NullReferenceException(), nameMember).ReadOnly().End()
+            .End();
+    }
+    
+    public static IColumnBuilder LabelDatePicker(this IRowBuilder rowBuilder, string labelText, string format, string nameMember)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().DateTimePicker(format).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
             .End();
     }
     

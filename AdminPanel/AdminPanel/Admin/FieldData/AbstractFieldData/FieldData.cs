@@ -5,7 +5,7 @@ using UserInterface.GenericEntity;
 using UserInterface.Interface;
 using Validaiger;
 
-namespace Admin.ViewModel.AbstractFieldData;
+namespace Admin.FieldData.AbstractFieldData;
 
 public abstract class FieldData<TEntity> : PropertyChange, IDataUi<TEntity>
     where TEntity : Entity, new()
@@ -16,14 +16,19 @@ public abstract class FieldData<TEntity> : PropertyChange, IDataUi<TEntity>
         set => MementoEntity.SetEntity(value.Id, value);
     }
 
-    public required RepositoryEntity<TEntity> MementoEntity
+    public long EntityId
+    {
+        get => MementoEntity.Id;
+        set => throw new NotImplementedException();
+    }
+
+    protected MementoEntity<TEntity> MementoEntity
     {
         get
         {
-            field ??= new RepositoryEntity<TEntity>(this);
+            field ??= new MementoEntity<TEntity>(this);
             return field;
-        } 
-        set;
+        }
     }
 
     public T ValidProperty<T>(ref T field, T value, [CallerMemberName] string prop = "")

@@ -38,6 +38,7 @@ public class TextBoxBuilder<TParentBuilder>(TParentBuilder parentBuilder) : ICon
         return this;
     }
 
+
     public TextBox Build() => _textBox;
 
     public TParentBuilder End()
