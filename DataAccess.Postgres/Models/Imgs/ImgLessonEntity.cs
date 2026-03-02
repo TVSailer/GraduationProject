@@ -5,8 +5,8 @@ namespace DataAccess.Postgres.Models.Imgs;
 public class ImgLessonEntity : ImgEntity
 {
     [ForeignKey(name: nameof(LessonEntity))]
-    public long LessonId { get; private set; }
-    public LessonEntity Lesson { get; private set; }
+    public long LessonId { get; set; }
+    public LessonEntity Lesson { get; set; }
 
     public ImgLessonEntity() { }
 

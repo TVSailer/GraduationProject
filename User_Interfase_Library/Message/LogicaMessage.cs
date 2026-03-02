@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Validaiger.Message;
+namespace UserInterface.Message;
 public static partial class LogicaMessage
 {
     public static void MessageOk(object? obj)

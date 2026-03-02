@@ -1,4 +1,5 @@
-﻿using UserInterface.LayoutPanel.ControlBuilder;
+﻿using System.Windows.Forms;
+using UserInterface.LayoutPanel.ControlBuilder;
 
 namespace UserInterface.LayoutPanel.Extension;
 
@@ -17,6 +18,7 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().TextBox(placeholder).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .Column(30, SizeType.Absolute).End()
             .End();
     }
     
@@ -25,6 +27,7 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().MaskedTextBox(mask).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .Column(30, SizeType.Absolute).End()
             .End();
     }
     
@@ -33,6 +36,7 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().TextBox(placeholder).Binding(_binding ?? throw new NullReferenceException(), nameMember).Multiline().End()
+            .Column(30, SizeType.Absolute).End()
             .End();
     }
     
@@ -41,6 +45,7 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().TextBox(placeholder).Binding(_binding ?? throw new NullReferenceException(), nameMember).ReadOnly().End()
+            .Column(30, SizeType.Absolute).End()
             .End();
     }
     
@@ -52,6 +57,7 @@ public static class LayoutPanelExtension
                 .Binding(_binding ?? throw new NullReferenceException(), nameMember)
                 .ReadOnly()
                 .Multiline().End()
+            .Column(30, SizeType.Absolute).End()
             .End();
     }
     
@@ -60,6 +66,7 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().DateTimePicker(format).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .Column(30, SizeType.Absolute).End()
             .End();
     }
     
@@ -68,6 +75,7 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().Numeric().Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .Column(30, SizeType.Absolute).End()
             .End();
     }
     
@@ -76,12 +84,7 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().ComboBox().SetData(dataSource).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .Column(30, SizeType.Absolute).End()
             .End();
-    }
-
-    public static TextBoxBuilder<T> Binding<T>(this TextBoxBuilder<T> textBoxBuilder, string dataMember)
-    {
-        textBoxBuilder.Binding(_binding ?? throw new NullReferenceException(), dataMember);
-        return textBoxBuilder;
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Validaiger.Message;
+using System.Windows.Forms;
+using UserInterface.Message;
 
-namespace Validaiger;
+namespace UserInterface;
 
 public class PropertyChange : INotifyPropertyChanged, IMessageErrorProvider
 {

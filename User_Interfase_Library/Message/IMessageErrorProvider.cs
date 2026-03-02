@@ -1,4 +1,4 @@
-﻿namespace Validaiger.Message;
+﻿namespace UserInterface.Message;
 
 public interface IMessageErrorProvider
 {

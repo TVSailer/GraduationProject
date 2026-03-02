@@ -1,5 +1,6 @@
-
 using Admin.DI;
+using DataAccess.Postgres;
+using DataAccess.Postgres.Seeding;
 using UserInterface.View;
 
 internal static class Program
@@ -16,9 +17,9 @@ internal static class Program
         var controlView = di.GetService<ControlView>();
         controlView.LoadView(new AdminFieldData());
 
-        //var d = di.GetService<ApplicationDbContext>();
-        //d.Lessons.First().Reviews.Add(new ReviewEntity(4, "kasdhglkasdhgklasdklghkliadsf", d.Visitors.First()));
-        //d.SaveChanges();
+        var db = di.GetService<ApplicationDbContext>();
+
+        DatabaseSeeder.SeedAsync(db);
 
         Application.Run(controlView.Form);
     }

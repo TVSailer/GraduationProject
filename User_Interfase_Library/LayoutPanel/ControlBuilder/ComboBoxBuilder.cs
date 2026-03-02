@@ -22,7 +22,9 @@ public class ComboBoxBuilder<TParentBuilder>(TParentBuilder parentBuilder) : ICo
 
     public ComboBoxBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        _textBox.Binding(nameof(ComboBox.SelectedItem), dataSource, dataMember);
+        _textBox
+            .Binding(nameof(ComboBox.SelectedItem), dataSource, dataMember)
+            .ErrorProvider(dataSource, dataMember);
         return this;
     }
         

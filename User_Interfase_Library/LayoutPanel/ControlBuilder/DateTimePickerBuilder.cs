@@ -17,7 +17,9 @@ public class DateTimePickerBuilder<TParentBuilder>(TParentBuilder parentBuilder)
 
     public DateTimePickerBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        _textBox.Binding(nameof(DateTimePicker.Text), dataSource, dataMember);
+        _textBox
+            .Binding(nameof(DateTimePicker.Text), dataSource, dataMember)
+            .ErrorProvider(dataSource, dataMember);
         return this;
     }
         

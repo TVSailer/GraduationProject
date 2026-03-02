@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Validaiger.Message;
+namespace UserInterface.Message;
 
 public class ErrorMessagePropertyArgs(string? errorText, PropertyChangedEventArgs propertyName)
 {

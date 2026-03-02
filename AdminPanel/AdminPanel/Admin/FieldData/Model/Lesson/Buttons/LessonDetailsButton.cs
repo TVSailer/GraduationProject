@@ -2,9 +2,9 @@
 using Admin.ViewModel.Model.Lesson;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
+using UserInterface.Message;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
-using Validaiger.Message;
 
 namespace Admin.FieldData.Model.Lesson.Buttons;
 

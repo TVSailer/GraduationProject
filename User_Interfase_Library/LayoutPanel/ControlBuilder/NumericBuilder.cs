@@ -19,7 +19,9 @@ public class NumericBuilder<TParentBuilder>(TParentBuilder parentBuilder) : ICon
 
     public NumericBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        _textBox.Binding(nameof(TextBox.Text), dataSource, dataMember);
+        _textBox
+            .Binding(nameof(TextBox.Text), dataSource, dataMember)
+            .ErrorProvider(dataSource, dataMember);
         return this;
     }
 

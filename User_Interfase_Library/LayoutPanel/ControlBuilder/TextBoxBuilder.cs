@@ -1,11 +1,12 @@
-﻿using System.Drawing;
+﻿using Extension_Func_Library;
+using System.Drawing;
 using System.Windows.Forms;
-using Extension_Func_Library;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
 public class TextBoxBuilder<TParentBuilder>(TParentBuilder parentBuilder) : IControlBuilder<TextBox, TParentBuilder>
 {
+    
     private readonly TextBox _textBox = new()
     {
         Text = "",
@@ -34,7 +35,10 @@ public class TextBoxBuilder<TParentBuilder>(TParentBuilder parentBuilder) : ICon
 
     public TextBoxBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        _textBox.Binding(nameof(TextBox.Text), dataSource, dataMember);
+        _textBox
+            .Binding(nameof(TextBox.Text), dataSource, dataMember)
+            .ErrorProvider(dataSource, dataMember);
+
         return this;
     }
 

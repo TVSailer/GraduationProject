@@ -30,6 +30,7 @@ namespace DataAccess.Postgres
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
         }
     }
 }

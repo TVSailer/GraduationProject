@@ -5,8 +5,8 @@ namespace DataAccess.Postgres.Models.Imgs;
 public class ImgEventEntity : ImgEntity
 {
     [ForeignKey(name: nameof(EventEntity))]
-    public long EventId { get; private set; }
-    public EventEntity Event { get; private set; }
+    public long EventId { get; set; }
+    public EventEntity Event { get; set; }
 
     public ImgEventEntity() { }
 
