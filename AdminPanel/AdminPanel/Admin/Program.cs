@@ -16,9 +16,8 @@ internal static class Program
         var controlView = di.GetService<ControlView>();
         controlView.LoadView(new AdminFieldData());
 
-        //var f = new FIO("alsdkfj dfjk dks");
         //var d = di.GetService<ApplicationDbContext>();
-        //d.AddRange(new TeacherEntity{FIO = f, AuthId = 1, DateBirth = "30.11.2005", NumberPhone = "86767676767"});
+        //d.Lessons.First().Reviews.Add(new ReviewEntity(4, "kasdhglkasdhgklasdklghkliadsf", d.Visitors.First()));
         //d.SaveChanges();
 
         Application.Run(controlView.Form);

@@ -1,11 +1,11 @@
-﻿using Admin.ViewModel.AbstractViewModel;
-using Admin.ViewModels.Lesson;
+﻿using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.CustomAttribute;
+using UserInterface.Attribute;
+using UserInterface.UiLayoutPanel.SearchCardPanel;
 
-namespace Admin.ViewModel.Model.News;
+namespace Admin.FieldData.Model.News;
 
-public class NewsFieldSearch(NewsCategoryRepository repository) : SearchFieldData
+public class NewsFieldSearch(CategoryRepository repository) : SearchFieldData<NewsEntity>
 {
     public List<string> Categorys 
     {
@@ -18,24 +18,19 @@ public class NewsFieldSearch(NewsCategoryRepository repository) : SearchFieldDat
     }
 
     [ComboBoxFieldUi("Категория", nameof(Categorys))]
-    [FieldState("")]
-    public string? Category { get; set => OnPropertyChange(ref field, value); }
+    public string? Category { get; set => OnPropertyChanged(ref field, value); }
 
     [BaseFieldUi("Название")]
-    [FieldState("")]
-    public string? Title { get; set => OnPropertyChange(ref field, value); } 
+    public string? Title { get; set => OnPropertyChanged(ref field, value); } 
     
     [BaseFieldUi("Автор")]
-    [FieldState("")]
-    public string Author { get; set => OnPropertyChange(ref field, value); }
+    public string? Author { get; set => OnPropertyChanged(ref field, value); }
 
     [MaskedTextBoxFieldUi("с", "00/00/0000")]
-    [FieldState("")]
-    public string? StartDate { get; set => OnPropertyChange(ref field, value); }
+    public string? StartDate { get; set => OnPropertyChanged(ref field, value); }
 
     [MaskedTextBoxFieldUi("по", "00/00/0000")]
-    [FieldState("")]
-    public string? EndDate { get; set => OnPropertyChange(ref field, value); }
+    public string? EndDate { get; set => OnPropertyChanged(ref field, value); }
 
     public DateTime StartDateTime()
     {
@@ -50,4 +45,25 @@ public class NewsFieldSearch(NewsCategoryRepository repository) : SearchFieldDat
             return date;
         return DateTime.MaxValue;
     }
+
+    public override Func<NewsEntity[], NewsEntity[]> SearchFunc =>
+        entitys =>
+            entitys
+                .Where(e => Category == null || Category.Equals(Categorys[0]) || e.Category.Equals(Category))
+                .Where(e => e.Title.StartsWith(Title ?? ""))
+                .Where(e => e.Author.StartsWith(Author ?? ""))
+                .Where(e =>
+                    e.DateT() >= StartDateTime() &&
+                    e.DateT() <= EndDateTime())
+                .ToArray();
+
+    public override Action ClearFunc =>
+        () =>
+        {
+            Category = string.Empty;
+            Title = string.Empty;
+            Author = string.Empty;
+            EndDate = string.Empty;
+            StartDate = string.Empty;
+        };
 }

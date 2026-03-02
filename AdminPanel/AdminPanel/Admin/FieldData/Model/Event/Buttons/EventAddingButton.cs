@@ -1,25 +1,23 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View;
+﻿using Admin.DI;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.Interface;
-using Logica.UI;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.View;
 
-namespace Admin.ViewModel.Model.Event.Buttons;
+namespace Admin.FieldData.Model.Event.Buttons;
 
 public class EventAddingButton(ControlView controlView, Repository<EventEntity> repository) : 
-    IButtons<ViewButtonClickArgs<EventEntity, EventAddingFieldData>>
+    IButtons<EventFieldData>
 {
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<EventEntity, EventAddingFieldData>? e)
+    public List<CustomButton> GetButtons(EventFieldData e)
         => [
-           new CustomButton("Сохранить").CommandClick(() => e?.FieldData.TryWordWithEntity(entity =>
+           new CustomButton("Сохранить").CommandClick(() => e.ValidObject((_, entity) =>
                 {
-                    repository.Add(entity.GetDataNotNull());
+                    repository.Add(entity);
                     controlView.Exit();
                 })),
-            new CustomButton("Добавить изображение").CommandClick(() => e?.FieldData.OnAddingImg.Execute(null)),
-            new CustomButton("Удалить изображение").CommandClick(() => e?.FieldData.OnDeletingImg.Execute(null)),
+            new CustomButton("Добавить изображение").CommandClick(() => e.RepositoryImgEntity.OnAddingImg()),
+            new CustomButton("Удалить изображение").CommandClick(() => e.RepositoryImgEntity.OnDeletingImg()),
             new CustomButton("Назад").CommandClick(controlView.Exit),
         ];
 }

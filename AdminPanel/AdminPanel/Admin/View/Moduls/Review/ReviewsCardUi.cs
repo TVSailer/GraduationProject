@@ -21,5 +21,5 @@ public class ReviewsCardUi(
             .ContentEnd(new CardLayoutPanel<ReviewEntity, ReviewCard>()
                 .SetClickedCard(parametersButtons)
                 .Initialize(repository.GetReviews().ToArray()))
-            .RowAutoSize().ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
 }

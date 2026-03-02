@@ -21,6 +21,7 @@ public class TeacherDetailsButton(
             }),
             new CustomButton("Удалить").CommandClick(() =>
             {
+                if (!LogicaMessage.MessageOkCancel("Вы дейсвительно хотите удалть?")) return;
                 if (repository.TryDelete(fieldData.EntityId, out var logger))
                 {
                     controlView.Exit();

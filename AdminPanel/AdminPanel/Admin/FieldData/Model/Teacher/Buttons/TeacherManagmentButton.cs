@@ -8,7 +8,6 @@ using UserInterface.View;
 namespace Admin.FieldData.Model.Teacher.Buttons;
 
 public class TeacherManagerButton(
-    TeacherFieldData viewData,
     ControlView controlView) : 
     IButtons<TeacherManager>,
     IButtons<CardClickedToolStripArgs<TeacherEntity>>, 
@@ -20,13 +19,9 @@ public class TeacherManagerButton(
     public List<CustomButton> GetButtons(TeacherManager eventArgs)
         => [
             new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Добавить").CommandClick(() => controlView.LoadView(viewData)),
+            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<TeacherFieldData>()),
         ];
 
     public CustomButton GetButton(CardClickedArgs<TeacherEntity> eventArgs)
-        => new CustomButton().CommandClick(() =>
-        {
-            viewData.Entity = eventArgs.Entity;
-            controlView.LoadView<TeacherFieldData, TeacherEntity>(viewData);
-        });
+        => new CustomButton().CommandClick(() => controlView.LoadView<TeacherFieldData, TeacherEntity>(eventArgs.Entity));
 }

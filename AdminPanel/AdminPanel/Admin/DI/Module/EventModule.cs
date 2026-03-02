@@ -1,42 +1,29 @@
+using Admin.FieldData.Model.Event;
+using Admin.FieldData.Model.Event.Buttons;
 using Admin.View;
-using Admin.View.ViewForm;
-using Admin.ViewModel.GenericEntity;
-using Admin.ViewModel.Interface;
-using Admin.ViewModel.Managment;
-using Admin.ViewModel.Model.Event;
-using Admin.ViewModel.Model.Event.Buttons;
-using Admin.ViewModel.Model.Lesson.Buttons;
-using Admin.ViewModels.Lesson;
+using Admin.View.Moduls.Event;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.Interface;
 using Ninject.Modules;
-using WinFormsApp1.ViewModelEntity.Event;
+using UserInterface.View;
 
-namespace Admin.DI;
+namespace Admin.DI.Module;
 
-public record EventManagment : IFieldData;
-public class EventAddingFieldData(EventCategoryRepository eventCategoryRepository)
-    : EventFieldData(eventCategoryRepository);
-public class EventDetailsFieldData(EventCategoryRepository eventCategoryRepository)
-    : EventFieldData(eventCategoryRepository);
+public record EventManager;
 
 public class EventModule : NinjectModule
 {
     public override void Load()
     {
         Kernel.Bind<Repository<EventEntity>>().To<EventRepository>().InSingletonScope();
-        Kernel.Bind<Repository<EventCategoryEntity>>().To<EventCategoryRepository>().InSingletonScope();
 
-        Kernel.Bind<IParametersSearch<EventEntity, EventFieldSearch>>().To<EventSearch>();
-
-        Kernel.Bind<IView<EventAddingFieldData>>().To<BaseUi<EventAddingFieldData, EventEntity, EventAddingButton>>();
-        Kernel.Bind<IView<EventDetailsFieldData, EventEntity>>().To<BaseUi<EventDetailsFieldData, EventEntity, EventDetailsButton>>();
-        Kernel.Bind<IView<EventManagment>>().To<ManagmentEntityUi<
-            EventManagment,
+        Kernel.Bind<UiView<EventFieldData>>().To<EventPanelUi<EventAddingButton>>();
+        Kernel.Bind<UiView<EventFieldData, EventEntity>>().To<EventPanelUi<EventDetailsButton>>();
+        Kernel.Bind<UiView<EventManager>>().To<ManagerEntityUi<
+            EventManager,
             EventEntity,
             EventFieldSearch,
             EventCard,
-            EventManagmentButton>>();
+            EventManagerButton>>();
     }
 }

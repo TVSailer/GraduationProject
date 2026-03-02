@@ -1,11 +1,11 @@
-﻿using Admin.ViewModel.AbstractViewModel;
-using Admin.ViewModels.Lesson;
+﻿using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
-using Logica.CustomAttribute;
+using UserInterface.Attribute;
+using UserInterface.UiLayoutPanel.SearchCardPanel;
 
-namespace WinFormsApp1.ViewModelEntity.Event
+namespace Admin.FieldData.Model.Event
 {
-    public class EventFieldSearch(EventCategoryRepository repository) : SearchFieldData
+    public class EventFieldSearch(CategoryRepository repository) : SearchFieldData<EventEntity>
     {
         public List<string> Categorys
         {
@@ -18,20 +18,16 @@ namespace WinFormsApp1.ViewModelEntity.Event
         }
 
         [ComboBoxFieldUi("Категория", nameof(Categorys))]
-        [FieldState("")]
-        public string? Category { get; set => OnPropertyChange(ref field, value); }
+        public string? Category { get; set => OnPropertyChanged(ref field, value); }
 
         [BaseFieldUi("Название")]
-        [FieldState("")]
-        public string? Title { get; set => OnPropertyChange(ref field, value); }
+        public string? Title { get; set => OnPropertyChanged(ref field, value); }
 
         [MaskedTextBoxFieldUi("с", "00/00/0000")]
-        [FieldState("")]
-        public string? StartDate { get; set => OnPropertyChange(ref field, value); }
+        public string? StartDate { get; set => OnPropertyChanged(ref field, value); }
 
         [MaskedTextBoxFieldUi("по", "00/00/0000")]
-        [FieldState("")]
-        public string? EndDate { get; set => OnPropertyChange(ref field, value); }
+        public string? EndDate { get; set => OnPropertyChanged(ref field, value); }
 
         public DateTime StartDateTime()
         {
@@ -46,5 +42,24 @@ namespace WinFormsApp1.ViewModelEntity.Event
                 return date;
             return DateTime.MaxValue;
         }
+
+        public override Func<EventEntity[], EventEntity[]> SearchFunc =>
+            entitys =>
+                entitys
+                    .Where(e => Category == null || Category.Equals(Categorys[0]) || e.Category.Equals(Category))
+                    .Where(e => e.Title.StartsWith(Title ?? ""))
+                    .Where(e =>
+                        e.Schedule.DateT() >= StartDateTime() &&
+                        e.Schedule.DateT() <= EndDateTime())
+                    .ToArray();
+
+        public override Action ClearFunc =>
+            () =>
+            {
+                Category = string.Empty;
+                StartDate = string.Empty;
+                EndDate = string.Empty;
+                Title = string.Empty;
+            };
     }
 }

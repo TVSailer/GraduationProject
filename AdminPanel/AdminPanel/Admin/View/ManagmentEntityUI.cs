@@ -9,7 +9,6 @@ using UserInterface.View;
 namespace Admin.View;
 
 public class ManagerEntityUi<T, TEntity, TFieldSearch, TCard, TButtons>(
-    T viewData,
     TButtons parametersButtons,
     TFieldSearch fieldSearch,
     Repository<TEntity> repository) : UiView<T>

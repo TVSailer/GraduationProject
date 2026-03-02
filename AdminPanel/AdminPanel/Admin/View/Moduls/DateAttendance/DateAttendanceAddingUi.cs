@@ -6,9 +6,9 @@ using UserInterface.LayoutPanel;
 
 namespace Admin.View.Moduls.DateAttendance;
 
-public class DateAttendanceAddingUi : Form
+public class DateAttendanceAddingPanelUi : Form
 {
-    public DateAttendanceAddingUi(MementoLesson memento)
+    public DateAttendanceAddingPanelUi(MementoLesson memento)
     {
         Size = new Size(800, 800);
 

@@ -7,6 +7,11 @@ namespace Admin.View.Moduls.Review;
 
 public class ReviewCard : ObjectCard<ReviewEntity>
 {
+    public ReviewCard()
+    {
+        Size = new Size(350, 80);
+    }
+
     public override Control Content()
         => new BuilderLayoutPanel().CreateColumn()
             .Row().ContentEnd(FactoryElements.Label_11(Entity.Date).With(l => l.ForeColor = Color.DarkBlue))

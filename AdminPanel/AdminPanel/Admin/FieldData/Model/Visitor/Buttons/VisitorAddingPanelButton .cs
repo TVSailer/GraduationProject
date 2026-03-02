@@ -1,6 +1,4 @@
-﻿using Admin.ViewModel.Model.Visitor;
-using DataAccess.Postgres;
-using DataAccess.Postgres.Repository;
+﻿using DataAccess.Postgres.Repository;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
 using Validaiger.Message;
@@ -16,7 +14,7 @@ public class VisitorAddingButton(MementoLesson mementoLesson, ControlView contro
             new CustomButton("Сохранить")
                 .CommandClick(() => e.ValidObject((id, entity) =>
                 {
-                    mementoLesson.AddVisitor(entity, out var logger);
+                    mementoLesson.AddNewVisitor(entity, out var logger);
                     LogicaMessage.MessageInfo(logger.Log);
                     controlView.Exit();
                 })),

@@ -9,7 +9,7 @@ namespace Admin.View.Moduls.Visitor;
 public class VisitorAdditionalPanelUi(
     Repository<LessonEntity> repositoryL,
     VisitorDetailsButton parametersButtons)
-    : VisitorPanelUi(repositoryL, parametersButtons)
+    : VisitorPanelUi<VisitorDetailsButton>(parametersButtons)
 {
     protected override Control AdditionalContent()
     {

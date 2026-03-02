@@ -8,13 +8,4 @@ public class ReviewEntity : Entity
     public string Comment { get; set; } = "";
     public VisitorEntity Visitor { get; set; }
     public LessonEntity Lesson { get; set; }
-
-    public ReviewEntity(int rating, string comment, VisitorEntity visitor)
-    {
-        Rating = rating;
-        Comment = comment;
-        Visitor = visitor;
-    }
-
-    public ReviewEntity() { }
 }

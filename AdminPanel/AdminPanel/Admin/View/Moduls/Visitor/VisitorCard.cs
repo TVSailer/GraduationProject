@@ -8,6 +8,11 @@ namespace Admin.View.Moduls.Visitor
 {
     public class VisitorCard : ObjectCard<VisitorEntity>
     {
+        public VisitorCard()
+        {
+            Size = new Size(400, 100);
+        }
+
         public override Control Content()
            => new BuilderLayoutPanel().CreateColumn()
                .Row(30).ContentEnd(FactoryElements.Label_11($"{Entity}")

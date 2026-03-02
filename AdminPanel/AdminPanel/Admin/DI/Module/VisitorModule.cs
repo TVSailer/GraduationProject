@@ -19,7 +19,7 @@ public class VisitorModule : NinjectModule
     {
         Kernel.Bind<VisitorsRepository, Repository<VisitorEntity>>().To<VisitorsRepository>().InSingletonScope();
 
-        Kernel.Bind<UiView<VisitorFieldData>>().To<VisitorPanelUi>();
+        Kernel.Bind<UiView<VisitorFieldData>>().To<VisitorPanelUi<VisitorAddingButton>>();
         Kernel.Bind<UiView<VisitorFieldData, VisitorEntity>>().To<VisitorAdditionalPanelUi>();
         Kernel.Bind<UiView<VisitorNotBelongingLesson>>().To<VisitorNotBelongingLessonCardUi>();
         Kernel.Bind<UiView<VisitorBelongingLesson>>().To<VisitorBelongingLessonCardUi>();

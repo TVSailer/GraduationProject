@@ -23,7 +23,7 @@ public class VisitorNotBelongingLessonButton(ControlView control, MementoLesson 
         => new CustomButton()
                 .CommandClick(() =>
                 {
-                    repository.AddVisitor(eventArgs.Entity);
+                    repository.AddOldVisitor(eventArgs.Entity);
                     control.Exit();
                 });
 }

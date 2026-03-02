@@ -14,7 +14,7 @@ public class DateAttendanceManagerButton(ControlView controlView, MementoLesson 
         => [
             new CustomButton("Назад").CommandClick(controlView.Exit),
             new CustomButton("Добавить")
-                .CommandClick(controlView.ShowDialog<DateAttendanceAddingUi>)
+                .CommandClick(controlView.ShowDialog<DateAttendanceAddingPanelUi>)
                 .Enable(memento.Lesson!.TryRangeScheduleNow()),
         ];
 }

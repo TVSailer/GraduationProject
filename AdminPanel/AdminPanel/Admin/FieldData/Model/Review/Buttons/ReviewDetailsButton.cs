@@ -1,12 +1,12 @@
-﻿using Admin.FieldData.Model.Review;
-using DataAccess.Postgres.Repository;
+﻿using DataAccess.Postgres.Repository;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
+using Validaiger.Message;
 
-namespace Admin.ViewModel.Model.Review.Buttons;
+namespace Admin.FieldData.Model.Review.Buttons;
 
 public class ReviewDetailsButton(
-    Repository<ReviewEntity> repository,
+    MementoLesson repository,
     ControlView controlView) : 
     IButtons<ReviewFieldData>
 {
@@ -15,7 +15,8 @@ public class ReviewDetailsButton(
             new CustomButton("Назад").CommandClick(controlView.Exit),
             new CustomButton("Удалить").CommandClick(() =>
             {
-                repository.Delete(e.EntityId);
+                if (!LogicaMessage.MessageOkCancel("Вы дейсвительно хотите удалть?")) return;
+                repository.DeleteReview(e.EntityId);
                 controlView.Exit();
             })
         ];

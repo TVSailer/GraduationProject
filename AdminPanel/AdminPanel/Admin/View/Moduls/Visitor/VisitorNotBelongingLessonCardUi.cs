@@ -18,5 +18,5 @@ public class VisitorNotBelongingLessonCardUi(
             .Row().ContentEnd(new CardLayoutPanel<VisitorEntity, VisitorCard>()
                 .SetClickedCard(parametersButtons)
                 .Initialize(repository.GetVisitorsNotBelongingLesson().ToArray()))
-            .RowAutoSize().ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
 }

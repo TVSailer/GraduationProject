@@ -1,5 +1,4 @@
-﻿using Admin.DI;
-using Admin.DI.Module;
+﻿using Admin.DI.Module;
 using Admin.FieldData.Model.DateAttendance.Buttons;
 using DataAccess.Postgres.Repository;
 using UserInterface;
@@ -18,7 +17,7 @@ public class DateAttendancePanelUi(
         => builderLayoutPanel.CreateColumn()
             .RowAutoSize().ContentEnd(OnLoadData(FactoryElements.DataGridView()))
             .Row().End()
-            .RowAutoSize().ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
 
     internal DataGridView OnLoadData(DataGridView gridView)
     {

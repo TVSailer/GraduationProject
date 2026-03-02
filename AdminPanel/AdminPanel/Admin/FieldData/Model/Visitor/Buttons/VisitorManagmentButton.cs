@@ -1,5 +1,4 @@
 ﻿using Admin.DI.Module;
-using Admin.ViewModel.Model.Visitor;
 using DataAccess.Postgres.Models;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
@@ -7,7 +6,7 @@ using UserInterface.View;
 
 namespace Admin.FieldData.Model.Visitor.Buttons;
 
-public class VisitorManagerButton(ControlView controlView, VisitorFieldData fieldData) : 
+public class VisitorManagerButton(ControlView controlView) : 
     IButtons<VisitorManager>, 
     IButtons<CardClickedToolStripArgs<VisitorEntity>>, 
     IButton<CardClickedArgs<VisitorEntity>>
@@ -21,9 +20,5 @@ public class VisitorManagerButton(ControlView controlView, VisitorFieldData fiel
         => [];
 
     public CustomButton GetButton(CardClickedArgs<VisitorEntity> eventArgs)
-        => new CustomButton().CommandClick(() =>
-        {
-            fieldData.Entity = eventArgs.Entity;
-            controlView.LoadView<VisitorFieldData, VisitorEntity>(fieldData);
-        });
+        => new CustomButton().CommandClick(() => controlView.LoadView<VisitorFieldData, VisitorEntity>(eventArgs.Entity));
 }

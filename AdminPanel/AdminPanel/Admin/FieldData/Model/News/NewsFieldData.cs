@@ -1,36 +1,37 @@
 ﻿using Admin.ViewModel.AbstractFieldData;
-using Admin.ViewModel.AbstractViewModel;
-using Admin.ViewModels.Lesson;
 using DataAccess.Postgres.Models;
+using DataAccess.Postgres.Models.Imgs;
 using DataAccess.Postgres.Repository;
-using Logica.CustomAttribute;
-using WinFormsApp1.ViewModelEntity.Event;
+using UserInterface.Attribute;
+using Validaiger.AttributeValid;
 
-namespace Admin.ViewModel.Model.News;
+namespace Admin.FieldData.Model.News;
 
 
-public class NewsFieldData(NewsCategoryRepository repository) : FieldModelWithImages<NewsEntity>
+public class NewsFieldData(CategoryRepository repository) : FieldDataWithImages<ImgNewsEntity, NewsEntity>
 {
-    public List<NewsCategoryEntity> Categorys => repository.Get();
+    [LinkingEntity(nameof(NewsEntity.Imgs))]
+    public List<ImgNewsEntity> Images
+    {
+        get => ImagesData;
+        set => ImagesData = value;
+    }
+
+    public List<CategoryEntity> Categorys => repository.Get();
 
     [RequiredCustom]
     [LinkingEntity(nameof(NewsEntity.Category))]
-    [ComboBoxFieldUi("Категория:", nameof(Categorys))]
-    public NewsCategoryEntity Category { get; set => ValidProperty(ref field, value); }
+    public CategoryEntity? Category { get; set => ValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity(nameof(NewsEntity.Title))]
-    [BaseFieldUi("Название:", "Введите название")]
-    public string? Title { get; set => 
-        ValidProperty(ref field, value); }
+    public string? Title { get; set => ValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity(nameof(NewsEntity.Content))]
-    [MultilineFieldUi]
     public string? Content { get; set => ValidProperty(ref field, value); }
 
     [LinkingEntity(nameof(NewsEntity.Date))]
-    [DateFieldUi("Дата:", "dd.MM.yyyy HH:mm")]
     public string? Date
     {
         get;
@@ -39,6 +40,5 @@ public class NewsFieldData(NewsCategoryRepository repository) : FieldModelWithIm
 
     [RequiredCustom]
     [LinkingEntity(nameof(NewsEntity.Author))]
-    [BaseFieldUi("Автор:", "Введите автора")]
-    public string Location { get; set => ValidProperty(ref field, value); }
+    public string? Author { get; set => ValidProperty(ref field, value); }
 }

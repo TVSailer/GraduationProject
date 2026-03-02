@@ -5,12 +5,8 @@ using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Postgres.Repository
 {
-    public class LessonsRepository : Repository<LessonEntity>
+    public class LessonsRepository(ApplicationDbContext dbContext) : Repository<LessonEntity>(dbContext: dbContext)
     {
-        public LessonsRepository(ApplicationDbContext dbContext) :  base(dbContext: dbContext)
-        {
-        }
-
         public override List<LessonEntity> Get()
           => DbContext.Lessons
             .Include(navigationPropertyPath: l => l.Teacher)

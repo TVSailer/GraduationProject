@@ -9,10 +9,6 @@ namespace Admin.ViewModel.Model.Lesson.Buttons;
 
 public class LessonManagerButton(
     ControlView controlView, 
-    LessonFieldData fieldData,
-    VisitorBelongingLesson visitorBelongingLesson,
-    DateAttendanceManager dateAttendanceManager,
-    ReviewManager reviewManager,
     MementoLesson v) :
     IButtons<LessonManager>,
     IButtons<CardClickedToolStripArgs<LessonEntity>>,
@@ -21,28 +17,24 @@ public class LessonManagerButton(
     public List<CustomButton> GetButtons(CardClickedToolStripArgs<LessonEntity>? eventToolStripArgs)
         =>
         [
-            new CustomButton("Управление поситителями").CommandClick(() => ControlLesson(visitorBelongingLesson, eventToolStripArgs?.Entity)),
-            new CustomButton("Управление посещаемостью").CommandClick(() => ControlLesson(dateAttendanceManager, eventToolStripArgs?.Entity)),
-            new CustomButton("Управление отзывами").CommandClick(() => ControlLesson(reviewManager, eventToolStripArgs?.Entity)),
+            new CustomButton("Управление поситителями").CommandClick(() => ControlLesson<DateAttendanceManager>(eventToolStripArgs?.Entity)),
+            new CustomButton("Управление посещаемостью").CommandClick(() => ControlLesson<VisitorBelongingLesson>(eventToolStripArgs?.Entity)),
+            new CustomButton("Управление отзывами").CommandClick(() => ControlLesson<ReviewManager>(eventToolStripArgs?.Entity)),
         ];
 
     public List<CustomButton> GetButtons(LessonManager? eventArgs)
         =>
         [
             new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<LessonFieldData>(fieldData)),
+            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<LessonFieldData>()),
         ];
 
     public CustomButton GetButton(CardClickedArgs<LessonEntity> eventArgs)
-        => new CustomButton().CommandClick(() =>
-        {
-            fieldData.Entity = eventArgs.Entity;
-            controlView.LoadView<LessonFieldData, LessonEntity>(fieldData);
-        });
+        => new CustomButton().CommandClick(() => controlView.LoadView<LessonFieldData, LessonEntity>(eventArgs.Entity));
 
-    private void ControlLesson<T>(T fieldData, LessonEntity? arg2FieldData)
+    private void ControlLesson<T>(LessonEntity? arg2FieldData)
     {
         v.Lesson = arg2FieldData;
-        controlView.LoadView(fieldData);
+        controlView.LoadView<T>();
     }
 }

@@ -2,6 +2,7 @@
 using DataAccess.Postgres.Repository;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
+using Validaiger.Message;
 
 namespace Admin.FieldData.Model.Visitor.Buttons;
 
@@ -19,6 +20,7 @@ public class VisitorDetailsButton(
             })),
             new CustomButton("Удалить").CommandClick(() =>
             {
+                if(! LogicaMessage.MessageOkCancel("Вы дейсвительно хотите удалть?")) return;
                 repository.Delete(fieldData.EntityId);
                 controlView.Exit();
             })

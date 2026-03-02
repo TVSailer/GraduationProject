@@ -8,15 +8,17 @@ namespace Admin.FieldData.Model.AdminMain;
 public class AdminMainViewButton(
     ControlView controlView,
     LessonManager fieldDataL,
-    VisitorManager fielDataV,
+    NewsManager fieldDataN,
+    EventManager fieldDataE,
+    VisitorManager fieldDataV,
     TeacherManager fieldDataT) : IButtons<AdminFieldData>
 {
     public List<CustomButton> GetButtons(AdminFieldData eventArgs)
         => [
-            new CustomButton("📰 Управление новостями").CommandClick(() => controlView.LoadView(fieldDataL)),
-            new CustomButton("🎭 Управление мероприятиями").CommandClick(() => controlView.LoadView(fieldDataL)),
+            new CustomButton("📰 Управление новостями").CommandClick(() => controlView.LoadView(fieldDataN)),
+            new CustomButton("🎭 Управление мероприятиями").CommandClick(() => controlView.LoadView(fieldDataE)),
             new CustomButton("🎨 Управление кружками").CommandClick(() => controlView.LoadView(fieldDataL)),
-            new CustomButton("👥 Управление посетителями").CommandClick(() => controlView.LoadView(fielDataV)),
+            new CustomButton("👥 Управление посетителями").CommandClick(() => controlView.LoadView(fieldDataV)),
             new CustomButton("👨‍🏫 Управление преподавателями").CommandClick(() => controlView.LoadView(fieldDataT)),
         ];
 }

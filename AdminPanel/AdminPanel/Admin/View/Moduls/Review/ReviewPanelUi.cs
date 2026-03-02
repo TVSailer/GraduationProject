@@ -1,6 +1,5 @@
 ﻿using Admin.FieldData.Model.Review;
-using Admin.ViewModel.Model.Review;
-using Admin.ViewModel.Model.Review.Buttons;
+using Admin.FieldData.Model.Review.Buttons;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.UiLayoutPanel.ButtonPanel;
@@ -18,7 +17,8 @@ public class ReviewPanelUi(ReviewDetailsButton button) : UiView<ReviewFieldData,
                 .Column()
                     .Row(SizeRow).LabelTextBoxReadOnly("Рейтинг: ", "", nameof(ReviewFieldData.Rating))
                     .Row(SizeRow).LabelTextBoxReadOnly("Автор: ", "", nameof(ReviewFieldData.Visitor))
-                    .Row(200).LabelMaskTextBox("Комментарий: ", "", nameof(ReviewFieldData.Comment))
+                    .Row(200, SizeType.Absolute).LabelTextBoxReadOnlyMultiline("Комментарий: ", "", nameof(ReviewFieldData.Comment))
+                    .Row().End()
                 .End()
                 .Column().End()
             .End()

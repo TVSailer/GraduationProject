@@ -1,29 +1,17 @@
-﻿using DataAccess.Postgres.Models;
+﻿using Admin.FieldData.AbstractFieldData;
+using DataAccess.Postgres.Models;
 using UserInterface.Attribute;
-using UserInterface.Interface;
 
 namespace Admin.FieldData.Model.Review;
 
-public class ReviewFieldData : IDataUi<ReviewEntity>
+public class ReviewFieldData : FieldData<ReviewEntity>
 {
     [LinkingEntity(nameof(ReviewEntity.Rating))]
-    public int Rating { get; set; }
+    public int Rating { get; set => OnPropertyChanged(ref field, value); }
 
     [LinkingEntity(nameof(ReviewEntity.Visitor))]
-    public VisitorEntity? Visitor { get; set; }
+    public VisitorEntity? Visitor { get; set => OnPropertyChanged(ref field, value); }
 
     [LinkingEntity(nameof(ReviewEntity.Comment))]
-    public string Comment { get; set; } = "";
-
-    public ReviewEntity Entity
-    {
-        get;
-        set
-        {
-            EntityId = value.Id;
-            field = value;
-        }
-    }
-
-    public long EntityId { get; set; }
+    public string? Comment { get; set => OnPropertyChanged(ref field, value); }
 }

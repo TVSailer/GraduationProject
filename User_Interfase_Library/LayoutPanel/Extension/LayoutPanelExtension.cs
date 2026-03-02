@@ -44,6 +44,17 @@ public static class LayoutPanelExtension
             .End();
     }
     
+    public static IColumnBuilder LabelTextBoxReadOnlyMultiline(this IRowBuilder rowBuilder, string labelText, string placeholder, string nameMember)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().TextBox(placeholder)
+                .Binding(_binding ?? throw new NullReferenceException(), nameMember)
+                .ReadOnly()
+                .Multiline().End()
+            .End();
+    }
+    
     public static IColumnBuilder LabelDatePicker(this IRowBuilder rowBuilder, string labelText, string format, string nameMember)
     {
         return rowBuilder

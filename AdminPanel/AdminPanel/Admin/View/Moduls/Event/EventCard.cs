@@ -2,13 +2,17 @@
 using Extension_Func_Library;
 using UserInterface;
 using UserInterface.LayoutPanel;
-using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel;
 
 namespace Admin.View.Moduls.Event;
 
 public class EventCard : ObjectCard<EventEntity>
 {
+    public EventCard()
+    {
+        Size = new Size(300, 100);
+    }
+
     public override Control Content()
         => new BuilderLayoutPanel().CreateColumn()
             .Row().ContentEnd(FactoryElements.Label_11(Entity.Title).With(t => t.ForeColor = Color.DarkBlue))

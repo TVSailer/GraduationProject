@@ -11,19 +11,10 @@
 
   <ItemGroup>
     <Compile Remove="Resources\**" />
-    <Compile Remove="FieldData\Model\Event\**" />
-    <Compile Remove="FieldData\Model\News\**" />
-    <EmbeddedResource Remove="Resources\**" />
-    <EmbeddedResource Remove="FieldData\Model\Event\**" />
-    <EmbeddedResource Remove="FieldData\Model\News\**" />
     <None Remove="Resources\**" />
-    <None Remove="FieldData\Model\Event\**" />
-    <None Remove="FieldData\Model\News\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="DI\Module\EventModule.cs" />
-    <Compile Remove="DI\Module\NewsModule.cs" />
     <Compile Remove="DI\TeacherModule.cs" />
     <Compile Remove="View\ManagementView.cs" />
     <Compile Remove="View\UI.cs" />

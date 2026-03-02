@@ -4,6 +4,7 @@ using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Repository;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
+using Validaiger.Message;
 
 namespace Admin.FieldData.Model.Lesson.Buttons;
 
@@ -22,6 +23,11 @@ public class LessonDetailsButton(
             new CustomButton("Добавить изображение").CommandClick(() => e.RepositoryImgEntity.OnAddingImg()),
             new CustomButton("Удалить изображения").CommandClick(() => e.RepositoryImgEntity.OnDeletingImg()),
             new CustomButton("Обновить расписание").CommandClick(() => new LessonScheduleView(e).ShowDialog()),
-            new CustomButton("Удалить").CommandClick(() => repository.Delete(e.Entity.Id)),
+            new CustomButton("Удалить").CommandClick(() =>
+            {
+                if (!LogicaMessage.MessageOkCancel("Вы дейсвительно хотите удалть?")) return;
+                repository.Delete(e.Entity.Id);
+                controlView.Exit();
+            }),
         ];
 }

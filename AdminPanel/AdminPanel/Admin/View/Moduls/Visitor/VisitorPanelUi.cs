@@ -1,6 +1,5 @@
 ﻿using Admin.FieldData.Model.Visitor;
 using DataAccess.Postgres.Models;
-using UserInterface;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.UiLayoutPanel;
@@ -22,7 +21,6 @@ public class VisitorPanelUi<TButton>(TButton parametersButtons)
                     .Row(SizeRow).LabelTextBox("ФИО: ", "Введите ФИО преподователя", nameof(VisitorFieldData.FIOVisitor))
                     .Row(SizeRow).LabelDatePicker("Дата рождения: ", "dd.MM.yyyy", nameof(VisitorFieldData.DateBirth))
                     .Row(SizeRow).LabelMaskTextBox("Номер телефона: ", "+7 (000)-000-00-00", nameof(VisitorFieldData.NumberPhone))
-                    .Row(SizeRow).ContentEnd(FactoryElements.Label_12(" Преподает:"))
                     .Row().ContentEnd(AdditionalContent())
                 .End()
             .Column().End()

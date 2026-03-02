@@ -22,6 +22,20 @@ public class ControlView(IServiceProvision di)
 
         return view;
     }
+    
+    public UiView<T> LoadView<T>()
+    {
+        if (View is not null) _stack.Push(View);
+
+        var view = di.GetService<UiView<T>>();
+        var dataUi = di.GetService<T>();
+        View = view;
+
+        view.SetData(dataUi);
+        view.InitializeComponents(Form);
+
+        return view;
+    }
 
     public UiView<T, TEntity> LoadView<T, TEntity>(T data) 
         where TEntity : new()
@@ -33,6 +47,23 @@ public class ControlView(IServiceProvision di)
         View = view;
 
         view.SetData(data);
+        view.InitializeComponents(Form);
+
+        return view;
+    }
+    
+    public UiView<T, TEntity> LoadView<T, TEntity>(TEntity data) 
+        where TEntity : new()
+        where T : IDataUi<TEntity>
+    {
+        if (View is not null) _stack.Push(View);
+
+        var view = di.GetService<UiView<T, TEntity>>();
+        var dataUi = di.GetService<T>();
+        View = view;
+
+        dataUi.Entity = data;
+        view.SetData(dataUi);
         view.InitializeComponents(Form);
 
         return view;

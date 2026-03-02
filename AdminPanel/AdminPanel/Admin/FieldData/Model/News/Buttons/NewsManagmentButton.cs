@@ -1,29 +1,31 @@
-﻿using Admin.Args;
-using Admin.DI;
-using Admin.View;
+﻿using Admin.DI;
+using Admin.DI.Module;
 using DataAccess.Postgres.Models;
-using Logica.Interface;
-using Logica.UI;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
+using UserInterface.View;
 
-namespace Admin.ViewModel.Model.News.Buttons;
+namespace Admin.FieldData.Model.News.Buttons;
 
-public class NewsManagmentButton(ControlView controlView) : 
-    IButtons<ViewButtonClickArgs<NewsManagment>>,
+public class NewsManagerButton(
+    ControlView controlView) : 
+    IButtons<NewsManager>,
     IButtons<CardClickedToolStripArgs<NewsEntity>>, 
     IButton<CardClickedArgs<NewsEntity>>
 {
-    public List<CustomButton> GetButtons(object? data, CardClickedToolStripArgs<NewsEntity> eventToolStripArgs)
+    public List<CustomButton> GetButtons(CardClickedToolStripArgs<NewsEntity> eventToolStripArgs)
         => [
         ];
 
-    public List<CustomButton> GetButtons(object? data, ViewButtonClickArgs<NewsManagment> eventArgs)
+    public List<CustomButton> GetButtons(NewsManager eventArgs)
         => [
             new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<NewsAddingFieldData>()),
+            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<NewsFieldData>()),
         ];
 
-    public CustomButton? GetButton(object? send, CardClickedArgs<NewsEntity> eventArgs)
-        => new CustomButton().CommandClick(() => controlView
-            .LoadView<NewsDetailsFieldData, NewsEntity>().FieldData.MementoEntity
-            .SetData(eventArgs.Entity));
+    public CustomButton GetButton(CardClickedArgs<NewsEntity> eventArgs)
+        => new CustomButton().CommandClick(() =>
+        {
+            controlView.LoadView<NewsFieldData, NewsEntity>(eventArgs.Entity);
+        });
 }

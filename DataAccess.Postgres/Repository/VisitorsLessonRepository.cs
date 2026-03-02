@@ -34,7 +34,7 @@ public class MementoLesson(
         return Lesson is null ? throw new ArgumentNullException() : repositoryD.Get().Where(predicate: d => d.Lesson.Id == Lesson.Id).ToList();
     }
 
-    public void AddVisitor(VisitorEntity obj, out ILogger logger)
+    public void AddNewVisitor(VisitorEntity obj, out ILogger logger)
     {
         if (Lesson is null) throw new ArgumentNullException();
         if (Lesson.MaxParticipants <= Lesson.Visitors.Count) throw new ArgumentOutOfRangeException();
@@ -45,7 +45,7 @@ public class MementoLesson(
         DbContext.SaveChanges();
     }
     
-    public void AddVisitor(VisitorEntity obj)
+    public void AddOldVisitor(VisitorEntity obj)
     {
         if (Lesson is null) throw new ArgumentNullException();
         if (Lesson.MaxParticipants <= Lesson.Visitors.Count) throw new ArgumentOutOfRangeException();
@@ -66,6 +66,13 @@ public class MementoLesson(
     {
         if (Lesson is null) throw new ArgumentNullException();
         Lesson.Visitors.RemoveAll(match: v => v.Id == idEntity);
+        DbContext.SaveChanges();
+    }
+    
+    public void DeleteReview(long idEntity)
+    {
+        if (Lesson is null) throw new ArgumentNullException();
+        Lesson.Reviews.RemoveAll(match: v => v.Id == idEntity);
         DbContext.SaveChanges();
     }
 }
