@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using DataAccess.Postgres.Models;
 using DataAccess.Postgres.Models.Imgs;
+using DataAccess.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace DataAccess.Postgres
 {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataAccess.Postgres {
+namespace DataAccess.PostgreSQL {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace DataAccess.Postgres {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DataAccess.Postgres.LocalResource", typeof(LocalResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DataAccess.PostgreSQL.LocalResource", typeof(LocalResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

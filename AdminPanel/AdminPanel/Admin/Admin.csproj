@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DataAccess.Postgres\DataAccess.Postgres.csproj" />
+    <ProjectReference Include="..\..\..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj" />
     <ProjectReference Include="..\..\..\Extension_Func_Library\ExtensionFunc.csproj" />
     <ProjectReference Include="..\..\..\User_Interfase_Library\UserInterface.csproj" />
     <ProjectReference Include="..\..\..\Validaiger\Validaiger.csproj" />
