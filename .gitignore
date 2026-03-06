@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /DataAccess.Postgres/LocalResource.resx
 /DataAccess.PostgreSQL/LocalResource.resx
+/AdminPanel/AdminPanel/Admin/App.config
+/DataAccess.PostgreSQL/App.config
