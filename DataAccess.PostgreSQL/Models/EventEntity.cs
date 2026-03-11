@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using CSharpFunctionalExtensions;
-using DataAccess.Postgres.Models.Imgs;
+using DataAccess.PostgreSQL.ComplexType;
+using DataAccess.PostgreSQL.Models.Imgs;
 
-namespace DataAccess.Postgres.Models;
+namespace DataAccess.PostgreSQL.Models;
 
 public class EventEntity : Entity
 {

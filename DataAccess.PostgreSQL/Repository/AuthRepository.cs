@@ -1,9 +1,9 @@
-﻿using DataAccess.Postgres.Models;
+﻿using DataAccess.PostgreSQL.Logger;
+using DataAccess.PostgreSQL.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
+using ILogger = DataAccess.PostgreSQL.Logger.ILogger;
 
-namespace DataAccess.Postgres.Repository;
+namespace DataAccess.PostgreSQL.Repository;
 
 public class AuthRepository(ApplicationDbContext dbContext) : Repository<AuthEntity>(dbContext)
 {
@@ -40,12 +40,10 @@ public class AuthRepository(ApplicationDbContext dbContext) : Repository<AuthEnt
         while (true)
         {
             var password = GenerationPassword(12);
-            if (passwords.Any(p => BCrypt.Net.BCrypt.Verify(password, p))) continue;
+            if (passwords.Length > 0 && passwords.Any(p => BCrypt.Net.BCrypt.Verify(password, p))) continue;
 
             logger = new AuthLogger(login, password);
-
             var pass = BCrypt.Net.BCrypt.HashPassword(password);
-
             return Add(new AuthEntity { Login = login, Password = pass });
         }
     }

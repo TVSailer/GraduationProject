@@ -1,21 +1,19 @@
-﻿using DataAccess.Postgres.Extensions;
-using DataAccess.Postgres.Models;
+﻿using DataAccess.PostgreSQL.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
-namespace DataAccess.Postgres.Repository
+namespace DataAccess.PostgreSQL.Repository
 {
     public class LessonsRepository(ApplicationDbContext dbContext) : Repository<LessonEntity>(dbContext: dbContext)
     {
         public override List<LessonEntity> Get()
           => DbContext.Lessons
-            .Include(navigationPropertyPath: l => l.Teacher)
-            .Include(navigationPropertyPath: l => l.Reviews)
-            .Include(navigationPropertyPath: l => l.Visitors)
-            .Include(navigationPropertyPath: l => l.AttendanceDates)
-            .Include(navigationPropertyPath: l => l.Category)
-            .Include(navigationPropertyPath: l => l.Schedule)
-            .Include(navigationPropertyPath: l => l.Imgs)
+            .Include(l => l.Teacher)
+            .Include(l => l.Reviews)
+            .Include(l => l.Visitors)
+            .Include(l => l.AttendanceDates)
+            .Include(l => l.Category)
+            .Include(l => l.Schedule)
+            .Include(l => l.Imgs)
             .ToList() ?? throw new ArgumentNullException();
 
         public override void Update(long id, LessonEntity lesson)
@@ -29,6 +27,8 @@ namespace DataAccess.Postgres.Repository
                     .SetProperty(l => l.CategoryId, lesson.Category.Id)
                     .SetProperty(l => l.Location, lesson.Location)
                     .SetProperty(l => l.TeacherId, lesson.Teacher.Id));
+
+            DbContext.SaveChanges();
         }
 
         public override void Delete(long idEntity)
@@ -36,6 +36,8 @@ namespace DataAccess.Postgres.Repository
             DbContext.Lessons
                 .Where(predicate: l => l.Id == idEntity)
                 .ExecuteDelete();
+
+            DbContext.SaveChanges();
         }
     }
 }

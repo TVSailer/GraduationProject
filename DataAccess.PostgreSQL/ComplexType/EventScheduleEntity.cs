@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataAccess.Postgres.Models;
+namespace DataAccess.PostgreSQL.ComplexType;
 
 [ComplexType]
 public class EventScheduleEntity
@@ -42,8 +43,8 @@ public class EventScheduleEntity
         unchecked
         {
             var hashCode = Start.GetHashCode();
-            hashCode = (hashCode * 397) ^ End.GetHashCode();
-            hashCode = (hashCode * 397) ^ Date.GetHashCode();
+            hashCode = hashCode * 397 ^ End.GetHashCode();
+            hashCode = hashCode * 397 ^ Date.GetHashCode();
             return hashCode;
         }
     }

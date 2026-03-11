@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <None Remove="Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DI\TeacherModule.cs" />
+    <Compile Remove="View\ManagementView.cs" />
+    <Compile Remove="View\UI.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="Ninject" Version="3.3.6" />
+    <PackageReference Include="ninject.extensions.conventions" Version="3.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj" />
+    <ProjectReference Include="..\ExtensionFunc\ExtensionFunc.csproj" />
+    <ProjectReference Include="..\UserInterfase\UserInterface.csproj" />
+    <ProjectReference Include="..\Validaiger\Validaiger.csproj" />
+  </ItemGroup>
+
+</Project>

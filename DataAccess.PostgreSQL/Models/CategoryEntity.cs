@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace DataAccess.Postgres.Models
+namespace DataAccess.PostgreSQL.Models
 {
     public class CategoryEntity : Entity
     {
@@ -37,7 +37,7 @@ namespace DataAccess.Postgres.Models
         {
             unchecked
             {
-                return (base.GetHashCode() * 397) ^ Category.GetHashCode();
+                return base.GetHashCode() * 397 ^ Category.GetHashCode();
             }
         }
 

@@ -1,8 +1,12 @@
-﻿using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Repository;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DataAccess.PostgreSQL;
+using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Postgres.Memento;
+namespace DataAccess.PostgreSQL.Memento;
 
 public class MementoLessonRepository(Repository<VisitorEntity> repositoryV, ApplicationDbContext DbContext)
 {

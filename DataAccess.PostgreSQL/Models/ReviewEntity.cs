@@ -1,5 +1,6 @@
-﻿using CSharpFunctionalExtensions;
-using DataAccess.Postgres.Models;
+﻿using System;
+using CSharpFunctionalExtensions;
+using DataAccess.PostgreSQL.Models;
 
 public class ReviewEntity : Entity
 {

@@ -1,8 +1,12 @@
-﻿using System.Diagnostics;
-using DataAccess.Postgres.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using DataAccess.PostgreSQL;
+using DataAccess.PostgreSQL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Postgres.Repository;
+namespace DataAccess.PostgreSQL.Repository;
 
 public class VisitorsRepository(ApplicationDbContext dbContext) : Repository<VisitorEntity>(dbContext: dbContext)
 {
@@ -22,8 +26,7 @@ public class VisitorsRepository(ApplicationDbContext dbContext) : Repository<Vis
             .ExecuteUpdate(setPropertyCalls: v => v
                 .SetProperty(v => v.FIO, visitor.FIO)
                 .SetProperty(v => v.DateBirth, visitor.DateBirth)
-                .SetProperty(v => v.NumberPhone, visitor.NumberPhone)
-                .SetProperty(v => v.AuthEntity, visitor.AuthEntity));
+                .SetProperty(v => v.NumberPhone, visitor.NumberPhone));
 
     public override void Delete(long idEntity)
     {

@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace DataAccess.Postgres.Models;
+namespace DataAccess.PostgreSQL.Models.Imgs;
 
 public class ImgEntity : Entity { 
     public string Url { get; set; }

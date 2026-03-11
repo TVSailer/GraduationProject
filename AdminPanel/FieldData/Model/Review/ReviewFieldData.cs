@@ -1,0 +1,17 @@
+﻿using Admin.FieldData.AbstractFieldData;
+using DataAccess.PostgreSQL.Models;
+using UserInterface.Attribute;
+
+namespace Admin.FieldData.Model.Review;
+
+public class ReviewFieldData : FieldData<ReviewEntity>
+{
+    [LinkingEntity(nameof(ReviewEntity.Rating))]
+    public int Rating { get; set => OnPropertyChanged(ref field, value); }
+
+    [LinkingEntity(nameof(ReviewEntity.Visitor))]
+    public VisitorEntity? Visitor { get; set => OnPropertyChanged(ref field, value); }
+
+    [LinkingEntity(nameof(ReviewEntity.Comment))]
+    public string? Comment { get; set => OnPropertyChanged(ref field, value); }
+}

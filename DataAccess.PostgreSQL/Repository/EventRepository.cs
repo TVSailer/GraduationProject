@@ -1,7 +1,11 @@
-﻿using DataAccess.Postgres.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DataAccess.PostgreSQL;
+using DataAccess.PostgreSQL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Postgres.Repository
+namespace DataAccess.PostgreSQL.Repository
 {
     public class EventRepository(ApplicationDbContext dbContext) : Repository<EventEntity>(dbContext: dbContext)
     {

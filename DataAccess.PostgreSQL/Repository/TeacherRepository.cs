@@ -1,7 +1,8 @@
-﻿using DataAccess.Postgres.Models;
+﻿using DataAccess.PostgreSQL.Logger;
+using DataAccess.PostgreSQL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Postgres.Repository
+namespace DataAccess.PostgreSQL.Repository
 {
     public class TeacherRepository(ApplicationDbContext dbContext, AuthRepository authRepository) : Repository<TeacherEntity>(dbContext: dbContext)
     {
@@ -11,12 +12,6 @@ namespace DataAccess.Postgres.Repository
                 .Include(navigationPropertyPath: t => t.AuthEntity)
                 .ToList() ?? throw new ArgumentNullException();
 
-        public List<TeacherEntity>? Get(int id)
-            => DbContext.Teachers
-            .AsNoTracking()
-            .Where(predicate: t => t.Id == id)
-            .ToList();
-
         public override void Update(long id, TeacherEntity teacher)
         {
             DbContext.Teachers
@@ -24,8 +19,7 @@ namespace DataAccess.Postgres.Repository
                 .ExecuteUpdate(setPropertyCalls: v => v
                     .SetProperty(v => v.FIO, teacher.FIO)
                     .SetProperty(v => v.DateBirth, teacher.DateBirth)
-                    .SetProperty(v => v.NumberPhone, teacher.NumberPhone)
-                    .SetProperty(v => v.AuthEntity, teacher.AuthEntity));
+                    .SetProperty(v => v.NumberPhone, teacher.NumberPhone));
         }
 
         public override void Delete(long idEntity)

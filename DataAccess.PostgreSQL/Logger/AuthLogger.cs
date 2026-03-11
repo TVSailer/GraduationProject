@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Postgres;
+﻿namespace DataAccess.PostgreSQL.Logger;
 
 public class AuthLogger(string login, string password) : ILogger
 {

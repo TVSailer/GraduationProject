@@ -1,6 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using System.Collections.Generic;
+using DataAccess.PostgreSQL.Logger;
+using Microsoft.Extensions.Logging;
+using ILogger = DataAccess.PostgreSQL.Logger.ILogger;
 
-namespace DataAccess.Postgres.Repository
+namespace DataAccess.PostgreSQL.Repository
 {
     public abstract class Repository<T>(ApplicationDbContext dbContext)
     {
@@ -21,6 +25,7 @@ namespace DataAccess.Postgres.Repository
         public abstract void Delete(long idEntity);
 
         public virtual T Add(T obj, out ILogger logger) { throw new MethodAccessException(); }
+        public virtual bool TryAdd(T obj, out ILogger logger) { throw new MethodAccessException(); }
         public virtual bool TryDelete(long idEntity, out ILogger logger) { throw new MethodAccessException(); }
     }
 }

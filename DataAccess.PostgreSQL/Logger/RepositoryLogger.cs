@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Postgres;
+﻿namespace DataAccess.PostgreSQL.Logger;
 
 public class RepositoryLogger(string info) : ILogger
 {

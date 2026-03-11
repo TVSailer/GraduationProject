@@ -1,7 +1,10 @@
-﻿using DataAccess.Postgres.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DataAccess.PostgreSQL;
+using DataAccess.PostgreSQL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Postgres.Repository
+namespace DataAccess.PostgreSQL.Repository
 {
     public class NewsRepository(ApplicationDbContext dbContext) : Repository<NewsEntity>(dbContext: dbContext)
     {

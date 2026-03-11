@@ -1,8 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Reflection;
 
-namespace DataAccess.Postgres.Extensions
+namespace DataAccess.PostgreSQL.Extensions
 {
     public static class EntityExtension
     {

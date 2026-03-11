@@ -1,6 +1,10 @@
-﻿using DataAccess.Postgres.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DataAccess.PostgreSQL;
+using DataAccess.PostgreSQL.Models;
 
-namespace DataAccess.Postgres.Repository;
+namespace DataAccess.PostgreSQL.Repository;
 
 public class CategoryRepository(ApplicationDbContext dbContext)
     : Repository<CategoryEntity>(dbContext: dbContext)

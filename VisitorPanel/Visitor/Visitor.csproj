@@ -6,29 +6,23 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
+    <PackageReference Include="ninject.extensions.conventions" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Logica\Logica.csproj" />
+    <ProjectReference Include="..\..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj" />
+    <ProjectReference Include="..\..\UserInterfase\UserInterface.csproj" />
+    <ProjectReference Include="..\..\Validaiger\Validaiger.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Forms\LessonsForm\LessonsForm.cs" />
-    <Compile Update="Forms\MyProfileForm\MyProfileForm.cs" />
-    <Compile Update="Forms\NewsForm\NewsForm.cs" />
-    <Compile Update="Forms\LessonsForm\ShowAddReviewForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\LessonsForm\ShowClubDetailsForm.cs" />
-    <Compile Update="Forms\LessonsForm\ShowCLubReviewsForm.cs" />
-    <Compile Update="Forms\VisitorView.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Folder Include="Extension\" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using DataAccess.Postgres.Repository;
 
-namespace DataAccess.Postgres.Models;
+namespace DataAccess.PostgreSQL.Models;
 
 public class AuthEntity : Entity
 {
@@ -26,8 +25,8 @@ public class AuthEntity : Entity
         unchecked
         {
             int hashCode = base.GetHashCode();
-            hashCode = (hashCode * 397) ^ Login.GetHashCode();
-            hashCode = (hashCode * 397) ^ Password.GetHashCode();
+            hashCode = hashCode * 397 ^ Login.GetHashCode();
+            hashCode = hashCode * 397 ^ Password.GetHashCode();
             return hashCode;
         }
     }

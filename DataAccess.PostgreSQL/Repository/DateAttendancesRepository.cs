@@ -1,9 +1,11 @@
-﻿using DataAccess.Postgres;
-using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Repository;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DataAccess.PostgreSQL;
+using DataAccess.PostgreSQL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Postgres.Repository
+namespace DataAccess.PostgreSQL.Repository
 {
     public class DateAttendancesRepository : Repository<DateAttendanceEntity>
     {
@@ -13,7 +15,7 @@ namespace DataAccess.Postgres.Repository
 
         public override List<DateAttendanceEntity> Get()
            => DbContext.DateAttendances
-            .Include(navigationPropertyPath: d => d.Visitors)
+            .Include(d => d.Visitors)
             .ToList() ?? throw new ArgumentNullException();
         
         public override void Update(long id, DateAttendanceEntity dateAttendance)
@@ -27,7 +29,6 @@ namespace DataAccess.Postgres.Repository
             => DbContext.DateAttendances
             .Where(predicate: v => v.Id == id)
             .ExecuteDelete();
-
     }
 }
 

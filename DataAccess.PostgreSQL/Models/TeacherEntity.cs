@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataAccess.Postgres.Models
+namespace DataAccess.PostgreSQL.Models
 {
     public class TeacherEntity : Entity
     {

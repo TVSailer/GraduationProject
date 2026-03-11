@@ -1,4 +1,6 @@
-using DataAccess.Postgres;
+using UserInterface.View;
+using Visitor.DI;
+using Visitor.DI.Module;
 
 namespace Visitor
 {
@@ -10,14 +12,13 @@ namespace Visitor
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            ApplicationConfiguration.Initialize();
 
-            using (var db = new ApplicationDbContext())
-            {
-                ApplicationConfiguration.Initialize();
-                Application.Run(new VisitorView(db));
-            }
+            var di = new VisitorDi();
+            var controlView = di.GetService<ControlView>();
+            controlView.LoadView(new MainFieldData());
+
+            Application.Run(controlView.Form);
         }
     }
 }

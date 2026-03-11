@@ -1,7 +1,9 @@
-﻿using DataAccess.Postgres.Models;
+﻿using DataAccess.PostgreSQL.Logger;
+using DataAccess.PostgreSQL.Models;
 using Microsoft.EntityFrameworkCore;
+using ILogger = DataAccess.PostgreSQL.Logger.ILogger;
 
-namespace DataAccess.Postgres.Repository;
+namespace DataAccess.PostgreSQL.Repository;
 
 public class MementoLesson(
     ApplicationDbContext DbContext, 
@@ -9,7 +11,24 @@ public class MementoLesson(
     AuthRepository repositoryAuth)
 {
     public LessonEntity? Lesson { get; set; }
-    public bool IsAdd => Lesson is not null && Lesson.MaxParticipants > Lesson.Visitors.Count;
+    public bool IsAddVisitor => Lesson is not null && Lesson.MaxParticipants > Lesson.Visitors.Count;
+
+    public bool TryAddLesson(out ILogger logger)
+    {
+        if (!DbContext.Teachers.Any())
+        {
+            logger = new RepositoryLogger("Добавьте преподователя!");
+            return false;
+        }
+        if (!DbContext.Category.Any())
+        {
+            logger = new RepositoryLogger("Добавьте категорию!");
+            return false;
+        }
+
+        logger = new EmptyLogger();
+        return true;
+    }
 
     public List<VisitorEntity> GetVisitorsNotBelongingLesson()
     {

@@ -1,13 +1,16 @@
-﻿using System.Diagnostics;
-using DataAccess.Postgres.Models;
-using DataAccess.Postgres.Models.Imgs;
-using DataAccess.PostgreSQL;
+﻿using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.Models.Imgs;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using System.Diagnostics;
 
-namespace DataAccess.Postgres
+namespace DataAccess.PostgreSQL
 {
     public class ApplicationDbContext : DbContext
     {
+        private const string ExeConfigFilename = "DataAccess.PostgreSQL.dll.config";
+        private readonly Configuration _config;
+
         public DbSet<VisitorEntity> Visitors { get; set; }
         public DbSet<TeacherEntity> Teachers { get; set; }
         public DbSet<DateAttendanceEntity> DateAttendances { get; set; }
@@ -20,17 +23,21 @@ namespace DataAccess.Postgres
         public DbSet<ImgLessonEntity> ImagesLesson { get; set; }
         public DbSet<ImgNewsEntity> ImagesNews { get; set; }
         public DbSet<ImgEventEntity> ImagesEvent { get; set; }
+
+        public ApplicationDbContext()
+        {
+            var exe = new ExeConfigurationFileMap { ExeConfigFilename = ExeConfigFilename };
+            _config = ConfigurationManager.OpenMappedExeConfiguration(exe, ConfigurationUserLevel.None);
+
+            Database.EnsureCreated();
+        }
+
         public DbSet<AuthEntity> Auths { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(LocalResource.ConectionString);
+            optionsBuilder.UseNpgsql(_config.AppSettings.Settings["DBConnectionString"].Value);
             optionsBuilder.LogTo(message => Debug.WriteLine(message: message));
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-
         }
     }
 }

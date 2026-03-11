@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using CSharpFunctionalExtensions;
-using DataAccess.Postgres.Models.Imgs;
+using DataAccess.PostgreSQL.Models.Imgs;
 
-namespace DataAccess.Postgres.Models
+namespace DataAccess.PostgreSQL.Models
 {
     public class LessonEntity : Entity
     {
@@ -24,11 +27,21 @@ namespace DataAccess.Postgres.Models
         public List<VisitorEntity> Visitors { get; set; } = [];
         public List<ReviewEntity> Reviews { get; set; } = [];
         public List<ImgLessonEntity> Imgs { get; set; } = [];
+
         public override string ToString() => Name;
 
         public bool TryRangeScheduleNow()
-            => (AttendanceDates.Count == 0 && Schedule.Any(predicate: s => s.TryRangeScheduleNow())) ||
-               (AttendanceDates.All(predicate: d => DateTime.Parse(s: d.Date) != DateTime.Today) && Schedule.Any(predicate: s => s.TryRangeScheduleNow()));
+            => Schedule.Any(s => s.TryRangeScheduleNow()) &&
+               AttendanceDates.All(d => DateTime.Parse(s: d.Date) != DateTime.Today) && Schedule.Any(s => s.TryRangeScheduleNow());
+
+        public double Rating()
+        {
+            double rat = 0;
+            Reviews.ForEach(r => rat += r.Rating);
+            return rat == 0 ? 0 : rat / Reviews.Count;
+        }
+
+        public string CurrentParticipants() => $"{Visitors.Count}/{MaxParticipants}";
     }
 }
 

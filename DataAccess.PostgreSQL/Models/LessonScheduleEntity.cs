@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
+﻿using CSharpFunctionalExtensions;
+using DataAccess.PostgreSQL.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
-using CSharpFunctionalExtensions;
-using DataAccess.Postgres.Enum;
+using Extension_Func_Library;
 
-namespace DataAccess.Postgres.Models
+namespace DataAccess.PostgreSQL.Models
 {
     public class LessonScheduleEntity : Entity
     {
@@ -29,7 +29,7 @@ namespace DataAccess.Postgres.Models
 
         public override string ToString()
         {
-            return $"{Day}: {Start}-{End}";
+            return $"{Day.ToDescriptionString()}: {Start}-{End}";
         }
 
         public bool TryRangeScheduleNow()
