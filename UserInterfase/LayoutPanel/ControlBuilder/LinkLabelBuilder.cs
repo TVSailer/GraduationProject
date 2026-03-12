@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
-public class LinkLabelBuilder<TParentBuilder>(TParentBuilder parentBuilder) : ControlBuilder<LinkLabel, TParentBuilder>(parentBuilder)
+public class LinkLabelBuilder<TParentBuilder> : ControlBuilder<LinkLabel, TParentBuilder>
 {
     public LinkLabelBuilder<TParentBuilder> Text(string text)
     {
@@ -33,7 +33,7 @@ public class LinkLabelBuilder<TParentBuilder>(TParentBuilder parentBuilder) : Co
         return this;
     }
 
-    public override LinkLabel SettingControl()
+    protected override LinkLabel SettingControl()
     {
         return new LinkLabel
         {

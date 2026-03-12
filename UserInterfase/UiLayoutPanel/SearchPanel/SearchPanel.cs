@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using Extension_Func_Library;
 using UserInterface.Attribute;
+using UserInterface.Info;
 using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 
@@ -32,6 +33,6 @@ public sealed class SearchPanel : Panel
                         .Column(10).ContentEnd(fi.GetControl(Context.GetField()))
                         .End()))
                 .Row().ContentEnd(new EmptyPanel())
-                .Row(60, SizeType.Absolute).ContentEnd(new CustomButton("Очистить поиск").CommandClick(() => Context.OnClearSearch()))
+                .Row(60, SizeType.Absolute).Content().Button("Очистить поиск").Click(() => Context.OnClearSearch()).End()
                 .Build());
 }

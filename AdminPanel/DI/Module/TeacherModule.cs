@@ -24,6 +24,6 @@ public class TeacherModule : NinjectModule
             TeacherEntity,
             TeacherFieldSearch,
             TeacherCard,
-            TeacherManagerButton>>();
+            TeacherManagerClicked>>();
     }
 }

@@ -9,13 +9,24 @@ public class ImageLayoutPanel : FlowLayoutPanel
     {
         Dock = DockStyle.Fill;
         AutoScroll = true;
+        Repository(context);
+    }
 
+    public ImageLayoutPanel()
+    {
+        Dock = DockStyle.Fill;
+        AutoScroll = true;
+    }
+
+    public ImageLayoutPanel Repository(IRepositoryImgUi context)
+    {
         context.OnChangeImg += () =>
         {
             Controls.Clear();
             RefreshImages(context);
         };
         RefreshImages(context);
+        return this;
     }
 
     private void RefreshImages(IRepositoryImgUi context) =>

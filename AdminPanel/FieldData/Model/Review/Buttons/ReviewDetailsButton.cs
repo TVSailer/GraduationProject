@@ -1,4 +1,5 @@
 ﻿using DataAccess.PostgreSQL.Repository;
+using UserInterface.Info;
 using UserInterface.Message;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
@@ -10,10 +11,10 @@ public class ReviewDetailsButton(
     ControlView controlView) : 
     IButtons<ReviewFieldData>
 {
-    public List<CustomButton> GetButtons(ReviewFieldData e)
+    public List<InfoButton> GetButtons(ReviewFieldData e)
         => [
-            new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Удалить").CommandClick(() =>
+            new InfoButton("Назад").CommandClick(controlView.Exit),
+            new InfoButton("Удалить").CommandClick(() =>
             {
                 if (!LogicaMessage.MessageOkCancel("Вы дейсвительно хотите удалть?")) return;
                 repository.DeleteReview(e.EntityId);

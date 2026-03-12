@@ -1,5 +1,6 @@
 ﻿using Admin.DI;
 using Admin.DI.Module;
+using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
 
@@ -13,12 +14,12 @@ public class AdminMainViewButton(
     VisitorManager fieldDataV,
     TeacherManager fieldDataT) : IButtons<AdminFieldData>
 {
-    public List<CustomButton> GetButtons(AdminFieldData eventArgs)
+    public List<InfoButton> GetButtons(AdminFieldData eventArgs)
         => [
-            new CustomButton("📰 Управление новостями").CommandClick(() => controlView.LoadView(fieldDataN)),
-            new CustomButton("🎭 Управление мероприятиями").CommandClick(() => controlView.LoadView(fieldDataE)),
-            new CustomButton("🎨 Управление кружками").CommandClick(() => controlView.LoadView(fieldDataL)),
-            new CustomButton("👥 Управление посетителями").CommandClick(() => controlView.LoadView(fieldDataV)),
-            new CustomButton("👨‍🏫 Управление преподавателями").CommandClick(() => controlView.LoadView(fieldDataT)),
+            new InfoButton("📰 Управление новостями").CommandClick(() => controlView.LoadView(fieldDataN)),
+            new InfoButton("🎭 Управление мероприятиями").CommandClick(() => controlView.LoadView(fieldDataE)),
+            new InfoButton("🎨 Управление кружками").CommandClick(() => controlView.LoadView(fieldDataL)),
+            new InfoButton("👥 Управление посетителями").CommandClick(() => controlView.LoadView(fieldDataV)),
+            new InfoButton("👨‍🏫 Управление преподавателями").CommandClick(() => controlView.LoadView(fieldDataT)),
         ];
 }

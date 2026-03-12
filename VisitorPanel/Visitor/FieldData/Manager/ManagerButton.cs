@@ -1,13 +1,14 @@
-﻿using UserInterface.UiLayoutPanel.ButtonPanel;
+﻿using UserInterface.Info;
+using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
 
 namespace Visitor.FieldData.Manager;
 
-public class ManagerButton(ControlView controlView) : IButtons<Empty>
+public class ManagerButton(ControlView controlView) : IButtons<EventArgs>
 {
-    public List<CustomButton> GetButtons(Empty eventArgs)
+    public InfoButton[] GetButtons(EventArgs eventArgs)
         => [
-            new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Обновить").CommandClick(controlView.UpdateGUI)
+            new InfoButton("Назад").CommandClick(controlView.Exit),
+            new InfoButton("Обновить").CommandClick(controlView.UpdateGUI)
         ];
 }

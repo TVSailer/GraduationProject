@@ -4,25 +4,17 @@ using Extension_Func_Library;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
-public class ComboBoxBuilder<TParentBuilder>(TParentBuilder parentBuilder) : IControlBuilder<ComboBox, TParentBuilder>
+public class ComboBoxBuilder<TParentBuilder> : ControlBuilder<ComboBox, TParentBuilder>
 {
-    private readonly ComboBox _textBox = new()
-    {
-        DropDownStyle = ComboBoxStyle.DropDownList,
-        Text = "",
-        Dock = DockStyle.Fill,
-        Font = new Font("Times New Roman", 11, FontStyle.Bold),
-    };
-
     public ComboBoxBuilder<TParentBuilder> WriteValue()
     {
-        _textBox.SelectedIndexChanged += (_, _) => _textBox.DataBindings["SelectedItem"]?.WriteValue();
+        Control.SelectedIndexChanged += (_, _) => Control.DataBindings["SelectedItem"]?.WriteValue();
         return this;
     }
 
     public ComboBoxBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        _textBox
+        Control
             .Binding(nameof(ComboBox.SelectedItem), dataSource, dataMember)
             .ErrorProvider(dataSource, dataMember);
         return this;
@@ -30,14 +22,18 @@ public class ComboBoxBuilder<TParentBuilder>(TParentBuilder parentBuilder) : ICo
         
     public ComboBoxBuilder<TParentBuilder> SetData(object dataSource)
     {
-        _textBox.DataSource = dataSource;
+        Control.DataSource = dataSource;
         return this;
     }
 
-    public ComboBox Build() => _textBox;
-
-    public TParentBuilder End()
+    protected override ComboBox SettingControl()
     {
-        return parentBuilder;
+        return new()
+        {
+            DropDownStyle = ComboBoxStyle.DropDownList,
+            Text = "",
+            Dock = DockStyle.Fill,
+            Font = new Font("Times New Roman", 11, FontStyle.Bold),
+        };
     }
 }

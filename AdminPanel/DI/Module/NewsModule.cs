@@ -25,6 +25,6 @@ public class NewsModule : NinjectModule
             NewsEntity,
             NewsFieldSearch,
             NewsCard,
-            NewsManagerButton>>();
+            NewsManagerClicked>>();
     }
 }

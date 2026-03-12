@@ -3,24 +3,25 @@ using Admin.View;
 using DataAccess.Postgres;
 using DataAccess.PostgreSQL.Models;
 using DataAccess.PostgreSQL.Repository;
+using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.FieldData.Model.Visitor.Buttons;
 
-public class VisitorNotBelongingLessonButton(ControlView control, MementoLesson repository) : 
+public class VisitorNotBelongingLessonClicked(ControlView control, MementoLesson repository) : 
     IButtons<VisitorNotBelongingLesson>, 
-    IButton<CardClickedArgs<VisitorEntity>>
+    IClicked<CardClickedArgs<VisitorEntity>>
 {
-    public List<CustomButton> GetButtons(VisitorNotBelongingLesson data)
+    public List<InfoButton> GetButtons(VisitorNotBelongingLesson data)
         =>
         [
-            new CustomButton("Назад").CommandClick(control.Exit)
+            new InfoButton("Назад").CommandClick(control.Exit)
         ];
 
-    public CustomButton GetButton(CardClickedArgs<VisitorEntity> eventArgs)
-        => new CustomButton()
+    public InfoButton GetButton(CardClickedArgs<VisitorEntity> eventArgs)
+        => new InfoButton()
                 .CommandClick(() =>
                 {
                     repository.AddOldVisitor(eventArgs.Entity);

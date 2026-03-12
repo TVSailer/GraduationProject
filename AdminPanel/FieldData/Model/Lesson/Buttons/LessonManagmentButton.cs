@@ -1,6 +1,7 @@
 ﻿using Admin.DI.Module;
 using DataAccess.PostgreSQL.Models;
 using DataAccess.PostgreSQL.Repository;
+using UserInterface.Info;
 using UserInterface.Message;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
@@ -8,26 +9,26 @@ using UserInterface.View;
 
 namespace Admin.ViewModel.Model.Lesson.Buttons;
 
-public class LessonManagerButton(
+public class LessonManagerClicked(
     ControlView controlView, 
     MementoLesson mementoLesson) :
     IButtons<LessonManager>,
     IButtons<CardClickedToolStripArgs<LessonEntity>>,
-    IButton<CardClickedArgs<LessonEntity>>
+    IClicked<CardClickedArgs<LessonEntity>>
 {
-    public List<CustomButton> GetButtons(CardClickedToolStripArgs<LessonEntity>? eventToolStripArgs)
+    public List<InfoButton> GetButtons(CardClickedToolStripArgs<LessonEntity>? eventToolStripArgs)
         =>
         [
-            new CustomButton("Управление поситителями").CommandClick(() => ControlLesson<VisitorBelongingLesson>(eventToolStripArgs?.Entity)),
-            new CustomButton("Управление посещаемостью").CommandClick(() => ControlLesson<DateAttendanceManager>(eventToolStripArgs?.Entity)),
-            new CustomButton("Управление отзывами").CommandClick(() => ControlLesson<ReviewManager>(eventToolStripArgs?.Entity)),
+            new InfoButton("Управление поситителями").CommandClick(() => ControlLesson<VisitorBelongingLesson>(eventToolStripArgs?.Entity)),
+            new InfoButton("Управление посещаемостью").CommandClick(() => ControlLesson<DateAttendanceManager>(eventToolStripArgs?.Entity)),
+            new InfoButton("Управление отзывами").CommandClick(() => ControlLesson<ReviewManager>(eventToolStripArgs?.Entity)),
         ];
 
-    public List<CustomButton> GetButtons(LessonManager? eventArgs)
+    public List<InfoButton> GetButtons(LessonManager? eventArgs)
         =>
         [
-            new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Добавить").CommandClick(() =>
+            new InfoButton("Назад").CommandClick(controlView.Exit),
+            new InfoButton("Добавить").CommandClick(() =>
             {
                 if (mementoLesson.TryAddLesson(out var logger))
                 {
@@ -38,8 +39,8 @@ public class LessonManagerButton(
             }),
         ];
 
-    public CustomButton GetButton(CardClickedArgs<LessonEntity> eventArgs)
-        => new CustomButton().CommandClick(() => controlView.LoadView<LessonFieldData, LessonEntity>(eventArgs.Entity));
+    public InfoButton GetButton(CardClickedArgs<LessonEntity> eventArgs)
+        => new InfoButton().CommandClick(() => controlView.LoadView<LessonFieldData, LessonEntity>(eventArgs.Entity));
 
     private void ControlLesson<T>(LessonEntity? arg2FieldData)
     {

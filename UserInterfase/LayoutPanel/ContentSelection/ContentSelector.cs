@@ -1,58 +1,67 @@
 ﻿using System.Windows.Forms;
+using UserInterface.Info;
 using UserInterface.LayoutPanel.ControlBuilder;
-using static System.Windows.Forms.DataFormats;
+using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.UiLayoutPanel.ImagePanel;
 
 namespace UserInterface.LayoutPanel.ContentSelection;
 
 internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Action<Control> setContent)
     : IContentSelector<TParentBuilder>
 {
-    public LabelBuilder<TParentBuilder> Label(string text)
+    public TBuilder Builder<TBuilder, TControl>()
+        where TControl : Control, new()
+        where TBuilder : ControlBuilder<TControl, TParentBuilder>, new()
     {
-        var builder = new LabelBuilder<TParentBuilder>(parentBuilder);
-        setContent(builder.Build());
-        return builder.Text(text);
-    }
-
-    public LinkLabelBuilder<TParentBuilder> LinkLabel(string text = "")
-    {
-        var builder = new LinkLabelBuilder<TParentBuilder>(parentBuilder);
-        setContent(builder.Build());
-        return builder.Text(text);
-    }
-
-    public TextBoxBuilder<TParentBuilder> TextBox(string placeholder)
-    {
-        var builder = new TextBoxBuilder<TParentBuilder>(parentBuilder);
-        setContent(builder.Build());
-        return builder.Placeholder(placeholder);
-    }
-
-    public NumericBuilder<TParentBuilder> Numeric()
-    {
-        var builder = new NumericBuilder<TParentBuilder>(parentBuilder);
+        var builder = new TBuilder();
+        builder.Initialize(parentBuilder);
         setContent(builder.Build());
         return builder;
     }
 
+    public LabelBuilder<TParentBuilder> Label(string text) 
+        => Builder<LabelBuilder<TParentBuilder>, Label>()
+            .Text(text);
+
+    public LinkLabelBuilder<TParentBuilder> LinkLabel(string text = "")
+        => Builder<LinkLabelBuilder<TParentBuilder>, LinkLabel>()
+            .Text(text);
+
+    public TextBoxBuilder<TParentBuilder> TextBox(string placeholder)
+        => Builder<TextBoxBuilder<TParentBuilder>, TextBox>()
+            .Placeholder(placeholder);
+
+    public NumericBuilder<TParentBuilder> Numeric()
+        => Builder<NumericBuilder<TParentBuilder>, NumericUpDown>();
+
     public ComboBoxBuilder<TParentBuilder> ComboBox()
-    {
-        var builder = new ComboBoxBuilder<TParentBuilder>(parentBuilder);
-        setContent(builder.Build());
-        return builder.WriteValue();
-    }
+        => Builder<ComboBoxBuilder<TParentBuilder>, ComboBox>()
+            .WriteValue();
 
     public DateTimePickerBuilder<TParentBuilder> DateTimePicker(string format = "")
-    {
-        var builder = new DateTimePickerBuilder<TParentBuilder>(parentBuilder);
-        setContent(builder.Build());
-        return builder.Format(format);
-    }
+        => Builder<DateTimePickerBuilder<TParentBuilder>, DateTimePicker>()
+            .Format(format);
 
     public MaskedTextBoxBuilder<TParentBuilder> MaskedTextBox(string mask = "")
-    {
-        var builder = new MaskedTextBoxBuilder<TParentBuilder>(parentBuilder);
-        setContent(builder.Build());
-        return builder.Mask(mask);
-    }
+        => Builder<MaskedTextBoxBuilder<TParentBuilder>, MaskedTextBox>()
+            .Mask(mask);
+
+    public ButtonBuilder<TParentBuilder> Button(string text = "")
+        => Builder<ButtonBuilder<TParentBuilder>, Button>()
+            .Text(text);
+
+    public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IRepositoryImgUi repositoryImgUi) 
+        => Builder<ImagePanelBuilder<TParentBuilder>, FlowLayoutPanel>()
+            .Repository(repositoryImgUi);
+
+    public ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(InfoButton[] data)
+        => Builder<ButtonLayerBuilder<TParentBuilder>, Panel>()
+            .Data(data);
+
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> CardLayoutPanel<TEntity, TCard, TControl>(
+        TEntity[] entities)
+        where TCard : ObjectCard<TEntity>, new()
+        where TControl : Panel, new()
+        => Builder<CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard>, TControl>()
+            .Initialize(entities);
 }

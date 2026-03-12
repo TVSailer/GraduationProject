@@ -1,27 +1,28 @@
 ﻿using Admin.DI;
 using Admin.DI.Module;
 using DataAccess.PostgreSQL.Models;
+using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.FieldData.Model.Teacher.Buttons;
 
-public class TeacherManagerButton(
+public class TeacherManagerClicked(
     ControlView controlView) : 
     IButtons<TeacherManager>,
     IButtons<CardClickedToolStripArgs<TeacherEntity>>, 
-    IButton<CardClickedArgs<TeacherEntity>>
+    IClicked<CardClickedArgs<TeacherEntity>>
 {
-    public List<CustomButton> GetButtons(CardClickedToolStripArgs<TeacherEntity>? eventToolStripArgs)
+    public List<InfoButton> GetButtons(CardClickedToolStripArgs<TeacherEntity>? eventToolStripArgs)
         => [];
 
-    public List<CustomButton> GetButtons(TeacherManager eventArgs)
+    public List<InfoButton> GetButtons(TeacherManager eventArgs)
         => [
-            new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<TeacherFieldData>()),
+            new InfoButton("Назад").CommandClick(controlView.Exit),
+            new InfoButton("Добавить").CommandClick(() => controlView.LoadView<TeacherFieldData>()),
         ];
 
-    public CustomButton GetButton(CardClickedArgs<TeacherEntity> eventArgs)
-        => new CustomButton().CommandClick(() => controlView.LoadView<TeacherFieldData, TeacherEntity>(eventArgs.Entity));
+    public InfoButton GetButton(CardClickedArgs<TeacherEntity> eventArgs)
+        => new InfoButton().CommandClick(() => controlView.LoadView<TeacherFieldData, TeacherEntity>(eventArgs.Entity));
 }

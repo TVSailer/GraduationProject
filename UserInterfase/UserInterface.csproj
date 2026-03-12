@@ -24,10 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="UiLayoutPanel\ButtonPanel\CustomButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UiLayoutPanel\ButtonPanel\ButtonModule.cs">
+    <Compile Update="UiLayoutPanel\ButtonPanel\CustomButton.cs" />
+    <Compile Update="UiLayoutPanel\ButtonPanel\ButtonLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="UiLayoutPanel\CardPanel\CardLayoutPanel.cs">
@@ -39,9 +37,7 @@
     <Compile Update="UiLayoutPanel\EmptyPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="UiLayoutPanel\ImagePanel\ImageModule.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="UiLayoutPanel\ImagePanel\ImageModule.cs" />
     <Compile Update="UiLayoutPanel\ImagePanel\ImgUi.cs">
       <SubType>Component</SubType>
     </Compile>

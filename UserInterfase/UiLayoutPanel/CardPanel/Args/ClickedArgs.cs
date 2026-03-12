@@ -1,6 +1,6 @@
 ﻿namespace UserInterface.UiLayoutPanel.CardPanel.Args;
 
-public class CardClickedArgs<T>(T entity) : EventArgs
+public class ClickedArgs<T>(T entity) : EventArgs
 {
     public T Entity { get; init; } = entity;
     public void Deconstruct(out T Entity)

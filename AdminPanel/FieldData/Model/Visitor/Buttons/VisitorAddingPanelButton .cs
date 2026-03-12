@@ -1,4 +1,5 @@
 ﻿using DataAccess.PostgreSQL.Repository;
+using UserInterface.Info;
 using UserInterface.Message;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
@@ -7,11 +8,11 @@ namespace Admin.FieldData.Model.Visitor.Buttons;
 
 public class VisitorAddingButton(MementoLesson mementoLesson, ControlView controlView) : IButtons<VisitorFieldData>
 {
-    public List<CustomButton> GetButtons(VisitorFieldData e)
+    public List<InfoButton> GetButtons(VisitorFieldData e)
         => [
-            new CustomButton("Назад")
+            new InfoButton("Назад")
                 .CommandClick(controlView.Exit),
-            new CustomButton("Сохранить")
+            new InfoButton("Сохранить")
                 .CommandClick(() => e.ValidObject((id, entity) =>
                 {
                     mementoLesson.AddNewVisitor(entity, out var logger);

@@ -15,7 +15,7 @@ public class ManagerEntityUi<T, TEntity, TFieldSearch, TCard, TButtons>(
     where TEntity : new()
     where TFieldSearch : SearchFieldData<TEntity>
     where TCard : ObjectCard<TEntity>, new()
-    where TButtons : IButtons<T>, IButtons<CardClickedToolStripArgs<TEntity>>, IButton<CardClickedArgs<TEntity>>
+    where TButtons : IButtons<T>, IButtons<CardClickedToolStripArgs<TEntity>>, IClicked<CardClickedArgs<TEntity>>
 {
     protected override IBuilder CreateUi(BuilderLayoutPanel layout)
         => layout.Column()

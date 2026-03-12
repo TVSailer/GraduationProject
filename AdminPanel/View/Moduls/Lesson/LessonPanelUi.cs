@@ -4,7 +4,6 @@ using DataAccess.PostgreSQL.Repository;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.UiLayoutPanel.ButtonPanel;
-using UserInterface.UiLayoutPanel.ImagePanel;
 using UserInterface.View;
 
 namespace Admin.View.Moduls.Lesson;
@@ -31,9 +30,9 @@ public class LessonPanelUi<TButtons>(
                 .End()
                 .Column()
                     .RowAutoSize().Content().Label("📷 Изображения:").End()
-                    .Row().ContentEnd(new ImageLayoutPanel(DataUi.RepositoryImgEntity))
+                    .Row().Content().ImageLayoutPanel(DataUi.RepositoryImgEntity).End()
                 .End()
             .End()
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(buttons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(buttons.GetButtons(DataUi)).End();
     }
 }

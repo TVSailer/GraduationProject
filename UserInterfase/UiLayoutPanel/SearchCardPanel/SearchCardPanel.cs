@@ -13,7 +13,7 @@ public class SearchCardPanel<TEntity, TFieldSearch, TCard> : Panel
     where TCard : ObjectCard<TEntity>, new()
 {
     private readonly TFieldSearch _field;
-    private readonly CardLayoutPanel<TEntity, TCard> _cardPanel = new();
+    private readonly CardFlowPanel<TEntity, TCard> _cardPanel = new();
 
     public SearchCardPanel(TFieldSearch field)
     {
@@ -21,15 +21,15 @@ public class SearchCardPanel<TEntity, TFieldSearch, TCard> : Panel
         Dock = DockStyle.Fill;
     }
 
-    public SearchCardPanel<TEntity, TFieldSearch, TCard> SetContextMenu(IButtons<CardClickedToolStripArgs<TEntity>> buttons)
+    public SearchCardPanel<TEntity, TFieldSearch, TCard> SetContextMenu(IToolStrip<CardClickedToolStripArgs<TEntity>> buttons)
     {
         _cardPanel.SetContextMenu(buttons);
         return this;
     }
 
-    public SearchCardPanel<TEntity, TFieldSearch, TCard> SetClickedPanel(IButton<CardClickedArgs<TEntity>> button)
+    public SearchCardPanel<TEntity, TFieldSearch, TCard> SetClickedPanel(IClicked<CardClickedArgs<TEntity>> clicked)
     {
-        _cardPanel.SetClickedCard(button);
+        _cardPanel.SetClickedCard(clicked);
         return this;
     }
 

@@ -1,6 +1,7 @@
 ﻿using UserInterface;
+using UserInterface.Info;
 using UserInterface.LayoutPanel;
-using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 using Visitor.DI.Module;
 using Visitor.FieldData.Main.Button;
@@ -9,7 +10,7 @@ namespace Visitor.View.Main;
 
 public class MainUi(MainViewButton buttons, MainFieldData model) : UiView<MainFieldData>
 {
-    private readonly List<CustomButton> _buttonInfos = buttons.GetButtons(model);
+    private readonly InfoButton[] _buttonInfos = buttons.GetButtons(new ClickedArgs<MainFieldData>(model));
     public override Form InitializeForm(Form form)
     {
         form.Text = "Панель поситителя";
@@ -25,12 +26,11 @@ public class MainUi(MainViewButton buttons, MainFieldData model) : UiView<MainFi
             .Column(25).End()
             .Column(50)
                 .Row(70, SizeType.Absolute).ContentEnd(FactoryElements.LabelTitle("Панель поситителя"))
-                .Row(60, SizeType.Absolute).ContentEnd(_buttonInfos[0])
-                .Row(60, SizeType.Absolute).ContentEnd(_buttonInfos[1])
-                .Row(60, SizeType.Absolute).ContentEnd(_buttonInfos[2])
-                .Row(60, SizeType.Absolute).ContentEnd(_buttonInfos[3])
-                .Row(60, SizeType.Absolute).End()
-                .Row(60, SizeType.Absolute).ContentEnd(_buttonInfos[4])
+                .Row(60, SizeType.Absolute).Content().Button().InfoButton(_buttonInfos[0]).End()
+                .Row(60, SizeType.Absolute).Content().Button().InfoButton(_buttonInfos[1]).End()
+                .Row(60, SizeType.Absolute).Content().Button().InfoButton(_buttonInfos[2]).End()
+                .Row(60, SizeType.Absolute).Content().Button().InfoButton(_buttonInfos[3]).End()
+                .Row(60, SizeType.Absolute).Content().Button().InfoButton(_buttonInfos[4]).End()
             .Row().End()
             .End()
             .Column(25).End();

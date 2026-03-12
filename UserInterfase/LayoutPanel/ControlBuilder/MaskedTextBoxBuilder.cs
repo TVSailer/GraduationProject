@@ -4,34 +4,30 @@ using Extension_Func_Library;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
-public class MaskedTextBoxBuilder<TParentBuilder>(TParentBuilder parentBuilder) : IControlBuilder<MaskedTextBox, TParentBuilder>
+public class MaskedTextBoxBuilder<TParentBuilder> : ControlBuilder<MaskedTextBox, TParentBuilder>
 {
-    private readonly MaskedTextBox _textBox = new()
-    {
-        Dock = DockStyle.Fill,
-        Font = new Font("Times New Roman", 11, FontStyle.Bold),
-        Padding = new Padding(5),
-    };
-
     public MaskedTextBoxBuilder<TParentBuilder> Mask(string mask)
     {
-        _textBox.Mask = mask;
+        Control.Mask = mask;
         return this;
     }
 
     public MaskedTextBoxBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        _textBox
+        Control
             .Binding(nameof(MaskedTextBox.Text), dataSource, dataMember)
             .ErrorProvider(dataSource, dataMember);
         return this;
     }
 
 
-    public MaskedTextBox Build() => _textBox;
-
-    public TParentBuilder End()
+    protected override MaskedTextBox SettingControl()
     {
-        return parentBuilder;
+        return new()
+        {
+            Dock = DockStyle.Fill,
+            Font = new Font("Times New Roman", 11, FontStyle.Bold),
+            Padding = new Padding(5),
+        };
     }
 }

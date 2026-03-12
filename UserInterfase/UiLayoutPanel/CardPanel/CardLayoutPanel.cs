@@ -5,20 +5,28 @@ using UserInterface.UiLayoutPanel.CardPanel.Args;
 
 namespace UserInterface.UiLayoutPanel.CardPanel;
 
-public sealed class CardLayoutPanel<T, TCard> : FlowLayoutPanel
+public sealed class CardFlowPanel<T, TCard> : FlowLayoutPanel
     where TCard : ObjectCard<T>, new()
 {
-    private IButtons<CardClickedToolStripArgs<T>>? _menuStrip;
-    private IButton<CardClickedArgs<T>>? _onClick;
+    private IToolStrip<CardClickedToolStripArgs<T>>? _menuStrip;
+    private IClicked<CardClickedArgs<T>>? _onClick;
 
-    public CardLayoutPanel()
+    public CardFlowPanel()
     {
         Dock = DockStyle.Fill;
         AutoScroll = true;
         Padding = new Padding(10);
     }
+    
+    public CardFlowPanel(T[] entities)
+    {
+        Dock = DockStyle.Fill;
+        AutoScroll = true;
+        Padding = new Padding(10);
+        Initialize(entities);
+    }
 
-    public CardLayoutPanel<T, TCard> Initialize(T[] entities)
+    public CardFlowPanel<T, TCard> Initialize(T[] entities)
     {
         entities
             .With(_ => Controls.Clear()).ForEach(en =>
@@ -30,13 +38,13 @@ public sealed class CardLayoutPanel<T, TCard> : FlowLayoutPanel
         return this;
     }
 
-    public CardLayoutPanel<T, TCard> SetClickedCard(IButton<CardClickedArgs<T>> buttons)
+    public CardFlowPanel<T, TCard> SetClickedCard(IClicked<CardClickedArgs<T>> clickeds)
     {
-        _onClick = buttons;
+        _onClick = clickeds;
         return this;
     }
 
-    public CardLayoutPanel<T, TCard> SetContextMenu(IButtons<CardClickedToolStripArgs<T>> buttons)
+    public CardFlowPanel<T, TCard> SetContextMenu(IToolStrip<CardClickedToolStripArgs<T>> buttons)
     {
         _menuStrip = buttons;
         return this;

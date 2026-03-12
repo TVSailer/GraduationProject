@@ -4,20 +4,11 @@ using Extension_Func_Library;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
-public class DateTimePickerBuilder<TParentBuilder>(TParentBuilder parentBuilder) : IControlBuilder<DateTimePicker, TParentBuilder>
+public class DateTimePickerBuilder<TParentBuilder> : ControlBuilder<DateTimePicker, TParentBuilder>
 {
-    private readonly DateTimePicker _textBox = new()
-    {
-        Dock = DockStyle.Fill,
-        Font = new Font("Times New Roman", 11, FontStyle.Bold),
-        Padding = new Padding(5),
-        Format = DateTimePickerFormat.Custom,
-        ShowUpDown = true
-    };
-
     public DateTimePickerBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        _textBox
+        Control
             .Binding(nameof(DateTimePicker.Text), dataSource, dataMember)
             .ErrorProvider(dataSource, dataMember);
         return this;
@@ -25,14 +16,19 @@ public class DateTimePickerBuilder<TParentBuilder>(TParentBuilder parentBuilder)
         
     public DateTimePickerBuilder<TParentBuilder> Format(string format)
     {
-        _textBox.CustomFormat = format;
+        Control.CustomFormat = format;
         return this;
     }
 
-    public DateTimePicker Build() => _textBox;
-
-    public TParentBuilder End()
+    protected override DateTimePicker SettingControl()
     {
-        return parentBuilder;
+        return new()
+        {
+            Dock = DockStyle.Fill,
+            Font = new Font("Times New Roman", 11, FontStyle.Bold),
+            Padding = new Padding(5),
+            Format = DateTimePickerFormat.Custom,
+            ShowUpDown = true
+        };
     }
 }

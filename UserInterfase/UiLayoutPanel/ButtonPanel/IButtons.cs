@@ -1,9 +1,10 @@
-﻿using System;
+﻿using UserInterface.Info;
 
 namespace UserInterface.UiLayoutPanel.ButtonPanel;
 
-public interface IButtons<in TEventArgs> 
+public interface IButtons<in TEventArgs>
+    where TEventArgs : EventArgs
 {
-    public List<CustomButton> GetButtons(TEventArgs eventArgs);
+    public InfoButton[] GetButtons(TEventArgs eventArgs);
 }
 

@@ -1,6 +1,7 @@
 ﻿using DataAccess.Postgres;
 using DataAccess.PostgreSQL.Models;
 using DataAccess.PostgreSQL.Repository;
+using UserInterface.Info;
 using UserInterface.Message;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
@@ -11,15 +12,15 @@ public class TeacherDetailsButton(
     Repository<TeacherEntity> repository,
     ControlView controlView) : IButtons<TeacherFieldData>
 {
-    public List<CustomButton> GetButtons(TeacherFieldData fieldData)
+    public List<InfoButton> GetButtons(TeacherFieldData fieldData)
         => [
-            new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Обновить").CommandClick(() =>
+            new InfoButton("Назад").CommandClick(controlView.Exit),
+            new InfoButton("Обновить").CommandClick(() =>
             {
                 fieldData.ValidObject(repository.Update);
                 controlView.Exit();
             }),
-            new CustomButton("Удалить").CommandClick(() =>
+            new InfoButton("Удалить").CommandClick(() =>
             {
                 if (!LogicaMessage.MessageOkCancel("Вы дейсвительно хотите удалть?")) return;
                 if (repository.TryDelete(fieldData.EntityId, out var logger))

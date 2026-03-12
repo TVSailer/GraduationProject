@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
-public class LabelBuilder<TParentBuilder>(TParentBuilder parentBuilder) : ControlBuilder<Label, TParentBuilder>(parentBuilder)
+public class LabelBuilder<TParentBuilder> : ControlBuilder<Label, TParentBuilder>
 {
     public LabelBuilder<TParentBuilder> Text(string text)
     {
@@ -27,7 +27,7 @@ public class LabelBuilder<TParentBuilder>(TParentBuilder parentBuilder) : Contro
         return this;
     }
 
-    public override Label SettingControl()
+    protected override Label SettingControl()
     {
         return new Label
         {

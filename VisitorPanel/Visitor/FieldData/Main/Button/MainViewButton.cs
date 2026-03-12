@@ -1,4 +1,6 @@
-﻿using UserInterface.UiLayoutPanel.ButtonPanel;
+﻿using UserInterface.Info;
+using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 using Visitor.DI.Module;
 
@@ -6,14 +8,14 @@ namespace Visitor.FieldData.Main.Button;
 
 public class MainViewButton(
     ControlView controlView,
-    LessonManager fieldDataL) : IButtons<MainFieldData>
+    LessonManager fieldDataL) : IButtons<ClickedArgs<MainFieldData>>
 {
-    public List<CustomButton> GetButtons(MainFieldData eventArgs)
+    public InfoButton[] GetButtons(ClickedArgs<MainFieldData> eventArgs)
         => [
-            new CustomButton("📰 Новости").CommandClick(() => controlView.LoadView(fieldDataL)),
-            new CustomButton("🎭 Мероприятия").CommandClick(() => controlView.LoadView(fieldDataL)),
-            new CustomButton("🎨 Кружки").CommandClick(() => controlView.LoadView(fieldDataL)),
-            new CustomButton("👨‍🏫 Вход").CommandClick(() => controlView.LoadView(fieldDataL)),
-            new CustomButton("🚪 Выход").CommandClick(controlView.Exit),
+            new InfoButton("📰 Новости").CommandClick(() => controlView.LoadView(fieldDataL)),
+            new InfoButton("🎭 Мероприятия").CommandClick(() => controlView.LoadView(fieldDataL)),
+            new InfoButton("🎨 Кружки").CommandClick(() => controlView.LoadView(fieldDataL)),
+            new InfoButton("👨‍🏫 Вход").CommandClick(() => controlView.LoadView(fieldDataL)),
+            new InfoButton("🚪 Выход").CommandClick(controlView.Exit),
         ];
 }

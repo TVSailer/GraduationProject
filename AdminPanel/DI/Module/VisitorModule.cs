@@ -28,6 +28,6 @@ public class VisitorModule : NinjectModule
             VisitorEntity, 
             VisitorFieldSearch, 
             VisitorCard,
-            VisitorManagerButton>>();
+            VisitorManagerClicked>>();
     }
 }

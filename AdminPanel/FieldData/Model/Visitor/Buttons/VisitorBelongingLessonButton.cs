@@ -1,6 +1,7 @@
 ﻿using Admin.DI.Module;
 using DataAccess.PostgreSQL.Models;
 using DataAccess.PostgreSQL.Repository;
+using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
@@ -15,21 +16,21 @@ public class VisitorBelongingLessonButton(
     IButtons<VisitorBelongingLesson>, 
     IButtons<CardClickedToolStripArgs<VisitorEntity>>
 {
-    public List<CustomButton> GetButtons(VisitorBelongingLesson e)
+    public List<InfoButton> GetButtons(VisitorBelongingLesson e)
         =>
         [
-            new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Добавить нового")
+            new InfoButton("Назад").CommandClick(controlView.Exit),
+            new InfoButton("Добавить нового")
                 .Enable(v.IsAddVisitor)
                 .CommandClick(() => controlView.LoadView(fieldData)),
-            new CustomButton("Добавить существуещегося")
+            new InfoButton("Добавить существуещегося")
                 .Enable(v.IsAddVisitor)
                 .CommandClick(() => controlView.LoadView(visitorNotBelongingLesson)),
         ];
 
-    public List<CustomButton> GetButtons(CardClickedToolStripArgs<VisitorEntity> e)
+    public List<InfoButton> GetButtons(CardClickedToolStripArgs<VisitorEntity> e)
         => [
-            new CustomButton("Удалить")
+            new InfoButton("Удалить")
                 .CommandClick(() =>
                 {
                     v.DeleteVisitor(e.Entity.Id);

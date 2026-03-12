@@ -9,12 +9,12 @@ using Visitor.FieldData.Lesson.LessonButton;
 
 namespace Visitor.View.Lesson;
 
-public class ManagerLessonPanelUi(LessonsRepository repositoryL, ManagerLessonButton buttons) : UiView<LessonManager>
+public class ManagerLessonPanelUi(LessonsRepository repositoryL, ManagerLessonClicked clickeds) : UiView<LessonManager>
 {
     protected override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
         => builderLayoutPanel.Column()
-            .Row().ContentEnd(new CardPanel<LessonEntity, LessonCard>()
-                .SetClickedCard(buttons)
+            .Row().ContentEnd(new CardLayoutPanel<LessonEntity, LessonCard>()
+                .ClickedCard(clickeds)
                 .Initialize(repositoryL.Get().ToArray()))
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(buttons.GetButtons(new Empty())));
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(clickeds.GetButtons(EventArgs.Empty)).End();
 }

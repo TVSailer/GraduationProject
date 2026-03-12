@@ -12,14 +12,14 @@ namespace Admin.View.Moduls.Review;
 
 public class ReviewsCardUi(
     MementoLesson repository,
-    ReviewManagerButton parametersButtons)
+    ReviewManagerClicked parametersClickeds)
     : UiView<ReviewManager>
 {
     protected override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
         => builderLayoutPanel.Column()
             .Row()
-            .ContentEnd(new CardLayoutPanel<ReviewEntity, ReviewCard>()
-                .SetClickedCard(parametersButtons)
+            .ContentEnd(new CardFlowPanel<ReviewEntity, ReviewCard>()
+                .SetClickedCard(parametersClickeds)
                 .Initialize(repository.GetReviews().ToArray()))
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersClickeds.GetButtons(DataUi)));
 }

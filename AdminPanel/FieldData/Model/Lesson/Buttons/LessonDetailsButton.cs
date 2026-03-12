@@ -2,6 +2,7 @@
 using Admin.ViewModel.Model.Lesson;
 using DataAccess.PostgreSQL.Models;
 using DataAccess.PostgreSQL.Repository;
+using UserInterface.Info;
 using UserInterface.Message;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.View;
@@ -12,18 +13,18 @@ public class LessonDetailsButton(
     ControlView controlView,
     Repository<LessonEntity> repository) : IButtons<LessonFieldData>
 {
-    public List<CustomButton> GetButtons(LessonFieldData e)
+    public List<InfoButton> GetButtons(LessonFieldData e)
         => [
-            new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Обновить").CommandClick(() =>
+            new InfoButton("Назад").CommandClick(controlView.Exit),
+            new InfoButton("Обновить").CommandClick(() =>
             {
                 e.ValidObject(repository.Update);
                 controlView.Exit();
             }),
-            new CustomButton("Добавить изображение").CommandClick(() => e.RepositoryImgEntity.OnAddingImg()),
-            new CustomButton("Удалить изображения").CommandClick(() => e.RepositoryImgEntity.OnDeletingImg()),
-            new CustomButton("Обновить расписание").CommandClick(() => new LessonScheduleView(e).ShowDialog()),
-            new CustomButton("Удалить").CommandClick(() =>
+            new InfoButton("Добавить изображение").CommandClick(() => e.RepositoryImgEntity.OnAddingImg()),
+            new InfoButton("Удалить изображения").CommandClick(() => e.RepositoryImgEntity.OnDeletingImg()),
+            new InfoButton("Обновить расписание").CommandClick(() => new LessonScheduleView(e).ShowDialog()),
+            new InfoButton("Удалить").CommandClick(() =>
             {
                 if (!LogicaMessage.MessageOkCancel("Вы дейсвительно хотите удалть?")) return;
                 repository.Delete(e.Entity.Id);

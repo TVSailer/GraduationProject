@@ -27,6 +27,6 @@ public class LessonModule : NinjectModule
             LessonEntity, 
             LessonFieldSearch, 
             LessonCard, 
-            LessonManagerButton>>();
+            LessonManagerClicked>>();
     }
 }

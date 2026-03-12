@@ -2,8 +2,8 @@
 
 namespace UserInterface.UiLayoutPanel.ButtonPanel;
 
-public interface IClicked<in TEventArgs>
+public interface ILinkLabels<in TEventArgs>
     where TEventArgs : EventArgs
 {
-    public InfoButton GetButton(TEventArgs eventArgs);
+    public List<InfoLinkLabel> GetLinkLabels(TEventArgs eventArgs);
 }

@@ -1,30 +1,31 @@
 ﻿using Admin.DI;
 using Admin.DI.Module;
 using DataAccess.PostgreSQL.Models;
+using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.FieldData.Model.News.Buttons;
 
-public class NewsManagerButton(
+public class NewsManagerClicked(
     ControlView controlView) : 
     IButtons<NewsManager>,
     IButtons<CardClickedToolStripArgs<NewsEntity>>, 
-    IButton<CardClickedArgs<NewsEntity>>
+    IClicked<CardClickedArgs<NewsEntity>>
 {
-    public List<CustomButton> GetButtons(CardClickedToolStripArgs<NewsEntity> eventToolStripArgs)
+    public List<InfoButton> GetButtons(CardClickedToolStripArgs<NewsEntity> eventToolStripArgs)
         => [
         ];
 
-    public List<CustomButton> GetButtons(NewsManager eventArgs)
+    public List<InfoButton> GetButtons(NewsManager eventArgs)
         => [
-            new CustomButton("Назад").CommandClick(controlView.Exit),
-            new CustomButton("Добавить").CommandClick(() => controlView.LoadView<NewsFieldData>()),
+            new InfoButton("Назад").CommandClick(controlView.Exit),
+            new InfoButton("Добавить").CommandClick(() => controlView.LoadView<NewsFieldData>()),
         ];
 
-    public CustomButton GetButton(CardClickedArgs<NewsEntity> eventArgs)
-        => new CustomButton().CommandClick(() =>
+    public InfoButton GetButton(CardClickedArgs<NewsEntity> eventArgs)
+        => new InfoButton().CommandClick(() =>
         {
             controlView.LoadView<NewsFieldData, NewsEntity>(eventArgs.Entity);
         });

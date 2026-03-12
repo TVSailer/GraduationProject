@@ -16,7 +16,7 @@ public class VisitorBelongingLessonCardUi(
     protected override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
         => builderLayoutPanel.Column()
             .Row()
-            .ContentEnd(new CardLayoutPanel<VisitorEntity, VisitorCard>()
+            .ContentEnd(new CardFlowPanel<VisitorEntity, VisitorCard>()
                 .SetContextMenu(parametersButtons)
                 .Initialize(repository.GetVisitorsBelongingLesson().ToArray()))
             .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));

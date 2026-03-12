@@ -1,10 +1,11 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.Info;
+using Font = System.Drawing.Font;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
-public class ButtonBuilder<TParentBuilder>(TParentBuilder parentBuilder) : ControlBuilder<Button, TParentBuilder>(parentBuilder)
+public class ButtonBuilder<TParentBuilder> : ControlBuilder<Button, TParentBuilder>
 {
     public ButtonBuilder<TParentBuilder> Text(string text)
     {
@@ -27,10 +28,28 @@ public class ButtonBuilder<TParentBuilder>(TParentBuilder parentBuilder) : Contr
         Control.ForeColor = color;
         return this;
     }
+    
+    public ButtonBuilder<TParentBuilder> Enable(bool enable = true)
+    {
+        Control.Enabled = enable;
+        return this;
+    }
+    
+    public ButtonBuilder<TParentBuilder> InfoButton(InfoButton info)
+    {
+        return this
+            .Text(info.Text)
+            .Click(info.OnClick)
+            .Enable(info.Enabled);
+    }
 
+    public ButtonBuilder<TParentBuilder> Click(Action action)
+    {
+        Control.Click += (_, _) => action();
+        return this;
+    }
 
-
-    public override Button SettingControl()
+    protected override Button SettingControl()
     {
         return new Button
         {
