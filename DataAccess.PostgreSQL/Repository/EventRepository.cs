@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using DataAccess.PostgreSQL;
-using DataAccess.PostgreSQL.Models;
+﻿using DataAccess.PostgreSQL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.PostgreSQL.Repository
@@ -17,7 +13,6 @@ namespace DataAccess.PostgreSQL.Repository
 
         public EventEntity Get(long id)
             => DbContext.Events
-            .AsNoTracking()
             .Include(navigationPropertyPath: e => e.Imgs)
             .FirstOrDefault(predicate: v => v.Id == id) ?? throw new ArgumentNullException();
 
@@ -29,11 +24,10 @@ namespace DataAccess.PostgreSQL.Repository
                     .SetProperty(v => v.Title, @event.Title)
                     .SetProperty(v => v.CategoryId, @event.Category.Id)
                     .SetProperty(v => v.Schedule, @event.Schedule)
+                    .SetProperty(v => v.UrlTitleImag, @event.UrlTitleImag)
                     .SetProperty(v => v.Organizer, @event.Organizer)
                     .SetProperty(v => v.Location, @event.Location)
                     .SetProperty(v => v.Description, @event.Description)
-                    .SetProperty(v => v.MaxParticipants, @event.MaxParticipants)
-                    .SetProperty(v => v.CurrentParticipants, @event.CurrentParticipants)
                     .SetProperty(v => v.RegistrationLink, @event.RegistrationLink));
         }
 

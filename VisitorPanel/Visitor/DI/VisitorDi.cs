@@ -14,6 +14,8 @@ public class VisitorDi
     {
         var container = new StandardKernel(
             new MainModule(),
+            new EventModule(),
+            new NewsModule(),
             new LessonModule());
 
         var serviceProvider = new ServiceProviderDi(container);

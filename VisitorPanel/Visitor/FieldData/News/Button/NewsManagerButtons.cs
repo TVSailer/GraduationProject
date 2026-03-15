@@ -1,12 +1,15 @@
 ﻿using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
+using Visitor.DI.Module;
 
-namespace Visitor.FieldData.Manager;
+namespace Visitor.FieldData.News.Button;
 
-public class ManagerButton(ControlView controlView) : IButtons<EventArgs>
+public class NewsManagerButtons(ControlView controlView) :  
+    IButtons<ClickedArgs<NewsManager>>
 {
-    public InfoButton[] GetButtons(EventArgs eventArgs)
+    public InfoButton[] GetButtons(ClickedArgs<NewsManager> eventArgs)
         => [
             new InfoButton("Назад").CommandClick(controlView.Exit),
             new InfoButton("Обновить").CommandClick(controlView.UpdateGUI)

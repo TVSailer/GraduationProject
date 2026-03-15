@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using UserInterface.Info;
 using Font = System.Drawing.Font;
@@ -59,4 +60,3 @@ public class ButtonBuilder<TParentBuilder> : ControlBuilder<Button, TParentBuild
         };
     }
 }
-

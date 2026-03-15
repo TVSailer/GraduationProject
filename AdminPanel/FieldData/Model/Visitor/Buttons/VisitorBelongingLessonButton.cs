@@ -33,7 +33,7 @@ public class VisitorBelongingLessonButton(
             new InfoButton("Удалить")
                 .CommandClick(() =>
                 {
-                    v.DeleteVisitor(e.Entity.Id);
+                    v.DeleteVisitor(e.Data.Id);
                     controlView.UpdateGUI();
                 }),
         ];

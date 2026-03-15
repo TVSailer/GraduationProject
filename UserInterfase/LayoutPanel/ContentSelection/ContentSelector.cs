@@ -58,10 +58,15 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         => Builder<ButtonLayerBuilder<TParentBuilder>, Panel>()
             .Data(data);
 
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> CardLayoutPanel<TEntity, TCard, TControl>(
-        TEntity[] entities)
-        where TCard : ObjectCard<TEntity>, new()
-        where TControl : Panel, new()
-        => Builder<CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard>, TControl>()
-            .Initialize(entities);
+    public CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>(TEntity[] entities) where TCard : ObjectCard<TEntity>, new()
+        => Builder<CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard>, FlowLayoutPanel>()
+            .SetData(entities);
+
+    public CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard> CardTableLayoutPanel<TEntity, TCard>(TEntity[] entities) where TCard : ObjectCard<TEntity>, new()
+        => Builder<CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard>, TableLayoutPanel>()
+            .SetData(entities);
+
+    public ImageBuilder<TParentBuilder> Image(string url)
+        => Builder<ImageBuilder<TParentBuilder>, PictureBox>()
+            .Url(url);
 }

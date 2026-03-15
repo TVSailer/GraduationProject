@@ -1,9 +1,9 @@
 ﻿using UserInterface.Info;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 
 namespace UserInterface.UiLayoutPanel.ButtonPanel;
 
-public interface IClicked<in TEventArgs>
-    where TEventArgs : EventArgs
+public interface IClicked<Data>
 {
-    public InfoButton GetButton(TEventArgs eventArgs);
+    public InfoButton GetButton(CardClickedArgs<Data> eventArgs);
 }

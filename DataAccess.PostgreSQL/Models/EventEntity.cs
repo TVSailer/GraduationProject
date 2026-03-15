@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using DataAccess.PostgreSQL.ComplexType;
 using DataAccess.PostgreSQL.Models.Imgs;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.PostgreSQL.Models;
 
 public class EventEntity : Entity
 {
     public string Title { get; set; }
+    public string UrlTitleImag { get; set; }
     public string Description { get; set; }
     public EventScheduleEntity Schedule { get; set; }
     public string Location { get; set; }
@@ -20,8 +20,6 @@ public class EventEntity : Entity
 
     public string RegistrationLink { get; set; }
     public string Organizer { get;  set; }
-    public int MaxParticipants { get; set; }
-    public int CurrentParticipants { get;  set; }
     public List<ImgEventEntity> Imgs { get; set; } = [];
 
     public override string ToString()

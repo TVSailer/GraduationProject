@@ -18,8 +18,7 @@ public interface IContentSelector<TParentBuilder>
     ButtonBuilder<TParentBuilder> Button(string text = "");
     ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IRepositoryImgUi repositoryImgUi);
     ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(InfoButton[] data);
-    CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> CardLayoutPanel<TEntity, TCard, TControl>(
-        TEntity[] entities)
-        where TCard : ObjectCard<TEntity>, new()
-        where TControl : Panel, new();
+    CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>(TEntity[] entities) where TCard : ObjectCard<TEntity>, new();
+    CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard> CardTableLayoutPanel<TEntity, TCard>(TEntity[] entities) where TCard : ObjectCard<TEntity>, new();
+    ImageBuilder<TParentBuilder> Image(string url);
 }

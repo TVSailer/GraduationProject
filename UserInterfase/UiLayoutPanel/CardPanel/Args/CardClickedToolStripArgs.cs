@@ -1,10 +1,10 @@
 ﻿namespace UserInterface.UiLayoutPanel.CardPanel.Args;
 
-public class CardClickedToolStripArgs<T>(T entity) : EventArgs
+public class CardClickedToolStripArgs<T>(T data) : EventArgs
 {
-    public T Entity { get; init; } = entity;
+    public T Data { get; init; } = data;
     public void Deconstruct(out T Entity)
     {
-        Entity = this.Entity;
+        Entity = this.Data;
     }
 }

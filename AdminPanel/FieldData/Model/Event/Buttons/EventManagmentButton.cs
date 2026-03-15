@@ -1,5 +1,4 @@
-﻿using Admin.DI;
-using Admin.DI.Module;
+﻿using Admin.DI.Module;
 using DataAccess.PostgreSQL.Models;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
@@ -11,14 +10,14 @@ namespace Admin.FieldData.Model.Event.Buttons;
 public class EventManagerClicked(
     ControlView controlView) : 
     IButtons<EventManager>,
-    IButtons<CardClickedToolStripArgs<EventEntity>>, 
-    IClicked<CardClickedArgs<EventEntity>>
+    IToolStrip<EventEntity>, 
+    IClicked<EventEntity>
 {
-    public List<InfoButton> GetButtons(CardClickedToolStripArgs<EventEntity> eventToolStripArgs)
+    public InfoToolStrip[] GetToolStrip(CardClickedToolStripArgs<EventEntity> eventToolStripArgs)
         => [
         ];
 
-    public List<InfoButton> GetButtons(EventManager eventArgs)
+    public InfoButton[] GetButtons(ClickedArgs<EventManager> eventArgs)
         => [
             new InfoButton("Назад").CommandClick(controlView.Exit),
             new InfoButton("Добавить").CommandClick(() => controlView.LoadView<EventFieldData>()),

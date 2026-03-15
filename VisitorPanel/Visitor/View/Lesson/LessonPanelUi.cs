@@ -4,7 +4,7 @@ using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 using Visitor.FieldData.Lesson;
-using Visitor.FieldData.Lesson.LessonButton;
+using Visitor.FieldData.Lesson.Button;
 
 namespace Visitor.View.Lesson;
 public class LessonPanelUi(LessonButton button) : UiView<LessonDataUi, LessonEntity>
@@ -50,7 +50,7 @@ public class LessonPanelUi(LessonButton button) : UiView<LessonDataUi, LessonEnt
                 .End()
                 .Column(40)
                     .Row().Content()
-                        .CardLayoutPanel<ReviewEntity, ReviewCard, TableLayoutPanel>(entity.Reviews.ToArray())
+                        .CardTableLayoutPanel<ReviewEntity, ReviewCard>(entity.Reviews.ToArray())
                     .End()
                 .End()
             .End()

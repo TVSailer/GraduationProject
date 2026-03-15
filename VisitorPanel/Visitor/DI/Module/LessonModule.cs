@@ -3,6 +3,8 @@ using DataAccess.PostgreSQL.Repository;
 using Ninject.Modules;
 using UserInterface.View;
 using Visitor.FieldData.Lesson;
+using Visitor.FieldData.Lesson.Button;
+using Visitor.View;
 using Visitor.View.Lesson;
 
 namespace Visitor.DI.Module;
@@ -17,6 +19,6 @@ public class LessonModule : NinjectModule
         Kernel.Bind<MementoLesson>().ToSelf().InSingletonScope();
 
         Kernel.Bind<UiView<LessonDataUi, LessonEntity>>().To<LessonPanelUi>();
-        Kernel.Bind<UiView<LessonManager>>().To<ManagerLessonPanelUi>();
+        Kernel.Bind<UiView<LessonManager>>().To<ManagerPanelUi<LessonManager, LessonEntity, LessonCard, LessonManagerButtons>>();
     }
 }

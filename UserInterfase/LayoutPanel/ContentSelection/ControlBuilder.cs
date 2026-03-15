@@ -17,6 +17,6 @@ public abstract class ControlBuilder<TControl, TParentBuilder> : IControlBuilder
 
     protected abstract TControl SettingControl();
 
-    public TControl Build() => Control ?? throw new ArgumentNullException();
-    public TParentBuilder End() => _parentBuilder ?? throw new ArgumentNullException();
+    public virtual TControl Build() => Control ?? throw new ArgumentNullException();
+    public virtual TParentBuilder End() => _parentBuilder ?? throw new ArgumentNullException();
 }

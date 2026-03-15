@@ -10,7 +10,6 @@ public class MainModule : NinjectModule
 {
     public override void Load()
     {
-
         Kernel.Bind<UiView<MainFieldData>>().To<MainUi>();
         Kernel.Bind<Repository<CategoryEntity>>().To<CategoryRepository>();
     }

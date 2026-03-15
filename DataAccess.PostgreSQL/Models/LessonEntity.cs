@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using DataAccess.PostgreSQL.Models.Imgs;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.PostgreSQL.Models
 {

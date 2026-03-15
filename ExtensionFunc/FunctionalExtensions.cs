@@ -32,6 +32,7 @@ public static class FunctionalExtensions
 
     public static IEnumerable<T> ForEach<T>(this IEnumerable<T> collection, Action<T> action)
     {
+        if (collection is null) return collection;
         foreach (var item in collection) action(item);
         return collection;
     }

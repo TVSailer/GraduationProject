@@ -1,9 +1,9 @@
 ﻿using UserInterface.Info;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 
 namespace UserInterface.UiLayoutPanel.ButtonPanel;
 
-public interface IToolStrip<in TEventArgs>
-    where TEventArgs : EventArgs
+public interface IToolStrip<Data>
 {
-    public List<InfoToolStrip> GetToolStrip(TEventArgs eventArgs);
+    public InfoToolStrip[] GetToolStrip(CardClickedToolStripArgs<Data> eventArgs);
 }

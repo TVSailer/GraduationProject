@@ -23,20 +23,19 @@ namespace DataAccess.PostgreSQL
         public DbSet<ImgLessonEntity> ImagesLesson { get; set; }
         public DbSet<ImgNewsEntity> ImagesNews { get; set; }
         public DbSet<ImgEventEntity> ImagesEvent { get; set; }
+        public DbSet<AuthEntity> Auths { get; set; }
 
         public ApplicationDbContext()
         {
-            var exe = new ExeConfigurationFileMap { ExeConfigFilename = ExeConfigFilename };
-            _config = ConfigurationManager.OpenMappedExeConfiguration(exe, ConfigurationUserLevel.None);
+            //var exe = new ExeConfigurationFileMap { ExeConfigFilename = ExeConfigFilename };
+            //_config = ConfigurationManager.OpenMappedExeConfiguration(exe, ConfigurationUserLevel.None);
 
             Database.EnsureCreated();
         }
 
-        public DbSet<AuthEntity> Auths { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(_config.AppSettings.Settings["DBConnectionString"].Value);
+            optionsBuilder.UseNpgsql("host=localhost;port=5432;database=db;username=postgres;password=Sailer22_8");//_config.AppSettings.Settings["DBConnectionString"].Value);
             optionsBuilder.LogTo(message => Debug.WriteLine(message: message));
         }
     }

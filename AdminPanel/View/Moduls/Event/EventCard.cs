@@ -19,6 +19,5 @@ public class EventCard : ObjectCard<EventEntity>
             .Row().ContentEnd(FactoryElements.Label_09($"📅 {Entity.Schedule}").With(t => t.ForeColor = Color.Gray))
             .Row().ContentEnd(FactoryElements.Label_09($"📍 {Entity.Location}").With(t => t.ForeColor = Color.Gray))
             .Row().ContentEnd(FactoryElements.Label_09($"👨‍💼 {Entity.Organizer}").With(t => t.ForeColor = Color.Gray))
-            .Row().ContentEnd(FactoryElements.Label_09($"👥 {Entity.CurrentParticipants / (Entity.MaxParticipants == 0 ? 1 : Entity.MaxParticipants)}").With(t => t.ForeColor = Color.DarkGreen))
             .Build();
 }

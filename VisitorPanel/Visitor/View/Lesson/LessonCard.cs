@@ -8,7 +8,7 @@ public class LessonCard : ObjectCard<LessonEntity>
 {
     public LessonCard()
     {
-        Height = 250;
+        Size = new Size(300, 200);
         Dock = DockStyle.Top;
         Margin = new Padding(5);
     }
@@ -39,13 +39,6 @@ public class LessonCard : ObjectCard<LessonEntity>
                 .Label($"{Entity.CurrentParticipants()}")
                     .Size(12)
                     .ForeColor(Color.DarkGreen)
-                .End()
-            .Row().Content()
-                .TextBox()
-                    .Text(Entity.Description)
-                    .Size(12)
-                    .Multiline()
-                    .ForeColor(Color.Gray)
                 .End()
             .Build();
 }

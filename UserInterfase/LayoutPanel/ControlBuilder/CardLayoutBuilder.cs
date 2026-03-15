@@ -12,16 +12,23 @@ public class CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> : Contr
 {
     private IToolStrip<CardClickedToolStripArgs<TEntity>>? _menuStrip;
     private IClicked<CardClickedArgs<TEntity>>? _onClick;
+    private TEntity[]? _entities;
 
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> Initialize(TEntity[] entities)
+
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> SetData(TEntity[] entities)
     {
-        entities
+        _entities = entities;
+        return this;
+    }
+
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> Initialize()
+    {
+        _entities?
             .With(_ => Control.Controls.Clear()).ForEach(en =>
                 Control.Controls.Add(new TCard()
                     .Initialize(this, en)
                     .OnContextMenu(_menuStrip)
                     .OnClickedCard(_onClick)));
-
         return this;
     }
 

@@ -1,4 +1,5 @@
 ﻿using Admin.DI.Module;
+using Admin.ViewModel.Model.Lesson;
 using DataAccess.PostgreSQL.Models;
 using DataAccess.PostgreSQL.Repository;
 using UserInterface.Info;
@@ -7,7 +8,7 @@ using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
-namespace Admin.ViewModel.Model.Lesson.Buttons;
+namespace Admin.FieldData.Model.Lesson.Buttons;
 
 public class LessonManagerClicked(
     ControlView controlView, 
@@ -19,9 +20,9 @@ public class LessonManagerClicked(
     public List<InfoButton> GetButtons(CardClickedToolStripArgs<LessonEntity>? eventToolStripArgs)
         =>
         [
-            new InfoButton("Управление поситителями").CommandClick(() => ControlLesson<VisitorBelongingLesson>(eventToolStripArgs?.Entity)),
-            new InfoButton("Управление посещаемостью").CommandClick(() => ControlLesson<DateAttendanceManager>(eventToolStripArgs?.Entity)),
-            new InfoButton("Управление отзывами").CommandClick(() => ControlLesson<ReviewManager>(eventToolStripArgs?.Entity)),
+            new InfoButton("Управление поситителями").CommandClick(() => ControlLesson<VisitorBelongingLesson>(eventToolStripArgs?.Data)),
+            new InfoButton("Управление посещаемостью").CommandClick(() => ControlLesson<DateAttendanceManager>(eventToolStripArgs?.Data)),
+            new InfoButton("Управление отзывами").CommandClick(() => ControlLesson<ReviewManager>(eventToolStripArgs?.Data)),
         ];
 
     public List<InfoButton> GetButtons(LessonManager? eventArgs)

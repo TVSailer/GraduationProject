@@ -1,7 +1,7 @@
-﻿using Admin.DI;
-using Admin.DI.Module;
+﻿using Admin.DI.Module;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.FieldData.Model.AdminMain;
@@ -12,9 +12,9 @@ public class AdminMainViewButton(
     NewsManager fieldDataN,
     EventManager fieldDataE,
     VisitorManager fieldDataV,
-    TeacherManager fieldDataT) : IButtons<AdminFieldData>
+    TeacherManager fieldDataT) : IButtons<ClickedArgs<AdminFieldData>>
 {
-    public List<InfoButton> GetButtons(AdminFieldData eventArgs)
+    public InfoButton[] GetButtons(ClickedArgs<AdminFieldData> eventArgs)
         => [
             new InfoButton("📰 Управление новостями").CommandClick(() => controlView.LoadView(fieldDataN)),
             new InfoButton("🎭 Управление мероприятиями").CommandClick(() => controlView.LoadView(fieldDataE)),

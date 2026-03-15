@@ -22,6 +22,10 @@ public class EventFieldData(CategoryRepository repository) : FieldDataWithImages
     [RequiredCustom]
     [LinkingEntity(nameof(EventEntity.Title))]
     public string? Title { get; set => ValidProperty(ref field, value); }
+    
+    [RequiredCustom]
+    [LinkingEntity(nameof(EventEntity.UrlTitleImag))]
+    public string? UrlTitleImg { get; set => ValidProperty(ref field, value); }
 
     [RequiredCustom]
     [LinkingEntity(nameof(EventEntity.Description))]
@@ -64,7 +68,4 @@ public class EventFieldData(CategoryRepository repository) : FieldDataWithImages
     [RequiredCustom]
     [LinkingEntity(nameof(EventEntity.Organizer))]
     public string? Organizer { get; set => ValidProperty(ref field, value); }
-
-    [LinkingEntity(nameof(EventEntity.MaxParticipants))]
-    public int MaxParticipants { get; set => ValidProperty(ref field, value); } = 1;
 }
