@@ -8,7 +8,7 @@ using UserInterface.View;
 namespace Visitor.View;
 
 public class ManagerPanelUi<TDataUi, TEntity, TCard, TButtons>(TDataUi dataUi, Repository<TEntity> repository, TButtons clickeds) : UiView<TDataUi>
-    where TButtons : IButtons<ClickedArgs<TDataUi>>, IClicked<CardClickedArgs<TEntity>>
+    where TButtons : IButtons<TDataUi>, IClicked<TEntity>
     where TCard : ObjectCard<TEntity>, new()
 {
     protected override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)

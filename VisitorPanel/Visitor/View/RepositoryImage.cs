@@ -9,9 +9,9 @@ public class RepositoryImage : IRepositoryImgUi
     {
         image.ForEach(i => Imgs.Add(i, false));
     }
-
+    
     public event Action? OnChangeImg;
-    public Dictionary<string, bool> Imgs { get; set; }
+    public Dictionary<string, bool> Imgs { get; set; } = new();
     public void ToggleImage(string key)
     {
     }

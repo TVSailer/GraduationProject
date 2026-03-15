@@ -23,11 +23,10 @@
 
   <ItemGroup>
     <Folder Include="Extension\" />
+    <Folder Include="FieldData\Enter\Button\" />
     <Folder Include="FieldData\Manager\" />
     <Folder Include="FieldData\DateAttendance\" />
-    <Folder Include="FieldData\Enter\" />
     <Folder Include="View\DateAttendance\" />
-    <Folder Include="View\Enter\" />
   </ItemGroup>
 
 </Project>

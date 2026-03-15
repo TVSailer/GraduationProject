@@ -1,19 +1,18 @@
 ﻿using Admin.DI.Module;
-using Admin.FieldData.Model.Review;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
-namespace Admin.ViewModel.Model.Review.Buttons;
+namespace Admin.FieldData.Model.Review.Buttons;
 
 public class ReviewManagerClicked(
     ControlView controlView,
     ReviewFieldData fieldData) 
     : IButtons<ReviewManager>,
-        IClicked<CardClickedArgs<ReviewEntity>>
+      IClicked<ReviewEntity>
 {
-    public List<InfoButton> GetButtons(ReviewManager eventArgs)
+    public InfoButton[] GetButtons(ClickedArgs<ReviewManager> eventArgs)
         => [
             new InfoButton("Назад").CommandClick(controlView.Exit),
         ];

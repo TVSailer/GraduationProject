@@ -9,15 +9,15 @@ namespace Admin.FieldData.Model.Visitor.Buttons;
 
 public class VisitorManagerClicked(ControlView controlView) : 
     IButtons<VisitorManager>, 
-    IButtons<CardClickedToolStripArgs<VisitorEntity>>, 
-    IClicked<CardClickedArgs<VisitorEntity>>
+    IToolStrip<VisitorEntity>, 
+    IClicked<VisitorEntity>
 {
-    public List<InfoButton> GetButtons(VisitorManager eventArgs)
+    public InfoButton[] GetButtons(ClickedArgs<VisitorManager> eventArgs)
         => [
             new InfoButton("Назад").CommandClick(controlView.Exit)
         ];
 
-    public List<InfoButton> GetButtons(CardClickedToolStripArgs<VisitorEntity> eventArgs)
+    public InfoToolStrip[] GetToolStrip(CardClickedToolStripArgs<VisitorEntity> eventArgs)
         => [];
 
     public InfoButton GetButton(CardClickedArgs<VisitorEntity> eventArgs)

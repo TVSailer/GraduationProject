@@ -50,6 +50,10 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         => Builder<ButtonBuilder<TParentBuilder>, Button>()
             .Text(text);
 
+    public ButtonBuilder<TParentBuilder> Button(InfoButton infoButton)
+        => Builder<ButtonBuilder<TParentBuilder>, Button>()
+            .InfoButton(infoButton);
+
     public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IRepositoryImgUi repositoryImgUi) 
         => Builder<ImagePanelBuilder<TParentBuilder>, FlowLayoutPanel>()
             .Repository(repositoryImgUi);

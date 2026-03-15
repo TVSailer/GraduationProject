@@ -10,7 +10,7 @@ public class MainViewButton(
     ControlView controlView,
     LessonManager fieldDataL,
     NewsManager fieldDataN,
-    EventManager fieldDataE) : IButtons<ClickedArgs<MainFieldData>>
+    EventManager fieldDataE) : IButtons<MainFieldData>
 {
     public InfoButton[] GetButtons(ClickedArgs<MainFieldData> eventArgs)
         => [

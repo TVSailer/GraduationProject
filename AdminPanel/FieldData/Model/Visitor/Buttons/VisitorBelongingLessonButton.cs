@@ -14,9 +14,9 @@ public class VisitorBelongingLessonButton(
     VisitorNotBelongingLesson visitorNotBelongingLesson,
     MementoLesson v) : 
     IButtons<VisitorBelongingLesson>, 
-    IButtons<CardClickedToolStripArgs<VisitorEntity>>
+    IToolStrip<VisitorEntity>
 {
-    public List<InfoButton> GetButtons(VisitorBelongingLesson e)
+    public InfoButton[] GetButtons(ClickedArgs<VisitorBelongingLesson> e)
         =>
         [
             new InfoButton("Назад").CommandClick(controlView.Exit),
@@ -28,9 +28,9 @@ public class VisitorBelongingLessonButton(
                 .CommandClick(() => controlView.LoadView(visitorNotBelongingLesson)),
         ];
 
-    public List<InfoButton> GetButtons(CardClickedToolStripArgs<VisitorEntity> e)
+    public InfoToolStrip[] GetToolStrip(CardClickedToolStripArgs<VisitorEntity> e)
         => [
-            new InfoButton("Удалить")
+            new InfoToolStrip("Удалить")
                 .CommandClick(() =>
                 {
                     v.DeleteVisitor(e.Data.Id);

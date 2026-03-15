@@ -12,7 +12,7 @@ public class AdminMainViewButton(
     NewsManager fieldDataN,
     EventManager fieldDataE,
     VisitorManager fieldDataV,
-    TeacherManager fieldDataT) : IButtons<ClickedArgs<AdminFieldData>>
+    TeacherManager fieldDataT) : IButtons<AdminFieldData>
 {
     public InfoButton[] GetButtons(ClickedArgs<AdminFieldData> eventArgs)
         => [
@@ -21,5 +21,6 @@ public class AdminMainViewButton(
             new InfoButton("🎨 Управление кружками").CommandClick(() => controlView.LoadView(fieldDataL)),
             new InfoButton("👥 Управление посетителями").CommandClick(() => controlView.LoadView(fieldDataV)),
             new InfoButton("👨‍🏫 Управление преподавателями").CommandClick(() => controlView.LoadView(fieldDataT)),
+            new InfoButton("🚪 Выход").CommandClick(controlView.Exit),
         ];
 }

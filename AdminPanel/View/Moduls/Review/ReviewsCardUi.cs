@@ -1,11 +1,9 @@
 ﻿using Admin.DI.Module;
-using Admin.FieldData.Model.Teacher;
-using Admin.ViewModel.Model.Review.Buttons;
+using Admin.FieldData.Model.Review.Buttons;
 using DataAccess.PostgreSQL.Repository;
-using UserInterface;
 using UserInterface.LayoutPanel;
-using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.View.Moduls.Review;
@@ -21,5 +19,5 @@ public class ReviewsCardUi(
             .ContentEnd(new CardFlowPanel<ReviewEntity, ReviewCard>()
                 .SetClickedCard(parametersClickeds)
                 .Initialize(repository.GetReviews().ToArray()))
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersClickeds.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(parametersClickeds.GetButtons(new ClickedArgs<ReviewManager>(DataUi))).End();
 }

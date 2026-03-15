@@ -4,6 +4,7 @@ using DataAccess.PostgreSQL.Repository;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.UiLayoutPanel.ImagePanel;
 using UserInterface.View;
 
@@ -28,7 +29,6 @@ public class EventPanelUi<TButtons>(
                     .Row(SizeRow).LabelTextBox("Место: ", "Введите место проведения", nameof(EventFieldData.Location))
                     .Row(SizeRow).LabelTextBox("Ссылка на регистрацию: ", "Введите ссылку на регистрацию", nameof(EventFieldData.RegisLink))
                     .Row(SizeRow).LabelTextBox("Организатор: ", "Введите фио организатора", nameof(EventFieldData.Organizer))
-                    .Row(SizeRow).LabelNumeric("Кол. участников: ", nameof(EventFieldData.MaxParticipants))
                     .Row(80).LabelTextBoxMultiline("Описание: ", "Введите описание", nameof(EventFieldData.Description))
                 .End()
                 .Column()
@@ -36,6 +36,6 @@ public class EventPanelUi<TButtons>(
                     .Row().ContentEnd(new ImageLayoutPanel(DataUi.RepositoryImgEntity))
                 .End()
             .End()
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(buttons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(buttons.GetButtons(new ClickedArgs<EventFieldData>(DataUi))).End();
     }
 }

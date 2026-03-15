@@ -5,7 +5,7 @@ using DataAccess.PostgreSQL.Repository;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.UiLayoutPanel.ButtonPanel;
-using UserInterface.UiLayoutPanel.ImagePanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.View.Moduls.News;
@@ -29,9 +29,9 @@ public class NewsPanelUi<TButtons>(
             .End()
             .Column()
             .RowAutoSize().Content().Label("📷 Изображения:").End()
-            .Row().ContentEnd(new ImageLayoutPanel(DataUi.RepositoryImgEntity))
+            .Row().Content().ImageLayoutPanel(DataUi.RepositoryImgEntity).End()
             .End()
             .End()
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(buttons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(buttons.GetButtons(new ClickedArgs<NewsFieldData>(DataUi))).End();
     }
 }

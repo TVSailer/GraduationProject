@@ -4,9 +4,9 @@ using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
-namespace Visitor.FieldData.Lesson.Button;
+namespace Visitor.FieldData.Event.Button;
 
-public class EventButton(ControlView controlView) : IButtons<ClickedArgs<EventEntity>>
+public class EventButton(ControlView controlView) : IButtons<EventEntity>
 {
     public InfoButton[] GetButtons(ClickedArgs<EventEntity> eventArgs)
         => [

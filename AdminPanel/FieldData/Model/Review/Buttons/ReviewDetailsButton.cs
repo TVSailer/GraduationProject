@@ -2,6 +2,7 @@
 using UserInterface.Info;
 using UserInterface.Message;
 using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.FieldData.Model.Review.Buttons;
@@ -11,13 +12,13 @@ public class ReviewDetailsButton(
     ControlView controlView) : 
     IButtons<ReviewFieldData>
 {
-    public List<InfoButton> GetButtons(ReviewFieldData e)
+    public InfoButton[] GetButtons(ClickedArgs<ReviewFieldData> e)
         => [
             new InfoButton("Назад").CommandClick(controlView.Exit),
             new InfoButton("Удалить").CommandClick(() =>
             {
                 if (!LogicaMessage.MessageOkCancel("Вы дейсвительно хотите удалть?")) return;
-                repository.DeleteReview(e.EntityId);
+                repository.DeleteReview(e.Data.EntityId);
                 controlView.Exit();
             })
         ];

@@ -3,6 +3,7 @@ using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 using Visitor.FieldData.Event;
+using Visitor.FieldData.Event.Button;
 using Visitor.FieldData.Lesson.Button;
 
 namespace Visitor.View.Event;

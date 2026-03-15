@@ -8,8 +8,8 @@ using Visitor.DI.Module;
 namespace Visitor.FieldData.Event.Button;
 
 public class EventManagerButtons(ControlView controlView) :  
-    IClicked<CardClickedArgs<EventEntity>>,
-    IButtons<ClickedArgs<EventManager>>
+    IClicked<EventEntity>,
+    IButtons<EventManager>
 {
     public InfoButton GetButton(CardClickedArgs<EventEntity> eventArgs) 
         => new InfoButton().CommandClick(

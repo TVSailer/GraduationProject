@@ -1,4 +1,5 @@
-﻿using DataAccess.PostgreSQL.Repository;
+﻿using DataAccess.PostgreSQL.Extensions;
+using DataAccess.PostgreSQL.Repository;
 using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel;
@@ -15,7 +16,7 @@ public class ManagerEntityUi<T, TEntity, TFieldSearch, TCard, TButtons>(
     where TEntity : new()
     where TFieldSearch : SearchFieldData<TEntity>
     where TCard : ObjectCard<TEntity>, new()
-    where TButtons : IButtons<T>, IButtons<CardClickedToolStripArgs<TEntity>>, IClicked<CardClickedArgs<TEntity>>
+    where TButtons : IButtons<T>, IToolStrip<TEntity>, IClicked<TEntity>
 {
     protected override IBuilder CreateUi(BuilderLayoutPanel layout)
         => layout.Column()
@@ -23,5 +24,5 @@ public class ManagerEntityUi<T, TEntity, TFieldSearch, TCard, TButtons>(
                 .SetClickedPanel(parametersButtons)
                 .SetContextMenu(parametersButtons)
                 .Initialize(repository.Get().ToArray()))
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(parametersButtons.GetButtons(new ClickedArgs<T>(DataUi))).End();
 }

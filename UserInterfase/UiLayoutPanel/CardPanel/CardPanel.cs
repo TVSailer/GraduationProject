@@ -8,8 +8,8 @@ namespace UserInterface.UiLayoutPanel.CardPanel;
 public sealed class CardLayoutPanel<T, TCard> : TableLayoutPanel
     where TCard : ObjectCard<T>, new()
 {
-    private IToolStrip<CardClickedToolStripArgs<T>>? _menuStrip;
-    private IClicked<CardClickedArgs<T>>? _onClick;
+    private IToolStrip<T>? _menuStrip;
+    private IClicked<T>? _onClick;
 
     public CardLayoutPanel()
     {
@@ -38,13 +38,13 @@ public sealed class CardLayoutPanel<T, TCard> : TableLayoutPanel
         return this;
     }
 
-    public CardLayoutPanel<T, TCard> ClickedCard(IClicked<CardClickedArgs<T>> clicked)
+    public CardLayoutPanel<T, TCard> ClickedCard(IClicked<T> clicked)
     {
         _onClick = clicked;
         return this;
     }
 
-    public CardLayoutPanel<T, TCard> ContextMenu(IToolStrip<CardClickedToolStripArgs<T>> buttons)
+    public CardLayoutPanel<T, TCard> ContextMenu(IToolStrip<T> buttons)
     {
         _menuStrip = buttons;
         return this;

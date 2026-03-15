@@ -10,8 +10,8 @@ public class CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> : Contr
     where TControl : Panel, new()
     where TCard : ObjectCard<TEntity>, new()
 {
-    private IToolStrip<CardClickedToolStripArgs<TEntity>>? _menuStrip;
-    private IClicked<CardClickedArgs<TEntity>>? _onClick;
+    private IToolStrip<TEntity>? _menuStrip;
+    private IClicked<TEntity>? _onClick;
     private TEntity[]? _entities;
 
 
@@ -32,13 +32,13 @@ public class CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> : Contr
         return this;
     }
 
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ClickedCard(IClicked<CardClickedArgs<TEntity>> clicked)
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ClickedCard(IClicked<TEntity> clicked)
     {
         _onClick = clicked;
         return this;
     }
 
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ContextMenu(IToolStrip<CardClickedToolStripArgs<TEntity>> buttons)
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ContextMenu(IToolStrip<TEntity> buttons)
     {
         _menuStrip = buttons;
         return this;

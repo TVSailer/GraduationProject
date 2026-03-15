@@ -24,6 +24,6 @@ public class EventModule : NinjectModule
             EventEntity,
             EventFieldSearch,
             EventCard,
-            EventManagerClicked>>();
+            EventManagerButtons>>();
     }
 }

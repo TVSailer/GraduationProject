@@ -8,7 +8,7 @@ public class NewsCard : ObjectCard<NewsEntity>
 {
     public NewsCard()
     {
-        Height = 400;
+        Height = 500;
         Dock = DockStyle.Top;
         Margin = new Padding(5);
     }
@@ -31,12 +31,12 @@ public class NewsCard : ObjectCard<NewsEntity>
                 .ForeColor(Color.Gray)
             .End()
                 .RowAutoSize()
-                    .Column().Content()
+                    .Column(48).Content()
                         .Label($"{Entity.Content}")
                         .Size(12)
                         .ForeColor(Color.DarkGreen)
                     .End()
-                    .Column().Content().ImageLayoutPanel(new RepositoryImage(Entity.Imgs.Select(i => i.Url).ToArray()))
+                    .Column(52).Content().ImageLayoutPanel(new RepositoryImage(Entity.Imgs.Select(i => i.Url).ToArray()))
                     .End()
                 .End()
             .Build();

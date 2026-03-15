@@ -8,8 +8,8 @@ using Visitor.DI.Module;
 namespace Visitor.FieldData.Lesson.Button;
 
 public class LessonManagerButtons(ControlView controlView) :  
-    IClicked<CardClickedArgs<LessonEntity>>,
-    IButtons<ClickedArgs<LessonManager>>
+    IClicked<LessonEntity>,
+    IButtons<LessonManager>
 {
     public InfoButton GetButton(CardClickedArgs<LessonEntity> eventArgs) 
         => new InfoButton().CommandClick(

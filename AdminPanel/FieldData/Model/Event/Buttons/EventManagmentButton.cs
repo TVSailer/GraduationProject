@@ -7,7 +7,7 @@ using UserInterface.View;
 
 namespace Admin.FieldData.Model.Event.Buttons;
 
-public class EventManagerClicked(
+public class EventManagerButtons(
     ControlView controlView) : 
     IButtons<EventManager>,
     IToolStrip<EventEntity>, 

@@ -4,6 +4,7 @@ using DataAccess.PostgreSQL.Repository;
 using UserInterface;
 using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.View.Moduls.DateAttendance;
@@ -17,7 +18,7 @@ public class DateAttendancePanelUi(
         => builderLayoutPanel.Column()
             .RowAutoSize().ContentEnd(OnLoadData(FactoryElements.DataGridView()))
             .Row().End()
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(parametersButtons.GetButtons(new ClickedArgs<DateAttendanceManager>(DataUi))).End();
 
     internal DataGridView OnLoadData(DataGridView gridView)
     {

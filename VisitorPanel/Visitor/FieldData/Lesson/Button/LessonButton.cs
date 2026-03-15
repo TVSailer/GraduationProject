@@ -6,7 +6,7 @@ using UserInterface.View;
 
 namespace Visitor.FieldData.Lesson.Button;
 
-public class LessonButton(ControlView controlView) : IButtons<ClickedArgs<LessonEntity>>
+public class LessonButton(ControlView controlView) : IButtons<LessonEntity>
 {
     public InfoButton[] GetButtons(ClickedArgs<LessonEntity> eventArgs)
         => [

@@ -24,6 +24,8 @@ namespace DataAccess.PostgreSQL.Repository
                     .SetProperty(n => n.Date, news.Date)
                     .SetProperty(n => n.Content, news.Content)
                     .SetProperty(n => n.Author, news.Author));
+
+            DbContext.SaveChanges();
         }
 
         public override void Delete(long idEntity)

@@ -13,19 +13,19 @@ namespace Admin.FieldData.Model.Lesson.Buttons;
 public class LessonManagerClicked(
     ControlView controlView, 
     MementoLesson mementoLesson) :
+    IToolStrip<LessonEntity>,
     IButtons<LessonManager>,
-    IButtons<CardClickedToolStripArgs<LessonEntity>>,
-    IClicked<CardClickedArgs<LessonEntity>>
+    IClicked<LessonEntity>
 {
-    public List<InfoButton> GetButtons(CardClickedToolStripArgs<LessonEntity>? eventToolStripArgs)
+    public InfoToolStrip[] GetToolStrip(CardClickedToolStripArgs<LessonEntity>? eventToolStripArgs)
         =>
         [
-            new InfoButton("Управление поситителями").CommandClick(() => ControlLesson<VisitorBelongingLesson>(eventToolStripArgs?.Data)),
-            new InfoButton("Управление посещаемостью").CommandClick(() => ControlLesson<DateAttendanceManager>(eventToolStripArgs?.Data)),
-            new InfoButton("Управление отзывами").CommandClick(() => ControlLesson<ReviewManager>(eventToolStripArgs?.Data)),
+            new InfoToolStrip("Управление поситителями").CommandClick(() => ControlLesson<VisitorBelongingLesson>(eventToolStripArgs?.Data)),
+            new InfoToolStrip("Управление посещаемостью").CommandClick(() => ControlLesson<DateAttendanceManager>(eventToolStripArgs?.Data)),
+            new InfoToolStrip("Управление отзывами").CommandClick(() => ControlLesson<ReviewManager>(eventToolStripArgs?.Data)),
         ];
 
-    public List<InfoButton> GetButtons(LessonManager? eventArgs)
+    public InfoButton[] GetButtons(ClickedArgs<LessonManager> eventArgs)
         =>
         [
             new InfoButton("Назад").CommandClick(controlView.Exit),

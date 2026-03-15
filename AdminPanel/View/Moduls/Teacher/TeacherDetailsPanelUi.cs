@@ -5,6 +5,7 @@ using UserInterface;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.View.Moduls.Teacher;
@@ -25,7 +26,7 @@ public class TeacherDetailsPanelUi(TeacherDetailsButton parametersButtons) : UiV
                 .End()
             .Column().End()
             .End()
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(parametersButtons.GetButtons(new ClickedArgs<TeacherFieldData>(DataUi))).End();
 
     protected virtual Control AdditionalContent()
     {

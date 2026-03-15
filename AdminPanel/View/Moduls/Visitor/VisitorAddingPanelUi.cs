@@ -1,10 +1,8 @@
 ﻿using Admin.FieldData.Model.Visitor;
 using Admin.FieldData.Model.Visitor.Buttons;
-using DataAccess.PostgreSQL.Models;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
-using UserInterface.UiLayoutPanel;
-using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.View.Moduls.Visitor;
@@ -24,5 +22,5 @@ public class VisitorAddingPanelUi(VisitorAddingButton parametersButtons) : UiVie
                 .End()
             .Column().End()
             .End()
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(parametersButtons.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(parametersButtons.GetButtons(new ClickedArgs<VisitorFieldData>(DataUi))).End();
 }

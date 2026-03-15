@@ -7,7 +7,7 @@ using Visitor.DI.Module;
 namespace Visitor.FieldData.News.Button;
 
 public class NewsManagerButtons(ControlView controlView) :  
-    IButtons<ClickedArgs<NewsManager>>
+    IButtons<NewsManager>
 {
     public InfoButton[] GetButtons(ClickedArgs<NewsManager> eventArgs)
         => [

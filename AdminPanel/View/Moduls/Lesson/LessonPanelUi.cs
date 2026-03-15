@@ -4,6 +4,7 @@ using DataAccess.PostgreSQL.Repository;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.View.Moduls.Lesson;
@@ -33,6 +34,6 @@ public class LessonPanelUi<TButtons>(
                     .Row().Content().ImageLayoutPanel(DataUi.RepositoryImgEntity).End()
                 .End()
             .End()
-            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(buttons.GetButtons(DataUi)).End();
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(buttons.GetButtons(new ClickedArgs<LessonFieldData>(DataUi))).End();
     }
 }

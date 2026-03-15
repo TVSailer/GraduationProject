@@ -2,7 +2,7 @@
 using Admin.FieldData.Model.Review.Buttons;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
-using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 
 namespace Admin.View.Moduls.Review;
@@ -22,6 +22,6 @@ public class ReviewPanelUi(ReviewDetailsButton button) : UiView<ReviewFieldData,
                 .End()
                 .Column().End()
             .End()
-            .Row(80, SizeType.Absolute).ContentEnd(new ButtonLayoutPanel(button.GetButtons(DataUi)));
+            .Row(80, SizeType.Absolute).Content().ButtonLayoutPanel(button.GetButtons(new ClickedArgs<ReviewFieldData>(DataUi))).End();
 
 }

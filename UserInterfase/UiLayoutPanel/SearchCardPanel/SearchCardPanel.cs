@@ -21,13 +21,13 @@ public class SearchCardPanel<TEntity, TFieldSearch, TCard> : Panel
         Dock = DockStyle.Fill;
     }
 
-    public SearchCardPanel<TEntity, TFieldSearch, TCard> SetContextMenu(IToolStrip<CardClickedToolStripArgs<TEntity>> buttons)
+    public SearchCardPanel<TEntity, TFieldSearch, TCard> SetContextMenu(IToolStrip<TEntity> buttons)
     {
         _cardPanel.SetContextMenu(buttons);
         return this;
     }
 
-    public SearchCardPanel<TEntity, TFieldSearch, TCard> SetClickedPanel(IClicked<CardClickedArgs<TEntity>> clicked)
+    public SearchCardPanel<TEntity, TFieldSearch, TCard> SetClickedPanel(IClicked<TEntity> clicked)
     {
         _cardPanel.SetClickedCard(clicked);
         return this;

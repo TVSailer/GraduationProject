@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using Extension_Func_Library;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
@@ -151,7 +152,7 @@ public abstract class ObjectCard<T> : Panel
     
     public abstract Control Content();
 
-    public ObjectCard<T> OnContextMenu(IToolStrip<CardClickedToolStripArgs<T>>? buttonsContextMenu)
+    public ObjectCard<T> OnContextMenu(IToolStrip<T>? buttonsContextMenu)
     {
         if (buttonsContextMenu is null) return this;
 
@@ -172,10 +173,10 @@ public abstract class ObjectCard<T> : Panel
         ContextMenuStrip?.Items.Add(toolStrip);
     }
 
-    public ObjectCard<T> OnClickedCard(IClicked<CardClickedArgs<T>>? buttonsContextMenu)
+    public ObjectCard<T> OnClickedCard(IClicked<T>? buttonsContextMenu)
     {
         var button = buttonsContextMenu?.GetButton(new CardClickedArgs<T>(Entity));
         OnCardClicked += (_, _) => button?.OnClick();
         return this;
     }
-}
+} 

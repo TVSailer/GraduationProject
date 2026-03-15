@@ -16,6 +16,7 @@ public interface IContentSelector<TParentBuilder>
     DateTimePickerBuilder<TParentBuilder> DateTimePicker(string format = "");
     MaskedTextBoxBuilder<TParentBuilder> MaskedTextBox(string mask = "");
     ButtonBuilder<TParentBuilder> Button(string text = "");
+    ButtonBuilder<TParentBuilder> Button(InfoButton infoButton);
     ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IRepositoryImgUi repositoryImgUi);
     ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(InfoButton[] data);
     CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>(TEntity[] entities) where TCard : ObjectCard<TEntity>, new();

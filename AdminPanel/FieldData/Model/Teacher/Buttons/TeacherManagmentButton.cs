@@ -11,13 +11,13 @@ namespace Admin.FieldData.Model.Teacher.Buttons;
 public class TeacherManagerClicked(
     ControlView controlView) : 
     IButtons<TeacherManager>,
-    IButtons<CardClickedToolStripArgs<TeacherEntity>>, 
-    IClicked<CardClickedArgs<TeacherEntity>>
+    IToolStrip<TeacherEntity>, 
+    IClicked<TeacherEntity>
 {
-    public List<InfoButton> GetButtons(CardClickedToolStripArgs<TeacherEntity>? eventToolStripArgs)
+    public InfoToolStrip[] GetToolStrip(CardClickedToolStripArgs<TeacherEntity>? eventToolStripArgs)
         => [];
 
-    public List<InfoButton> GetButtons(TeacherManager eventArgs)
+    public InfoButton[] GetButtons(ClickedArgs<TeacherManager> eventArgs)
         => [
             new InfoButton("Назад").CommandClick(controlView.Exit),
             new InfoButton("Добавить").CommandClick(() => controlView.LoadView<TeacherFieldData>()),
