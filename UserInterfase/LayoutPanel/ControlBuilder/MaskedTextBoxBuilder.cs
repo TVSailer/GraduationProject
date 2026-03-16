@@ -17,9 +17,16 @@ public class MaskedTextBoxBuilder<TParentBuilder> : ControlBuilder<MaskedTextBox
         Control
             .Binding(nameof(MaskedTextBox.Text), dataSource, dataMember)
             .ErrorProvider(dataSource, dataMember);
+
         return this;
     }
 
+    public MaskedTextBoxBuilder<TParentBuilder> Enabled(bool enabled)
+    {
+        Control.Enabled = enabled;
+        return this;
+    }
+    
 
     protected override MaskedTextBox SettingControl()
     {
@@ -27,7 +34,7 @@ public class MaskedTextBoxBuilder<TParentBuilder> : ControlBuilder<MaskedTextBox
         {
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
-            Padding = new Padding(5),
+            Padding = new Padding(105),
         };
     }
 }

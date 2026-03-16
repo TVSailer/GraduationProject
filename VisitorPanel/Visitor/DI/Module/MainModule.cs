@@ -3,6 +3,7 @@ using DataAccess.PostgreSQL.Models;
 using DataAccess.PostgreSQL.Repository;
 using Ninject.Modules;
 using UserInterface.View;
+using Visitor.FieldData.Visitor;
 using Visitor.View.Main;
 
 namespace Visitor.DI.Module;
@@ -13,6 +14,7 @@ public class MainModule : NinjectModule
     {
         Kernel.Bind<MementoVisitor>().ToSelf().InSingletonScope();
         Kernel.Bind<UiView<MainFieldData>>().To<MainUi>();
+        Kernel.Bind<UiView<MementoVisitor>>().To<VisitorPanelUi>();
         Kernel.Bind<Repository<CategoryEntity>>().To<CategoryRepository>();
     }
 }

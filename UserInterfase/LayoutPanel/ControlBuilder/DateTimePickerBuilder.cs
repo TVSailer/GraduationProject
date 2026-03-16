@@ -19,6 +19,11 @@ public class DateTimePickerBuilder<TParentBuilder> : ControlBuilder<DateTimePick
         Control.CustomFormat = format;
         return this;
     }
+    public DateTimePickerBuilder<TParentBuilder> Enabled(bool enabled)
+    {
+        Control.Enabled = enabled;
+        return this;
+    }
 
     protected override DateTimePicker SettingControl()
     {

@@ -1,6 +1,5 @@
 ﻿using DataAccess.PostgreSQL.Memento;
 using UserInterface.Info;
-using UserInterface.Message;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
@@ -27,6 +26,6 @@ public class MainViewButton(
 
     public InfoLinkLabel[] GetLinkLabels(LinkLabelArgs<MainFieldData> eventArgs)
         => [
-            new InfoLinkLabel("Профиль").CommandClick(() => LogicaMessage.MessageError("sd")).Enable(mementoVisitor.IsVisitor),
+            new InfoLinkLabel("Профиль").CommandClick(() => controlView.LoadView<MementoVisitor>()).Enable(mementoVisitor.IsVisitor),
         ];
 }

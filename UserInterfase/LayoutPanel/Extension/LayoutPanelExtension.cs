@@ -31,6 +31,15 @@ public static class LayoutPanelExtension
             .End();
     }
     
+    public static IColumnBuilder LabelMaskTextBoxNoEnable(this IRowBuilder rowBuilder, string labelText, string mask, string nameMember)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().MaskedTextBox(mask).Binding(_binding ?? throw new NullReferenceException(), nameMember).Enabled(false).End()
+            .Column(30, SizeType.Absolute).End()
+            .End();
+    }
+    
     public static IColumnBuilder LabelTextBoxMultiline(this IRowBuilder rowBuilder, string labelText, string placeholder, string nameMember)
     {
         return rowBuilder
@@ -45,6 +54,15 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().TextBox(placeholder).Binding(_binding ?? throw new NullReferenceException(), nameMember).ReadOnly().End()
+            .Column(30, SizeType.Absolute).End()
+            .End();
+    }
+    
+    public static IColumnBuilder LabelTextBoxReadOnly(this IRowBuilder rowBuilder, string labelText, string nameMember)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().TextBox().Binding(_binding ?? throw new NullReferenceException(), nameMember).ReadOnly().End()
             .Column(30, SizeType.Absolute).End()
             .End();
     }
@@ -66,6 +84,15 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().DateTimePicker(format).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .Column(30, SizeType.Absolute).End()
+            .End();
+    }
+    
+    public static IColumnBuilder LabelDatePickerNoEnabled(this IRowBuilder rowBuilder, string labelText, string format, string nameMember)
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().DateTimePicker(format).Binding(_binding ?? throw new NullReferenceException(), nameMember).Enabled(false).End()
             .Column(30, SizeType.Absolute).End()
             .End();
     }
