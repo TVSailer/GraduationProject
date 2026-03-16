@@ -63,4 +63,17 @@ public class AuthRepository(ApplicationDbContext dbContext) : Repository<AuthEnt
     }
 
     #endregion
+
+    public bool Verify(string? login, string? password, out EnterLogger logger)
+    {
+        var auth = DbContext.Auths.ToList().FirstOrDefault(a => a.Equals(login, password));
+        if (auth is null)
+        {
+            logger = new EnterLogger(null);
+            return false;
+        }
+
+        logger = new EnterLogger(auth);
+        return true;
+    }
 }

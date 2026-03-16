@@ -9,7 +9,15 @@ public class AuthEntity : Entity
 
     protected bool Equals(AuthEntity other)
     {
-        return base.Equals(other) && Login == other.Login && Password == other.Password;
+        return base.Equals(other) && Login == other.Login && BCrypt.Net.BCrypt.Verify(Password, other.Password);
+    }
+    
+    public bool Equals(string? login, string? password)
+    {
+        return login is not null && 
+               password is not null && 
+               Login == login && 
+               BCrypt.Net.BCrypt.Verify(password, Password);
     }
 
     public override bool Equals(object? obj)

@@ -10,6 +10,7 @@ public interface IContentSelector<TParentBuilder>
 {
     LabelBuilder<TParentBuilder> Label(string text = "");
     LinkLabelBuilder<TParentBuilder> LinkLabel(string text = "");
+    LinkLabelBuilder<TParentBuilder> LinkLabel(InfoLinkLabel info);
     TextBoxBuilder<TParentBuilder> TextBox(string placeholder = "");
     NumericBuilder<TParentBuilder> Numeric();
     ComboBoxBuilder<TParentBuilder> ComboBox();

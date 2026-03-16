@@ -1,9 +1,10 @@
-﻿using UserInterface.Info;
+﻿using System.Windows.Forms;
+using UserInterface.Info;
+using UserInterface.UiLayoutPanel.CardPanel.Args;
 
 namespace UserInterface.UiLayoutPanel.ButtonPanel;
 
-public interface ILinkLabels<in TEventArgs>
-    where TEventArgs : EventArgs
+public interface ILinkLabels<TData>
 {
-    public List<InfoLinkLabel> GetLinkLabels(TEventArgs eventArgs);
+    public InfoLinkLabel[] GetLinkLabels(LinkLabelArgs<TData> eventArgs);
 }

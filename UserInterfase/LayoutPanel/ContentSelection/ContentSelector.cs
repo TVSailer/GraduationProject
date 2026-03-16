@@ -19,13 +19,17 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         return builder;
     }
 
-    public LabelBuilder<TParentBuilder> Label(string text) 
+    public LabelBuilder<TParentBuilder> Label(string text)
         => Builder<LabelBuilder<TParentBuilder>, Label>()
             .Text(text);
 
     public LinkLabelBuilder<TParentBuilder> LinkLabel(string text = "")
         => Builder<LinkLabelBuilder<TParentBuilder>, LinkLabel>()
             .Text(text);
+
+    public LinkLabelBuilder<TParentBuilder> LinkLabel(InfoLinkLabel info)
+        => Builder<LinkLabelBuilder<TParentBuilder>, LinkLabel>()
+            .InfoLink(info);
 
     public TextBoxBuilder<TParentBuilder> TextBox(string placeholder)
         => Builder<TextBoxBuilder<TParentBuilder>, TextBox>()
@@ -54,7 +58,7 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         => Builder<ButtonBuilder<TParentBuilder>, Button>()
             .InfoButton(infoButton);
 
-    public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IRepositoryImgUi repositoryImgUi) 
+    public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IRepositoryImgUi repositoryImgUi)
         => Builder<ImagePanelBuilder<TParentBuilder>, FlowLayoutPanel>()
             .Repository(repositoryImgUi);
 

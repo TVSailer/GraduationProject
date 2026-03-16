@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using UserInterface.Info;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
@@ -15,7 +16,13 @@ public class LinkLabelBuilder<TParentBuilder> : ControlBuilder<LinkLabel, TParen
         Control.Font = new Font("Times New Roman", size, FontStyle.Bold);
         return this;
     }
-    
+
+    public LinkLabelBuilder<TParentBuilder> Enable(bool enable)
+    {
+        Control.Enabled = enable;
+        return this;
+    }
+
     public LinkLabelBuilder<TParentBuilder> Alignment(ContentAlignment contentAlignment)
     {
         Control.TextAlign = contentAlignment;
@@ -30,6 +37,14 @@ public class LinkLabelBuilder<TParentBuilder> : ControlBuilder<LinkLabel, TParen
     public LinkLabelBuilder<TParentBuilder> Click(Action click)
     {
         Control.LinkClicked += (s, e) => click.Invoke();
+        return this;
+    }
+
+    public LinkLabelBuilder<TParentBuilder> InfoLink(InfoLinkLabel info)
+    {
+        Text(info.Text);
+        Click(info.OnClick);
+        Enable(info.Enabled);
         return this;
     }
 

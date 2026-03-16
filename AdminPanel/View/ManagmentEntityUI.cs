@@ -1,5 +1,4 @@
-﻿using DataAccess.PostgreSQL.Extensions;
-using DataAccess.PostgreSQL.Repository;
+﻿using DataAccess.PostgreSQL.Repository;
 using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel;

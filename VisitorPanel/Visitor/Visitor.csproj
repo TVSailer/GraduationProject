@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Extension\" />
-    <Folder Include="FieldData\Enter\Button\" />
     <Folder Include="FieldData\Manager\" />
     <Folder Include="FieldData\DateAttendance\" />
     <Folder Include="View\DateAttendance\" />

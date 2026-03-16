@@ -8,6 +8,7 @@ public class ControlView(IServiceProvision di)
     private readonly Stack<UiView> _stack = new();
     public readonly Form Form = new();
 
+    private Form? _showDialogForm;
     public UiView? View { get; private set; }
 
     public UiView<T> LoadView<T>(T data)
@@ -89,7 +90,10 @@ public class ControlView(IServiceProvision di)
 
     public void ShowDialog<T>() where T : Form
     {
-        di.GetService<T>().ShowDialog();
+        _showDialogForm = di.GetService<T>();
+        _showDialogForm.ShowDialog();
         UpdateGUI();
     }
+
+    public void ExitShowDialog() => _showDialogForm?.Close();
 }
