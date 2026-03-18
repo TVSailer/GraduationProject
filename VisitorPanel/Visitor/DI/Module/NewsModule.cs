@@ -3,6 +3,7 @@ using DataAccess.PostgreSQL.Repository;
 using Ninject.Modules;
 using UserInterface.View;
 using Visitor.View;
+using Visitor.View.News;
 
 namespace Visitor.DI.Module;
 

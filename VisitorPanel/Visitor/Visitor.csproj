@@ -25,6 +25,7 @@
     <Folder Include="Extension\" />
     <Folder Include="FieldData\Manager\" />
     <Folder Include="FieldData\DateAttendance\" />
+    <Folder Include="FieldData\Review\Button\" />
     <Folder Include="View\DateAttendance\" />
   </ItemGroup>
 

@@ -5,6 +5,7 @@ using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 using Visitor.FieldData.Lesson;
 using Visitor.FieldData.Lesson.Button;
+using Visitor.View.Review;
 
 namespace Visitor.View.Lesson;
 public class LessonPanelUi(LessonButton button) : UiView<LessonDataUi, LessonEntity>

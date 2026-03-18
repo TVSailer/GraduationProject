@@ -25,4 +25,5 @@ public class EventEntity : Entity
     public override string ToString()
         => $"Мероприятие: {Title} {Schedule}";
 
+
 }

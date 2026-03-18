@@ -11,8 +11,6 @@ namespace Admin.FieldData.AbstractFieldData;
 public abstract class FieldData<TEntity> : PropertyChange, IDataUi<TEntity>
     where TEntity : Entity, new()
 {
-    public bool NullEntity => MementoEntity.Entity == null;
-
     public TEntity Entity
     {
         get => MementoEntity.GetEntityNotNull(); 
@@ -39,7 +37,6 @@ public abstract class FieldData<TEntity> : PropertyChange, IDataUi<TEntity>
         OnPropertyChanged(ref field, value, prop);
         Validatoreg.TryValidProperty(value!, prop, this, out var errorMessage);
         OnMassageErrorProvider(errorMessage, prop);
-
         return value;
     }
 

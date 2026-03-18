@@ -5,6 +5,7 @@ using Ninject.Modules;
 using UserInterface.View;
 using Visitor.FieldData.Visitor;
 using Visitor.View.Main;
+using Visitor.View.Visitor;
 
 namespace Visitor.DI.Module;
 

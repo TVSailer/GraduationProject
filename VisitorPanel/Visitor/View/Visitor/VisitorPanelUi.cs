@@ -7,7 +7,7 @@ using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
 using Visitor.FieldData.Visitor.Button;
 
-namespace Visitor.FieldData.Visitor;
+namespace Visitor.View.Visitor;
 
 public class VisitorPanelUi(VisitorButtons buttons) : UiView<MementoVisitor>
 {

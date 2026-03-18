@@ -1,7 +1,7 @@
 ﻿using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.CardPanel;
 
-namespace Visitor.View;
+namespace Visitor.View.Review;
 
 public class ReviewCard : ObjectCard<ReviewEntity>
 {

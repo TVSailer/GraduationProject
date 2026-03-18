@@ -4,11 +4,11 @@ namespace DataAccess.PostgreSQL.Enum;
 
 public enum Day
 {
-    [Description(description: "Понедельник")] Monday, 
-    [Description(description: "Вторник")] Tuesday, 
-    [Description(description: "Среда")] Wednesday,
-    [Description(description: "Четверг")] Thursday,
-    [Description(description: "Пятница")] Friday,
-    [Description(description: "Суббота")] Saturday,
-    [Description(description: "Воскресенье")] Sunday
+    [Description("Понедельник")] Monday, 
+    [Description("Вторник")] Tuesday, 
+    [Description("Среда")] Wednesday,
+    [Description("Четверг")] Thursday,
+    [Description("Пятница")] Friday,
+    [Description("Суббота")] Saturday,
+    [Description("Воскресенье")] Sunday
 }
