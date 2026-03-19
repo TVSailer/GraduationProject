@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using UserInterface.LayoutPanel.ControlBuilder;
+using ExtensionFunc;
 
 namespace UserInterface.LayoutPanel.Extension;
 
@@ -111,6 +111,18 @@ public static class LayoutPanelExtension
         return rowBuilder
             .Column(10).Content().Label(labelText).End()
             .Column(40).Content().ComboBox().SetData(dataSource).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
+            .Column(30, SizeType.Absolute).End()
+            .End();
+    }
+    
+    public static IColumnBuilder LabelComboBox<T>(this IRowBuilder rowBuilder, string labelText, string nameMember) where T : Enum
+    {
+        return rowBuilder
+            .Column(10).Content().Label(labelText).End()
+            .Column(40).Content().ComboBox().SetData(Enum.GetValues(typeof(T))
+                .Cast<T>()
+                .Select(selector: d => new { Description = d.ToDescriptionString(), Value = d })
+                .ToList()).Binding(_binding ?? throw new NullReferenceException(), nameMember).End()
             .Column(30, SizeType.Absolute).End()
             .End();
     }

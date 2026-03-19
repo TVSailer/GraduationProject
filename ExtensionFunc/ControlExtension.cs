@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Extension_Func_Library
+namespace ExtensionFunc
 {
     public static class ControlExtension
     {

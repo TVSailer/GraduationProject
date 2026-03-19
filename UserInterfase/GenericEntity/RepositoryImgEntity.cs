@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using Extension_Func_Library;
+using ExtensionFunc;
 using UserInterface.UiLayoutPanel.ImagePanel;
 
 namespace UserInterface.GenericEntity;

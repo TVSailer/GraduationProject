@@ -1,4 +1,4 @@
-﻿using Extension_Func_Library;
+﻿using ExtensionFunc;
 using UserInterface.UiLayoutPanel.ImagePanel;
 
 namespace Visitor.View;

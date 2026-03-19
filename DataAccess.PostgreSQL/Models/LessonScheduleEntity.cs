@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using DataAccess.PostgreSQL.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
-using Extension_Func_Library;
+using ExtensionFunc;
 
 namespace DataAccess.PostgreSQL.Models
 {

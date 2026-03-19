@@ -18,14 +18,23 @@ public class EnterPanelUi : Forma
         _dataUi = dataUi;
         _buttons = buttons.GetButtons(new ClickedArgs<EnterDataUi>(dataUi));
         Size = new Size(width: 500, height: 250);
+        Controls.Add(ControlUi(new BuilderLayoutPanel()).Build());
     }
 
     public override IBuilder ControlUi(BuilderLayoutPanel builderLayoutPanel)
     => builderLayoutPanel.ObjectBinding(_dataUi).Column()
-            .RowAbsolute(40).LabelTextBox("Логин", "Введите логин", nameof(EnterDataUi.Login))
-            .RowAbsolute(40).LabelTextBox("Пароль", "Введите пароль", nameof(EnterDataUi.Password))
+            .RowAbsolute(40)
+                .Column(10).Content().Label("Логин").End()
+                .Column(40).Content().TextBox("Введите логин").Binding(_dataUi, nameof(EnterDataUi.Login)).End()
+                .Column(30, SizeType.Absolute).End()
+            .End()
+            .RowAbsolute(40)
+                .Column(10).Content().Label("Пароль").End()
+                .Column(40).Content().TextBox("Введите пароль").UseSystemPasswordChar().Binding(_dataUi, nameof(EnterDataUi.Password)).End()
+                .Column(30, SizeType.Absolute).End()
+            .End()
             .Row().End()
-            .RowAbsolute(60)
+            .RowAbsolute(50)
                 .Column(50).End()
                 .Column(25).Content().Button(_buttons[0]).End()
                 .Column(25).Content().Button("Выход").Click(Close).End()

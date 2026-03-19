@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using Extension_Func_Library;
+using ExtensionFunc;
 
 namespace UserInterface.UiLayoutPanel.ImagePanel;
 

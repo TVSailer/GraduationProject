@@ -1,6 +1,6 @@
 ﻿using Admin.ViewModel.Model.Lesson;
 using DataAccess.PostgreSQL.Models;
-using Extension_Func_Library;
+using ExtensionFunc;
 using UserInterface;
 using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel;

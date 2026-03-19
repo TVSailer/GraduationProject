@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using Extension_Func_Library;
+using ExtensionFunc;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
@@ -23,6 +23,31 @@ public class ComboBoxBuilder<TParentBuilder> : ControlBuilder<ComboBox, TParentB
     public ComboBoxBuilder<TParentBuilder> SetData(object dataSource)
     {
         Control.DataSource = dataSource;
+        return this;
+    }
+    
+    public ComboBoxBuilder<TParentBuilder> SetData<T>() where T : Enum
+    {
+        Control.DataSource = Enum.GetValues(typeof(T))
+            .Cast<T>()
+            .Select(selector: d => new { Description = d.ToDescriptionString(), Value = d })
+            .ToList();
+
+        DisplayMember("Description");
+        ValueMember("Value");
+
+        return this;
+    }
+    
+    public ComboBoxBuilder<TParentBuilder> DisplayMember(string dataSource)
+    {
+        Control.DisplayMember = dataSource;
+        return this;
+    }
+    
+    public ComboBoxBuilder<TParentBuilder> ValueMember(string dataSource)
+    {
+        Control.ValueMember = dataSource;
         return this;
     }
 

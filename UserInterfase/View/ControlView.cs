@@ -95,5 +95,5 @@ public class ControlView(IServiceProvision di)
         UpdateGUI();
     }
 
-    public void ExitShowDialog() => _showDialogForm?.Close();
+    public void CloseShowDialog() => _showDialogForm?.Close();
 }

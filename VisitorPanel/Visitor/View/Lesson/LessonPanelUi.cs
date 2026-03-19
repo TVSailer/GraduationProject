@@ -1,5 +1,5 @@
 ﻿using DataAccess.PostgreSQL.Models;
-using Extension_Func_Library;
+using ExtensionFunc;
 using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
@@ -44,17 +44,14 @@ public class LessonPanelUi(LessonButton button) : UiView<LessonDataUi, LessonEnt
                         .Size(12)
                     .End()
                 .End()
-                .Column(40)
-                    .Row().Content()
-                        .ImageLayoutPanel(DataUi.RepositoryImgEntity)
-                    .End()
+                .Column(60).Content()
+                    .ImageLayoutPanel(DataUi.RepositoryImgEntity)
                 .End()
-                .Column(40)
-                    .Row().Content()
-                        .CardTableLayoutPanel<ReviewEntity, ReviewCard>(entity.Reviews.ToArray())
-                    .End()
+                .Column(20).Content()
+                    .CardTableLayoutPanel<ReviewEntity, ReviewCard>(entity.Reviews.ToArray())
+                    .Initialize()
                 .End()
             .End()
-            .RowAbsolute(80).Content().ButtonLayoutPanel(button.GetButtons(new ClickedArgs<LessonEntity>(entity))).End();
+            .RowAbsolute(80).Content().ButtonLayoutPanel(button.GetButtons(new ClickedArgs<LessonDataUi>(DataUi))).End();
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using Extension_Func_Library;
+using ExtensionFunc;
 using UserInterface.Attribute;
 using UserInterface.Info;
 using UserInterface.LayoutPanel;

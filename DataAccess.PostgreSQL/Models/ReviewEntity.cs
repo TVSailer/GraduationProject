@@ -1,12 +1,18 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using CSharpFunctionalExtensions;
+using DataAccess.PostgreSQL.Enum;
 using DataAccess.PostgreSQL.Models;
 
 public class ReviewEntity : Entity
 {
     public string Date { get; set; } = DateTime.Now.ToString(format: "dd/MM/yyyy");
-    public int Rating { get; set; }
+    public Estimation Rating { get; set; }
     public string Comment { get; set; } = "";
+    [ForeignKey(nameof(VisitorEntity))]
+    public long VisitorId { get; set; }
     public VisitorEntity Visitor { get; set; }
+
+    [ForeignKey(nameof(LessonEntity))]
+    public long LessonId { get; set; }
     public LessonEntity Lesson { get; set; }
 }

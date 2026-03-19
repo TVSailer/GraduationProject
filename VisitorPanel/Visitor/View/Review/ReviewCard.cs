@@ -7,17 +7,21 @@ public class ReviewCard : ObjectCard<ReviewEntity>
 {
     public ReviewCard()
     {
-        Height = 200;
+        Height = 250;
+        Dock = DockStyle.Top;
+        Margin = new Padding(5);
     }
 
     public override Control Content()
         => new BuilderLayoutPanel().Column()
-            .Row(10).Content().Label(Entity.Visitor.FIO.ToString()).End()
-            .Row(10).Content().Label(Entity.Date).End()
-            .Row(10).Content().Label(Rating(Entity.Rating)).End()
-            .Row(70).Content().Label(Entity.Comment).End()
+            .Row(15).Content().Label(Entity.Visitor.FIO.ToString()).Size(12).End()
+            .Row(15).Content().Label(Entity.Date).Size(12).End()
+            .Row(15).Content().Label(Rating((int)Entity.Rating)).ForeColor(Color.Orange).Size(16).End()
+            .Row(55).Content().Label(Entity.Comment).Size(12).End()
             .Build();
 
     public static string Rating(int rating)
-        => new string('★', rating) + new string('☆', rating);
+    {
+        return new string('★', rating) + new string('☆', 5 - rating);
+    }
 }

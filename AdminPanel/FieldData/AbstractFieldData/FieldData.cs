@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using CSharpFunctionalExtensions;
-using Extension_Func_Library;
+using ExtensionFunc;
 using UserInterface;
 using UserInterface.GenericEntity;
 using UserInterface.Interface;

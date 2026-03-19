@@ -1,5 +1,5 @@
-﻿using Extension_Func_Library;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using ExtensionFunc;
 using UserInterface.UiLayoutPanel.ImagePanel;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;

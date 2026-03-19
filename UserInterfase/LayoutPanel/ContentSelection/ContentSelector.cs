@@ -20,8 +20,10 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
     }
 
     public LabelBuilder<TParentBuilder> Label(string text)
-        => Builder<LabelBuilder<TParentBuilder>, Label>()
+    {
+        return Builder<LabelBuilder<TParentBuilder>, Label>()
             .Text(text);
+    }
 
     public LinkLabelBuilder<TParentBuilder> LinkLabel(string text = "")
         => Builder<LinkLabelBuilder<TParentBuilder>, LinkLabel>()
@@ -32,8 +34,10 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
             .InfoLink(info);
 
     public TextBoxBuilder<TParentBuilder> TextBox(string placeholder)
-        => Builder<TextBoxBuilder<TParentBuilder>, TextBox>()
+    {
+        return Builder<TextBoxBuilder<TParentBuilder>, TextBox>()
             .Placeholder(placeholder);
+    }
 
     public NumericBuilder<TParentBuilder> Numeric()
         => Builder<NumericBuilder<TParentBuilder>, NumericUpDown>();

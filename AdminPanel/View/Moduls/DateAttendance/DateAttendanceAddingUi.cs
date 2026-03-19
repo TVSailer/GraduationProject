@@ -1,6 +1,7 @@
-﻿using DataAccess.PostgreSQL.Models;
+﻿using DataAccess.PostgreSQL.Memento;
+using DataAccess.PostgreSQL.Models;
 using DataAccess.PostgreSQL.Repository;
-using Extension_Func_Library;
+using ExtensionFunc;
 using UserInterface;
 using UserInterface.LayoutPanel;
 
@@ -14,7 +15,7 @@ public class DateAttendanceAddingPanelUi : Form
 
         var cb = new CheckedListBox();
         cb.Dock = DockStyle.Fill;
-        memento.GetVisitorsBelongingLesson().ForEach(v => cb.Items.Add(v));
+        memento.Lesson.Visitors.ForEach(v => cb.Items.Add(v));
         cb.CheckOnClick = true;
 
         Controls.Add(

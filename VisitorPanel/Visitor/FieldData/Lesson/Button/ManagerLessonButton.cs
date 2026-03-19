@@ -1,4 +1,5 @@
-﻿using DataAccess.PostgreSQL.Models;
+﻿using DataAccess.PostgreSQL.Memento;
+using DataAccess.PostgreSQL.Models;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
@@ -7,13 +8,17 @@ using Visitor.DI.Module;
 
 namespace Visitor.FieldData.Lesson.Button;
 
-public class LessonManagerButtons(ControlView controlView) :  
+public class LessonManagerButtons(ControlView controlView, MementoLesson mementoLesson) :  
     IClicked<LessonEntity>,
     IButtons<LessonManager>
 {
     public InfoButton GetButton(CardClickedArgs<LessonEntity> eventArgs) 
         => new InfoButton().CommandClick(
-            () => controlView.LoadView<LessonDataUi, LessonEntity>(eventArgs.Entity));
+            () =>
+            {
+                mementoLesson.Lesson = eventArgs.Entity;
+                controlView.LoadView<LessonDataUi, LessonEntity>(eventArgs.Entity);
+            });
 
     public InfoButton[] GetButtons(ClickedArgs<LessonManager> eventArgs)
         => [

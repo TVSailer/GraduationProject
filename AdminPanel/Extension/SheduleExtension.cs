@@ -1,7 +1,5 @@
-﻿using System.ComponentModel;
-using Admin.ViewModels.Lesson;
-using DataAccess.PostgreSQL.Models;
-using Extension_Func_Library;
+﻿using DataAccess.PostgreSQL.Models;
+using ExtensionFunc;
 
 public static class ListExtension
 {

@@ -14,6 +14,7 @@ public class VisitorDi
     {
         var container = new StandardKernel(
             new MainModule(),
+            new ReviewModule(),
             new EventModule(),
             new NewsModule(),
             new LessonModule());

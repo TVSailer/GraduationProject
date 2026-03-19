@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DataAccess.PostgreSQL.Enum;
+﻿namespace DataAccess.PostgreSQL.Enum;
 
 public static class DayExtension
 {

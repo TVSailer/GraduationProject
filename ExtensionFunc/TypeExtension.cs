@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Extension_Func_Library;
+namespace ExtensionFunc;
 
 public static class TypeExtension
 {

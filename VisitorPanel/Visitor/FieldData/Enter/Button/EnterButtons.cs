@@ -22,7 +22,7 @@ public class EnterButtons(
                 {
                     mementoVisitor.Visitor =
                         visitorsRepository.Get().FirstOrDefault(v => v.AuthEntity.Equals(logger.Auth));
-                    controlView.ExitShowDialog();
+                    controlView.CloseShowDialog();
                     return;
                 }
                 LogicaMessage.MessageError(logger);

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
-using Extension_Func_Library;
+using ExtensionFunc;
 using ContentAlignment = System.Drawing.ContentAlignment;
 using Font = System.Drawing.Font;
 

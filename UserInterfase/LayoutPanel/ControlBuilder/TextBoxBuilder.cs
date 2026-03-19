@@ -1,6 +1,6 @@
-﻿using Extension_Func_Library;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
+using ExtensionFunc;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
@@ -25,12 +25,6 @@ public class TextBoxBuilder<TParentBuilder> : ControlBuilder<TextBox, TParentBui
         return this;
     }
 
-    public TextBoxBuilder<TParentBuilder> ForeColor(Color color)
-    {
-        Control.ForeColor = color;
-        return this;
-    }
-
     public TextBoxBuilder<TParentBuilder> Multiline(bool multiline = true)
     {
         Control.Multiline = multiline;
@@ -52,11 +46,16 @@ public class TextBoxBuilder<TParentBuilder> : ControlBuilder<TextBox, TParentBui
         return this;
     }
 
+    public TextBoxBuilder<TParentBuilder> UseSystemPasswordChar()
+    {
+        Control.UseSystemPasswordChar = true;
+        return this;
+    }
+
     protected override TextBox SettingControl()
     {
-        return new()
+        return new TextBox
         {
-            Text = "",
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
             BorderStyle = BorderStyle.FixedSingle,

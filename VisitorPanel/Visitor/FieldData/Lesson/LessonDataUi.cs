@@ -1,4 +1,6 @@
-﻿using DataAccess.PostgreSQL.Models;
+﻿using DataAccess.PostgreSQL.Memento;
+using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.Repository;
 using UserInterface.GenericEntity;
 using UserInterface.Interface;
 
@@ -13,6 +15,7 @@ public class LessonDataUi : IDataUi<LessonEntity>, IDataWithImgUi
         {
             EntityId = value.Id;
             RepositoryImgEntity.SetData(value.Imgs.Select(i => i.Url).ToArray());
+
             field = value;
         }
     }

@@ -1,31 +1,48 @@
 ﻿using CSharpFunctionalExtensions;
 using DataAccess.PostgreSQL.Models;
 using System.Runtime.CompilerServices;
-using Extension_Func_Library;
+using DataAccess.PostgreSQL.Enum;
+using DataAccess.PostgreSQL.Memento;
+using DataAccess.PostgreSQL.Repository;
+using ExtensionFunc;
 using UserInterface;
 using UserInterface.Attribute;
 using UserInterface.GenericEntity;
 using UserInterface.Interface;
 using Validaiger;
 using Validaiger.AttributeValid;
-using Visitor.Enum;
 
 namespace Visitor.FieldData.Review;
 
-public class ReviewDataUi : PropertyChange, IDataUi<ReviewEntity>
+public class ReviewDataUi(MementoVisitor mementoVisitor, MementoLesson mementoLesson) : PropertyChange, IDataUi<ReviewEntity>
 {
     [RequiredCustom]
     [LinkingEntity(nameof(ReviewEntity.Rating))]
-    public Estimation Estimation { get; set => ValidProperty(ref field, value); }
+    public Estimation Estimation
+    {
+        get;
+        set => ValidProperty(ref field, value);
+    }
+
     [RequiredCustom]
     [LinkingEntity(nameof(ReviewEntity.Comment))]
-    public string? Comment { get; set => ValidProperty(ref field, value); }
-    [RequiredCustom]
+    public string? Comment
+    {
+        get;
+        set => ValidProperty(ref field, value);
+    }
+
     [LinkingEntity(nameof(ReviewEntity.Visitor))]
-    public VisitorEntity? Visitor { get; set => ValidProperty(ref field, value); }
-    [RequiredCustom]
-    [LinkingEntity(nameof(ReviewEntity.Visitor))]
-    public LessonEntity? Lesson { get; set => ValidProperty(ref field, value); }
+    public VisitorEntity Visitor
+    {
+        get => mementoVisitor.Visitor;
+    }
+
+    [LinkingEntity(nameof(ReviewEntity.Lesson))]
+    public LessonEntity Lesson
+    {
+        get => mementoLesson.Lesson;
+    }
 
     public ReviewEntity Entity
     {

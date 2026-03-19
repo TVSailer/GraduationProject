@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using DataAccess.PostgreSQL.Memento;
 using DataAccess.PostgreSQL.Models.Imgs;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -34,11 +35,30 @@ namespace DataAccess.PostgreSQL.Models
         public double Rating()
         {
             double rat = 0;
-            Reviews.ForEach(r => rat += r.Rating);
+            Reviews.ForEach(r => rat += (int)r.Rating);
             return rat == 0 ? 0 : rat / Reviews.Count;
         }
 
         public string CurrentParticipants() => $"{Visitors.Count}/{MaxParticipants}";
+
+        public IEnumerable<string[]> GetVisitorWithAttendance()
+        {
+            foreach (var visitor in Visitors)
+            {
+                var data = new List<string> { visitor.ToString() };
+                data.AddRange(AttendanceDates.Select(date => date.Visitors.Select(v => v.Id).Contains(visitor.Id) ? "нб" : ""));
+                yield return data.ToArray();
+            }
+        }
+
+        public bool IsReviewVisitor(VisitorEntity visitor)
+        {
+            return visitor.Reviews
+                .Select(r => r.Id)
+                .Any(id => Reviews
+                    .Select(r => r.Id)
+                    .Contains(id));
+        }
     }
 }
 
