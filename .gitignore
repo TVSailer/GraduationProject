@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /DataAccess.PostgreSQL/LocalResource.resx
 /AdminPanel/AdminPanel/Admin/App.config
 /DataAccess.PostgreSQL/App.config
+/AdminPanel/App.config
