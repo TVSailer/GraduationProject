@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 using ExtensionFunc;
-using UserInterface.UiLayoutPanel.ImagePanel;
+using UserInterface.Interfase;
 
 namespace UserInterface.GenericEntity;
 

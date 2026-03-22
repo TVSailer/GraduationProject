@@ -1,4 +1,4 @@
-﻿using DataAccess.PostgreSQL.Models;
+﻿using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using UserInterface.Attribute;
 using UserInterface.UiLayoutPanel.SearchCardPanel;

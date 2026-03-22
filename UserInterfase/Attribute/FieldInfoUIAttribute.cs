@@ -46,7 +46,6 @@ public class FieldInfoUiAttribute : System.Attribute
         {
             isBinding = true;
             return Control
-                //.OnErrorProvider(PropertyName, data)
                 .Binding(PropertyNameControl, data, PropertyName);
         }
 
@@ -57,18 +56,10 @@ public class FieldInfoUiAttribute : System.Attribute
 
         Control = creatingControl!
             .Invoke(value)
-            //.OnErrorProvider(PropertyName, data)
             .Binding(PropertyNameControl, data, PropertyName);
                 
         isBinding = true;
 
         return Control;
-    }
-
-    public override object TypeId { get; }
-
-    public override bool Match(object? obj)
-    {
-        return base.Match(obj);
     }
 }

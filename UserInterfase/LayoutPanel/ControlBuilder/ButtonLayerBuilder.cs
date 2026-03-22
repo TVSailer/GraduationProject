@@ -1,5 +1,7 @@
 ﻿using System.Windows.Forms;
-using UserInterface.Info;
+using System.Windows.Input;
+using UserInterface.Command;
+using UserInterface.LayoutPanel.ContentSelection;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
@@ -7,7 +9,7 @@ public class ButtonLayerBuilder<TParentBuilder> : ControlBuilder<Panel, TParentB
 {
     private const int CountButtonsInOneTable = 4;
 
-    internal ButtonLayerBuilder<TParentBuilder> Data(InfoButton[] button)
+    internal ButtonLayerBuilder<TParentBuilder> Data(ICommand[] button)
     {
         if (button.Length == 0 && button.Length > 4) return this;
 
@@ -20,7 +22,7 @@ public class ButtonLayerBuilder<TParentBuilder> : ControlBuilder<Panel, TParentB
             row.Column()
                 .Content()
                 .Button()
-                .InfoButton(button[index])
+                .Command(button[index])
                 .End();
 
         if (index < 4)
@@ -28,7 +30,7 @@ public class ButtonLayerBuilder<TParentBuilder> : ControlBuilder<Panel, TParentB
                 row.Column()
                     .Content()
                     .Button()
-                    .Enable(false);
+                    .NoEnable();
 
         Control.Controls.Add(column.Build());
 

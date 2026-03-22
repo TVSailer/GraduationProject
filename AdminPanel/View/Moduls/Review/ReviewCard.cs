@@ -1,4 +1,5 @@
-﻿using ExtensionFunc;
+﻿using DataAccess.PostgreSQL.ModelsPrimitive;
+using ExtensionFunc;
 using UserInterface;
 using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.CardPanel;

@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using ExtensionFunc;
+using UserInterface.LayoutPanel.ContentSelection;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
@@ -15,8 +16,8 @@ public class MaskedTextBoxBuilder<TParentBuilder> : ControlBuilder<MaskedTextBox
     public MaskedTextBoxBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
         Control
-            .Binding(nameof(MaskedTextBox.Text), dataSource, dataMember)
-            .ErrorProvider(dataSource, dataMember);
+            .Binding(nameof(MaskedTextBox.Text), dataSource, dataMember);
+        ErrorProvider(dataSource, dataMember);
 
         return this;
     }

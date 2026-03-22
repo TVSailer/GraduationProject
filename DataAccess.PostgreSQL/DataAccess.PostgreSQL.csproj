@@ -5,7 +5,20 @@
      <ImplicitUsings>enable</ImplicitUsings>
      <Nullable>enable</Nullable>
 	 <LangVersion>preview</LangVersion>
+	  <NullGuard>ValidationFlags.All</NullGuard>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logger\**" />
+    <Compile Remove="Memento\**" />
+    <Compile Remove="Repository\OldRepository\**" />
+    <EmbeddedResource Remove="Logger\**" />
+    <EmbeddedResource Remove="Memento\**" />
+    <EmbeddedResource Remove="Repository\OldRepository\**" />
+    <None Remove="Logger\**" />
+    <None Remove="Memento\**" />
+    <None Remove="Repository\OldRepository\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
@@ -17,10 +30,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Ninject" Version="3.3.6" />
+    <PackageReference Include="Ninject.Extensions.Conventions" Version="3.3.0" />
     <PackageReference Include="Npgsql" Version="9.0.3">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageReference Include="NullGuard.Fody" Version="3.1.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.3" />
   </ItemGroup>
 
@@ -29,13 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExtensionFunc\ExtensionFunc.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\Domain\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>

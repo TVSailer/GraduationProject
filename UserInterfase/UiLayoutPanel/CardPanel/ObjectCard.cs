@@ -1,9 +1,8 @@
-﻿using System.Drawing;
+﻿using ExtensionFunc;
+using System.Drawing;
 using System.Windows.Forms;
-using ExtensionFunc;
-using UserInterface.Info;
-using UserInterface.UiLayoutPanel.ButtonPanel;
-using UserInterface.UiLayoutPanel.CardPanel.Args;
+using System.Windows.Input;
+using UserInterface.Command;
 
 namespace UserInterface.UiLayoutPanel.CardPanel;
 
@@ -152,31 +151,36 @@ public abstract class ObjectCard<T> : Panel
     
     public abstract Control Content();
 
-    public ObjectCard<T> OnContextMenu(IToolStrip<T>? buttonsContextMenu)
+    public ObjectCard<T> OnContextMenu(InfoCommand[]? buttonsContextMenu)
     {
         if (buttonsContextMenu is null) return this;
-
-        var buttons = buttonsContextMenu.GetToolStrip(new CardClickedToolStripArgs<T>(Entity));
 
         ContextMenuStrip = new ContextMenuStrip();
         ContextMenuStrip.Opening += OnContextMenuOpening;
         ContextMenuStrip.Closed += OnContextMenuClosed;
 
-        buttons.ForEach(AddToolStrip);
+        buttonsContextMenu.ForEach(AddToolStrip);
         return this;
     }
     
-    private void AddToolStrip(InfoToolStrip button)
+    private void AddToolStrip(InfoCommand button)
     {
         var toolStrip = new ToolStripMenuItem(button.Text);
-        toolStrip.Click += (_, _) => button.OnClick();
+        var en = button.Command.CanExecute(Entity);
+        if (en) toolStrip.Click += (_, _) => button.Command.Execute(Entity);
+        toolStrip.Enabled = en;
         ContextMenuStrip?.Items.Add(toolStrip);
     }
 
-    public ObjectCard<T> OnClickedCard(IClicked<T>? buttonsContextMenu)
+    public ObjectCard<T> OnClickedCard(ICommand? buttonsContextMenu)
     {
-        var button = buttonsContextMenu?.GetButton(new CardClickedArgs<T>(Entity));
-        OnCardClicked += (_, _) => button?.OnClick();
+        if (buttonsContextMenu is null) return this;
+
+        OnCardClicked += (_, _) =>
+        {
+            if (buttonsContextMenu.CanExecute(Entity))
+                buttonsContextMenu.Execute(Entity);
+        };
         return this;
     }
 } 

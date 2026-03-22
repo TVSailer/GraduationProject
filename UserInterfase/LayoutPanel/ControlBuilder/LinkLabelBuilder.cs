@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using UserInterface.Info;
+using UserInterface.Command;
+using UserInterface.LayoutPanel.ContentSelection;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
@@ -31,20 +32,6 @@ public class LinkLabelBuilder<TParentBuilder> : ControlBuilder<LinkLabel, TParen
     public LinkLabelBuilder<TParentBuilder> Color(Color color)
     {
         Control.LinkColor = color;
-        return this;
-    }
-
-    public LinkLabelBuilder<TParentBuilder> Click(Action click)
-    {
-        Control.LinkClicked += (s, e) => click.Invoke();
-        return this;
-    }
-
-    public LinkLabelBuilder<TParentBuilder> InfoLink(InfoLinkLabel info)
-    {
-        Text(info.Text);
-        Click(info.OnClick);
-        Enable(info.Enabled);
         return this;
     }
 

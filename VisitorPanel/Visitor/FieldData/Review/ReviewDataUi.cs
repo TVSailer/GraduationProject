@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
-using DataAccess.PostgreSQL.Models;
 using System.Runtime.CompilerServices;
 using DataAccess.PostgreSQL.Enum;
 using DataAccess.PostgreSQL.Memento;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using ExtensionFunc;
 using UserInterface;
@@ -14,7 +14,7 @@ using Validaiger.AttributeValid;
 
 namespace Visitor.FieldData.Review;
 
-public class ReviewDataUi(MementoVisitor mementoVisitor, MementoLesson mementoLesson) : PropertyChange, IDataUi<ReviewEntity>
+public class ReviewDataUi(MementoVisitor mementoVisitor, MementoLesson mementoLesson) : ViewModel, IDataUi<ReviewEntity>
 {
     [RequiredCustom]
     [LinkingEntity(nameof(ReviewEntity.Rating))]
@@ -67,7 +67,7 @@ public class ReviewDataUi(MementoVisitor mementoVisitor, MementoLesson mementoLe
 
     public T ValidProperty<T>(ref T field, T value, [CallerMemberName] string prop = "")
     {
-        OnPropertyChanged(ref field, value, prop);
+        Set(ref field, value, prop);
         Validatoreg.TryValidProperty(value!, prop, this, out var errorMessage);
         OnMassageErrorProvider(errorMessage, prop);
         return value;

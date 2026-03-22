@@ -1,18 +1,18 @@
-﻿using Admin.FieldData.Model.News;
-using Admin.ViewModel.Model.Lesson;
-using DataAccess.PostgreSQL.Models;
+﻿using AbstractView.View;
+using Admin.FieldData.Model.News;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
-using UserInterface.View;
 
 namespace Admin.View.Moduls.News;
 
 public class NewsPanelUi<TButtons>(
     TButtons buttons,
-    CategoryRepository eventCategoryRepository) : UiView<NewsFieldData, NewsEntity>
+    NewsFieldData DataUi,
+    CategoryRepository eventCategoryRepository) : UiView
     where TButtons : IButtons<NewsFieldData>
 {
     const int SizeRow = 5;
@@ -23,7 +23,7 @@ public class NewsPanelUi<TButtons>(
             .Column()
             .Row(SizeRow).LabelTextBox("Название: ", "Введите название", nameof(NewsFieldData.Title))
             .Row(SizeRow).LabelDatePicker("Дата:", "dd.MM.yyyy HH:mm", nameof(NewsFieldData.Date))
-            .Row(SizeRow).LabelComboBox("Категория: ", nameof(LessonFieldData.Category), eventCategoryRepository.Get())
+            //.Row(SizeRow).LabelComboBox("Категория: ", nameof(LessonFieldData.Category), eventCategoryRepository.Get())
             .Row(SizeRow).LabelTextBox("Автор:", "Введите автора", nameof(NewsFieldData.Author))
             .Row(80).LabelTextBoxMultiline("Описание: ", "Введите описание", nameof(NewsEntity.Content))
             .End()

@@ -1,8 +1,9 @@
+using Abstract.View;
 using Admin.DI.Module;
 using DataAccess.PostgreSQL;
+using DataAccess.PostgreSQL.DI;
+using Domain.DIService;
 using Ninject;
-using UserInterface.Interface;
-using UserInterface.View;
 
 namespace Admin.DI;
 
@@ -14,17 +15,19 @@ public class AdminDi
     {
         var container = new StandardKernel(
             new AdminModule(),
-            new VisitorModule(),
-            new ReviewModule(),
+            new DataAccesPastgreSqlDIModel(),
+            //new VisitorModule(),
+            //new ReviewModule(),
             new EventModule(),
-            new NewsModule(),
-            new DateAttendanceModule(),
-            new TeacherModule(),
-            new LessonModule());
+            new NewsModule());
+        //new DateAttendanceModule(),
+        //new TeacherModule(),
+        //new LessonModule());
 
+        var dbContext = new ApplicationDbContext("DBConnectionString");
         var serviceProvider = new ServiceProviderDi(container);
 
-        container.Bind<ApplicationDbContext>().ToSelf().InSingletonScope();
+        container.Bind<ApplicationDbContext>().ToConstant(dbContext).InSingletonScope();
         container.Bind<IServiceProvision>().ToConstant(serviceProvider);
         container.Bind<ControlView>().ToSelf().InSingletonScope();
 

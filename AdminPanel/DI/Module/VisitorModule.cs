@@ -2,7 +2,7 @@ using Admin.FieldData.Model.Visitor;
 using Admin.FieldData.Model.Visitor.Buttons;
 using Admin.View;
 using Admin.View.Moduls.Visitor;
-using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using Ninject.Modules;
 using UserInterface.View;

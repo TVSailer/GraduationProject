@@ -1,4 +1,5 @@
-﻿using UserInterface.LayoutPanel;
+﻿using DataAccess.PostgreSQL.ModelsPrimitive;
+using UserInterface.LayoutPanel;
 using UserInterface.UiLayoutPanel.CardPanel;
 
 namespace Visitor.View.Review;

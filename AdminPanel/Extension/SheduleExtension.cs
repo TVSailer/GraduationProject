@@ -1,10 +1,8 @@
-﻿using DataAccess.PostgreSQL.Models;
-using ExtensionFunc;
-
-public static class ListExtension
+﻿public static class ListExtension
 {
-    public static string ParseSchedule(this IEnumerable<LessonScheduleEntity> list)
+    public static string ParseSchedule(this IEnumerable<string> list)
     {
-        return list.Aggregate<LessonScheduleEntity?, string>(null!, (current, s) => current + $"{s?.Day.ToDescriptionString()[..4]}. {s!.Start}-{s.End} ");
+        return
+            ""; //list.Aggregate<LessonScheduleEntity?, string>(null!, (current, s) => current + $"{s?.Day.ToDescriptionString()[..4]}. {s!.Start}-{s.End} ");
     }
 }

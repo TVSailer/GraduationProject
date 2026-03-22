@@ -2,16 +2,9 @@
 
 namespace UserInterface.GenericEntity;
 
-public class PropertyMapping
+public class PropertyMapping(PropertyInfo? fieldDataProperty, string? entityPropertyName, PropertyInfo? entityProperty)
 {
-    public PropertyMapping(PropertyInfo? fieldDataProperty, string? entityPropertyName, PropertyInfo? entityProperty)
-    {
-        FieldDataProperty = fieldDataProperty;
-        EntityPropertyName = entityPropertyName;
-        EntityProperty = entityProperty;
-    }
-
-    public PropertyInfo? FieldDataProperty { get; set; }
-    public string? EntityPropertyName { get; set; }
-    public PropertyInfo? EntityProperty { get; set; }
+    public PropertyInfo? FieldDataProperty { get; set; } = fieldDataProperty;
+    public string? EntityPropertyName { get; set; } = entityPropertyName;
+    public PropertyInfo? EntityProperty { get; set; } = entityProperty;
 }

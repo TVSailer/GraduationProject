@@ -1,8 +1,9 @@
 ﻿using System.Windows.Forms;
-using UserInterface.Info;
+using System.Windows.Input;
+using UserInterface.Command;
+using UserInterface.Interfase;
 using UserInterface.LayoutPanel.ControlBuilder;
 using UserInterface.UiLayoutPanel.CardPanel;
-using UserInterface.UiLayoutPanel.ImagePanel;
 
 namespace UserInterface.LayoutPanel.ContentSelection;
 
@@ -29,9 +30,8 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         => Builder<LinkLabelBuilder<TParentBuilder>, LinkLabel>()
             .Text(text);
 
-    public LinkLabelBuilder<TParentBuilder> LinkLabel(InfoLinkLabel info)
-        => Builder<LinkLabelBuilder<TParentBuilder>, LinkLabel>()
-            .InfoLink(info);
+    public LinkLabelBuilder<TParentBuilder> LinkLabel(InfoCommand info)
+        => Builder<LinkLabelBuilder<TParentBuilder>, LinkLabel>();
 
     public TextBoxBuilder<TParentBuilder> TextBox(string placeholder)
     {
@@ -58,27 +58,26 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         => Builder<ButtonBuilder<TParentBuilder>, Button>()
             .Text(text);
 
-    public ButtonBuilder<TParentBuilder> Button(InfoButton infoButton)
-        => Builder<ButtonBuilder<TParentBuilder>, Button>()
-            .InfoButton(infoButton);
-
     public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IRepositoryImgUi repositoryImgUi)
         => Builder<ImagePanelBuilder<TParentBuilder>, FlowLayoutPanel>()
             .Repository(repositoryImgUi);
 
-    public ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(InfoButton[] data)
+    public ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(ICommand[] data)
         => Builder<ButtonLayerBuilder<TParentBuilder>, Panel>()
             .Data(data);
 
-    public CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>(TEntity[] entities) where TCard : ObjectCard<TEntity>, new()
+    public CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>(Func<TEntity[]> entities) where TCard : ObjectCard<TEntity>, new()
         => Builder<CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard>, FlowLayoutPanel>()
             .SetData(entities);
 
-    public CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard> CardTableLayoutPanel<TEntity, TCard>(TEntity[] entities) where TCard : ObjectCard<TEntity>, new()
+    public CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard> CardTableLayoutPanel<TEntity, TCard>(Func<TEntity[]> entities) where TCard : ObjectCard<TEntity>, new()
         => Builder<CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard>, TableLayoutPanel>()
             .SetData(entities);
 
     public ImageBuilder<TParentBuilder> Image(string url)
         => Builder<ImageBuilder<TParentBuilder>, PictureBox>()
             .Url(url);
+
+    public PanelBuilder<TParentBuilder> Panel()
+        => Builder<PanelBuilder<TParentBuilder>, Panel>();
 }

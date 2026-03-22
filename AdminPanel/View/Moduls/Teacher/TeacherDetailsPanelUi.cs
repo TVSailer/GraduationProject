@@ -1,6 +1,6 @@
 ﻿using Admin.FieldData.Model.Teacher;
 using Admin.FieldData.Model.Teacher.Buttons;
-using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using UserInterface;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;

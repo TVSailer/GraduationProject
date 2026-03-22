@@ -1,4 +1,5 @@
 ﻿using Admin.DI.Module;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;

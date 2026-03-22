@@ -1,5 +1,6 @@
-﻿using Admin.DI.Module;
-using DataAccess.PostgreSQL.Models;
+﻿using AbstractView.View;
+using Admin.DI.Module;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;
@@ -20,12 +21,12 @@ public class NewsManagerClicked(
     public InfoButton[] GetButtons(ClickedArgs<NewsManager> eventArgs)
         => [
             new InfoButton("Назад").CommandClick(controlView.Exit),
-            new InfoButton("Добавить").CommandClick(() => controlView.LoadView<NewsFieldData>()),
+            //new InfoButton("Добавить").CommandClick(() => controlView.LoadView<NewsFieldData>()),
         ];
 
     public InfoButton GetButton(CardClickedArgs<NewsEntity> eventArgs)
         => new InfoButton().CommandClick(() =>
         {
-            controlView.LoadView<NewsFieldData, NewsEntity>(eventArgs.Entity);
+            //controlView.LoadView<NewsFieldData, NewsEntity>(eventArgs.Entity);
         });
 }

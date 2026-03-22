@@ -1,5 +1,6 @@
-﻿using Admin.ViewModel.Model.Lesson;
-using DataAccess.PostgreSQL.Models;
+﻿using System.Windows.Forms.VisualStyles;
+using Admin.ViewModel.Model.Lesson;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using ExtensionFunc;
 using UserInterface;
 using UserInterface.LayoutPanel;
@@ -84,7 +85,7 @@ namespace Admin.View.Moduls.Lesson
                 return;
             }
 
-            _scheduleEntities.Add(item: new LessonScheduleEntity(start: _timeStart.HousMinute(), end: _timeEnd.HousMinute(), day: (Day)_dayComboBox.SelectedValue));
+            _scheduleEntities.Add(item: new LessonScheduleEntity(TimeOnly.Parse(_timeStart.Text), TimeOnly.Parse(_timeEnd.Text), (Day)_dayComboBox.SelectedValue));
             _scheduleGrid.Rows.Add(values: [_dayComboBox.Text, $"{_timeStart.Text}-{_timeEnd.Text}"]);
         }
 

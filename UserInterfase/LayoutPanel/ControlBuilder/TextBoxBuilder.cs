@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using ExtensionFunc;
+using UserInterface.LayoutPanel.ContentSelection;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
@@ -40,8 +41,8 @@ public class TextBoxBuilder<TParentBuilder> : ControlBuilder<TextBox, TParentBui
     public TextBoxBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
         Control
-            .Binding(nameof(TextBox.Text), dataSource, dataMember)
-            .ErrorProvider(dataSource, dataMember);
+            .Binding(nameof(TextBox.Text), dataSource, dataMember);
+        ErrorProvider(dataSource, dataMember);
 
         return this;
     }

@@ -1,17 +1,20 @@
-﻿using Admin.DI.Module;
-using Admin.FieldData.Model.AdminMain;
-using UserInterface;
-using UserInterface.Info;
+﻿using Abstract.View;
+using AbstractView.View;
+using Admin.DI.Module;
+using Admin.View.Moduls.Event;
+using Domain.Command;
+using System.Windows.Input;
 using UserInterface.LayoutPanel;
-using UserInterface.UiLayoutPanel.CardPanel.Args;
-using UserInterface.View;
+using UserInterface.UiLayoutPanel;
 
 namespace Admin.View.Moduls.AdminMain;
 
-public sealed class AdminMainUi(AdminMainViewButton buttons, AdminFieldData model) : UiView<AdminFieldData>
+public sealed class AdminMainUi(ControlView controlView, AdminFieldData model) : UiView
 {
-    private readonly InfoButton[] _buttonInfos = buttons.GetButtons(new ClickedArgs<AdminFieldData>(model));
-    public override Form InitializeForm(Form form)
+    private readonly ICommand _loadEventManagerView = new ExecuteCommand(_ => controlView.LoadView<EventManagerView>());
+    private readonly ICommand _exit = new ExecuteCommand(_ => controlView.Exit());
+
+    protected override Form InitializeForm(Form form)
     {
         form.Text = "Панель администратора";
         form.WindowState = FormWindowState.Maximized;
@@ -26,12 +29,12 @@ public sealed class AdminMainUi(AdminMainViewButton buttons, AdminFieldData mode
             .Column(25).End()
             .Column(50)
                 .Row(70, SizeType.Absolute).ContentEnd(FactoryElements.LabelTitle("Панель администратора"))
-                .Row(60, SizeType.Absolute).Content().Button(_buttonInfos[0]).End()
-                .Row(60, SizeType.Absolute).Content().Button(_buttonInfos[1]).End()
-                .Row(60, SizeType.Absolute).Content().Button(_buttonInfos[2]).End()
-                .Row(60, SizeType.Absolute).Content().Button(_buttonInfos[3]).End()
-                .Row(60, SizeType.Absolute).Content().Button(_buttonInfos[4]).End()
-                .Row(60, SizeType.Absolute).Content().Button(_buttonInfos[5]).End()
+                .Row(60, SizeType.Absolute).Content().Button("🎭 Управление кружками").Command(_loadEventManagerView).End()
+                //.Row(60, SizeType.Absolute).Content().Button(_buttonInfos[1]).End()
+                //.Row(60, SizeType.Absolute).Content().Button(_buttonInfos[2]).End()
+                //.Row(60, SizeType.Absolute).Content().Button(_buttonInfos[3]).End()
+                //.Row(60, SizeType.Absolute).Content().Button(_buttonInfos[4]).End()
+                .Row(60, SizeType.Absolute).Content().Button("🚪 Выход").Command(_exit).End()
                 .Row().End()
             .End()
             .Column(25).End();

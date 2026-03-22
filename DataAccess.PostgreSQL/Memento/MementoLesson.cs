@@ -1,5 +1,5 @@
 ﻿using DataAccess.PostgreSQL.Logger;
-using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using Microsoft.EntityFrameworkCore;
 using ILogger = DataAccess.PostgreSQL.Logger.ILogger;

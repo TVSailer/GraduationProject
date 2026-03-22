@@ -1,8 +1,10 @@
-﻿using System.Windows.Forms;
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using System.Windows.Input;
 using ExtensionFunc;
-using UserInterface.UiLayoutPanel.ButtonPanel;
+using UserInterface.Command;
+using UserInterface.LayoutPanel.ContentSelection;
 using UserInterface.UiLayoutPanel.CardPanel;
-using UserInterface.UiLayoutPanel.CardPanel.Args;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
@@ -10,12 +12,12 @@ public class CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> : Contr
     where TControl : Panel, new()
     where TCard : ObjectCard<TEntity>, new()
 {
-    private IToolStrip<TEntity>? _menuStrip;
-    private IClicked<TEntity>? _onClick;
-    private TEntity[]? _entities;
+    private InfoCommand[]? _menuStrip;
+    private ICommand? _onClick;
+    private Func<TEntity[]>? _entities;
 
 
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> SetData(TEntity[] entities)
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> SetData(Func<TEntity[]> entities)
     {
         _entities = entities;
         return this;
@@ -23,7 +25,7 @@ public class CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> : Contr
 
     public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> Initialize()
     {
-        _entities?
+        _entities?.Invoke()
             .With(_ => Control.Controls.Clear()).ForEach(en =>
                 Control.Controls.Add(new TCard()
                     .Initialize(this, en)
@@ -32,13 +34,19 @@ public class CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> : Contr
         return this;
     }
 
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ClickedCard(IClicked<TEntity> clicked)
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> Binding(INotifyPropertyChanged notify)
+    {
+        notify.PropertyChanged += (_, _) => Initialize();
+        return this;
+    }
+
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ClickedCard(ICommand clicked)
     {
         _onClick = clicked;
         return this;
     }
 
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ContextMenu(IToolStrip<TEntity> buttons)
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ContextMenu(InfoCommand[] buttons)
     {
         _menuStrip = buttons;
         return this;
@@ -46,7 +54,7 @@ public class CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> : Contr
 
     protected override TControl SettingControl()
     {
-        return new TControl()
+        return new TControl
         {
             Dock = DockStyle.Fill,
             AutoScroll = true,

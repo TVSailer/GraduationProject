@@ -1,3 +1,4 @@
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using Ninject.Modules;
 

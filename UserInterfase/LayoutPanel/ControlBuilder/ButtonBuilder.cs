@@ -1,7 +1,8 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
-using UserInterface.Info;
+using System.Windows.Input;
+using UserInterface.Command;
+using UserInterface.LayoutPanel.ContentSelection;
 using Font = System.Drawing.Font;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
@@ -19,34 +20,19 @@ public class ButtonBuilder<TParentBuilder> : ControlBuilder<Button, TParentBuild
         return this;
     }
     
-    public ButtonBuilder<TParentBuilder> Alignment(ContentAlignment contentAlignment)
-    {
-        Control.TextAlign = contentAlignment;
-        return this;
-    }
-    public ButtonBuilder<TParentBuilder> ForeColor(Color color)
-    {
-        Control.ForeColor = color;
-        return this;
-    }
-    
-    public ButtonBuilder<TParentBuilder> Enable(bool enable = true)
+    public ButtonBuilder<TParentBuilder> NoEnable(bool enable = false)
     {
         Control.Enabled = enable;
         return this;
     }
-    
-    public ButtonBuilder<TParentBuilder> InfoButton(InfoButton info)
-    {
-        return this
-            .Text(info.Text)
-            .Click(info.OnClick)
-            .Enable(info.Enabled);
-    }
 
-    public ButtonBuilder<TParentBuilder> Click(Action action)
+    public ButtonBuilder<TParentBuilder> Command(ICommand info)
     {
-        Control.Click += (_, _) => action();
+        var en = info.CanExecute(null);
+        Control.Enabled = en;
+
+        if (en) Control.Click += (s, e) => info.Execute(null);
+
         return this;
     }
 
@@ -56,7 +42,8 @@ public class ButtonBuilder<TParentBuilder> : ControlBuilder<Button, TParentBuild
         {
             AutoSize = true,
             Dock = DockStyle.Fill,
-            Font = new Font("Times New Roman", 11, FontStyle.Bold)
+            Font = new Font("Times New Roman", 11, FontStyle.Bold),
+            Margin = new Padding(5),
         };
     }
 }

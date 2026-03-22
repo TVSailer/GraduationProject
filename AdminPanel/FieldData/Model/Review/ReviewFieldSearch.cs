@@ -1,4 +1,5 @@
-﻿using UserInterface.Attribute;
+﻿using DataAccess.PostgreSQL.ModelsPrimitive;
+using UserInterface.Attribute;
 using UserInterface.UiLayoutPanel.SearchCardPanel;
 
 namespace Admin.FieldData.Model.Review;

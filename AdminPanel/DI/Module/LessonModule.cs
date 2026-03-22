@@ -4,7 +4,7 @@ using Admin.View.Moduls.Lesson;
 using Admin.ViewModel.Model.Lesson;
 using Admin.ViewModels.Lesson;
 using DataAccess.PostgreSQL.Memento;
-using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using Ninject.Modules;
 using UserInterface.View;

@@ -1,6 +1,7 @@
-﻿using System.Drawing;
+﻿using ExtensionFunc;
+using System.Drawing;
 using System.Windows.Forms;
-using ExtensionFunc;
+using UserInterface.LayoutPanel.ContentSelection;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
@@ -14,15 +15,18 @@ public class ComboBoxBuilder<TParentBuilder> : ControlBuilder<ComboBox, TParentB
 
     public ComboBoxBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        Control
-            .Binding(nameof(ComboBox.SelectedItem), dataSource, dataMember)
-            .ErrorProvider(dataSource, dataMember);
+        Control.Binding(nameof(ComboBox.SelectedItem), dataSource, dataMember);
+        if (Control.Items.Count > 0)
+            Control.SelectedIndex = 0;
+        ErrorProvider(dataSource, dataMember);
         return this;
     }
         
     public ComboBoxBuilder<TParentBuilder> SetData(object dataSource)
     {
         Control.DataSource = dataSource;
+        if (Control.Items.Count > 0)
+            Control.SelectedIndex = 0;
         return this;
     }
     

@@ -1,6 +1,6 @@
 ﻿using Admin.View.Moduls.Lesson;
 using Admin.ViewModel.Model.Lesson;
-using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;

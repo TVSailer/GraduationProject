@@ -1,14 +1,12 @@
-﻿using System.Runtime.CompilerServices;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using ExtensionFunc;
-using UserInterface;
+using System.Runtime.CompilerServices;
 using UserInterface.GenericEntity;
-using UserInterface.Interface;
 using Validaiger;
 
 namespace Admin.FieldData.AbstractFieldData;
 
-public abstract class FieldData<TEntity> : PropertyChange, IDataUi<TEntity>
+public abstract class FieldData<TEntity> : Abstract.ViewModel.ViewModel
     where TEntity : Entity, new()
 {
     public TEntity Entity
@@ -34,7 +32,7 @@ public abstract class FieldData<TEntity> : PropertyChange, IDataUi<TEntity>
 
     public T ValidProperty<T>(ref T field, T value, [CallerMemberName] string prop = "")
     {
-        OnPropertyChanged(ref field, value, prop);
+        Set(ref field, value, prop);
         Validatoreg.TryValidProperty(value!, prop, this, out var errorMessage);
         OnMassageErrorProvider(errorMessage, prop);
         return value;

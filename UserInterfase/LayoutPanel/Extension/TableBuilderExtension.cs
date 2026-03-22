@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace UserInterface.LayoutPanel;
+namespace UserInterface.LayoutPanel.Extension;
 
 
 public static class TableBuilderExtension

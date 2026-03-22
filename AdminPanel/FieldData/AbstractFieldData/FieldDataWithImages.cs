@@ -1,6 +1,6 @@
 ﻿using Admin.FieldData.AbstractFieldData;
 using CSharpFunctionalExtensions;
-using DataAccess.PostgreSQL.Models.Imgs;
+using DataAccess.PostgreSQL.ModelsPrimitive.Imgs;
 using UserInterface.GenericEntity;
 using UserInterface.Interface;
 

@@ -1,6 +1,6 @@
 ﻿using Admin.ViewModel.AbstractFieldData;
-using DataAccess.PostgreSQL.Models;
-using DataAccess.PostgreSQL.Models.Imgs;
+using DataAccess.PostgreSQL.ModelsPrimitive;
+using DataAccess.PostgreSQL.ModelsPrimitive.Imgs;
 using DataAccess.PostgreSQL.Repository;
 using UserInterface.Attribute;
 using Validaiger.AttributeValid;

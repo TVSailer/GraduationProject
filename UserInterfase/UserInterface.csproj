@@ -8,6 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interface\**" />
+    <Compile Remove="View\**" />
+    <EmbeddedResource Remove="Interface\**" />
+    <EmbeddedResource Remove="View\**" />
+    <None Remove="Interface\**" />
+    <None Remove="View\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ExtensionFunc\ExtensionFunc.csproj" />
   </ItemGroup>
 
@@ -24,27 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="UiLayoutPanel\ButtonPanel\CustomButton.cs" />
-    <Compile Update="UiLayoutPanel\ButtonPanel\ButtonLayoutPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UiLayoutPanel\CardPanel\CardLayoutPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UiLayoutPanel\CardPanel\ObjectCard.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="UiLayoutPanel\EmptyPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UiLayoutPanel\ImagePanel\ImageModule.cs" />
-    <Compile Update="UiLayoutPanel\ImagePanel\ImgUi.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UiLayoutPanel\SearchCardPanel\SearchCardPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UiLayoutPanel\SearchPanel\SearchPanel.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>

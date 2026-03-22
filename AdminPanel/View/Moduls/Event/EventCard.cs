@@ -1,7 +1,7 @@
-﻿using DataAccess.PostgreSQL.Models;
+﻿using Domain.Entitys;
 using ExtensionFunc;
-using UserInterface;
 using UserInterface.LayoutPanel;
+using UserInterface.UiLayoutPanel;
 using UserInterface.UiLayoutPanel.CardPanel;
 
 namespace Admin.View.Moduls.Event;

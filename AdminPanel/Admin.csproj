@@ -10,11 +10,58 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="FieldData\AbstractFieldData\**" />
+    <Compile Remove="FieldData\Model\DateAttendance\**" />
+    <Compile Remove="FieldData\Model\Lesson\**" />
+    <Compile Remove="FieldData\Model\News\**" />
+    <Compile Remove="FieldData\Model\Review\**" />
+    <Compile Remove="FieldData\Model\Teacher\**" />
+    <Compile Remove="FieldData\Model\Visitor\**" />
     <Compile Remove="Resources\**" />
+    <Compile Remove="SearchPanel\**" />
+    <Compile Remove="View\Moduls\DateAttendance\**" />
+    <Compile Remove="View\Moduls\Lesson\**" />
+    <Compile Remove="View\Moduls\News\**" />
+    <Compile Remove="View\Moduls\Review\**" />
+    <Compile Remove="View\Moduls\Teacher\**" />
+    <Compile Remove="View\Moduls\Visitor\**" />
+    <EmbeddedResource Remove="FieldData\AbstractFieldData\**" />
+    <EmbeddedResource Remove="FieldData\Model\DateAttendance\**" />
+    <EmbeddedResource Remove="FieldData\Model\Lesson\**" />
+    <EmbeddedResource Remove="FieldData\Model\News\**" />
+    <EmbeddedResource Remove="FieldData\Model\Review\**" />
+    <EmbeddedResource Remove="FieldData\Model\Teacher\**" />
+    <EmbeddedResource Remove="FieldData\Model\Visitor\**" />
+    <EmbeddedResource Remove="SearchPanel\**" />
+    <EmbeddedResource Remove="View\Moduls\DateAttendance\**" />
+    <EmbeddedResource Remove="View\Moduls\Lesson\**" />
+    <EmbeddedResource Remove="View\Moduls\News\**" />
+    <EmbeddedResource Remove="View\Moduls\Review\**" />
+    <EmbeddedResource Remove="View\Moduls\Teacher\**" />
+    <EmbeddedResource Remove="View\Moduls\Visitor\**" />
+    <None Remove="FieldData\AbstractFieldData\**" />
+    <None Remove="FieldData\Model\DateAttendance\**" />
+    <None Remove="FieldData\Model\Lesson\**" />
+    <None Remove="FieldData\Model\News\**" />
+    <None Remove="FieldData\Model\Review\**" />
+    <None Remove="FieldData\Model\Teacher\**" />
+    <None Remove="FieldData\Model\Visitor\**" />
     <None Remove="Resources\**" />
+    <None Remove="SearchPanel\**" />
+    <None Remove="View\Moduls\DateAttendance\**" />
+    <None Remove="View\Moduls\Lesson\**" />
+    <None Remove="View\Moduls\News\**" />
+    <None Remove="View\Moduls\Review\**" />
+    <None Remove="View\Moduls\Teacher\**" />
+    <None Remove="View\Moduls\Visitor\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="DI\Module\DateAttendanceModule.cs" />
+    <Compile Remove="DI\Module\LessonModule.cs" />
+    <Compile Remove="DI\Module\ReviewModule.cs" />
+    <Compile Remove="DI\Module\TeacherModule.cs" />
+    <Compile Remove="DI\Module\VisitorModule.cs" />
     <Compile Remove="DI\TeacherModule.cs" />
     <Compile Remove="View\ManagementView.cs" />
     <Compile Remove="View\UI.cs" />
@@ -27,9 +74,11 @@
     </PackageReference>
     <PackageReference Include="Ninject" Version="3.3.6" />
     <PackageReference Include="ninject.extensions.conventions" Version="3.3.0" />
+    <PackageReference Include="NullGuard.Fody" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="FieldData\Model\AdminMain\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
@@ -37,7 +86,7 @@
     <ProjectReference Include="..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj" />
     <ProjectReference Include="..\ExtensionFunc\ExtensionFunc.csproj" />
     <ProjectReference Include="..\UserInterfase\UserInterface.csproj" />
-    <ProjectReference Include="..\Validaiger\Validaiger.csproj" />
+    <ProjectReference Include="..\View\Abstract.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
+using Abstract.View;
+using AbstractView.View;
 using Admin.DI;
-using Admin.DI.Module;
-using UserInterface.View;
+using Admin.View.Moduls.AdminMain;
 
 internal static class Program
 {
@@ -8,15 +9,15 @@ internal static class Program
     ///  The main entry point for the application.
     /// </summary>
     [STAThread]
-    static void Main()
+    private static void Main()
     {
         ApplicationConfiguration.Initialize();
 
         var di = new AdminDi();
+
         var controlView = di.GetService<ControlView>();
-        controlView.LoadView(new AdminFieldData());
+        controlView.LoadView<AdminMainUi>();
 
         Application.Run(controlView.Form);
     }
 }
-

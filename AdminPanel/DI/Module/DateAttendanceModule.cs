@@ -1,5 +1,5 @@
 using Admin.View.Moduls.DateAttendance;
-using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using Ninject.Modules;
 using UserInterface.View;

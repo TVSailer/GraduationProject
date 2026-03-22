@@ -2,7 +2,7 @@ using Admin.FieldData.Model.Teacher;
 using Admin.FieldData.Model.Teacher.Buttons;
 using Admin.View;
 using Admin.View.Moduls.Teacher;
-using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using Ninject.Modules;
 using UserInterface.View;

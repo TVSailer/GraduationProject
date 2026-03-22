@@ -1,4 +1,4 @@
-﻿using DataAccess.PostgreSQL.Models;
+﻿using DataAccess.PostgreSQL.ModelsPrimitive;
 
 namespace DataAccess.PostgreSQL.Logger;
 

@@ -1,6 +1,6 @@
 ﻿using Admin.DI.Module;
 using DataAccess.PostgreSQL.Memento;
-using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;

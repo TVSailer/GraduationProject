@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using ExtensionFunc;
+using UserInterface.LayoutPanel.ContentSelection;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 
@@ -8,9 +9,8 @@ public class DateTimePickerBuilder<TParentBuilder> : ControlBuilder<DateTimePick
 {
     public DateTimePickerBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        Control
-            .Binding(nameof(DateTimePicker.Text), dataSource, dataMember)
-            .ErrorProvider(dataSource, dataMember);
+        Control.Binding(nameof(DateTimePicker.Text), dataSource, dataMember);
+        ErrorProvider(dataSource, dataMember);
         return this;
     }
         

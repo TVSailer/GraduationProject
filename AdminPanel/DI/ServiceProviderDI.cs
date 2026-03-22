@@ -1,5 +1,5 @@
+using Domain.DIService;
 using Ninject;
-using UserInterface.Interface;
 
 namespace Admin.DI;
 

@@ -1,5 +1,5 @@
 ﻿using DataAccess.PostgreSQL.Memento;
-using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
 using UserInterface.UiLayoutPanel.CardPanel.Args;

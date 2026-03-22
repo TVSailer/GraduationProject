@@ -175,4 +175,5 @@ public static partial class LogicaMessage
     {
         MessageOk(obj, caption, MessageBoxIcon.Information);
     }
+
 }

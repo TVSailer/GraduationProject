@@ -1,5 +1,5 @@
 ﻿using Admin.FieldData.AbstractFieldData;
-using DataAccess.PostgreSQL.Models;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using UserInterface.Attribute;
 
 namespace Admin.FieldData.Model.Review;
@@ -7,11 +7,11 @@ namespace Admin.FieldData.Model.Review;
 public class ReviewFieldData : FieldData<ReviewEntity>
 {
     [LinkingEntity(nameof(ReviewEntity.Rating))]
-    public int Rating { get; set => OnPropertyChanged(ref field, value); }
+    public int Rating { get; set => Set(ref field, value); }
 
     [LinkingEntity(nameof(ReviewEntity.Visitor))]
-    public VisitorEntity? Visitor { get; set => OnPropertyChanged(ref field, value); }
+    public VisitorEntity? Visitor { get; set => Set(ref field, value); }
 
     [LinkingEntity(nameof(ReviewEntity.Comment))]
-    public string? Comment { get; set => OnPropertyChanged(ref field, value); }
+    public string? Comment { get; set => Set(ref field, value); }
 }

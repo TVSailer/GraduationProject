@@ -1,4 +1,4 @@
-﻿using DataAccess.PostgreSQL.Models;
+﻿using DataAccess.PostgreSQL.ModelsPrimitive;
 using ExtensionFunc;
 using UserInterface;
 using UserInterface.LayoutPanel;

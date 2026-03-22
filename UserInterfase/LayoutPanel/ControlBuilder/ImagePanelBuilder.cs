@@ -1,5 +1,7 @@
 ﻿using System.Windows.Forms;
 using ExtensionFunc;
+using UserInterface.Interfase;
+using UserInterface.LayoutPanel.ContentSelection;
 using UserInterface.UiLayoutPanel.ImagePanel;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;

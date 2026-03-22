@@ -1,5 +1,6 @@
 using Admin.FieldData.Model.Review;
 using Admin.View.Moduls.Review;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using Ninject.Modules;
 using UserInterface.View;
 
