@@ -1,12 +1,12 @@
-﻿using Domain.Command;
-using Domain.Repository;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using Domain.Command;
 using Domain.Entitys;
 using Domain.Entitys.ComplexType;
 using Domain.Entitys.ImagesEntity;
+using Domain.Repository;
 using Domain.Valid.AttributeValid;
 
-namespace Admin.FieldData.Model.Event;
+namespace Admin.ViewModel.Model.Event;
 
 public class EventViewModel : Abstract.ViewModel.ViewModel
 {
@@ -16,23 +16,29 @@ public class EventViewModel : Abstract.ViewModel.ViewModel
     [Image] public string? TitleImg { get; set => Set(ref field, value); }
     [Description] public string? Description { get; set => Set(ref field, value); }
     [Date] public string? Date { get; set => Set(ref field, value); } = DateTime.Now.ToShortDateString();
-    [Time] public string? TimeStart { get; set => Set(ref field, value); } = "10:00";
-    [Time] public string? TimeEnd { get; set => Set(ref field, value); } = "12:00";
+    [Time] public string? TimeStart
+    {
+        get;
+        set
+        {
+            Set(ref field, value);
+            ValidProperty(Schedule, nameof(Schedule));
+        }
+    } = "10:00";
+    [Time] public string? TimeEnd
+    {
+        get;
+        set
+        {
+            Set(ref field, value);
+            ValidProperty(Schedule, nameof(Schedule));
+        }
+    } = "12:00";
     [Location] public string? Location { get; set => Set(ref field, value); }
     [Organizer] public string? Organizer { get; set => Set(ref field, value); }
     [RequiredCustom] public CategoryEntity? Category { get; set => Set(ref field, value); }
     [Url] public string? RegisLink { get; set => Set(ref field, value); }
-    [Schedule] public EventSchedule Schedule
-    {
-        get => new (TimeStart, TimeEnd, Date);
-        set
-        {
-            TimeStart = value.Start;
-            TimeEnd = value.End;
-            Date = value.Date;
-        }
-    }
-
+    [ScheduleEntity] public EventEntitySchedule Schedule => new (TimeStart, TimeEnd, Date);
     public ICollection<ImageEventEntity> Images { get; set; } = [];
 
     #region CommandSave

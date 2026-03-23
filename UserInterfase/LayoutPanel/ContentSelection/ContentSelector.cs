@@ -74,7 +74,7 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         => Builder<CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard>, TableLayoutPanel>()
             .SetData(entities);
 
-    public ImageBuilder<TParentBuilder> Image(string url)
+    public ImageBuilder<TParentBuilder> Image(string url = "")
         => Builder<ImageBuilder<TParentBuilder>, PictureBox>()
             .Url(url);
 

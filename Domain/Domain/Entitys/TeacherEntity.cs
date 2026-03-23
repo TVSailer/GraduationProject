@@ -6,7 +6,7 @@ namespace Domain.Entitys
 {
     public class TeacherEntity : Entity
     {
-        public FIO FIO { get; set; }
+        public FIOEntity FIO { get; set; }
         public string DateBirth { get; set; }
         public string NumberPhone { get; set; }
 

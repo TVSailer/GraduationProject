@@ -11,7 +11,7 @@ public class NumericBuilder<TParentBuilder> : ControlBuilder<NumericUpDown, TPar
     {
         Control
             .Binding(nameof(TextBox.Text), dataSource, dataMember);
-        ErrorProvider(dataSource, dataMember);
+        MessageErrorProvider(dataSource, dataMember);
         return this;
     }
 

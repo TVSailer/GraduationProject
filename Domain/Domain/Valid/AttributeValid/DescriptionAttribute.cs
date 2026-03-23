@@ -6,20 +6,23 @@ public class DescriptionAttribute : RequiredAttribute
 {
     public override bool IsValid(object? value)
     {
-        if (value is not string des) return false;
-
-        if (string.IsNullOrEmpty(des))
+        if (value is string des)
         {
-            ErrorMessage = "Описание не может быть пустым";
-            return false;
-        }
+            if (string.IsNullOrEmpty(des))
+            {
+                ErrorMessage = "Описание не может быть пустым";
+                return false;
+            }
 
-        if (des.Length > 200)
-        {
-            ErrorMessage = "Описание не может превышать 200 симмволов";
-            return false;
-        }
+            if (des.Length > 200)
+            {
+                ErrorMessage = "Описание не может превышать 200 симмволов";
+                return false;
+            }
 
-        return true;
+            return true;
+        }
+        ErrorMessage = "Описание не может быть пустым";
+        return false;
     }
 }

@@ -1,16 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
-using Domain.Valid.AttributeValid;
 
 namespace Domain.Entitys
 {
     public class CategoryEntity : Entity
     {
-        [Category] public string Category { get; set; }
+        public string Category { get; init; }
 
-        public override string ToString()
-        {
-            return $"{Category}";
-        }
     }
 }
 

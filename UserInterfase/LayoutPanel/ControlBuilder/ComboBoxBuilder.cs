@@ -18,7 +18,7 @@ public class ComboBoxBuilder<TParentBuilder> : ControlBuilder<ComboBox, TParentB
         Control.Binding(nameof(ComboBox.SelectedItem), dataSource, dataMember);
         if (Control.Items.Count > 0)
             Control.SelectedIndex = 0;
-        ErrorProvider(dataSource, dataMember);
+        MessageErrorProvider(dataSource, dataMember);
         return this;
     }
         
@@ -27,6 +27,7 @@ public class ComboBoxBuilder<TParentBuilder> : ControlBuilder<ComboBox, TParentB
         Control.DataSource = dataSource;
         if (Control.Items.Count > 0)
             Control.SelectedIndex = 0;
+        else Control.DataSource = new [] {""};
         return this;
     }
     

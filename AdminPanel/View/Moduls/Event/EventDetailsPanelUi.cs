@@ -1,5 +1,5 @@
 ﻿using AbstractView.View;
-using Admin.FieldData.Model.Event;
+using Admin.ViewModel.Model.Event;
 using Domain.Entitys;
 using Domain.Repository;
 using UserInterface.LayoutPanel;

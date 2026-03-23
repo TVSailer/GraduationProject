@@ -7,19 +7,19 @@ namespace Domain.Entitys;
 
 public class EventEntity : Entity
 {
-    [Title] public string Title { get; set; }
-    [Image] public string UrlTitleImag { get; set; }
-    [Description] public string Description { get; set; }
-    [Location] public string Location { get; set; }
-    [Url] public string RegistrationLink { get; set; }
-    [Organizer] public string Organizer { get;  set; }
-    [Schedule] public EventSchedule Schedule { get; set; }
+    public string Title { get; set; }
+    public string UrlTitleImag { get; set; }
+    public string Description { get; set; }
+    public string Location { get; set; }
+    public string RegistrationLink { get; set; }
+    public string Organizer { get;  set; }
+    public EventEntitySchedule Schedule { get; set; }
     public CategoryEntity Category { get; set; }
     public ICollection<ImageEventEntity> Images { get; set; } = [];
 
-    private EventEntity() {}
+    public EventEntity() {}
 
-    public EventEntity(string title, string urlTitleImag, string description, string location, string registrationLink, string organizer, EventSchedule schedule, CategoryEntity category, ICollection<ImageEventEntity> images)
+    public EventEntity(string title, string urlTitleImag, string description, string location, string registrationLink, string organizer, EventEntitySchedule schedule, CategoryEntity category, ICollection<ImageEventEntity> images)
     {
         Title = title;
         UrlTitleImag = urlTitleImag;

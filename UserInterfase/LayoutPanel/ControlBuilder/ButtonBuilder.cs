@@ -28,10 +28,11 @@ public class ButtonBuilder<TParentBuilder> : ControlBuilder<Button, TParentBuild
 
     public ButtonBuilder<TParentBuilder> Command(ICommand info)
     {
-        var en = info.CanExecute(null);
-        Control.Enabled = en;
-
-        if (en) Control.Click += (s, e) => info.Execute(null);
+        Control.Click += (s, e) =>
+        {
+            if (info.CanExecute(null))
+                info.Execute(null);
+        };
 
         return this;
     }

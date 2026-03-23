@@ -1,8 +1,7 @@
-﻿using CSharpFunctionalExtensions;
+﻿using Domain.Valid;
+using ExtensionFunc;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Domain.Valid;
-using ExtensionFunc;
 using UserInterface.Message.ErrorMessage;
 
 namespace Abstract.ViewModel;
@@ -29,17 +28,20 @@ public abstract class ViewModel : INotifyPropertyChanged, IMessageErrorProvider
         field = value;
 
         OnPropertyChange(pr);
-        ValidProperty(ref field, value, pr);
+        ValidProperty(value, pr);
 
         return true;
     }
 
-    protected bool ValidProperty<T>(ref T field, T value, [CallerMemberName] string prop = "")
+    protected bool ValidProperty<T>(T value, [CallerMemberName] string prop = "")
     {
         if (!Validatoreg.TryValidProperty(value!, prop, this, out var errorMessage))
+        {
+            OnMassageErrorProvider("", prop);
             return false;
+        }
 
-        OnMassageErrorProvider(errorMessage.ToString(), prop);
+        OnMassageErrorProvider(errorMessage.GroupBy(r => r.ErrorMessage).ToString(), prop);
         return true;
     }
 

@@ -40,9 +40,15 @@ public class TextBoxBuilder<TParentBuilder> : ControlBuilder<TextBox, TParentBui
 
     public TextBoxBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        Control
-            .Binding(nameof(TextBox.Text), dataSource, dataMember);
-        ErrorProvider(dataSource, dataMember);
+        Control.Binding(nameof(TextBox.Text), dataSource, dataMember);
+        MessageErrorProvider(dataSource, dataMember);
+
+        return this;
+    }
+    
+    public TextBoxBuilder<TParentBuilder> MessageError(object dataSource, string dataMember)
+    {
+        MessageErrorProvider(dataSource, dataMember);
 
         return this;
     }

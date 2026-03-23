@@ -1,7 +1,8 @@
 using Abstract.View;
-using AbstractView.View;
 using Admin.DI;
 using Admin.View.Moduls.AdminMain;
+
+namespace Admin;
 
 internal static class Program
 {

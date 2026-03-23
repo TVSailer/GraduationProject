@@ -10,7 +10,13 @@ public class DateTimePickerBuilder<TParentBuilder> : ControlBuilder<DateTimePick
     public DateTimePickerBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
         Control.Binding(nameof(DateTimePicker.Text), dataSource, dataMember);
-        ErrorProvider(dataSource, dataMember);
+        MessageErrorProvider(dataSource, dataMember);
+        return this;
+    }
+    
+    public DateTimePickerBuilder<TParentBuilder> MessageError(object dataSource, string dataMember)
+    {
+        MessageErrorProvider(dataSource, dataMember);
         return this;
     }
         

@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entitys;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using Domain.Entitys;
 
 namespace DataAccess.PostgreSQL
 {

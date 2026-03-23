@@ -17,7 +17,7 @@ public class MaskedTextBoxBuilder<TParentBuilder> : ControlBuilder<MaskedTextBox
     {
         Control
             .Binding(nameof(MaskedTextBox.Text), dataSource, dataMember);
-        ErrorProvider(dataSource, dataMember);
+        MessageErrorProvider(dataSource, dataMember);
 
         return this;
     }

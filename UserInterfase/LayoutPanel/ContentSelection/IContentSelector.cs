@@ -24,6 +24,6 @@ public interface IContentSelector<TParentBuilder>
         where TCard : ObjectCard<TEntity>, new();
     CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard> CardTableLayoutPanel<TEntity, TCard>(Func<TEntity[]> entities) 
         where TCard : ObjectCard<TEntity>, new();
-    ImageBuilder<TParentBuilder> Image(string url);
+    ImageBuilder<TParentBuilder> Image(string url = "");
     PanelBuilder<TParentBuilder> Panel();
 }

@@ -21,7 +21,7 @@ public abstract class ControlBuilder<TControl, TParentBuilder> : IControlBuilder
     public virtual TControl Build() => Control;
     public virtual TParentBuilder End() => _parentBuilder ?? throw new ArgumentNullException();
 
-    protected TControl ErrorProvider(object dataSource, string dataMember)
+    protected TControl MessageErrorProvider(object dataSource, string dataMember)
     {
         if (dataSource is IMessageErrorProvider messageErrorProvider)
         {

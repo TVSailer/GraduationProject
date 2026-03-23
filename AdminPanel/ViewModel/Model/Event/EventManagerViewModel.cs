@@ -1,25 +1,19 @@
-﻿using Abstract.ViewModel;
-using CSharpFunctionalExtensions;
-using Domain.Command;
+﻿using Domain.Command;
 using Domain.Entitys;
 using Domain.Repository;
 using System.Windows.Input;
 
-namespace Admin.FieldData.Model.Event
+namespace Admin.ViewModel.Model.Event
 {
-    public class EventManagerViewModel : ViewModel
+    public class EventManagerViewModel : Abstract.ViewModel.ViewModel
     {
         public readonly EventEntity[] EventsEntities;
         public readonly List<string> CategoryModels = [""];
-
-        #region Propertys
 
         public string? Category { get; set => Set(ref field, value); }
         public string? Title { get; set => Set(ref field, value); }
         public string? StartDate { get; set => Set(ref field, value); }
         public string? EndDate { get; set => Set(ref field, value); }
-
-        #endregion
 
         #region CommandClearSearch
 

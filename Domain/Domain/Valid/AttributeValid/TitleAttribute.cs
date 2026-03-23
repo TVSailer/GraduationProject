@@ -6,20 +6,23 @@ public class TitleAttribute : RequiredAttribute
 {
     public override bool IsValid(object? value)
     {
-        if (value is not string des) return false;
-
-        if (string.IsNullOrEmpty(des))
+        if (value is string des)
         {
-            ErrorMessage = "Названиме не может быть пустым";
-            return false;
+            if (string.IsNullOrEmpty(des))
+            {
+                ErrorMessage = "Названиме не может быть пустым";
+                return false;
+            }
+
+            if (des.Length > 20)
+            {
+                ErrorMessage = "Название не может превышать 20 симмволов";
+                return false;
+            }
+            return true;
         }
 
-        if (des.Length > 20)
-        {
-            ErrorMessage = "Название не может превышать 20 симмволов";
-            return false;
-        }
-
-        return true;
+        ErrorMessage = "Названиме не может быть пустым";
+        return false;
     }
 }

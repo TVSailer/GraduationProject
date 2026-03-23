@@ -1,4 +1,6 @@
-﻿public static class ListExtension
+﻿namespace Admin.Extension;
+
+public static class ListExtension
 {
     public static string ParseSchedule(this IEnumerable<string> list)
     {
