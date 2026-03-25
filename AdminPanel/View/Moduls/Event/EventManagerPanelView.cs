@@ -1,24 +1,19 @@
 ﻿using Admin.ViewModel.Model.Event;
-using Domain.Command;
-using System.Windows.Input;
 using Domain.Entitys;
-using Domain.Repository;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
-using UserInterface.Service.View;
 using UserInterface.View;
 
 namespace Admin.View.Moduls.Event;
 
-public class EventManagerPanelView(
-    EventManagerPanelViewModel viewModel,
-    ControlView controlView) : UiView<EventManagerPanelViewModel>
+public class EventManagerPanelView(EventManagerPanelViewModel viewModel) : UiView<EventManagerPanelViewModel>
 {
     public override IBuilder CreateUi(BuilderLayoutPanel layout)
         => layout.Column()
             .Row()
                 .Column(80).Content()
                     .CardFlowLayoutPanel<EventEntity, EventCard>(() => viewModel.EventsEntities)
+                    .ClickedCard(viewModel.LoadDetailsPanel)
                     .Binding(viewModel)
                     .Initialize()
                 .End()

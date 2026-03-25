@@ -1,6 +1,6 @@
 ﻿namespace General.Service.ControlView.BaseControlView;
 
-public interface IServiceControlView
+public interface IControlViewService
 {
     public void LoadView<T>();
     public void UpdateGui();

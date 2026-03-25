@@ -1,4 +1,5 @@
-﻿using DataAccess.PostgreSQL.ModelsPrimitive;
+﻿using Admin.ViewModel.Model.Teacher;
+using DataAccess.PostgreSQL.ModelsPrimitive;
 using DataAccess.PostgreSQL.Repository;
 using UserInterface.Info;
 using UserInterface.Message;
@@ -10,9 +11,9 @@ namespace Admin.FieldData.Model.Teacher.Buttons;
 
 public class TeacherDetailsButton(
     Repository<TeacherEntity> repository,
-    ControlView controlView) : IButtons<TeacherFieldData>
+    ControlView controlView) : IButtons<TeacherAddingPanelViewModel>
 {
-    public InfoButton[] GetButtons(ClickedArgs<TeacherFieldData> fieldData)
+    public InfoButton[] GetButtons(ClickedArgs<TeacherAddingPanelViewModel> fieldData)
         => [
             new InfoButton("Назад").CommandClick(controlView.Exit),
             new InfoButton("Обновить").CommandClick(() =>

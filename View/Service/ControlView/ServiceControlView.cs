@@ -3,7 +3,7 @@ using UserInterface.Service.View.Base;
 
 namespace General.Service.ControlView;
 
-public class ServiceControlView(IControlView controlView) : IServiceControlView
+public class ControlViewService(IControlView controlView) : IControlViewService
 {
     public void LoadView<T>() => controlView.LoadView<T>();
     public void UpdateGui() => controlView.UpdateGui();

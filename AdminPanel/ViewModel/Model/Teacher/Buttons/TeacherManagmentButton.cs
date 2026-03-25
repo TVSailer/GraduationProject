@@ -1,5 +1,6 @@
 ﻿using Admin.DI;
 using Admin.DI.Module;
+using Admin.ViewModel.Model.Teacher;
 using DataAccess.PostgreSQL.ModelsPrimitive;
 using UserInterface.Info;
 using UserInterface.UiLayoutPanel.ButtonPanel;
@@ -20,9 +21,9 @@ public class TeacherManagerClicked(
     public InfoButton[] GetButtons(ClickedArgs<TeacherManager> eventArgs)
         => [
             new InfoButton("Назад").CommandClick(controlView.Exit),
-            new InfoButton("Добавить").CommandClick(() => controlView.LoadView<TeacherFieldData>()),
+            new InfoButton("Добавить").CommandClick(() => controlView.LoadView<TeacherAddingPanelViewModel>()),
         ];
 
     public InfoButton GetButton(CardClickedArgs<TeacherEntity> eventArgs)
-        => new InfoButton().CommandClick(() => controlView.LoadView<TeacherFieldData, TeacherEntity>(eventArgs.Entity));
+        => new InfoButton().CommandClick(() => controlView.LoadView<TeacherAddingPanelViewModel, TeacherEntity>(eventArgs.Entity));
 }

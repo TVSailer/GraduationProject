@@ -32,6 +32,14 @@ public class EventEntity : Entity
         Images = images;
     }
 
+    public bool Include(string? category, string? title, string? stDate, string? endDate)
+    {
+       return (string.IsNullOrEmpty(category) || category.Equals(Category.Category)) &&
+            Title.StartsWith(title ?? "") &&
+            DateTime.Parse(Schedule.Date) >= (DateTime.TryParse(stDate, out var dateS) ? dateS : DateTime.MinValue) &&
+            DateTime.Parse(Schedule.Date) <= (DateTime.TryParse(endDate, out var dateE) ? dateE : DateTime.MaxValue);
+    }
+
     public override string ToString()
         => $"{Title} {Schedule}";
 }

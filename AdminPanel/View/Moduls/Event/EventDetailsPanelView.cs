@@ -5,15 +5,14 @@ using UserInterface.View;
 
 namespace Admin.View.Moduls.Event;
 
-public class EventAddingPanelView(EventAddingPanelViewModel viewModel) : UiView<EventAddingPanelViewModel>
+public class EventDetailsPanelView(EventDetailsPanelViewModel viewModel) : UiView<EventDetailsPanelViewModel>
 {
-    const int SizeRow = 7;
+    const int SizeRow = 5;
 
     public override IBuilder CreateUi(BuilderLayoutPanel layout)
-    {
-        return layout.Column()
+    => layout.Column()
             .Row()
-                .Column()
+                .Column(45)
                     .Row(SizeRow)
                         .Column(10).Content()
                             .Label("Название: ")
@@ -118,13 +117,13 @@ public class EventAddingPanelView(EventAddingPanelViewModel viewModel) : UiView<
                     .End()
                 .End()
                 .ColumnAutoSize().Content()
-                    .Image()
+                    .Image(viewModel.TitleImg)
                     .Change(url => viewModel.TitleImg = url)
                     .ErrorMessage(viewModel, nameof(viewModel.TitleImg))
                 .End()
                 .ColumnAbsolute(30)
                 .End()
-                .Column().Content()
+                .Column(55).Content()
                     .ImageLayoutPanel()
                     .Setting(
                         viewModel.ServiceImage.GetImages(),
@@ -138,8 +137,8 @@ public class EventAddingPanelView(EventAddingPanelViewModel viewModel) : UiView<
                     .Command(viewModel.Exit)
                 .End()
                 .Column().Content()
-                    .Button("Добавить")
-                    .Command(viewModel.Save)
+                    .Button("Обновить")
+                    .Command(viewModel.Update)
                 .End()
                 .Column().Content()
                     .Button("Добавить изображения")
@@ -150,5 +149,4 @@ public class EventAddingPanelView(EventAddingPanelViewModel viewModel) : UiView<
                     .Command(viewModel.RemoveImages)
                 .End()
             .End();
-    }
 }

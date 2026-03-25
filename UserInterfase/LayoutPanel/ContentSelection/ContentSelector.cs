@@ -69,11 +69,11 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         => Builder<ButtonLayerBuilder<TParentBuilder>, Panel>()
             .Data(data);
 
-    public CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>(Func<TEntity[]> entities) where TCard : ObjectCard<TEntity>, new()
+    public CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>(Func<IEnumerable<TEntity>> entities) where TCard : ObjectCard<TEntity>, new()
         => Builder<CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard>, FlowLayoutPanel>()
             .SetData(entities);
 
-    public CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard> CardTableLayoutPanel<TEntity, TCard>(Func<TEntity[]> entities) where TCard : ObjectCard<TEntity>, new()
+    public CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard> CardTableLayoutPanel<TEntity, TCard>(Func<IEnumerable<TEntity>> entities) where TCard : ObjectCard<TEntity>, new()
         => Builder<CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard>, TableLayoutPanel>()
             .SetData(entities);
 

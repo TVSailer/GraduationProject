@@ -3,6 +3,8 @@ using DataAccess.PostgreSQL;
 using DataAccess.PostgreSQL.DI;
 using Domain.Service.Image;
 using Domain.Service.Image.BaseServiceImage;
+using Domain.Service.SharedService;
+using Domain.Service.SharedService.BaseSharedService;
 using General.Service.ControlView;
 using General.Service.ControlView.BaseControlView;
 using General.Service.Image;
@@ -44,7 +46,8 @@ public class MainDI
         container.Bind<IImageSelectionService>().To<ImageSelectionService>();
         container.Bind<IServiceImage>().To<ServiceImage>();
         container.Bind<IControlView>().To<ControlView>().InSingletonScope();
-        container.Bind<IServiceControlView>().To<ServiceControlView>().InSingletonScope();
+        container.Bind<IControlViewService>().To<ControlViewService>().InSingletonScope();
+        container.Bind<ISharedService>().To<SharedService>().InSingletonScope();
 
         return container;
     }

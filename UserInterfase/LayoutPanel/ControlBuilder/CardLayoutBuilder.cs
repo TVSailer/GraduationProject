@@ -14,10 +14,10 @@ public class CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> : Contr
 {
     private InfoCommand[]? _menuStrip;
     private ICommand? _onClick;
-    private Func<TEntity[]>? _entities;
+    private Func<IEnumerable<TEntity>>? _entities;
 
 
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> SetData(Func<TEntity[]> entities)
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> SetData(Func<IEnumerable<TEntity>> entities)
     {
         _entities = entities;
         return this;

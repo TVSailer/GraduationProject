@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using ExtensionFunc;
 using UserInterface.Command;
+using UserInterface.LayoutPanel;
 
 namespace UserInterface.UiObjects.Card;
 
@@ -144,12 +145,12 @@ public abstract class ObjectCard<T> : Panel
     public ObjectCard<T> Initialize(object send, T entity)
     {
         Entity = entity;
-        Controls.Add(Content());
+        Controls.Add(Content(new BuilderLayoutPanel()).Build());
 
         return this;
     }
     
-    public abstract Control Content();
+    public abstract IBuilder Content(BuilderLayoutPanel builderLayoutPanel);
 
     public ObjectCard<T> OnContextMenu(InfoCommand[]? buttonsContextMenu)
     {

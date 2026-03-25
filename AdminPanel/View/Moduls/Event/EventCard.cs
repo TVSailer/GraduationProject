@@ -1,8 +1,6 @@
 ﻿using Domain.Entitys;
-using ExtensionFunc;
 using UserInterface.LayoutPanel;
 using UserInterface.UiObjects.Card;
-using UserInterface.UiObjects.Factory;
 
 namespace Admin.View.Moduls.Event;
 
@@ -10,14 +8,13 @@ public class EventCard : ObjectCard<EventEntity>
 {
     public EventCard()
     {
-        Size = new Size(400, 135);
+        Size = new Size(400, 110);
     }
 
-    public override Control Content()
-        => new BuilderLayoutPanel().Column()
-            .Row().ContentEnd(FactoryElements.Label_11(Entity.Title).With(t => t.ForeColor = Color.DarkBlue))
-            .Row().ContentEnd(FactoryElements.Label_09($"📅 {Entity.Schedule}").With(t => t.ForeColor = Color.Gray))
-            .Row().ContentEnd(FactoryElements.Label_09($"📍 {Entity.Location}").With(t => t.ForeColor = Color.Gray))
-            .Row().ContentEnd(FactoryElements.Label_09($"👨‍💼 {Entity.Organizer}").With(t => t.ForeColor = Color.Gray))
-            .Build();
+    public override IBuilder Content(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.Column()
+            .Row().Content().Label(Entity.Title).ForeColor(Color.DarkBlue).End()
+            .Row().Content().Label($"📅 {Entity.Schedule}").Size(9).ForeColor(Color.Gray).End()
+            .Row().Content().Label($"📍 {Entity.Location}").Size(9).ForeColor(Color.Gray).End()
+            .Row().Content().Label($"👨‍💼 {Entity.Organizer}").Size(9).ForeColor(Color.Gray).End();
 }

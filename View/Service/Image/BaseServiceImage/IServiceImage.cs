@@ -2,6 +2,7 @@
 
 public interface IServiceImage
 {
+    public void TryAdd(IEnumerable<string> urls);
     public void OnDeleteImage();
     public void OnAddImage();
     public IEnumerable<string> GetImages();

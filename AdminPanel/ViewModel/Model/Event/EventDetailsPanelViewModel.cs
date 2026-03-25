@@ -3,6 +3,7 @@ using Domain.Entitys;
 using Domain.Entitys.ComplexType;
 using Domain.Entitys.ImagesEntity;
 using Domain.Repository;
+using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
 using General.Service.ControlView.BaseControlView;
 using General.Service.Image.BaseServiceImage;
@@ -10,12 +11,13 @@ using System.Windows.Input;
 
 namespace Admin.ViewModel.Model.Event;
 
-public class EventAddingPanelViewModel : General.ViewModel.ViewModel
+public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 {
     internal readonly IServiceImage ServiceImage;
 
     private readonly IRepository<EventEntity> _repositoryE;
     private readonly IControlViewService _controlViewService;
+    private readonly EventEntity _eventEntity;
 
     public readonly CategoryEntity[] CategoryEntities;
 
@@ -24,7 +26,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
     [Title] public string? Title { get; set => Set(ref field, value); }
     [Image] public string? TitleImg { get; set => Set(ref field, value); }
     [Description] public string? Description { get; set => Set(ref field, value); }
-    [Date] public string? Date { get; set => Set(ref field, value); } = DateTime.Now.ToShortDateString();
+    [Date] public string? Date { get; set => Set(ref field, value); }
     #region TimeStart
 
     [Time] public string? TimeStart
@@ -35,7 +37,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
             Set(ref field, value);
             ValidProperty(Schedule, nameof(Schedule));
         }
-    } = "10:00";
+    }
 
     #endregion
     #region TimeEnd
@@ -48,7 +50,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
             Set(ref field, value);
             ValidProperty(Schedule, nameof(Schedule));
         }
-    } = "12:00";
+    } 
 
     #endregion
     [Location] public string? Location { get; set => Set(ref field, value); }
@@ -83,40 +85,55 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
-    #region CommandSave
+    #region CommandUpdate
 
-    internal readonly ICommand Save;
+    internal readonly ICommand Update;
 
-    private void ExecuteSave(object? obj)
+    private void ExecuteUpdate(object? obj)
     {
-        _repositoryE.Add(
-            new EventEntity(
-                Title!, 
-                TitleImg!, 
-                Description!, 
-                Location!, 
-                RegisLink!, 
-                Organizer!, 
-                Schedule, 
-                Category!, 
-                ServiceImage.GetImages().Select(i => new ImageEventEntity { Url = i }).ToList())
-            );
+        _eventEntity.Title = Title;
+        _eventEntity.UrlTitleImag = TitleImg;
+        _eventEntity.Location = Location;
+        _eventEntity.Description = Description;
+        _eventEntity.Category = Category;
+        _eventEntity.RegistrationLink = RegisLink;
+        _eventEntity.Schedule = Schedule;
+        _eventEntity.Images = ServiceImage.GetImages().Select(i => new ImageEventEntity { Url = i }).ToList();
 
-        _controlViewService.Exit();
+        _repositoryE.Update(_eventEntity);
     }
 
-    private bool CanExecuteSave(object? obj) => ValidObject();
+    private bool CanExecuteUpdate(object? obj) => ValidObject();
 
     #endregion
 
-    public EventAddingPanelViewModel(IRepository<EventEntity> repositoryE, IRepository<CategoryEntity> repositoryC, IServiceImage serviceImage, IControlViewService controlViewService)
+    public EventDetailsPanelViewModel(
+        IRepository<EventEntity> repositoryE, 
+        IRepository<CategoryEntity> repositoryC, 
+        IServiceImage serviceImage, 
+        IControlViewService controlViewService,
+        ISharedService sharedService)
     {
         _repositoryE = repositoryE;
         ServiceImage = serviceImage;
         _controlViewService = controlViewService;
         CategoryEntities = repositoryC.Get().ToArray();
+        _eventEntity = (EventEntity)sharedService.GetData();
 
-        Save = new ExecuteCommand(ExecuteSave, CanExecuteSave);
+        Title = _eventEntity.Title;
+        RegisLink = _eventEntity.RegistrationLink;
+        Category = _eventEntity.Category;
+        TitleImg = _eventEntity.UrlTitleImag;
+        Location = _eventEntity.Location;
+        Description = _eventEntity.Description;
+        TimeStart = _eventEntity.Schedule.Start;
+        TimeEnd = _eventEntity.Schedule.End;
+        Date = _eventEntity.Schedule.Date;
+        Organizer = _eventEntity.Organizer;
+        ServiceImage.TryAdd(_eventEntity.Images.Select(i => i.Url));
+
+
+        Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);
         RemoveImages = new ExecuteCommand(ExecuteRemoveImages, CanExecuteRemoveImages);
         AddImages = new ExecuteCommand(ExecuteAddImages, CanExecuteAddImages);
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);

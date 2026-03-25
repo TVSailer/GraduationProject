@@ -13,5 +13,6 @@ public class EventModule : NinjectModule
     {
         Kernel.Bind<IView<EventManagerPanelViewModel>>().To<EventManagerPanelView>();
         Kernel.Bind<IView<EventAddingPanelViewModel>>().To<EventAddingPanelView>();
+        Kernel.Bind<IView<EventDetailsPanelViewModel>>().To<EventDetailsPanelView>();
     }
 }

@@ -20,7 +20,7 @@ public class FIOAttribute : RequiredAttribute
             {
                 case 2:
                 {
-                    if (!Validatoreg.TryValidObject(new FIOEntity(str[0], str[1]), out var results))
+                    if (!Validatoreg.TryValidObject(new FIO(str[0], str[1]), out var results))
                     {
                         ErrorMessage = results.ToString();
                         return false;
@@ -30,7 +30,7 @@ public class FIOAttribute : RequiredAttribute
                 }
                 case 3:
                 {
-                    if (!Validatoreg.TryValidObject(new FIOEntity(str[0], str[1], str[2]), out var results))
+                    if (!Validatoreg.TryValidObject(new FIO(str[0], str[1], str[2]), out var results))
                     {
                         ErrorMessage = results.ToString();
                         return false;
@@ -43,7 +43,7 @@ public class FIOAttribute : RequiredAttribute
             return false;
         }
 
-        if (value is FIOEntity fio)
+        if (value is FIO fio)
         {
             if (!Validatoreg.TryValidObject(fio, out var results))
             {

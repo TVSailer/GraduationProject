@@ -32,6 +32,19 @@ public abstract class ViewModel : INotifyPropertyChanged, IMessageErrorProvider
 
         return true;
     }
+    
+    protected bool Set<T>(ref T field, T value, Action action, [CallerMemberName] string pr = "")
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+
+        action.Invoke();
+
+        OnPropertyChange(pr);
+        ValidProperty(value, pr);
+
+        return true;
+    }
 
     protected bool ValidProperty<T>(T value, [CallerMemberName] string prop = "")
     {

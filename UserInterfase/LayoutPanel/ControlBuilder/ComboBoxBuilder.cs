@@ -25,10 +25,8 @@ public class ComboBoxBuilder<TParentBuilder> : ControlBuilder<ComboBox, TParentB
         
     public ComboBoxBuilder<TParentBuilder> SetData(object[]? dataSource)
     {
-        Control.Items.AddRange([""]);
+        Control.Items.Add("");
         Control.Items.AddRange(dataSource ?? []);
-        if (dataSource.Length == 0)
-            Control.DataSource = new[] { "" };
         return this;
     }
     

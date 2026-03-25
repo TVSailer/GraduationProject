@@ -1,22 +1,29 @@
-﻿using Castle.Core.Internal;
+﻿using CSharpFunctionalExtensions;
 using Domain.Command;
 using Domain.Entitys;
 using Domain.Repository;
+using Ninject.Infrastructure.Language;
 using System.Windows.Input;
+using Domain.Service.SharedService.BaseSharedService;
+using General.Service.ControlView.BaseControlView;
 using UserInterface.Service.View.Base;
 
 namespace Admin.ViewModel.Model.Event
 {
     public class EventManagerPanelViewModel : General.ViewModel.ViewModel
     {
-        private readonly IControlView _controlView;
-        public readonly EventEntity[] EventsEntities;
-        public readonly CategoryEntity[]? CategoryEntities;
+        private readonly IRepository<CategoryEntity> _repositoryC;
+        private readonly IRepository<EventEntity> _repositoryE;
+        private readonly IControlViewService _controlViewService;
+        private readonly ISharedService _sharedService;
 
-        public string? Category { get; set => Set(ref field, value); }
-        public string? Title { get; set => Set(ref field, value); }
-        public string? StartDate { get; set => Set(ref field, value); }
-        public string? EndDate { get; set => Set(ref field, value); }
+        public IEnumerable<EventEntity> EventsEntities { get; set; }
+        public CategoryEntity[] CategoryEntities => _repositoryC.Get().ToArray();
+
+        public string? Category { get; set => Set(ref field, value, Search); }
+        public string? Title { get; set => Set(ref field, value, Search); }
+        public string? StartDate { get; set => Set(ref field, value, Search); }
+        public string? EndDate { get; set => Set(ref field, value, Search); }
 
         #region CommandClearSearch
 
@@ -40,22 +47,11 @@ namespace Admin.ViewModel.Model.Event
         }
 
         #endregion
-        #region SerchFunc
-
-        public Func<EventEntity[]> SearchFunc =>
-            () => EventsEntities
-                .Where(e => Category == null || Category.Equals("") || Category.Equals(e.Category))
-                .Where(e => e.Title.StartsWith(Title ?? ""))
-                .Where(e => DateTime.Parse(e.Schedule.Date) >= (DateTime.TryParse(StartDate , out var dateS) ? dateS : DateTime.MinValue) &&
-                            DateTime.Parse(e.Schedule.Date) <= (DateTime.TryParse(EndDate, out var dateE) ? dateE : DateTime.MaxValue))
-                .ToArray();
-
-        #endregion
         #region CommandExit
 
         internal readonly ICommand Exit;
 
-        private void ExecuteExit(object obj) => _controlView.Exit();
+        private void ExecuteExit(object obj) => _controlViewService.Exit();
         private bool CanExecuteExit(object obj) => true;
 
         #endregion
@@ -63,20 +59,52 @@ namespace Admin.ViewModel.Model.Event
 
         internal readonly ICommand LoadAddingPanel;
 
-        private void ExecuteLoadAddingPanel(object obj) => _controlView.LoadView<EventAddingPanelViewModel>();
-        private bool CanExecuteLoadAddingPanel(object obj) => CategoryEntities.IsNullOrEmpty();
+        private void ExecuteLoadAddingPanel(object obj)
+        {
+            EventsEntities = _repositoryE.Get();
+            _controlViewService.LoadView<EventAddingPanelViewModel>();
+        }
+
+        private bool CanExecuteLoadAddingPanel(object obj) => CategoryEntities is not null;
 
         #endregion
-        
-        public EventManagerPanelViewModel(IRepository<CategoryEntity> repositoryC, IRepository<EventEntity> repositoryE, IControlView controlView)
-        {
-            _controlView = controlView;
-            EventsEntities = repositoryE.Get().ToArray();
-            CategoryEntities = repositoryC.Get().ToArray();
+        #region CommandLoadDetailsPanel
 
-            ClearSearch = new ExecuteCommand(ExecuteClearSearch);
+        internal readonly ICommand LoadDetailsPanel;
+
+        private void ExecuteLoadDetailsPanel(object? obj)
+        {
+            _sharedService.SetData(obj);
+            _controlViewService.LoadView<EventDetailsPanelViewModel>();
+        }
+
+        private bool CanExecuteLoadDetailsPanel(object? obj) => obj is EventEntity ? true : throw new ArgumentException();
+
+        #endregion
+
+        public EventManagerPanelViewModel(
+            IRepository<CategoryEntity> repositoryC, 
+            IRepository<EventEntity> repositoryE, 
+            IControlViewService controlViewService,
+            ISharedService sharedService)
+        {
+            EventsEntities = repositoryE.Get().ToArray();
+
+            _repositoryC = repositoryC;
+            _repositoryE = repositoryE;
+            _controlViewService = controlViewService;
+            _sharedService = sharedService;
+
+            ClearSearch = new ExecuteCommand(ExecuteClearSearch, CanExecuteClearSearch);
             Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
             LoadAddingPanel = new ExecuteCommand(ExecuteLoadAddingPanel, CanExecuteLoadAddingPanel);
+            LoadDetailsPanel = new ExecuteCommand(ExecuteLoadDetailsPanel, CanExecuteLoadDetailsPanel);
         }
+
+        private void Search() =>
+            EventsEntities = _repositoryE
+                .Get()
+                .ToEnumerable()
+                .Where(e => e.Include(Category, Title, StartDate, EndDate));
     }
 }

@@ -15,7 +15,6 @@
     <Compile Remove="ViewModel\Model\Lesson\**" />
     <Compile Remove="ViewModel\Model\News\**" />
     <Compile Remove="ViewModel\Model\Review\**" />
-    <Compile Remove="ViewModel\Model\Teacher\**" />
     <Compile Remove="ViewModel\Model\Visitor\**" />
     <Compile Remove="Resources\**" />
     <Compile Remove="SearchPanel\**" />
@@ -23,28 +22,24 @@
     <Compile Remove="View\Moduls\Lesson\**" />
     <Compile Remove="View\Moduls\News\**" />
     <Compile Remove="View\Moduls\Review\**" />
-    <Compile Remove="View\Moduls\Teacher\**" />
     <Compile Remove="View\Moduls\Visitor\**" />
     <EmbeddedResource Remove="ViewModel\AbstractFieldData\**" />
     <EmbeddedResource Remove="ViewModel\Model\DateAttendance\**" />
     <EmbeddedResource Remove="ViewModel\Model\Lesson\**" />
     <EmbeddedResource Remove="ViewModel\Model\News\**" />
     <EmbeddedResource Remove="ViewModel\Model\Review\**" />
-    <EmbeddedResource Remove="ViewModel\Model\Teacher\**" />
     <EmbeddedResource Remove="ViewModel\Model\Visitor\**" />
     <EmbeddedResource Remove="SearchPanel\**" />
     <EmbeddedResource Remove="View\Moduls\DateAttendance\**" />
     <EmbeddedResource Remove="View\Moduls\Lesson\**" />
     <EmbeddedResource Remove="View\Moduls\News\**" />
     <EmbeddedResource Remove="View\Moduls\Review\**" />
-    <EmbeddedResource Remove="View\Moduls\Teacher\**" />
     <EmbeddedResource Remove="View\Moduls\Visitor\**" />
     <None Remove="ViewModel\AbstractFieldData\**" />
     <None Remove="ViewModel\Model\DateAttendance\**" />
     <None Remove="ViewModel\Model\Lesson\**" />
     <None Remove="ViewModel\Model\News\**" />
     <None Remove="ViewModel\Model\Review\**" />
-    <None Remove="ViewModel\Model\Teacher\**" />
     <None Remove="ViewModel\Model\Visitor\**" />
     <None Remove="Resources\**" />
     <None Remove="SearchPanel\**" />
@@ -52,7 +47,6 @@
     <None Remove="View\Moduls\Lesson\**" />
     <None Remove="View\Moduls\News\**" />
     <None Remove="View\Moduls\Review\**" />
-    <None Remove="View\Moduls\Teacher\**" />
     <None Remove="View\Moduls\Visitor\**" />
   </ItemGroup>
 
@@ -60,9 +54,7 @@
     <Compile Remove="DI\Module\DateAttendanceModule.cs" />
     <Compile Remove="DI\Module\LessonModule.cs" />
     <Compile Remove="DI\Module\ReviewModule.cs" />
-    <Compile Remove="DI\Module\TeacherModule.cs" />
     <Compile Remove="DI\Module\VisitorModule.cs" />
-    <Compile Remove="DI\TeacherModule.cs" />
     <Compile Remove="View\ManagementView.cs" />
     <Compile Remove="View\UI.cs" />
   </ItemGroup>
@@ -74,7 +66,6 @@
     </PackageReference>
     <PackageReference Include="Ninject" Version="3.3.6" />
     <PackageReference Include="ninject.extensions.conventions" Version="3.3.0" />
-    <PackageReference Include="NullGuard.Fody" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>

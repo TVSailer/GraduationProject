@@ -7,6 +7,8 @@ namespace General.Service.Image;
 public class ServiceImage(IImageDialogService fileDialogImage, IImageSelectionService service) : IServiceImage
 {
     public void OnAddImage() => service.TryAdd(fileDialogImage.ShowOpenFileDialog());
+    public void TryAdd(IEnumerable<string> urls) => service.TryAdd(urls);
+
     public void OnDeleteImage()
     {
         if (fileDialogImage.ShowConfirmDialog("Удалить выбранные изображения?"))
