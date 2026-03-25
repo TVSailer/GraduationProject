@@ -1,14 +1,17 @@
-﻿using Domain.Command;
+﻿using Castle.Core.Internal;
+using Domain.Command;
 using Domain.Entitys;
 using Domain.Repository;
 using System.Windows.Input;
+using UserInterface.Service.View.Base;
 
 namespace Admin.ViewModel.Model.Event
 {
-    public class EventManagerViewModel : Abstract.ViewModel.ViewModel
+    public class EventManagerPanelViewModel : General.ViewModel.ViewModel
     {
+        private readonly IControlView _controlView;
         public readonly EventEntity[] EventsEntities;
-        public readonly List<string> CategoryModels = [""];
+        public readonly CategoryEntity[]? CategoryEntities;
 
         public string? Category { get; set => Set(ref field, value); }
         public string? Title { get; set => Set(ref field, value); }
@@ -37,7 +40,6 @@ namespace Admin.ViewModel.Model.Event
         }
 
         #endregion
-
         #region SerchFunc
 
         public Func<EventEntity[]> SearchFunc =>
@@ -49,13 +51,32 @@ namespace Admin.ViewModel.Model.Event
                 .ToArray();
 
         #endregion
+        #region CommandExit
 
-        public EventManagerViewModel(IRepository<CategoryEntity> repositoryC, IRepository<EventEntity> repositoryE)
+        internal readonly ICommand Exit;
+
+        private void ExecuteExit(object obj) => _controlView.Exit();
+        private bool CanExecuteExit(object obj) => true;
+
+        #endregion
+        #region CommandLoadAddingPanel
+
+        internal readonly ICommand LoadAddingPanel;
+
+        private void ExecuteLoadAddingPanel(object obj) => _controlView.LoadView<EventAddingPanelViewModel>();
+        private bool CanExecuteLoadAddingPanel(object obj) => CategoryEntities.IsNullOrEmpty();
+
+        #endregion
+        
+        public EventManagerPanelViewModel(IRepository<CategoryEntity> repositoryC, IRepository<EventEntity> repositoryE, IControlView controlView)
         {
+            _controlView = controlView;
             EventsEntities = repositoryE.Get().ToArray();
-            CategoryModels.AddRange(repositoryC.Get().Select(c => c.Category));
+            CategoryEntities = repositoryC.Get().ToArray();
 
             ClearSearch = new ExecuteCommand(ExecuteClearSearch);
+            Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
+            LoadAddingPanel = new ExecuteCommand(ExecuteLoadAddingPanel, CanExecuteLoadAddingPanel);
         }
     }
 }

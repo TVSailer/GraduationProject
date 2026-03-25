@@ -74,7 +74,7 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Schedule", "Domain.Entitys.EventEntity.Schedule#EventSchedule", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Schedule", "Domain.Entitys.EventEntity.Schedule#EventEntitySchedule", b1 =>
                         {
                             b1.IsRequired();
 

@@ -1,9 +1,9 @@
 ﻿using System.Windows.Forms;
 using System.Windows.Input;
 using UserInterface.Command;
-using UserInterface.Interfase;
 using UserInterface.LayoutPanel.ControlBuilder;
-using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.Service.Image.BaseServiceImage;
+using UserInterface.UiObjects.Card;
 
 namespace UserInterface.LayoutPanel.ContentSelection;
 
@@ -58,9 +58,12 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         => Builder<ButtonBuilder<TParentBuilder>, Button>()
             .Text(text);
 
-    public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IRepositoryImgUi repositoryImgUi)
+    public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IImagePanel imagePanel)
         => Builder<ImagePanelBuilder<TParentBuilder>, FlowLayoutPanel>()
-            .Repository(repositoryImgUi);
+            .Setting(imagePanel);
+
+    public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel()
+        => Builder<ImagePanelBuilder<TParentBuilder>, FlowLayoutPanel>();
 
     public ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(ICommand[] data)
         => Builder<ButtonLayerBuilder<TParentBuilder>, Panel>()

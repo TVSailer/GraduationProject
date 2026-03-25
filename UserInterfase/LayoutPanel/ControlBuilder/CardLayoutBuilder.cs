@@ -4,7 +4,7 @@ using System.Windows.Input;
 using ExtensionFunc;
 using UserInterface.Command;
 using UserInterface.LayoutPanel.ContentSelection;
-using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.UiObjects.Card;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
 

@@ -9,11 +9,22 @@
 
   <ItemGroup>
     <Compile Remove="Interface\**" />
+    <Compile Remove="Interfase\**" />
     <Compile Remove="View\**" />
     <EmbeddedResource Remove="Interface\**" />
+    <EmbeddedResource Remove="Interfase\**" />
     <EmbeddedResource Remove="View\**" />
     <None Remove="Interface\**" />
+    <None Remove="Interfase\**" />
     <None Remove="View\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="View\Forma.cs" />
+    <Compile Include="View\Base\IForma.cs" />
+    <Compile Include="View\Base\IView.cs" />
+    <Compile Include="View\Base\IViewBuilder.cs" />
+    <Compile Include="View\View.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,13 +44,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="UiLayoutPanel\EmptyPanel.cs">
+    <Compile Update="UiObjects\EmptyPanel.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resource\" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
   </ItemGroup>
 
 </Project>

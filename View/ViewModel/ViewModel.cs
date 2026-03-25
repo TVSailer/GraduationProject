@@ -1,10 +1,10 @@
-﻿using Domain.Valid;
-using ExtensionFunc;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Domain.Valid;
+using ExtensionFunc;
 using UserInterface.Message.ErrorMessage;
 
-namespace Abstract.ViewModel;
+namespace General.ViewModel;
 
 public abstract class ViewModel : INotifyPropertyChanged, IMessageErrorProvider
 {
@@ -35,14 +35,9 @@ public abstract class ViewModel : INotifyPropertyChanged, IMessageErrorProvider
 
     protected bool ValidProperty<T>(T value, [CallerMemberName] string prop = "")
     {
-        if (!Validatoreg.TryValidProperty(value!, prop, this, out var errorMessage))
-        {
-            OnMassageErrorProvider("", prop);
-            return false;
-        }
-
-        OnMassageErrorProvider(errorMessage.GroupBy(r => r.ErrorMessage).ToString(), prop);
-        return true;
+        var isValid = Validatoreg.TryValidProperty(value!, prop, this, out var errorMessage);
+        OnMassageErrorProvider(errorMessage, prop);
+        return isValid;
     }
 
     protected bool ValidObject()

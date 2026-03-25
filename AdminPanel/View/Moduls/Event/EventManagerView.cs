@@ -1,29 +1,25 @@
-﻿using Abstract.View;
-using AbstractView.View;
-using Admin.ViewModel.Model.Event;
+﻿using Admin.ViewModel.Model.Event;
 using Domain.Command;
 using System.Windows.Input;
 using Domain.Entitys;
+using Domain.Repository;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
+using UserInterface.Service.View;
+using UserInterface.View;
 
 namespace Admin.View.Moduls.Event;
 
-public class EventManagerView(
-    EventManagerViewModel viewModel,
-    ControlView controlView) : UiView
+public class EventManagerPanelView(
+    EventManagerPanelViewModel viewModel,
+    ControlView controlView) : UiView<EventManagerPanelViewModel>
 {
-    private readonly ICommand _loadDetailsPanel = new ExecuteCommand(_ => controlView.LoadView<EventDetailsPanelUi>());
-    private readonly ICommand _loadAddingPanel = new ExecuteCommand(_ => controlView.LoadView<EventAddingPanelView>());
-    private readonly ICommand _exit = new ExecuteCommand(_ => controlView.Exit());
-
-    protected override IBuilder CreateUi(BuilderLayoutPanel layout)
+    public override IBuilder CreateUi(BuilderLayoutPanel layout)
         => layout.Column()
             .Row()
                 .Column(80).Content()
                     .CardFlowLayoutPanel<EventEntity, EventCard>(() => viewModel.EventsEntities)
                     .Binding(viewModel)
-                    .ClickedCard(_loadDetailsPanel)
                     .Initialize()
                 .End()
                 .Column(20).Content()
@@ -36,7 +32,7 @@ public class EventManagerView(
                                 .End()
                                 .Column().Content()
                                     .ComboBox()
-                                    .SetData(viewModel.EventsEntities)
+                                    .SetData(viewModel.CategoryEntities)
                                     .Binding(viewModel, nameof(viewModel.Category))
                                 .End()
                             .End()
@@ -79,11 +75,11 @@ public class EventManagerView(
             .RowAbsolute(80)
                 .Column().Content()
                     .Button("Назад")
-                    .Command(_exit)
+                    .Command(viewModel.Exit)
                 .End()
                 .Column().Content()
                     .Button("Добавить")
-                    .Command(_loadAddingPanel)
+                    .Command(viewModel.LoadAddingPanel)
                 .End()
                 .Column().Content()
                     .Button()

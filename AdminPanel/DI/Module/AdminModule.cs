@@ -1,16 +1,14 @@
 using Admin.View.Moduls.AdminMain;
-using DataAccess.PostgreSQL.Repository;
+using Admin.ViewModel.Model.AdminMain;
 using Ninject.Modules;
-using UserInterface.View;
+using UserInterface.View.Base;
 
 namespace Admin.DI.Module;
 
-public record AdminFieldData;
-
-public class AdminModule : NinjectModule
+public class MainModule : NinjectModule
 {
     public override void Load()
     {
-
+        Kernel.Bind<IView<AdminPanelViewModel>>().To<AdminPanelView>();
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System.Windows.Forms;
 using System.Windows.Input;
 using UserInterface.Command;
-using UserInterface.Interfase;
 using UserInterface.LayoutPanel.ControlBuilder;
-using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.Service.Image.BaseServiceImage;
+using UserInterface.UiObjects.Card;
 
 namespace UserInterface.LayoutPanel.ContentSelection;
 
@@ -18,7 +18,8 @@ public interface IContentSelector<TParentBuilder>
     DateTimePickerBuilder<TParentBuilder> DateTimePicker(string format = "");
     MaskedTextBoxBuilder<TParentBuilder> MaskedTextBox(string mask = "");
     ButtonBuilder<TParentBuilder> Button(string text = "");
-    ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IRepositoryImgUi repositoryImgUi);
+    ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IImagePanel imagePanel);
+    ImagePanelBuilder<TParentBuilder> ImageLayoutPanel();
     ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(ICommand[] data);
     CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>(Func<TEntity[]> entities) 
         where TCard : ObjectCard<TEntity>, new();

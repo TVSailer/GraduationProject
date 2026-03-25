@@ -6,6 +6,7 @@ namespace Domain.Entitys
     {
         public string Category { get; init; }
 
+        public override string ToString() => Category;
     }
 }
 

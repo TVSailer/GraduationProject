@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionFunc", "..\Extensi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "..\Domain\Domain\Domain.csproj", "{B955029B-FDDC-C4CD-CF85-E0D5AED266C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abstract", "..\View\Abstract.csproj", "{23B8C596-7ABA-4DA4-A16E-AB3E547A72E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "General", "..\View\General.csproj", "{23B8C596-7ABA-4DA4-A16E-AB3E547A72E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

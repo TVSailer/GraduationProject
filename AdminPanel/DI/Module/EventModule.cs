@@ -1,4 +1,7 @@
+using Admin.View.Moduls.Event;
+using Admin.ViewModel.Model.Event;
 using Ninject.Modules;
+using UserInterface.View.Base;
 
 namespace Admin.DI.Module;
 
@@ -8,13 +11,7 @@ public class EventModule : NinjectModule
 {
     public override void Load()
     {
-        //Kernel.Bind<UiView<EventFieldData>>().To<EventPanelUi<EventAddingButton>>();
-        //Kernel.Bind<UiView<EventFieldData, EventEntity>>().To<EventPanelUi<EventDetailsButton>>();
-        //Kernel.Bind<UiView<EventManager>>().To<ManagerEntityUi<
-        //    EventManager,
-        //    EventEntity,
-        //    EventFieldSearch,
-        //    EventCard,
-        //    EventManagerButtons>>();
+        Kernel.Bind<IView<EventManagerPanelViewModel>>().To<EventManagerPanelView>();
+        Kernel.Bind<IView<EventAddingPanelViewModel>>().To<EventAddingPanelView>();
     }
 }

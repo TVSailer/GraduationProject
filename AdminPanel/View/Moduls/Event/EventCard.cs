@@ -1,8 +1,8 @@
 ﻿using Domain.Entitys;
 using ExtensionFunc;
 using UserInterface.LayoutPanel;
-using UserInterface.UiLayoutPanel;
-using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.UiObjects.Card;
+using UserInterface.UiObjects.Factory;
 
 namespace Admin.View.Moduls.Event;
 

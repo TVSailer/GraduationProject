@@ -1,6 +1,6 @@
-using Abstract.View;
 using Admin.DI;
-using Admin.View.Moduls.AdminMain;
+using Admin.ViewModel.Model.AdminMain;
+using UserInterface.Service.View.Base;
 
 namespace Admin;
 
@@ -14,10 +14,18 @@ internal static class Program
     {
         ApplicationConfiguration.Initialize();
 
-        var di = new AdminDi();
+        var di = new MainDI();
 
-        var controlView = di.GetService<ControlView>();
-        controlView.LoadView<AdminMainUi>();
+        var controlView = di.GetService<IControlView>();
+
+        controlView.LoadView<AdminPanelViewModel>();
+
+        //var db = di.GetService<ApplicationDbContext>();
+        //db.AddRange(
+        //    new CategoryEntity() {Category = "IT"},
+        //    new CategoryEntity() {Category = "ัยฮ"}
+        //    );
+        //db.SaveChanges();
 
         Application.Run(controlView.Form);
     }

@@ -9,18 +9,28 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
 {
     private const string TitleManager = "Выберите изображение";
     private const string FilesPictureBox = "Выберите изображения PictureBox Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+    private Action<string>? _onChange;
 
     public ImageBuilder<TParentBuilder> Url(string url = "")
     {
         if (string.IsNullOrEmpty(url))
-            Control.BackgroundImage = new Bitmap("D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BaseImage.png");
+        {
+            var bitmap = new Bitmap("D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage.png");
+            Control.BackgroundImage = bitmap;
+        }
+
         Control.ImageLocation = url;
         return this;
     }
     
-    public ImageBuilder<TParentBuilder> Binding(object dataSource, string memberName)
+    public ImageBuilder<TParentBuilder> Change(Action<string> change)
     {
-        Control.Binding(nameof(PictureBox.ImageLocation), dataSource, memberName);
+        _onChange = change;
+        return this;
+    }
+    
+    public ImageBuilder<TParentBuilder> ErrorMessage(object dataSource, string memberName)
+    {
         MessageErrorProvider(dataSource, memberName);
         return this;
     }
@@ -36,8 +46,8 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
 
         if (openFileDialog.ShowDialog() != DialogResult.OK) return;
 
-        foreach (var fileName in openFileDialog.FileNames)
-            Control.ImageLocation = fileName;
+        Control.ImageLocation = openFileDialog.FileName;
+        _onChange?.Invoke(openFileDialog.FileName);
     }
 
     protected override PictureBox SettingControl()
@@ -45,10 +55,12 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
         var pic = new PictureBox
         {
             Anchor = AnchorStyles.None,
-            Size = new Size(300, 200),
+            Size = new Size(200, 300),
             Margin = new Padding(5),
             SizeMode = PictureBoxSizeMode.Zoom,
             BackColor = Color.Black,
+            BorderStyle = BorderStyle.FixedSingle,
+            Dock = DockStyle.Top
         };
 
         pic.DoubleClick += OnAddingImg;

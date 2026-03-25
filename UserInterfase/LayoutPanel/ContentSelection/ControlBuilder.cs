@@ -6,7 +6,7 @@ namespace UserInterface.LayoutPanel.ContentSelection;
 public abstract class ControlBuilder<TControl, TParentBuilder> : IControlBuilder<TControl, TParentBuilder>
     where TControl : Control, new()
 {
-    private readonly ErrorProvider errorProvider = new() { BlinkStyle = ErrorBlinkStyle.NeverBlink };
+    private readonly ErrorProvider _errorProvider = new() { BlinkStyle = ErrorBlinkStyle.NeverBlink };
     private TParentBuilder? _parentBuilder;
     protected TControl? Control;
 
@@ -28,7 +28,7 @@ public abstract class ControlBuilder<TControl, TParentBuilder> : IControlBuilder
             messageErrorProvider.ErrorMassegeProvider += (_, e) =>
             {
                 if (!dataMember.Equals(e.PropertyName)) return;
-                errorProvider.SetError(Control, e.ErrorMessage);
+                _errorProvider.SetError(Control, e.ErrorMessage);
             };
         }
         return Control;

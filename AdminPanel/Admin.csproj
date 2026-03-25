@@ -78,7 +78,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModel\Model\AdminMain\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
@@ -86,7 +85,7 @@
     <ProjectReference Include="..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj" />
     <ProjectReference Include="..\ExtensionFunc\ExtensionFunc.csproj" />
     <ProjectReference Include="..\UserInterfase\UserInterface.csproj" />
-    <ProjectReference Include="..\View\Abstract.csproj" />
+    <ProjectReference Include="..\View\General.csproj" />
   </ItemGroup>
 
 </Project>

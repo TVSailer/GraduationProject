@@ -16,18 +16,22 @@ internal class RepositoryModel<T>(ApplicationDbContext DbContext) : IRepository<
     public T Add(T entity)
     {
         if (entity is null) throw new ArgumentNullException();
-        return _dbSet.Add(entity).Entity;
+        var result = _dbSet.Add(entity).Entity;
+        DbContext.SaveChanges();
+        return result;
     }
 
     public void Update(T entity)
     {
         if (entity is null) throw new ArgumentNullException();
         _dbSet.Update(entity);
+        DbContext.SaveChanges();
     }
 
     public void Delete(long idEntity)
     {
         var entity = _dbSet.Single(l => l.Id == idEntity);
         _dbSet.Remove(entity);
+        DbContext.SaveChanges();
     }
 }

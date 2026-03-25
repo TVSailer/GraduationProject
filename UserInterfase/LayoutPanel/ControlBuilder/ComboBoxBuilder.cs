@@ -1,4 +1,5 @@
-﻿using ExtensionFunc;
+﻿using System.Collections;
+using ExtensionFunc;
 using System.Drawing;
 using System.Windows.Forms;
 using UserInterface.LayoutPanel.ContentSelection;
@@ -22,12 +23,12 @@ public class ComboBoxBuilder<TParentBuilder> : ControlBuilder<ComboBox, TParentB
         return this;
     }
         
-    public ComboBoxBuilder<TParentBuilder> SetData(object dataSource)
+    public ComboBoxBuilder<TParentBuilder> SetData(object[]? dataSource)
     {
-        Control.DataSource = dataSource;
-        if (Control.Items.Count > 0)
-            Control.SelectedIndex = 0;
-        else Control.DataSource = new [] {""};
+        Control.Items.AddRange([""]);
+        Control.Items.AddRange(dataSource ?? []);
+        if (dataSource.Length == 0)
+            Control.DataSource = new[] { "" };
         return this;
     }
     
