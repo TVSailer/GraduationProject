@@ -4,15 +4,15 @@ using Domain.Entitys.ComplexType;
 using Domain.Entitys.ImagesEntity;
 using Domain.Repository;
 using Domain.Valid.AttributeValid;
-using General.Service.ControlView.BaseControlView;
-using General.Service.Image.BaseServiceImage;
 using System.Windows.Input;
+using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.ImageService.BaseServiceImage;
 
 namespace Admin.ViewModel.Model.Event;
 
 public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 {
-    internal readonly IServiceImage ServiceImage;
+    internal readonly IImageService ImageService;
 
     private readonly IRepository<EventEntity> _repositoryE;
     private readonly IControlViewService _controlViewService;
@@ -71,7 +71,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand AddImages;
 
-    private void ExecuteAddImages(object? obj) => ServiceImage.OnAddImage();
+    private void ExecuteAddImages(object? obj) => ImageService.OnAddImage();
     private bool CanExecuteAddImages(object? obj) => true;
 
     #endregion
@@ -79,7 +79,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => ServiceImage.OnDeleteImage();
+    private void ExecuteRemoveImages(object? obj) => ImageService.OnDeleteImage();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -99,7 +99,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
                 Organizer!, 
                 Schedule, 
                 Category!, 
-                ServiceImage.GetImages().Select(i => new ImageEventEntity { Url = i }).ToList())
+                ImageService.GetImages().Select(i => new ImageEventEntity { Url = i }).ToList())
             );
 
         _controlViewService.Exit();
@@ -109,10 +109,10 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 
     #endregion
 
-    public EventAddingPanelViewModel(IRepository<EventEntity> repositoryE, IRepository<CategoryEntity> repositoryC, IServiceImage serviceImage, IControlViewService controlViewService)
+    public EventAddingPanelViewModel(IRepository<EventEntity> repositoryE, IRepository<CategoryEntity> repositoryC, IImageService imageService, IControlViewService controlViewService)
     {
         _repositoryE = repositoryE;
-        ServiceImage = serviceImage;
+        ImageService = imageService;
         _controlViewService = controlViewService;
         CategoryEntities = repositoryC.Get().ToArray();
 

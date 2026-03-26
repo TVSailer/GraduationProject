@@ -3,7 +3,7 @@ using Domain.Valid.AttributeValid;
 
 namespace Domain.Entitys.ImagesEntity;
 
-public class ImgLessonEntity : Entity, IImage
+public class ImageLessonEntity : Entity, IImage
 {
-    [Image] public string? Url { get; set; }
+    public string? Url { get; set; }
 }

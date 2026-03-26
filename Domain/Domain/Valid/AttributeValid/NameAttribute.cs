@@ -14,11 +14,13 @@ public class NameAttribute : RequiredAttribute
                 return false;
             }
 
-            if (name.Length is < 2 or > 10)
+            if (name is {Length: < 2} or { Length: > 10 })
             {
                 ErrorMessage = "Имя может иметь от 2-х до 10-ти символов";
                 return false;
             }
+
+            return true;
         }
 
         return false;

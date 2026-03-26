@@ -1,6 +1,6 @@
-﻿namespace General.Service.Image.BaseServiceImage;
+﻿namespace Domain.Service.ImageService.BaseServiceImage;
 
-public interface IServiceImage
+public interface IImageService
 {
     public void TryAdd(IEnumerable<string> urls);
     public void OnDeleteImage();

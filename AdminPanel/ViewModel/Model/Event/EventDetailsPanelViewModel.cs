@@ -5,15 +5,15 @@ using Domain.Entitys.ImagesEntity;
 using Domain.Repository;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
-using General.Service.ControlView.BaseControlView;
-using General.Service.Image.BaseServiceImage;
 using System.Windows.Input;
+using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.ImageService.BaseServiceImage;
 
 namespace Admin.ViewModel.Model.Event;
 
 public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 {
-    internal readonly IServiceImage ServiceImage;
+    internal readonly IImageService ImageService;
 
     private readonly IRepository<EventEntity> _repositoryE;
     private readonly IControlViewService _controlViewService;
@@ -73,7 +73,7 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand AddImages;
 
-    private void ExecuteAddImages(object? obj) => ServiceImage.OnAddImage();
+    private void ExecuteAddImages(object? obj) => ImageService.OnAddImage();
     private bool CanExecuteAddImages(object? obj) => true;
 
     #endregion
@@ -81,7 +81,7 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => ServiceImage.OnDeleteImage();
+    private void ExecuteRemoveImages(object? obj) => ImageService.OnDeleteImage();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -98,7 +98,7 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
         _eventEntity.Category = Category;
         _eventEntity.RegistrationLink = RegisLink;
         _eventEntity.Schedule = Schedule;
-        _eventEntity.Images = ServiceImage.GetImages().Select(i => new ImageEventEntity { Url = i }).ToList();
+        _eventEntity.Images = ImageService.GetImages().Select(i => new ImageEventEntity { Url = i }).ToList();
 
         _repositoryE.Update(_eventEntity);
     }
@@ -110,12 +110,12 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
     public EventDetailsPanelViewModel(
         IRepository<EventEntity> repositoryE, 
         IRepository<CategoryEntity> repositoryC, 
-        IServiceImage serviceImage, 
+        IImageService imageService, 
         IControlViewService controlViewService,
         ISharedService sharedService)
     {
         _repositoryE = repositoryE;
-        ServiceImage = serviceImage;
+        ImageService = imageService;
         _controlViewService = controlViewService;
         CategoryEntities = repositoryC.Get().ToArray();
         _eventEntity = (EventEntity)sharedService.GetData();
@@ -130,7 +130,7 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
         TimeEnd = _eventEntity.Schedule.End;
         Date = _eventEntity.Schedule.Date;
         Organizer = _eventEntity.Organizer;
-        ServiceImage.TryAdd(_eventEntity.Images.Select(i => i.Url));
+        ImageService.TryAdd(_eventEntity.Images.Select(i => i.Url));
 
 
         Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);

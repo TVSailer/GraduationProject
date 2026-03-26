@@ -1,4 +1,4 @@
-﻿using General.Service.ControlView.BaseControlView;
+﻿using Domain.Service.ControlViewService.BaseControlView;
 using UserInterface.Service.View.Base;
 
 namespace General.Service.ControlView;

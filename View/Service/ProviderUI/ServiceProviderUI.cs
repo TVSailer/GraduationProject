@@ -1,5 +1,6 @@
 using Ninject;
 using UserInterface.DIService;
+using IServiceProvider = Domain.Service.ProviderService.BaseProvider.IServiceProvider;
 
 namespace General.Service.ProvisionUI;
 

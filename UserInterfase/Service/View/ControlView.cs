@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 using UserInterface.DIService;
 using UserInterface.Service.View.Base;
 using UserInterface.View.Base;
@@ -8,7 +9,12 @@ namespace UserInterface.Service.View;
 public class ControlView(IServiceProvisionUI di) : IControlView
 {
     private readonly Stack<IView> _stack = new();
-    public Form Form { get; set; } = new();
+    public Form Form { get; set; } = new()
+    {
+        WindowState = FormWindowState.Maximized,
+        StartPosition = FormStartPosition.CenterParent,
+        BackColor = Color.White,
+    };
 
     private IForma? _showDialogForm;
     private IView? _view { get; set; }

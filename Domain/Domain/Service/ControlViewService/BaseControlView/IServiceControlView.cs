@@ -1,4 +1,4 @@
-﻿namespace General.Service.ControlView.BaseControlView;
+﻿namespace Domain.Service.ControlViewService.BaseControlView;
 
 public interface IControlViewService
 {

@@ -1,8 +1,6 @@
-﻿using DataAccess.PostgreSQL.ModelsPrimitive;
-using ExtensionFunc;
-using UserInterface;
+﻿using Domain.Entitys;
 using UserInterface.LayoutPanel;
-using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.UiObjects.Card;
 
 namespace Admin.View.Moduls.Teacher;
 
@@ -13,15 +11,11 @@ public class TeacherCard : ObjectCard<TeacherEntity>
         Size = new Size(300, 100);
     }
 
-    public override Control Content()
-        => new BuilderLayoutPanel().Column()
-            .Row(30).ContentEnd(FactoryElements.Label_11($"{Entity}")
-                .With(l => l.ForeColor = Color.DarkBlue))
-            .Row(23).ContentEnd(FactoryElements.Label_09($"🎂 {Entity.DateBirth}")
-                .With(l => l.ForeColor = Color.Gray))
-            .Row(23).ContentEnd(FactoryElements.Label_09($"📞 {Entity.NumberPhone}")
-                .With(l => l.ForeColor = Color.Gray))
-            .Row(24).ContentEnd(FactoryElements.Label_09($"🎨 {Entity.Lessons.Count}")
-                .With(l => l.ForeColor = Color.DarkGreen))
-            .Build();
+    public override IBuilder Content(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.Column()
+            .Row(30).Content().Label($"{Entity}").ForeColor(Color.DarkBlue).End()
+            .Row(23).Content().Label($"🎂 {Entity.DateBirth}").Size(9).ForeColor(Color.Gray).End()
+            .Row(23).Content().Label($"📞 {Entity.NumberPhone}").Size(9).ForeColor(Color.Gray).End()
+            .Row(24).Content().Label($"🎨 {Entity.Lessons.Count}").Size(9).ForeColor(Color.DarkGreen).End()
+            ;
 }

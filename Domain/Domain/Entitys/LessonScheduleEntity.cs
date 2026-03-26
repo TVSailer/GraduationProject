@@ -7,24 +7,18 @@ namespace Domain.Entitys
 {
     public class LessonScheduleEntity : Entity
     {
-        [ForeignKey(name: nameof(LessonEntity))]
-        public long LessonId { get; set; }
         public LessonEntity Lesson { get; set; }
-
-        public TimeOnly Start { get; set; }
-        public TimeOnly End { get; set; }
+        public string Start { get; set; }
+        public string End { get; set; }
         public Day Day { get; set; }
 
-        public LessonScheduleEntity()
-        {
-
-        }
+        private LessonScheduleEntity() { }
 
         public LessonScheduleEntity(TimeOnly start, TimeOnly end, Day day)
         {
             Day = day;
-            Start = start;
-            End = end;
+            Start = start.ToString("HH:mm");
+            End = end.ToString("HH:mm");
         }
 
         //public override string ToString()
@@ -36,8 +30,8 @@ namespace Domain.Entitys
         {
             var date = DateTime.Now;
 
-            if (Start.ToTimeSpan() >= date.TimeOfDay) return false;
-            if (End.ToTimeSpan() <= date.TimeOfDay) return false;
+            if (TimeOnly.Parse(Start).ToTimeSpan() >= date.TimeOfDay) return false;
+            if (TimeOnly.Parse(End).ToTimeSpan() <= date.TimeOfDay) return false;
             if (Day.ConvertDayOfWeek() != date.DayOfWeek) return false;
 
             return true;

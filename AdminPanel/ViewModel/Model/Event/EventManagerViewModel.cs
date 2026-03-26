@@ -4,8 +4,8 @@ using Domain.Entitys;
 using Domain.Repository;
 using Ninject.Infrastructure.Language;
 using System.Windows.Input;
+using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.SharedService.BaseSharedService;
-using General.Service.ControlView.BaseControlView;
 using UserInterface.Service.View.Base;
 
 namespace Admin.ViewModel.Model.Event
@@ -61,8 +61,8 @@ namespace Admin.ViewModel.Model.Event
 
         private void ExecuteLoadAddingPanel(object obj)
         {
-            EventsEntities = _repositoryE.Get();
             _controlViewService.LoadView<EventAddingPanelViewModel>();
+            EventsEntities = _repositoryE.Get();
         }
 
         private bool CanExecuteLoadAddingPanel(object obj) => CategoryEntities is not null;

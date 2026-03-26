@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.PostgreSQL.Repository;
 
-internal class EventRepository(ApplicationDbContext DbContext) : RepositoryModel<EventEntity>(DbContext)
+internal class NewsRepository(ApplicationDbContext DbContext) : RepositoryModel<NewsEntity>(DbContext)
 {
-    protected override IQueryable<EventEntity> SettingDbSet(DbSet<EventEntity> dbSet)
+    protected override IQueryable<NewsEntity> SettingDbSet(DbSet<NewsEntity> dbSet)
         => dbSet
             .Include(e => e.Images)
             .Include(e => e.Category);

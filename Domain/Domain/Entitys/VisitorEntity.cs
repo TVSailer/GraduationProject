@@ -1,33 +1,38 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using CSharpFunctionalExtensions;
-using Domain.Entitys.ComplexType;
+﻿using CSharpFunctionalExtensions;
 
 namespace Domain.Entitys;
 
 public class VisitorEntity : Entity
 {
-    public FIO FIO { get; set; }
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public string Patronymic { get; set; }
     public string DateBirth { get; set; }
     public string NumberPhone { get; set; }
-
-    [ForeignKey(nameof(AuthEntity))]
-    public long AuthId { get; set; }
     public AuthEntity AuthEntity { get; set; }
+    public ICollection<LessonEntity> Lessons { get; set; } = [];
+    public ICollection<DateAttendanceEntity> Dates { get; set; } = [];
+    public ICollection<ReviewEntity> Reviews { get; set; } = [];
 
-    public List<LessonEntity> Lessons { get; set; } = [];
-    public List<DateAttendanceEntity> Dates { get; set; } = [];
-    public List<ReviewEntity> Reviews { get; set; } = [];
+    private VisitorEntity() { }
 
-    public override string ToString()
+    public VisitorEntity(string name, string surname, string patronymic, string dateBirth, string numberPhone, AuthEntity authEntity)
     {
-        return FIO.ToString();
+        Name = name;
+        Surname = surname;
+        Patronymic = patronymic;
+        DateBirth = dateBirth;
+        NumberPhone = numberPhone;
+        AuthEntity = authEntity;
     }
+
+    public override string ToString() => $"{Name} {Surname} {Patronymic}";
 
     public IEnumerable<string[]> GetLessonWithAttendance()
     {
         foreach (var lesson in Lessons)
         {
-            var data = new List<string> { lesson.Name };
+            var data = new List<string> { lesson.Title };
             data.AddRange(Dates.Select(date => date.Lesson.Id.Equals(lesson.Id) ? "нб" : ""));
             yield return data.ToArray();
         }

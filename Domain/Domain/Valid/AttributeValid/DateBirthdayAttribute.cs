@@ -2,18 +2,10 @@
 
 namespace Domain.Valid.AttributeValid
 {
-    public class DateBirthdayAttribute : ValidationAttribute
+    public class DateBirthdayAttribute(int minYears) : ValidationAttribute
     {
-        private readonly int _minYears;
-
-        public DateBirthdayAttribute()
+        public DateBirthdayAttribute() : this(18)
         {
-            _minYears = 18;
-        }
-
-        public DateBirthdayAttribute(int minYears)
-        {
-            _minYears = minYears;
         }
 
         public override bool IsValid(object? value)
@@ -29,17 +21,23 @@ namespace Domain.Valid.AttributeValid
 
         private bool IsValidBirthday(string? birthDateStr)
         {
+            if (string.IsNullOrEmpty(birthDateStr))
+            {
+                ErrorMessage = $"Поле не может быть пустым!";
+                return false;
+            }
+
             if (DateTime.TryParseExact(birthDateStr, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime birthDate))
             {
-                if (birthDate.Year > DateTime.Today.Year - _minYears)
+                if (birthDate.Year > DateTime.Today.Year - minYears)
                 {
-                    ErrorMessage = $"не может быть младше {_minYears} лет!";
+                    ErrorMessage = $"Не может быть младше {minYears} лет!";
                     return false;
                 }
 
                 if (birthDate.Year < DateTime.Today.Year - 100)
                 {
-                    ErrorMessage = "не может быть старше 100 лет";
+                    ErrorMessage = "Не может быть старше 100 лет";
                     return false;
                 }
 

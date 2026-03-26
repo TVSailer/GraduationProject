@@ -1,31 +1,35 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using Domain.Entitys.ImagesEntity;
 
 namespace Domain.Entitys
 {
     public class LessonEntity : Entity
     {
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
         public int MaxParticipants { get; set; }
-
-        [ForeignKey(nameof(CategoryEntity))]
-        public long CategoryId { get; set; }
         public CategoryEntity Category { get; set; }
-
-        [ForeignKey(name: nameof(TeacherEntity))]
-        public long TeacherId { get; set; }
         public TeacherEntity Teacher { get; set; }
+        public ICollection<DateAttendanceEntity> AttendanceDates { get; set; } = [];
+        public ICollection<LessonScheduleEntity> Schedule { get; set; } = [];
+        public ICollection<VisitorEntity> Visitors { get; set; } = [];
+        public ICollection<ReviewEntity> Reviews { get; set; } = [];
+        public ICollection<ImageLessonEntity> Images { get; set; } = [];
 
-        public List<DateAttendanceEntity> AttendanceDates { get; set; } = [];
-        public List<LessonScheduleEntity> Schedule { get; set; } = [];
-        public List<VisitorEntity> Visitors { get; set; } = [];
-        public List<ReviewEntity> Reviews { get; set; } = [];
-        public List<ImgLessonEntity> Imgs { get; set; } = [];
+        private LessonEntity() { }
 
-        public override string ToString() => Name;
+        public LessonEntity(string title, string description, string location, int maxParticipants, CategoryEntity category, TeacherEntity teacher)
+        {
+            Title = title;
+            Description = description;
+            Location = location;
+            MaxParticipants = maxParticipants;
+            Category = category;
+            Teacher = teacher;
+        }
+
+        public override string ToString() => Title;
 
         public bool TryRangeScheduleNow()
             => Schedule.Any(s => s.TryRangeScheduleNow()) &&
@@ -33,8 +37,7 @@ namespace Domain.Entitys
 
         public double Rating()
         {
-            double rat = 0;
-            Reviews.ForEach(r => rat += (int)r.Rating);
+            double rat = Reviews.Aggregate<ReviewEntity, double>(0, (current, review) => current + (int)review.Rating);
             return rat == 0 ? 0 : rat / Reviews.Count;
         }
 

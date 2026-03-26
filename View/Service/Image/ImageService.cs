@@ -1,10 +1,10 @@
 ﻿using Domain.Service.Image.BaseServiceImage;
-using General.Service.Image.BaseServiceImage;
+using Domain.Service.ImageService.BaseServiceImage;
 using UserInterface.Service.FileDialog.BaseFileDialog;
 
 namespace General.Service.Image;
 
-public class ServiceImage(IImageDialogService fileDialogImage, IImageSelectionService service) : IServiceImage
+public class ImageService(IImageDialogService fileDialogImage, IImageSelectionService service) : IImageService
 {
     public void OnAddImage() => service.TryAdd(fileDialogImage.ShowOpenFileDialog());
     public void TryAdd(IEnumerable<string> urls) => service.TryAdd(urls);

@@ -127,9 +127,9 @@ public class EventAddingPanelView(EventAddingPanelViewModel viewModel) : UiView<
                 .Column().Content()
                     .ImageLayoutPanel()
                     .Setting(
-                        viewModel.ServiceImage.GetImages(),
-                        viewModel.ServiceImage.ToggleImage(),
-                        viewModel.ServiceImage.SetAction)
+                        viewModel.ImageService.GetImages(),
+                        viewModel.ImageService.ToggleImage(),
+                        viewModel.ImageService.SetAction)
                 .End()
             .End()
             .RowAbsolute(80)

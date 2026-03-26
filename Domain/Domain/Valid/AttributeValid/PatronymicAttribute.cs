@@ -10,11 +10,13 @@ public class PatronymicAttribute : RequiredAttribute
         {
             if (string.IsNullOrEmpty(name)) return true;
 
-            if (name.Length is < 2 or > 10)
+            if (name is { Length: < 2 } or { Length: > 10 })
             {
                 ErrorMessage = "Отчество может быть пустым или иметь от 2-х до 10-ти символов";
                 return false;
             }
+
+            return true;
         }
 
         return false;

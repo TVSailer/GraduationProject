@@ -4,5 +4,5 @@ namespace Domain.Entitys.ImagesEntity;
 
 public interface IImage
 {
-    [Image] public string? Url { get; set; }
+    public string? Url { get; set; }
 }

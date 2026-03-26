@@ -126,9 +126,9 @@ public class EventDetailsPanelView(EventDetailsPanelViewModel viewModel) : UiVie
                 .Column(55).Content()
                     .ImageLayoutPanel()
                     .Setting(
-                        viewModel.ServiceImage.GetImages(),
-                        viewModel.ServiceImage.ToggleImage(),
-                        viewModel.ServiceImage.SetAction)
+                        viewModel.ImageService.GetImages(),
+                        viewModel.ImageService.ToggleImage(),
+                        viewModel.ImageService.SetAction)
                 .End()
             .End()
             .RowAbsolute(80)

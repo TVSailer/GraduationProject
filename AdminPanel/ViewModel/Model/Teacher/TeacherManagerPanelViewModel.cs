@@ -1,20 +1,22 @@
-﻿using Admin.ViewModel.Model.Event;
+﻿using System.Windows.Input;
+using Domain.Command;
 using Domain.Entitys;
 using Domain.Repository;
+using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.SharedService.BaseSharedService;
 using Ninject.Infrastructure.Language;
-using System.Windows.Input;
-using General.Service.ControlView.BaseControlView;
 
-namespace Admin.FieldData.Model.Teacher;
+namespace Admin.ViewModel.Model.Teacher;
 
 public class TeacherManagerPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IRepository<TeacherEntity> _repository;
     private readonly IControlViewService _controlViewService;
+    private readonly ISharedService _sharedService;
     public IEnumerable<TeacherEntity> Teachers { get; set; }
 
-    public string? Name { get; set => Set(ref field, value); }
-    public string? Surname { get; set => Set(ref field, value); }
+    public string? Name { get; set => Set(ref field, value, Search); }
+    public string? Surname { get; set => Set(ref field, value, Search); }
 
 
     #region CommandClearSearch
@@ -48,11 +50,11 @@ public class TeacherManagerPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteLoadAddingPanel(object obj)
     {
+        _controlViewService.LoadView<TeacherAddingPanelViewModel>();
         Teachers = _repository.Get();
-        _controlViewService.LoadView<EventAddingPanelViewModel>();
     }
 
-    private bool CanExecuteLoadAddingPanel(object obj) => CategoryEntities is not null;
+    private bool CanExecuteLoadAddingPanel(object obj) => true;
 
     #endregion
     #region CommandLoadDetailsPanel
@@ -62,19 +64,27 @@ public class TeacherManagerPanelViewModel : General.ViewModel.ViewModel
     private void ExecuteLoadDetailsPanel(object? obj)
     {
         _sharedService.SetData(obj);
-        _controlViewService.LoadView<EventDetailsPanelViewModel>();
+        _controlViewService.LoadView<TeacherDetailsPanelViewModel>();
     }
 
-    private bool CanExecuteLoadDetailsPanel(object? obj) => obj is EventEntity ? true : throw new ArgumentException();
+    private bool CanExecuteLoadDetailsPanel(object? obj) => obj is TeacherEntity ? true : throw new ArgumentException();
 
     #endregion
 
 
 
-    public TeacherManagerPanelViewModel(IRepository<TeacherEntity> repository, IControlViewService controlViewService)
+    public TeacherManagerPanelViewModel(IRepository<TeacherEntity> repository, IControlViewService controlViewService, ISharedService sharedService)
     {
+        Teachers = repository.Get().ToArray();
+
         _repository = repository;
         _controlViewService = controlViewService;
+        _sharedService = sharedService;
+
+        Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
+        ClearSearch = new ExecuteCommand(ExecuteClearSearch, CanExecuteClearSearch);
+        LoadAddingPanel = new ExecuteCommand(ExecuteLoadAddingPanel, CanExecuteLoadAddingPanel);
+        LoadDetailsPanel = new ExecuteCommand(ExecuteLoadDetailsPanel, CanExecuteLoadDetailsPanel);
     }
 
     private void Search() =>

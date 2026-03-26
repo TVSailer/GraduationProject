@@ -1,4 +1,4 @@
-namespace General.Service.ProvisionUI;
+namespace Domain.Service.ProviderService.BaseProvider;
 
 public interface IServiceProvider
 {

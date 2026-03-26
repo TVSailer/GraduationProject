@@ -7,6 +7,14 @@ public class AuthEntity : Entity
     public string Login { get; set; }
     public string Password { get; set; }
 
+    public AuthEntity() { }
+
+    public AuthEntity(string login, string password)
+    {
+        Login = login;
+        Password = password;
+    }
+
     protected bool Equals(AuthEntity other)
     {
         return base.Equals(other) && Login == other.Login && BCrypt.Net.BCrypt.Verify(Password, other.Password);
