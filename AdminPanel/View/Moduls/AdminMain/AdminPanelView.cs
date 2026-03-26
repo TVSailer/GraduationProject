@@ -20,6 +20,7 @@ public sealed class AdminPanelView(AdminPanelViewModel viewModel) : UiView<Admin
                 .RowAbsolute(70).Content()
                     .Label("Панель администратора")
                     .Size(18)
+                    .Alignment(ContentAlignment.TopCenter)
                     .ForeColor(Color.DarkBlue)
                 .End()
                 .RowAbsolute(60).Content()

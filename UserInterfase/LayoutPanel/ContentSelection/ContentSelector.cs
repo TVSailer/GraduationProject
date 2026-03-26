@@ -58,6 +58,9 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         => Builder<ButtonBuilder<TParentBuilder>, Button>()
             .Text(text);
 
+    public DataGridViewBuilder<TParentBuilder> DataGridView()
+        => Builder<DataGridViewBuilder<TParentBuilder>, DataGridView>();
+
     public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IImagePanel imagePanel)
         => Builder<ImagePanelBuilder<TParentBuilder>, FlowLayoutPanel>()
             .Setting(imagePanel);

@@ -4,5 +4,5 @@ namespace Domain.Service.MessageService.BaseMessageService;
 
 public interface IMessageService
 {
-    public void Message(string text, TypeMessage typeMessage);
+    public TypeCommandMessage Message(string text, TypeMessage typeMessage);
 }

@@ -4,7 +4,9 @@ using Domain.Entitys;
 using Domain.Repository;
 using Ninject.Infrastructure.Language;
 using System.Windows.Input;
+using Domain.Enum;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using UserInterface.Service.View.Base;
 
@@ -76,6 +78,7 @@ namespace Admin.ViewModel.Model.Event
         {
             _sharedService.SetData(obj);
             _controlViewService.LoadView<EventDetailsPanelViewModel>();
+            EventsEntities = _repositoryE.Get();
         }
 
         private bool CanExecuteLoadDetailsPanel(object? obj) => obj is EventEntity ? true : throw new ArgumentException();

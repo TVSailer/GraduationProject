@@ -18,6 +18,7 @@ public interface IContentSelector<TParentBuilder>
     DateTimePickerBuilder<TParentBuilder> DateTimePicker(string format = "");
     MaskedTextBoxBuilder<TParentBuilder> MaskedTextBox(string mask = "");
     ButtonBuilder<TParentBuilder> Button(string text = "");
+    DataGridViewBuilder<TParentBuilder> DataGridView();
     ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IImagePanel imagePanel);
     ImagePanelBuilder<TParentBuilder> ImageLayoutPanel();
     ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(ICommand[] data);
@@ -25,6 +26,6 @@ public interface IContentSelector<TParentBuilder>
         where TCard : ObjectCard<TEntity>, new();
     CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard> CardTableLayoutPanel<TEntity, TCard>(Func<IEnumerable<TEntity>> entities) 
         where TCard : ObjectCard<TEntity>, new();
-    ImageBuilder<TParentBuilder> Image(string url = "");
+    ImageBuilder<TParentBuilder> Image(string? url = "");
     PanelBuilder<TParentBuilder> Panel();
 }

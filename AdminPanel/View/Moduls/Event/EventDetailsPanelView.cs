@@ -148,5 +148,9 @@ public class EventDetailsPanelView(EventDetailsPanelViewModel viewModel) : UiVie
                     .Button("Удалить изображения")
                     .Command(viewModel.RemoveImages)
                 .End()
+                .Column().Content()
+                    .Button("Удалить")
+                    .Command(viewModel.Delete)
+                .End()
             .End();
 }

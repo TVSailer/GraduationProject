@@ -13,11 +13,10 @@ public class TeacherManagerPanelViewModel : General.ViewModel.ViewModel
     private readonly IRepository<TeacherEntity> _repository;
     private readonly IControlViewService _controlViewService;
     private readonly ISharedService _sharedService;
-    public IEnumerable<TeacherEntity> Teachers { get; set; }
+    public IEnumerable<TeacherEntity> Teachers { get; private set; }
 
     public string? Name { get; set => Set(ref field, value, Search); }
     public string? Surname { get; set => Set(ref field, value, Search); }
-
 
     #region CommandClearSearch
 
@@ -65,13 +64,12 @@ public class TeacherManagerPanelViewModel : General.ViewModel.ViewModel
     {
         _sharedService.SetData(obj);
         _controlViewService.LoadView<TeacherDetailsPanelViewModel>();
+        Teachers = _repository.Get();
     }
 
     private bool CanExecuteLoadDetailsPanel(object? obj) => obj is TeacherEntity ? true : throw new ArgumentException();
 
     #endregion
-
-
 
     public TeacherManagerPanelViewModel(IRepository<TeacherEntity> repository, IControlViewService controlViewService, ISharedService sharedService)
     {

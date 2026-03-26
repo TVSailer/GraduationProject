@@ -6,25 +6,27 @@ namespace General.Service.Message;
 
 public class MessageService : IMessageService
 {
-    public void Message(string text, TypeMessage typeMessage)
+    public TypeCommandMessage Message(string text, TypeMessage typeMessage)
     {
         switch (typeMessage)
         {
             case TypeMessage.Error:
                 LogicaMessage.MessageError(text);
-                break;
+                return TypeCommandMessage.Ok;
             case TypeMessage.Info:
                 LogicaMessage.MessageInfo(text);
-                break;
+                return TypeCommandMessage.Ok;
             case TypeMessage.Warning:
                 LogicaMessage.MessageWarning(text);
-                break;
+                return TypeCommandMessage.Ok;
             case TypeMessage.YesNo:
-                LogicaMessage.MessageYesNo(text);
-                break;
+                if (LogicaMessage.MessageYesNo(text))
+                    return TypeCommandMessage.Yes;
+                return TypeCommandMessage.No;
             case TypeMessage.YesCancel:
-                LogicaMessage.MessageOkCancel(text);
-                break;
+                if (LogicaMessage.MessageOkCancel(text))
+                    return TypeCommandMessage.Yes;
+                return TypeCommandMessage.Cancel;
             default:
                 throw new ArgumentException();
         }

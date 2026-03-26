@@ -1,5 +1,4 @@
-﻿using ExtensionFunc;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using UserInterface.LayoutPanel.ContentSelection;
 
@@ -13,12 +12,8 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
 
     public ImageBuilder<TParentBuilder> Url(string url = "")
     {
-        if (string.IsNullOrEmpty(url))
-        {
-            var bitmap = new Bitmap("D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage.png");
-            Control.BackgroundImage = bitmap;
-        }
-
+        var bitmap = new Bitmap("D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage.png");
+        Control.BackgroundImage = bitmap;
         Control.ImageLocation = url;
         return this;
     }

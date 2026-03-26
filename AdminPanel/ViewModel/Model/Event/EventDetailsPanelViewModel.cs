@@ -2,18 +2,21 @@
 using Domain.Entitys;
 using Domain.Entitys.ComplexType;
 using Domain.Entitys.ImagesEntity;
+using Domain.Enum;
 using Domain.Repository;
+using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
 using System.Windows.Input;
-using Domain.Service.ControlViewService.BaseControlView;
-using Domain.Service.ImageService.BaseServiceImage;
+using Domain.Service.MessageService.BaseMessageService;
 
 namespace Admin.ViewModel.Model.Event;
 
 public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 {
     internal readonly IImageService ImageService;
+    private readonly IMessageService _messageService;
 
     private readonly IRepository<EventEntity> _repositoryE;
     private readonly IControlViewService _controlViewService;
@@ -106,16 +109,31 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
     private bool CanExecuteUpdate(object? obj) => ValidObject();
 
     #endregion
+    #region CommandDelete
 
+    internal readonly ICommand Delete;
+
+    private void ExecuteDelete(object? obj)
+    {
+        _repositoryE.Delete(_eventEntity.Id);
+        _controlViewService.Exit();
+    }
+
+    private bool CanExecuteDelete(object? obj)
+        => _messageService.Message("Выдействительно хотите удалить?", TypeMessage.YesCancel) is TypeCommandMessage.Yes;
+
+    #endregion
     public EventDetailsPanelViewModel(
         IRepository<EventEntity> repositoryE, 
         IRepository<CategoryEntity> repositoryC, 
         IImageService imageService, 
+        IMessageService messageService,
         IControlViewService controlViewService,
         ISharedService sharedService)
     {
         _repositoryE = repositoryE;
         ImageService = imageService;
+        _messageService = messageService;
         _controlViewService = controlViewService;
         CategoryEntities = repositoryC.Get().ToArray();
         _eventEntity = (EventEntity)sharedService.GetData();
@@ -137,5 +155,6 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
         RemoveImages = new ExecuteCommand(ExecuteRemoveImages, CanExecuteRemoveImages);
         AddImages = new ExecuteCommand(ExecuteAddImages, CanExecuteAddImages);
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
+        Delete = new ExecuteCommand(ExecuteDelete, CanExecuteDelete);
     }
 }
