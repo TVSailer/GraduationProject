@@ -2,25 +2,20 @@
 using Domain.Command;
 using Domain.Entitys;
 using Domain.Repository;
-using Ninject.Infrastructure.Language;
-using System.Windows.Input;
-using Domain.Enum;
 using Domain.Service.ControlViewService.BaseControlView;
-using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
-using UserInterface.Service.View.Base;
+using System.Windows.Input;
 
 namespace Admin.ViewModel.Model.Event
 {
     public class EventManagerPanelViewModel : General.ViewModel.ViewModel
     {
-        private readonly IRepository<CategoryEntity> _repositoryC;
         private readonly IRepository<EventEntity> _repositoryE;
         private readonly IControlViewService _controlViewService;
         private readonly ISharedService _sharedService;
 
-        public IEnumerable<EventEntity> EventsEntities { get; set; }
-        public CategoryEntity[] CategoryEntities => _repositoryC.Get().ToArray();
+        public IEnumerable<EventEntity> EventsEntities { get; private set => Set(ref field, value); }
+        public CategoryEntity[] CategoryEntities;
 
         public string? Category { get; set => Set(ref field, value, Search); }
         public string? Title { get; set => Set(ref field, value, Search); }
@@ -67,7 +62,7 @@ namespace Admin.ViewModel.Model.Event
             EventsEntities = _repositoryE.Get();
         }
 
-        private bool CanExecuteLoadAddingPanel(object obj) => CategoryEntities is not null;
+        private bool CanExecuteLoadAddingPanel(object obj) => true;
 
         #endregion
         #region CommandLoadDetailsPanel
@@ -92,8 +87,8 @@ namespace Admin.ViewModel.Model.Event
             ISharedService sharedService)
         {
             EventsEntities = repositoryE.Get().ToArray();
+            CategoryEntities = repositoryC.Get().ToArray();
 
-            _repositoryC = repositoryC;
             _repositoryE = repositoryE;
             _controlViewService = controlViewService;
             _sharedService = sharedService;
@@ -107,7 +102,7 @@ namespace Admin.ViewModel.Model.Event
         private void Search() =>
             EventsEntities = _repositoryE
                 .Get()
-                .ToEnumerable()
+                .AsEnumerable()
                 .Where(e => e.Include(Category, Title, StartDate, EndDate));
     }
 }

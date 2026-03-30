@@ -12,8 +12,7 @@ namespace Admin.ViewModel.Model.Event;
 
 public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 {
-    internal readonly IImageService ImageService;
-
+    private readonly IImageService _imageService;
     private readonly IRepository<EventEntity> _repositoryE;
     private readonly IControlViewService _controlViewService;
 
@@ -27,7 +26,8 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
     [Date] public string? Date { get; set => Set(ref field, value); } = DateTime.Now.ToShortDateString();
     #region TimeStart
 
-    [Time] public string? TimeStart
+    [Time]
+    public string? TimeStart
     {
         get;
         set
@@ -40,7 +40,8 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
     #endregion
     #region TimeEnd
 
-    [Time] public string? TimeEnd
+    [Time]
+    public string? TimeEnd
     {
         get;
         set
@@ -55,10 +56,18 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
     [Organizer] public string? Organizer { get; set => Set(ref field, value); }
     [RequiredCustom] public CategoryEntity? Category { get; set => Set(ref field, value); }
     [Url] public string? RegisLink { get; set => Set(ref field, value); }
-    [ScheduleEntity] public EventEntitySchedule Schedule => new (TimeStart, TimeEnd, Date);
-
+    [ScheduleEntity] public EventEntitySchedule Schedule => new(TimeStart, TimeEnd, Date);
+    public IEnumerable<string> Images { get; set => Set(ref field, value); }
     #endregion
 
+    #region CommandToggleImage
+
+    internal readonly ICommand ToggleImage;
+
+    private void ExecuteToggleImage(object? obj) => _imageService.ToggleImage((string)obj!);
+    private bool CanExecuteToggleImage(object? obj) => obj is string ? true : throw new ArgumentException();
+
+    #endregion
     #region CommandExit
 
     internal readonly ICommand Exit;
@@ -71,7 +80,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand AddImages;
 
-    private void ExecuteAddImages(object? obj) => ImageService.OnAddImage();
+    private void ExecuteAddImages(object? obj) => _imageService.OnAddImage();
     private bool CanExecuteAddImages(object? obj) => true;
 
     #endregion
@@ -79,7 +88,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => ImageService.OnDeleteImage();
+    private void ExecuteRemoveImages(object? obj) => _imageService.OnDeleteImage();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -91,15 +100,15 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
     {
         _repositoryE.Add(
             new EventEntity(
-                Title!, 
-                TitleImg!, 
-                Description!, 
-                Location!, 
-                RegisLink!, 
-                Organizer!, 
-                Schedule, 
-                Category!, 
-                ImageService.GetImages().Select(i => new ImageEventEntity { Url = i }).ToList())
+                Title!,
+                TitleImg!,
+                Description!,
+                Location!,
+                RegisLink!,
+                Organizer!,
+                Schedule,
+                Category!,
+                Images.Select(i => new ImageEventEntity { Url = i }).ToList())
             );
 
         _controlViewService.Exit();
@@ -112,13 +121,16 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
     public EventAddingPanelViewModel(IRepository<EventEntity> repositoryE, IRepository<CategoryEntity> repositoryC, IImageService imageService, IControlViewService controlViewService)
     {
         _repositoryE = repositoryE;
-        ImageService = imageService;
+        _imageService = imageService;
         _controlViewService = controlViewService;
+
+        _imageService.Binding(this, nameof(Images));
         CategoryEntities = repositoryC.Get().ToArray();
 
         Save = new ExecuteCommand(ExecuteSave, CanExecuteSave);
         RemoveImages = new ExecuteCommand(ExecuteRemoveImages, CanExecuteRemoveImages);
         AddImages = new ExecuteCommand(ExecuteAddImages, CanExecuteAddImages);
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
+        ToggleImage = new ExecuteCommand(ExecuteToggleImage, CanExecuteToggleImage);
     }
 }

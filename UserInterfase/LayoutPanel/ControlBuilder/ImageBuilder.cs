@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 using UserInterface.LayoutPanel.ContentSelection;
 
@@ -8,7 +9,8 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
 {
     private const string TitleManager = "Выберите изображение";
     private const string FilesPictureBox = "Выберите изображения PictureBox Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
-    private Action<string>? _onChange;
+    private PropertyInfo? _prop;
+    private object? _dataSource;
 
     public ImageBuilder<TParentBuilder> Url(string url = "")
     {
@@ -18,14 +20,17 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
         return this;
     }
     
-    public ImageBuilder<TParentBuilder> Change(Action<string> change)
+    public ImageBuilder<TParentBuilder> ErrorMessage(object dataSource, string memberName)
     {
-        _onChange = change;
+        MessageErrorProvider(dataSource, memberName);
         return this;
     }
     
-    public ImageBuilder<TParentBuilder> ErrorMessage(object dataSource, string memberName)
+    public ImageBuilder<TParentBuilder> Binding(object dataSource, string memberName)
     {
+        _prop = dataSource.GetType().GetProperty(memberName);
+        _dataSource = dataSource;
+
         MessageErrorProvider(dataSource, memberName);
         return this;
     }
@@ -42,7 +47,7 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
         if (openFileDialog.ShowDialog() != DialogResult.OK) return;
 
         Control.ImageLocation = openFileDialog.FileName;
-        _onChange?.Invoke(openFileDialog.FileName);
+        _prop?.SetValue(_dataSource, openFileDialog.FileName);
     }
 
     protected override PictureBox SettingControl()

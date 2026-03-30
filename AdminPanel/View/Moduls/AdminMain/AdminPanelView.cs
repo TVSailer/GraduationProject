@@ -32,6 +32,7 @@ public sealed class AdminPanelView(AdminPanelViewModel viewModel) : UiView<Admin
                 .End()
                 .RowAbsolute(60).Content()
                     .Button("🎨 Управление кружками")
+                    .Command(viewModel.LoadLessonManagerPanelView)
                 .End()
                 .RowAbsolute(60).Content()
                     .Button("👨‍🏫 Управление преподавателями")

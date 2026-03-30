@@ -22,9 +22,9 @@ public interface IContentSelector<TParentBuilder>
     ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IImagePanel imagePanel);
     ImagePanelBuilder<TParentBuilder> ImageLayoutPanel();
     ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(ICommand[] data);
-    CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>(Func<IEnumerable<TEntity>> entities) 
+    CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>() 
         where TCard : ObjectCard<TEntity>, new();
-    CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard> CardTableLayoutPanel<TEntity, TCard>(Func<IEnumerable<TEntity>> entities) 
+    CardLayoutBuilder<TParentBuilder, TableLayoutPanel, TEntity, TCard> CardTableLayoutPanel<TEntity, TCard>() 
         where TCard : ObjectCard<TEntity>, new();
     ImageBuilder<TParentBuilder> Image(string? url = "");
     PanelBuilder<TParentBuilder> Panel();

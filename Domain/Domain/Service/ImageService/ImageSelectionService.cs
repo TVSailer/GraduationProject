@@ -1,6 +1,6 @@
-﻿using Domain.Service.Image.BaseServiceImage;
+﻿using Domain.Service.ImageService.BaseServiceImage;
 
-namespace Domain.Service.Image;
+namespace Domain.Service.ImageService;
 
 public class ImageSelectionService : IImageSelectionService
 {
@@ -12,8 +12,10 @@ public class ImageSelectionService : IImageSelectionService
         Images[key] = !Images[key];
     }
 
-    public virtual void TryAdd(IEnumerable<string> urls)
+    public virtual void TryAdd(IEnumerable<string>? urls)
     {
+        if (urls is null) return;
+
         foreach (var url in urls)
             Images.TryAdd(url, false);
         OnChangeImg?.Invoke(Images.Select(i => i.Key));
@@ -30,5 +32,11 @@ public class ImageSelectionService : IImageSelectionService
         OnChangeImg?.Invoke(Images.Select(i => i.Key));
     }
 
-    public IEnumerable<string> Get() => Images.Select(i => i.Key);
+    public virtual void Binding(object obj, string nameMember)
+    {
+        var prop = obj.GetType().GetProperty(nameMember);
+        var data = (IEnumerable<string>)prop.GetValue(obj);
+        TryAdd(data);
+        OnChangeImg += images => prop.SetValue(obj, images);
+    }
 }

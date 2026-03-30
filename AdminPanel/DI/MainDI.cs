@@ -4,8 +4,7 @@ using DataAccess.PostgreSQL.DI;
 using Domain.Service.AuthService;
 using Domain.Service.AuthService.BaseAuthService;
 using Domain.Service.ControlViewService.BaseControlView;
-using Domain.Service.Image;
-using Domain.Service.Image.BaseServiceImage;
+using Domain.Service.ImageService;
 using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService;
@@ -35,6 +34,7 @@ public class MainDI
             new DataAccesPostgreSqlModule(),
             new TeacherModule(),
             new EventModule(),
+            new LessonModule(),
             new NewsModule());
 
         var serviceProvider = new ServiceProviderUI(container);

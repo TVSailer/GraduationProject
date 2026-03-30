@@ -23,23 +23,10 @@ public class ComboBoxBuilder<TParentBuilder> : ControlBuilder<ComboBox, TParentB
         return this;
     }
         
-    public ComboBoxBuilder<TParentBuilder> SetData(object[]? dataSource)
+    public ComboBoxBuilder<TParentBuilder> SetData(object[]? dataSource, bool isEmply = true)
     {
-        Control.Items.Add("");
+        if (isEmply) Control.Items.Add("");
         Control.Items.AddRange(dataSource ?? []);
-        return this;
-    }
-    
-    public ComboBoxBuilder<TParentBuilder> SetData<T>() where T : Enum
-    {
-        Control.DataSource = Enum.GetValues(typeof(T))
-            .Cast<T>()
-            .Select(selector: d => new { Description = d.ToDescriptionString(), Value = d })
-            .ToList();
-
-        DisplayMember("Description");
-        ValueMember("Value");
-
         return this;
     }
     

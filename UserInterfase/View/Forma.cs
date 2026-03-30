@@ -4,7 +4,7 @@ using UserInterface.View.Base;
 
 namespace UserInterface.View;
 
-public abstract class Forma : Form, IForma
+public abstract class Forma<T> : Form, IForma<T>
 {
     public Forma()
     {
@@ -13,7 +13,7 @@ public abstract class Forma : Form, IForma
         Controls.Add(ControlUi(new BuilderLayoutPanel()).Build());
     }
 
-    public void ShowDialog() => ShowDialog();
+    public void Show() => ShowDialog();
 
     public abstract void Initialize();
     public abstract IBuilder ControlUi(BuilderLayoutPanel builderLayoutPanel);

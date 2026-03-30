@@ -1,13 +1,15 @@
 ﻿using Domain.Command;
 using Domain.Entitys;
+using Domain.Enum;
 using Domain.Repository;
 using Domain.Service.AuthService.BaseAuthService;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MessageService.BaseMessageService;
+using Domain.Service.SharedService;
+using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
 using System.Windows.Input;
-using Domain.Enum;
-using Domain.Service.SharedService.BaseSharedService;
+using CSharpFunctionalExtensions;
 
 namespace Admin.ViewModel.Model.Teacher;
 
@@ -104,7 +106,7 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
         IMessageService messageService,
         IAuthService authService)
     {
-        _teacher = (TeacherEntity)sharedService.GetData();
+        _teacher = sharedService.GetData<TeacherEntity>();
 
         Name = _teacher.Name;
         Surname = _teacher.Surname;

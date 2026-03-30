@@ -119,17 +119,14 @@ public class EventAddingPanelView(EventAddingPanelViewModel viewModel) : UiView<
                 .End()
                 .ColumnAutoSize().Content()
                     .Image()
-                    .Change(url => viewModel.TitleImg = url)
-                    .ErrorMessage(viewModel, nameof(viewModel.TitleImg))
+                    .Binding(viewModel, nameof(viewModel.TitleImg))
                 .End()
                 .ColumnAbsolute(30)
                 .End()
                 .Column().Content()
                     .ImageLayoutPanel()
-                    .Setting(
-                        viewModel.ImageService.GetImages(),
-                        viewModel.ImageService.ToggleImage(),
-                        viewModel.ImageService.SetAction)
+                    .Command(viewModel.ToggleImage)
+                    .Binding(viewModel, nameof(viewModel.Images))
                 .End()
             .End()
             .RowAbsolute(80)

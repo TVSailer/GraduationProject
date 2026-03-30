@@ -9,6 +9,7 @@ internal class LessonRepository(ApplicationDbContext DbContext) : RepositoryMode
         => dbSet
             .Include(e => e.Visitors)
             .Include(e => e.Reviews)
+            .Include(e => e.Teacher)
             .Include(e => e.AttendanceDates)
             .Include(e => e.Category)
             .Include(e => e.Schedule)

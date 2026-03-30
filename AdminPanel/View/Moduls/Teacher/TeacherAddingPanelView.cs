@@ -72,7 +72,6 @@ public class TeacherAddingPanelView(TeacherAddingPanelViewModel viewModel) : UiV
                 .End()
                 .ColumnAutoSize().Content()
                      .Image()
-                     .Change(url => viewModel.Image = url)
                      .ErrorMessage(viewModel, nameof(viewModel.Image))
                 .End()
                 .Column()

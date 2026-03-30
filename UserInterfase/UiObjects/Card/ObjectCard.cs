@@ -136,6 +136,7 @@ public abstract class ObjectCard<T> : Panel
         if (Parent != null)
             Parent.MouseClick += (_, args) =>
             {
+                if (Parent is null) return;
                 var hitControl = Parent.GetChildAtPoint(args.Location);
                 if (hitControl is not ObjectCard<T>)
                     ResetHighlight();

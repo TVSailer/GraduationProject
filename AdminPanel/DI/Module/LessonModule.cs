@@ -1,32 +1,18 @@
-using Admin.FieldData.Model.Lesson.Buttons;
-using Admin.View;
 using Admin.View.Moduls.Lesson;
+using Admin.View.Moduls.Lesson.Schedule;
 using Admin.ViewModel.Model.Lesson;
-using Admin.ViewModels.Lesson;
-using DataAccess.PostgreSQL.Memento;
-using DataAccess.PostgreSQL.ModelsPrimitive;
-using DataAccess.PostgreSQL.Repository;
 using Ninject.Modules;
-using UserInterface.View;
+using UserInterface.View.Base;
 
 namespace Admin.DI.Module;
-
-public record LessonManager;
 
 public class LessonModule : NinjectModule
 {
     public override void Load()
     {
-        Kernel.Bind<Repository<LessonEntity>>().To<LessonsRepository>().InSingletonScope();
-        Kernel.Bind<MementoLesson>().ToSelf().InSingletonScope();
-
-        Kernel.Bind<UiView<LessonFieldData>>().To<LessonPanelUi<LessonAddingButton>>();
-        Kernel.Bind<UiView<LessonFieldData, LessonEntity>>().To<LessonPanelUi<LessonDetailsButton>>();
-        Kernel.Bind<UiView<LessonManager>>().To<ManagerEntityUi<
-            LessonManager, 
-            LessonEntity, 
-            LessonFieldSearch, 
-            LessonCard, 
-            LessonManagerClicked>>();
+        Kernel.Bind<IView<LessonAddingPanelViewModel>>().To<LessonAddingPanelView>();
+        Kernel.Bind<IView<LessonDetailsPanelViewModel>>().To<LessonDetailsPanelView>();
+        Kernel.Bind<IView<LessonManagerPanelViewModel>>().To<LessonManagerPanelView>();
+        Kernel.Bind<IForma<ScheduleViewModel>>().To<ScheduleView>();
     }
 }

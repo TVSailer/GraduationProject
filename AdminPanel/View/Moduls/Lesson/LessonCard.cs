@@ -1,8 +1,7 @@
-﻿using DataAccess.PostgreSQL.ModelsPrimitive;
-using ExtensionFunc;
-using UserInterface;
+﻿using Domain.Entitys;
 using UserInterface.LayoutPanel;
-using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.LayoutPanel.Extension;
+using UserInterface.UiObjects.Card;
 
 namespace Admin.View.Moduls.Lesson;
 
@@ -13,12 +12,11 @@ public class LessonCard : ObjectCard<LessonEntity>
         Size = new Size(300, 125);
     }
 
-    public override Control Content()
-        => new BuilderLayoutPanel().Column()
-            .RowAutoSize().ContentEnd(FactoryElements.Label_11(Entity.Name).With(l => l.ForeColor = Color.DarkBlue))
-            .RowAutoSize().ContentEnd(FactoryElements.Label_09($"🏷️ {Entity.Category}").With(l => l.ForeColor = Color.Gray))
-            .RowAutoSize().ContentEnd(FactoryElements.Label_09($"👨‍🏫 {Entity.Teacher}").With(l => l.ForeColor = Color.Gray))
-            .RowAutoSize().ContentEnd(FactoryElements.Label_09($"👥 {Entity.Visitors.Count}/{Entity.MaxParticipants}").With(l => l.ForeColor = Color.DarkGreen))
-            .RowAutoSize().ContentEnd(FactoryElements.Label_09($"★ {Entity.Rating()}").With(l => l.ForeColor = Color.Red))
-            .Build();
+    public override IBuilder Content(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.Column()
+            .RowAutoSize().Content().Label(Entity.Title).ForeColor(Color.DarkBlue).End()
+            .RowAutoSize().Content().Label($"🏷️ {Entity.Category}").Size(9).ForeColor(Color.Gray).End()
+            .RowAutoSize().Content().Label($"👨‍🏫 {Entity.Teacher}").Size(9).ForeColor(Color.Gray).End()
+            .RowAutoSize().Content().Label($"👥 {Entity.Visitors.Count}/{Entity.MaxParticipants}").Size(9).ForeColor(Color.DarkGreen).End()
+            .RowAutoSize().Content().Label($"★ {Entity.Rating()}").Size(9).ForeColor(Color.Red).End();
 }

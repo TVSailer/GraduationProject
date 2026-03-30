@@ -23,11 +23,11 @@ public class ScheduleEntityAttribute : RequiredAttribute
                 return false;
             }
 
-            if (DateOnly.FromDateTime(DateTime.Now).CompareTo(date) > 0)
-            {
-                ErrorMessage = "Дата мероприя не может быть раньше нынешней";
-                return false;
-            }
+            //if (DateOnly.FromDateTime(DateTime.Now).CompareTo(date) > 0)
+            //{
+            //    ErrorMessage = "Дата мероприя не может быть раньше нынешней";
+            //    return false;
+            //}
 
             if (date.Year - DateTime.Now.Year > 5)
             {

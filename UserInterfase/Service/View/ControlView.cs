@@ -51,9 +51,13 @@ public class ControlView(IServiceProvisionUI di) : IControlView
     public void ShowDialog<T>()
     {
         _showDialogForm = di.GetService<IForma<T>>();
-        _showDialogForm.ShowDialog();
+        _showDialogForm.Show();
         UpdateGui();
     }
 
-    public void CloseDialog() => _showDialogForm?.Close();
+    public void CloseDialog()
+    {
+        _showDialogForm?.Close();
+        _showDialogForm = null;
+    }
 }

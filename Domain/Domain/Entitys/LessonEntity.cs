@@ -19,8 +19,18 @@ namespace Domain.Entitys
 
         private LessonEntity() { }
 
-        public LessonEntity(string title, string description, string location, int maxParticipants, CategoryEntity category, TeacherEntity teacher)
+        public LessonEntity(
+            string title, 
+            string description, 
+            string location, 
+            int maxParticipants, 
+            CategoryEntity category, 
+            TeacherEntity teacher, 
+            ICollection<LessonScheduleEntity> schedule,
+            ICollection<ImageLessonEntity> images)
         {
+            Schedule = schedule;
+            Images = images;
             Title = title;
             Description = description;
             Location = location;
@@ -61,6 +71,12 @@ namespace Domain.Entitys
                     .Select(r => r.Id)
                     .Contains(id));
         }
+
+        public bool Include(string? title, string? category, string? teacherName, string? teacherSurname)
+        => (string.IsNullOrEmpty(category) || category.Equals(Category.Category)) &&
+            Title.StartsWith(title ?? "") &&
+            Teacher.Name.StartsWith(teacherName ?? "") &&
+            Teacher.Surname.StartsWith(teacherSurname ?? "");
     }
 }
 

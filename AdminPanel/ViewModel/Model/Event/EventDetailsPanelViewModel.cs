@@ -1,4 +1,5 @@
-﻿using Domain.Command;
+﻿using CSharpFunctionalExtensions;
+using Domain.Command;
 using Domain.Entitys;
 using Domain.Entitys.ComplexType;
 using Domain.Entitys.ImagesEntity;
@@ -6,16 +7,16 @@ using Domain.Enum;
 using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.ImageService.BaseServiceImage;
+using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
 using System.Windows.Input;
-using Domain.Service.MessageService.BaseMessageService;
 
 namespace Admin.ViewModel.Model.Event;
 
 public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 {
-    internal readonly IImageService ImageService;
+    internal readonly IImageService _imageService;
     private readonly IMessageService _messageService;
 
     private readonly IRepository<EventEntity> _repositoryE;
@@ -61,9 +62,17 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
     [RequiredCustom] public CategoryEntity? Category { get; set => Set(ref field, value); }
     [Url] public string? RegisLink { get; set => Set(ref field, value); }
     [ScheduleEntity] public EventEntitySchedule Schedule => new (TimeStart, TimeEnd, Date);
-
+    public IEnumerable<string> Images { get; set => Set(ref field, value); }
     #endregion
 
+    #region CommandToggleImage
+
+    internal readonly ICommand ToggleImage;
+
+    private void ExecuteToggleImage(object? obj) => _imageService.ToggleImage((string)obj!);
+    private bool CanExecuteToggleImage(object? obj) => obj is string ? true : throw new ArgumentException();
+
+    #endregion
     #region CommandExit
 
     internal readonly ICommand Exit;
@@ -76,7 +85,7 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand AddImages;
 
-    private void ExecuteAddImages(object? obj) => ImageService.OnAddImage();
+    private void ExecuteAddImages(object? obj) => _imageService.OnAddImage();
     private bool CanExecuteAddImages(object? obj) => true;
 
     #endregion
@@ -84,7 +93,7 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => ImageService.OnDeleteImage();
+    private void ExecuteRemoveImages(object? obj) => _imageService.OnDeleteImage();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -101,9 +110,11 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
         _eventEntity.Category = Category;
         _eventEntity.RegistrationLink = RegisLink;
         _eventEntity.Schedule = Schedule;
-        _eventEntity.Images = ImageService.GetImages().Select(i => new ImageEventEntity { Url = i }).ToList();
+        _eventEntity.Images = Images.Select(i => new ImageEventEntity { Url = i }).ToList();
 
         _repositoryE.Update(_eventEntity);
+
+        _messageService.Message("Данные успешно обновились", TypeMessage.Info);
     }
 
     private bool CanExecuteUpdate(object? obj) => ValidObject();
@@ -132,11 +143,12 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
         ISharedService sharedService)
     {
         _repositoryE = repositoryE;
-        ImageService = imageService;
+        _imageService = imageService;
         _messageService = messageService;
         _controlViewService = controlViewService;
         CategoryEntities = repositoryC.Get().ToArray();
-        _eventEntity = (EventEntity)sharedService.GetData();
+
+        _eventEntity = sharedService.GetData<EventEntity>();
 
         Title = _eventEntity.Title;
         RegisLink = _eventEntity.RegistrationLink;
@@ -148,13 +160,15 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
         TimeEnd = _eventEntity.Schedule.End;
         Date = _eventEntity.Schedule.Date;
         Organizer = _eventEntity.Organizer;
-        ImageService.TryAdd(_eventEntity.Images.Select(i => i.Url));
+        Images = _eventEntity.Images.Select(i => i.Url);
 
+        _imageService.Binding(this, nameof(Images));
 
         Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);
         RemoveImages = new ExecuteCommand(ExecuteRemoveImages, CanExecuteRemoveImages);
         AddImages = new ExecuteCommand(ExecuteAddImages, CanExecuteAddImages);
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         Delete = new ExecuteCommand(ExecuteDelete, CanExecuteDelete);
+        ToggleImage = new ExecuteCommand(ExecuteToggleImage, CanExecuteToggleImage);
     }
 }

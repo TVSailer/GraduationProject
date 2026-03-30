@@ -118,17 +118,14 @@ public class EventDetailsPanelView(EventDetailsPanelViewModel viewModel) : UiVie
                 .End()
                 .ColumnAutoSize().Content()
                     .Image(viewModel.TitleImg)
-                    .Change(url => viewModel.TitleImg = url)
-                    .ErrorMessage(viewModel, nameof(viewModel.TitleImg))
+                    .Binding(viewModel, nameof(viewModel.TitleImg))
                 .End()
                 .ColumnAbsolute(30)
                 .End()
                 .Column(55).Content()
                     .ImageLayoutPanel()
-                    .Setting(
-                        viewModel.ImageService.GetImages(),
-                        viewModel.ImageService.ToggleImage(),
-                        viewModel.ImageService.SetAction)
+                    .Command(viewModel.ToggleImage)
+                    .Binding(viewModel, nameof(viewModel.Images))
                 .End()
             .End()
             .RowAbsolute(80)

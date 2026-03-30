@@ -12,33 +12,42 @@ public class CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> : Contr
     where TControl : Panel, new()
     where TCard : ObjectCard<TEntity>, new()
 {
-    private InfoCommand[]? _menuStrip;
+    private List<InfoCommand> _menuStrip = [];
     private ICommand? _onClick;
     private Func<IEnumerable<TEntity>>? _entities;
 
-
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> SetData(Func<IEnumerable<TEntity>> entities)
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> Initialize(IEnumerable<TEntity> entities)
     {
-        _entities = entities;
-        return this;
-    }
-
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> Initialize()
-    {
-        _entities?.Invoke()
-            .With(_ => Control.Controls.Clear()).ForEach(en =>
+        entities.With(_ => Control.Controls.Clear()).ForEach(en =>
                 Control.Controls.Add(new TCard()
                     .Initialize(this, en)
-                    .OnContextMenu(_menuStrip)
+                    .OnContextMenu(_menuStrip.ToArray())
                     .OnClickedCard(_onClick)));
         return this;
     }
 
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> Binding(INotifyPropertyChanged notify)
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> Binding(object notify, string nameMember)
     {
-        notify.PropertyChanged += (_, _) => Initialize();
+        if (notify is INotifyPropertyChanged notifyPropertyChanged)
+        {
+            notifyPropertyChanged.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName!.Equals(nameMember)) InitializeData(notifyPropertyChanged, nameMember);
+            };
+
+            InitializeData(notifyPropertyChanged, nameMember);
+        }
         return this;
     }
+
+    private void InitializeData(INotifyPropertyChanged notify, string nameMember)
+    {
+        var prop = notify.GetType().GetProperty(nameMember);
+        var data = (IEnumerable<TEntity>)prop.GetValue(notify);
+
+        Initialize(data);
+    }
+
 
     public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ClickedCard(ICommand clicked)
     {
@@ -46,9 +55,9 @@ public class CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> : Contr
         return this;
     }
 
-    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ContextMenu(InfoCommand[] buttons)
+    public CardLayoutBuilder<TParentBuilder, TControl, TEntity, TCard> ContextMenu(string name, ICommand command)
     {
-        _menuStrip = buttons;
+        _menuStrip.Add(new InfoCommand(name, command));
         return this;
     }
 

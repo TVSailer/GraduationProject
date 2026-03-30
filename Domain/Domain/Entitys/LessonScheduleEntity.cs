@@ -2,6 +2,7 @@
 using CSharpFunctionalExtensions;
 using Domain.Enum;
 using Domain.Enum.Extension;
+using Domain.Extension;
 
 namespace Domain.Entitys
 {
@@ -13,7 +14,7 @@ namespace Domain.Entitys
         public Day Day { get; set; }
 
         private LessonScheduleEntity() { }
-
+        
         public LessonScheduleEntity(TimeOnly start, TimeOnly end, Day day)
         {
             Day = day;
@@ -21,10 +22,10 @@ namespace Domain.Entitys
             End = end.ToString("HH:mm");
         }
 
-        //public override string ToString()
-        //{
-        //    return $"{Day.ToDescriptionString()}: {Start}-{End}";
-        //}
+        public override string ToString()
+        {
+            return $"{Day.ToDescriptionString()}: {Start}-{End}";
+        }
 
         public bool TryRangeScheduleNow()
         {
