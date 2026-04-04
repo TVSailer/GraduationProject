@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Domain.Command;
 using Domain.Entitys;
-using Domain.Entitys.ImagesEntity;
 using Domain.Enum;
 using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
@@ -10,6 +9,7 @@ using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
 using System.Windows.Input;
+using Admin.ViewModel.Model.Lesson.Schedule;
 
 namespace Admin.ViewModel.Model.Lesson;
 
@@ -34,7 +34,7 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
     [RequiredCustom] public CategoryEntity? Category { get; set => Set(ref field, value); }
     [RequiredCustom] public TeacherEntity? Teacher { get; set => Set(ref field, value); }
     public IEnumerable<string?> Images { get; set => Set(ref field, value); }
-    private Maybe<ICollection<LessonScheduleEntity>> _schedule;
+    private Maybe<List<LessonScheduleEntity>> _schedule;
     #endregion
 
     #region CommandExit
@@ -75,7 +75,7 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
         _lessonEntity.Category = Category;
         _lessonEntity.Teacher = Teacher;
         _lessonEntity.Schedule = _schedule.Value;
-        _lessonEntity.Images = Images.Select(i => new ImageLessonEntity() { Url = i }).ToList();
+        _lessonEntity.SetImages(Images);
 
         _repositoryL.Update(_lessonEntity);
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);
@@ -97,7 +97,7 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
     {
         _sharedService.SetData(_schedule.Value);
         _controlViewService.ShowDialog<ScheduleViewModel>();
-        _schedule = _sharedService.GetMaybeData<ICollection<LessonScheduleEntity>>();
+        _schedule = _sharedService.GetMaybeData<List<LessonScheduleEntity>>();
     }
 
     private bool CanExecuteSchedule(object? obj) => true;
@@ -132,7 +132,7 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
         MaxParticipants = _lessonEntity.MaxParticipants;
         Teacher = _lessonEntity.Teacher;
         Category = _lessonEntity.Category;
-        Images = _lessonEntity.Images.Select(i => i.Url);
+        Images = _lessonEntity.GetImages();
 
         _schedule = Maybe.From(() => _lessonEntity.Schedule);
 

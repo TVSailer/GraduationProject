@@ -50,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="C1.Win.FlexGrid" Version="10.0.20252.761" />
     <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
   </ItemGroup>
 

@@ -5,5 +5,5 @@ namespace Domain.Entitys.ImagesEntity;
 
 public class ImageLessonEntity : Entity, IImage
 {
-    public string? Url { get; set; }
+    public string Url { get; set; }
 }

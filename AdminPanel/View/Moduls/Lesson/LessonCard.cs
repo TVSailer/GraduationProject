@@ -18,5 +18,5 @@ public class LessonCard : ObjectCard<LessonEntity>
             .RowAutoSize().Content().Label($"🏷️ {Entity.Category}").Size(9).ForeColor(Color.Gray).End()
             .RowAutoSize().Content().Label($"👨‍🏫 {Entity.Teacher}").Size(9).ForeColor(Color.Gray).End()
             .RowAutoSize().Content().Label($"👥 {Entity.Visitors.Count}/{Entity.MaxParticipants}").Size(9).ForeColor(Color.DarkGreen).End()
-            .RowAutoSize().Content().Label($"★ {Entity.Rating()}").Size(9).ForeColor(Color.Red).End();
+            .RowAutoSize().Content().Label($"★ {Entity.GetRating()}").Size(9).ForeColor(Color.Red).End();
 }

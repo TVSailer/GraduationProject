@@ -5,8 +5,6 @@ using UserInterface.View.Base;
 
 namespace Admin.DI.Module;
 
-public record EventManager;
-
 public class EventModule : NinjectModule
 {
     public override void Load()

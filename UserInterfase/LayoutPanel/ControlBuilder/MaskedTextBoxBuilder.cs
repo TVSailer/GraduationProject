@@ -15,8 +15,7 @@ public class MaskedTextBoxBuilder<TParentBuilder> : ControlBuilder<MaskedTextBox
 
     public MaskedTextBoxBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        Control
-            .Binding(nameof(MaskedTextBox.Text), dataSource, dataMember);
+        Control.Binding(nameof(MaskedTextBox.Text), dataSource, dataMember);
         MessageErrorProvider(dataSource, dataMember);
 
         return this;

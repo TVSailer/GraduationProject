@@ -1,64 +1,49 @@
 ﻿using CSharpFunctionalExtensions;
+using Domain.Extension;
 
 namespace Domain.Entitys;
 
 public class DateAttendanceEntity : Entity
 {
-    public string Date { get; set; } = DateTime.Now.ToString(format: "dd/MM/yyyy");
-    public LessonEntity Lesson { get; set; }
-    public ICollection<VisitorEntity> Visitors { get; set; } = [];
+    public string Date { get; private set; } = DateTime.Now.ToString(format: "dd/MM/yyyy");
+    public LessonEntity Lesson { get; private set; }
+    public List<VisitorEntity> Visitors { get; private set; } = [];
+
+    private DateAttendanceEntity() { }
+
+    public DateAttendanceEntity(LessonEntity lesson)
+    {
+        Lesson = lesson;
+    }
+
+    public Result<DateAttendanceEntity> AddVisitor(VisitorEntity visitor)
+    {
+        if (Visitors.Select(v => v.Id).Contains(visitor.Id)) return Result.Failure<DateAttendanceEntity>("Данный пользователь уже есть");
+        Visitors.Add(visitor);
+        return Result.Success(this);
+    }
+    
+    public Result<DateAttendanceEntity> AddRangeVisitor(ICollection<VisitorEntity> visitors)
+    {
+        foreach (var visitorEntity in visitors)
+        {
+            var result = AddVisitor(visitorEntity);
+            if (result.IsFailure) return result;
+        }
+
+        return Result.Success(this);
+    }
 
     public string ToString(string date = "")
     {
         if (date.Equals("dd/MM"))
             return DateTime.Parse(Date).ToString("dd/MM");
-        if (string.IsNullOrEmpty(date))
-            return Date;
-
-        throw new Exception($"неверный формат даты: {date}");
+        return string.IsNullOrEmpty(date) ? Date : throw new Exception($"неверный формат даты: {date}");
     }
 
-    public DateTime ToDateTime() => DateTime.Parse(Date);
-
-    protected bool Equals(DateAttendanceEntity other)
+    public DateTime ToDateTime()
     {
-        return base.Equals(other) && Date == other.Date;
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is null) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != GetType()) return false;
-        return Equals((DateAttendanceEntity)obj);
-    }
-
-    public static bool operator ==(DateAttendanceEntity? left, DateAttendanceEntity? right)
-    {
-        return Equals(left, right);
-    }
-
-    public static bool operator !=(DateAttendanceEntity? left, DateAttendanceEntity? right)
-    {
-        return !Equals(left, right);
-    }
-}
-
-public sealed class DateAttendanceEntityRelationalComparer : IComparer<DateAttendanceEntity>
-{
-    public int Compare(DateAttendanceEntity? x, DateAttendanceEntity? y)
-    {
-        if (ReferenceEquals(x, y)) return 0;
-        if (y is null) return 1;
-        if (x is null) return -1;
-
-        var dateX = x.ToDateTime();
-        var dateY = y.ToDateTime();
-
-        if (dateX == dateY) return 0;
-        if (dateX > dateY) return 1;
-        if (dateX < dateY) return -1;
-
-        return 0;
+        var date = Date.ToDateTime();
+        return date.IsFailure ? throw new Exception("Неверная дата") : date.Value;
     }
 }

@@ -20,6 +20,7 @@ public interface IContentSelector<TParentBuilder>
     ButtonBuilder<TParentBuilder> Button(string text = "");
     DataGridViewBuilder<TParentBuilder> DataGridView();
     ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IImagePanel imagePanel);
+    ChekedListBoxBuilder<TParentBuilder> ChekedListBox();
     ImagePanelBuilder<TParentBuilder> ImageLayoutPanel();
     ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(ICommand[] data);
     CardLayoutBuilder<TParentBuilder, FlowLayoutPanel, TEntity, TCard> CardFlowLayoutPanel<TEntity, TCard>() 

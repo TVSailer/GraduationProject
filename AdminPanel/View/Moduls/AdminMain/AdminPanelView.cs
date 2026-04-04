@@ -40,6 +40,7 @@ public sealed class AdminPanelView(AdminPanelViewModel viewModel) : UiView<Admin
                 .End()
                 .RowAbsolute(60).Content()
                     .Button("👥 Управление посетителями")
+                    .Command(viewModel.LoadVisitorManagerPanelView)
                 .End()
                 .RowAbsolute(60).Content()
                     .Button("🚪 Выход")

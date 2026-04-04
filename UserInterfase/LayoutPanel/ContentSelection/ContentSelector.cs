@@ -65,6 +65,9 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
         => Builder<ImagePanelBuilder<TParentBuilder>, FlowLayoutPanel>()
             .Setting(imagePanel);
 
+    public ChekedListBoxBuilder<TParentBuilder> ChekedListBox()
+        => Builder<ChekedListBoxBuilder<TParentBuilder>, CheckedListBox>();
+
     public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel()
         => Builder<ImagePanelBuilder<TParentBuilder>, FlowLayoutPanel>();
 

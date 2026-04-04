@@ -10,5 +10,5 @@ internal class VisitorRepository(ApplicationDbContext DbContext) : RepositoryMod
             .Include(e => e.Lessons)
             .Include(e => e.Reviews)
             .Include(e => e.AuthEntity)
-            .Include(e => e.Dates);
+            .Include(e => e.DateAttendances);
 }

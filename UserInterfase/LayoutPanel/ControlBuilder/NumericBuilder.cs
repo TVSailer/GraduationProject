@@ -9,8 +9,7 @@ public class NumericBuilder<TParentBuilder> : ControlBuilder<NumericUpDown, TPar
 {
     public NumericBuilder<TParentBuilder> Binding(object dataSource, string dataMember)
     {
-        Control
-            .Binding(nameof(TextBox.Text), dataSource, dataMember);
+        Control.Binding(nameof(TextBox.Text), dataSource, dataMember);
         MessageErrorProvider(dataSource, dataMember);
         return this;
     }
@@ -19,10 +18,9 @@ public class NumericBuilder<TParentBuilder> : ControlBuilder<NumericUpDown, TPar
     {
         return new()
         {
-            Text = "",
-            Minimum = 1,
+            Minimum = 0,
             Maximum = 1000,
-            Value = 50,
+            Value = 0,
             Dock = DockStyle.Fill,
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
             BorderStyle = BorderStyle.FixedSingle,

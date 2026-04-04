@@ -6,7 +6,7 @@ namespace UserInterface.View;
 
 public abstract class Forma<T> : Form, IForma<T>
 {
-    public Forma()
+    protected Forma()
     {
         StartPosition = FormStartPosition.CenterScreen;
         Initialize();

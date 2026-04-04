@@ -1,16 +1,16 @@
-﻿using Admin.ViewModel.Model.Teacher;
+﻿using Admin.ViewModel.Model.Visitor;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.View;
 
-namespace Admin.View.Moduls.Teacher;
+namespace Admin.View.Moduls.Visitor;
 
-public class TeacherDetailsPanelView(TeacherDetailsPanelViewModel viewModel) : UiView<TeacherDetailsPanelViewModel>
+public class VisitorAddingPanelView(VisitorAddingPanelViewModel viewModel) : UiView<VisitorAddingPanelViewModel>
 {
     const int SizeRow = 5;
 
-    public override IBuilder CreateUi(BuilderLayoutPanel layout)
-        => layout.Column()
+    public override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
+         => builderLayoutPanel.Column()
              .Row()
                 .Column()
                     .Row(SizeRow)
@@ -70,15 +70,7 @@ public class TeacherDetailsPanelView(TeacherDetailsPanelViewModel viewModel) : U
                     .End()
                     .Row().End()
                 .End()
-                .ColumnAutoSize().Content()
-                     .Image(viewModel.Image)
-                     .Binding(viewModel, nameof(viewModel.Image))
-                .End()
-                .Column().Content()
-                    .DataGridView()
-                    .SetColumn("Название")
-                    .SetColumn("Место проведения")
-                    .SetRow(viewModel.GetDataGridLesson())
+                .Column()
                 .End()
              .End()
              .RowAbsolute(80)
@@ -87,12 +79,11 @@ public class TeacherDetailsPanelView(TeacherDetailsPanelViewModel viewModel) : U
                     .Command(viewModel.Exit)
                 .End()
                 .Column().Content()
-                    .Button("Обновить")
-                    .Command(viewModel.Update)
+                    .Button("Добавить")
+                    .Command(viewModel.Save)
                 .End()
                 .Column().Content()
-                    .Button("Удалить")
-                    .Command(viewModel.Delete)
+                    .Button()
                 .End()
                 .Column().Content()
                     .Button()

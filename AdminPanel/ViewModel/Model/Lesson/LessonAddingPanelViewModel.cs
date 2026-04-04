@@ -10,6 +10,7 @@ using Domain.Service.SharedService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
 using System.Windows.Input;
+using Admin.ViewModel.Model.Lesson.Schedule;
 using CSharpFunctionalExtensions;
 
 namespace Admin.ViewModel.Model.Lesson;
@@ -34,7 +35,7 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
     [RequiredCustom] public CategoryEntity? Category { get; set => Set(ref field, value); }
     [RequiredCustom] public TeacherEntity? Teacher { get; set => Set(ref field, value); }
     public IEnumerable<string> Images { get; set => Set(ref field, value); }
-    private Maybe<ICollection<LessonScheduleEntity>> _schedule;
+    private Maybe<List<LessonScheduleEntity>> _schedule;
     #endregion
 
     #region CommandExit
@@ -77,7 +78,7 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
                 Category!,
                 Teacher,
                 _schedule.Value,
-                Images.Select(i => new ImageLessonEntity() { Url = i }).ToList())
+                Images)
         );
 
         _messageService.Message("Данные успешно добавились", TypeMessage.Info);
@@ -100,7 +101,7 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
     {
         _sharedService.SetData(_schedule.GetValueOrDefault(null));
         _controlViewService.ShowDialog<ScheduleViewModel>();
-        _schedule = _sharedService.GetMaybeData<ICollection<LessonScheduleEntity>>();
+        _schedule = _sharedService.GetMaybeData<List<LessonScheduleEntity>>();
     }
 
     private bool CanExecuteSchedule(object? obj) => true;

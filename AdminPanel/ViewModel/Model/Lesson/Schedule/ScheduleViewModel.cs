@@ -1,19 +1,17 @@
-﻿using Domain.Command;
+﻿using System.Windows.Input;
+using Domain.Command;
 using Domain.Entitys;
 using Domain.Enum;
+using Domain.Extension;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
-using System.Windows.Input;
-using CSharpFunctionalExtensions;
-using CSharpFunctionalExtensions.ValueTasks;
-using Domain.Extension;
 using Day = Domain.Enum.Day;
 
 
 
-namespace Admin.ViewModel.Model.Lesson;
+namespace Admin.ViewModel.Model.Lesson.Schedule;
 
 public class ScheduleViewModel : General.ViewModel.ViewModel
 {
@@ -114,7 +112,7 @@ public class ScheduleViewModel : General.ViewModel.ViewModel
         _messageService = messageService;
         _controlViewService = controlViewService;
 
-        Schedule.AddRange(_sharedService.GetMaybeData<ICollection<LessonScheduleEntity>>().GetValueOrDefault([]));
+        Schedule.AddRange(_sharedService.GetMaybeData<List<LessonScheduleEntity>>().GetValueOrDefault([]));
 
         AddSchedule = new ExecuteCommand(ExecuteAddSchedule, CanExecuteAddSchedule);
         DeleteSchedule = new ExecuteCommand(ExecuteDeleteSchedule, CanExecuteDeleteSchedule);

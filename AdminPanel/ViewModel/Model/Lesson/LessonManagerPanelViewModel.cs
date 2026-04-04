@@ -4,6 +4,8 @@ using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.SharedService.BaseSharedService;
 using System.Windows.Input;
+using Admin.ViewModel.Model.DateAttendance;
+using Admin.ViewModel.Model.Visitor;
 
 namespace Admin.ViewModel.Model.Lesson;
 
@@ -21,11 +23,34 @@ public class LessonManagerPanelViewModel : General.ViewModel.ViewModel
     public string? TeacherName { get; set => Set(ref field, value, Search); }
     public string? TeacherSurname { get; set => Set(ref field, value, Search); }
 
-    //new InfoToolStrip("Управление поситителями").CommandClick(() => ControlLesson<VisitorBelongingLesson>(eventToolStripArgs?.Data)),
-    //new InfoToolStrip("Управление посещаемостью").CommandClick(() => ControlLesson<DateAttendanceManager>(eventToolStripArgs?.Data)),
     //new InfoToolStrip("Управление отзывами").CommandClick(() => ControlLesson<ReviewManager>(eventToolStripArgs?.Data)),
 
+    #region CommandControlVisitors
 
+    internal readonly ICommand ControlVisitors;
+
+    private void ExecuteControlVisitors(object? obj)
+    {
+        _sharedService.SetData(obj);
+        _controlViewService.LoadView<VisitorBelongingLessonPanelViewModel>();
+    }
+
+    private bool CanExecuteControlVisitors(object? obj) => obj is LessonEntity ? true : throw new Exception();
+
+    #endregion
+    #region CommandControlDateAttendance
+
+    internal readonly ICommand ControlDateAttendance;
+
+    private void ExecuteControlDateAttendance(object? obj)
+    {
+        _sharedService.SetData(obj);
+        _controlViewService.LoadView<DateAttendanceManagerPanelViewModel>();
+    }
+
+    private bool CanExecuteControlDateAttendance(object? obj) => obj is LessonEntity ? true : throw new Exception();
+
+    #endregion
     #region CommandClearSearch
 
     public readonly ICommand ClearSearch;
@@ -101,6 +126,8 @@ public class LessonManagerPanelViewModel : General.ViewModel.ViewModel
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         LoadAddingPanel = new ExecuteCommand(ExecuteLoadAddingPanel, CanExecuteLoadAddingPanel);
         LoadDetailsPanel = new ExecuteCommand(ExecuteLoadDetailsPanel, CanExecuteLoadDetailsPanel);
+        ControlVisitors = new ExecuteCommand(ExecuteControlVisitors, CanExecuteControlVisitors);
+        ControlDateAttendance = new ExecuteCommand(ExecuteControlDateAttendance, CanExecuteControlDateAttendance);
     }
 
     public void Search()

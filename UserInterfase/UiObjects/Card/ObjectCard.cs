@@ -168,9 +168,13 @@ public abstract class ObjectCard<T> : Panel
     private void AddToolStrip(InfoCommand button)
     {
         var toolStrip = new ToolStripMenuItem(button.Text);
-        var en = button.Command.CanExecute(Entity);
-        if (en) toolStrip.Click += (_, _) => button.Command.Execute(Entity);
-        toolStrip.Enabled = en;
+
+        toolStrip.Click += (_, _) =>
+        {
+            if (button.Command.CanExecute(Entity))
+                button.Command.Execute(Entity);
+        };
+
         ContextMenuStrip?.Items.Add(toolStrip);
     }
 

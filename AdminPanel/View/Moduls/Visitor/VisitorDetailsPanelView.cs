@@ -1,16 +1,16 @@
-﻿using Admin.ViewModel.Model.Teacher;
+﻿using Admin.ViewModel.Model.Visitor;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.View;
 
-namespace Admin.View.Moduls.Teacher;
+namespace Admin.View.Moduls.Visitor;
 
-public class TeacherDetailsPanelView(TeacherDetailsPanelViewModel viewModel) : UiView<TeacherDetailsPanelViewModel>
+public class VisitorDetailsPanelView(VisitorDetailsPanelViewModel viewModel) : UiView<VisitorDetailsPanelViewModel>
 {
-    const int SizeRow = 5;
+    const int SizeRow = 9;
 
-    public override IBuilder CreateUi(BuilderLayoutPanel layout)
-        => layout.Column()
+    public override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.Column()
              .Row()
                 .Column()
                     .Row(SizeRow)
@@ -62,7 +62,7 @@ public class TeacherDetailsPanelView(TeacherDetailsPanelViewModel viewModel) : U
                             .Label("Номер телефона: ")
                         .End()
                         .Column(40).Content()
-                            .MaskedTextBox("+7 (000)-000-00-00")
+                            .MaskedTextBox()
                             .Binding(viewModel, nameof(viewModel.NumberPhone))
                         .End()
                         .ColumnAbsolute(30)
@@ -72,14 +72,15 @@ public class TeacherDetailsPanelView(TeacherDetailsPanelViewModel viewModel) : U
                 .End()
                 .ColumnAutoSize().Content()
                      .Image(viewModel.Image)
-                     .Binding(viewModel, nameof(viewModel.Image))
                 .End()
-                .Column().Content()
-                    .DataGridView()
-                    .SetColumn("Название")
-                    .SetColumn("Место проведения")
-                    .SetRow(viewModel.GetDataGridLesson())
+                .Column()
                 .End()
+             .End()
+             .Row().Content()
+                .DataGridView()
+                .SetColumn("Занятие")
+                .SetColumn(viewModel.GetDateAttendance())
+                .SetRow(viewModel.GetAttendace())
              .End()
              .RowAbsolute(80)
                 .Column().Content()
@@ -91,8 +92,7 @@ public class TeacherDetailsPanelView(TeacherDetailsPanelViewModel viewModel) : U
                     .Command(viewModel.Update)
                 .End()
                 .Column().Content()
-                    .Button("Удалить")
-                    .Command(viewModel.Delete)
+                    .Button()
                 .End()
                 .Column().Content()
                     .Button()
