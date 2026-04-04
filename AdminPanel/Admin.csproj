@@ -10,27 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ViewModel\Model\DateAttendance\Buttons\**" />
     <Compile Remove="ViewModel\Model\News\**" />
-    <Compile Remove="ViewModel\Model\Review\**" />
     <Compile Remove="Resources\**" />
     <Compile Remove="View\Moduls\News\**" />
-    <Compile Remove="View\Moduls\Review\**" />
-    <EmbeddedResource Remove="ViewModel\Model\DateAttendance\Buttons\**" />
     <EmbeddedResource Remove="ViewModel\Model\News\**" />
-    <EmbeddedResource Remove="ViewModel\Model\Review\**" />
     <EmbeddedResource Remove="View\Moduls\News\**" />
-    <EmbeddedResource Remove="View\Moduls\Review\**" />
-    <None Remove="ViewModel\Model\DateAttendance\Buttons\**" />
     <None Remove="ViewModel\Model\News\**" />
-    <None Remove="ViewModel\Model\Review\**" />
     <None Remove="Resources\**" />
     <None Remove="View\Moduls\News\**" />
-    <None Remove="View\Moduls\Review\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="DI\Module\ReviewModule.cs" />
   </ItemGroup>
 
   <ItemGroup>

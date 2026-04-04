@@ -5,6 +5,7 @@ using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.SharedService.BaseSharedService;
 using System.Windows.Input;
 using Admin.ViewModel.Model.DateAttendance;
+using Admin.ViewModel.Model.Review;
 using Admin.ViewModel.Model.Visitor;
 
 namespace Admin.ViewModel.Model.Lesson;
@@ -23,8 +24,19 @@ public class LessonManagerPanelViewModel : General.ViewModel.ViewModel
     public string? TeacherName { get; set => Set(ref field, value, Search); }
     public string? TeacherSurname { get; set => Set(ref field, value, Search); }
 
-    //new InfoToolStrip("Управление отзывами").CommandClick(() => ControlLesson<ReviewManager>(eventToolStripArgs?.Data)),
+    #region CommandControlReview
 
+    internal readonly ICommand ControlReview;
+
+    private void ExecuteControlReview(object? obj)
+    {
+        _sharedService.SetData(obj);
+        _controlViewService.LoadView<ReviewManagerViewModel>();
+    }
+
+    private bool CanExecuteControlReview(object? obj) => obj is LessonEntity ? true : throw new Exception();
+
+    #endregion
     #region CommandControlVisitors
 
     internal readonly ICommand ControlVisitors;
@@ -128,6 +140,7 @@ public class LessonManagerPanelViewModel : General.ViewModel.ViewModel
         LoadDetailsPanel = new ExecuteCommand(ExecuteLoadDetailsPanel, CanExecuteLoadDetailsPanel);
         ControlVisitors = new ExecuteCommand(ExecuteControlVisitors, CanExecuteControlVisitors);
         ControlDateAttendance = new ExecuteCommand(ExecuteControlDateAttendance, CanExecuteControlDateAttendance);
+        ControlReview = new ExecuteCommand(ExecuteControlReview, CanExecuteControlReview);
     }
 
     public void Search()

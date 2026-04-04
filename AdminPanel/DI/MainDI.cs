@@ -31,6 +31,7 @@ public class MainDI
     {
         var container = new StandardKernel(
             new MainModule(),
+            new ReviewModule(),
             new DataAccesPostgreSqlModule(),
             new TeacherModule(),
             new EventModule(),

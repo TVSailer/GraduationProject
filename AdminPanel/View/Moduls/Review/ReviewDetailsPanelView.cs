@@ -1,0 +1,77 @@
+﻿using Admin.ViewModel.Model.Review;
+using UserInterface.LayoutPanel;
+using UserInterface.LayoutPanel.Extension;
+using UserInterface.View;
+
+namespace Admin.View.Moduls.Review;
+
+public class ReviewDetailsPanelView(ReviewDetailsPanelViewModel viewModel) : UiView<ReviewDetailsPanelViewModel>
+{
+    private const int SizeRow = 5;
+
+    public override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.Column()
+            .Row()
+                .Column()
+                    .Row(SizeRow)
+                        .Column(10).Content()
+                            .Label("Рейтинг: ")
+                        .End()
+                        .Column(40).Content()
+                            .TextBox()
+                            .Binding(viewModel, nameof(viewModel.Rating))
+                            .ReadOnly()
+                        .End()
+                        .ColumnAbsolute(30)
+                        .End()
+                    .End()
+                    .Row(SizeRow)
+                        .Column(10).Content()
+                            .Label("Автор: ")
+                        .End()
+                        .Column(40).Content()
+                            .TextBox()
+                            .Binding(viewModel, nameof(viewModel.Visitor))
+                            .ReadOnly()
+                        .End()
+                        .ColumnAbsolute(30)
+                        .End()
+                    .End()
+                    .RowAbsolute(200)
+                        .Column(10).Content()
+                            .Label("Комментарий: ")
+                        .End()
+                        .Column(40).Content()
+                            .TextBox()
+                            .Binding(viewModel, nameof(viewModel.Comment))
+                            .ReadOnly()
+                        .End()
+                        .ColumnAbsolute(30)
+                        .End()
+                    .End()
+                    .Row()
+                    .End()
+                .End()
+                .Column()
+                .End()
+            .End()
+            .RowAbsolute(80)
+                .Column().Content()
+                    .Button("Назад")
+                    .Command(viewModel.Exit)
+                .End()
+                .Column().Content()
+                    .Button("Удалить")
+                    .Command(viewModel.Delete)
+                .End()
+                .Column().Content()
+                    .Button()
+                    .NoEnable()
+                .End()
+                .Column().Content()
+                    .Button()
+                    .NoEnable()
+                .End()
+            .End();
+
+}

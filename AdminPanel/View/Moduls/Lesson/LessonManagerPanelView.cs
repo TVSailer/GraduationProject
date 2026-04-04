@@ -17,6 +17,7 @@ public class LessonManagerPanelView(LessonManagerPanelViewModel viewModel) : UiV
                     .ClickedCard(viewModel.LoadDetailsPanel)
                     .ContextMenu("Управление поситителями", viewModel.ControlVisitors)
                     .ContextMenu("Управление посищаемостью", viewModel.ControlDateAttendance)
+                    .ContextMenu("Управление отзывами", viewModel.ControlReview)
                     .Binding(viewModel, nameof(viewModel.Learches))
                 .End()
                 .Column(25).Content()

@@ -1,18 +1,15 @@
-using Admin.FieldData.Model.Review;
 using Admin.View.Moduls.Review;
-using DataAccess.PostgreSQL.ModelsPrimitive;
+using Admin.ViewModel.Model.Review;
 using Ninject.Modules;
-using UserInterface.View;
+using UserInterface.View.Base;
 
 namespace Admin.DI.Module;
-
-public record ReviewManager;
 
 public class ReviewModule : NinjectModule
 {
     public override void Load()
     {
-        Kernel.Bind<UiView<ReviewFieldData, ReviewEntity>>().To<ReviewPanelUi>();
-        Kernel.Bind<UiView<ReviewManager>>().To<ReviewsCardUi>();
+        Kernel.Bind<IView<ReviewDetailsPanelViewModel>>().To<ReviewDetailsPanelView>();
+        Kernel.Bind<IView<ReviewManagerViewModel>>().To<ReviewsManagerPanelView>();
     }
 }

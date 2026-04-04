@@ -1,8 +1,6 @@
-﻿using DataAccess.PostgreSQL.ModelsPrimitive;
-using ExtensionFunc;
-using UserInterface;
+﻿using Domain.Entitys;
 using UserInterface.LayoutPanel;
-using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.UiObjects.Card;
 
 namespace Admin.View.Moduls.Review;
 
@@ -13,10 +11,9 @@ public class ReviewCard : ObjectCard<ReviewEntity>
         Size = new Size(350, 80);
     }
 
-    public override Control Content()
-        => new BuilderLayoutPanel().Column()
-            .Row().ContentEnd(FactoryElements.Label_11(Entity.Date).With(l => l.ForeColor = Color.DarkBlue))
-            .Row().ContentEnd(FactoryElements.Label_11(Entity.Visitor.ToString()).With(l => l.ForeColor = Color.Gray))
-            .Row().ContentEnd(FactoryElements.Label_11($"★ {Entity.Rating.ToString()}").With(l => l.ForeColor = Color.Orange))
-            .Build();
+    public override IBuilder Content(BuilderLayoutPanel builderLayoutPanel)
+        => builderLayoutPanel.Column()
+            .Row().Content().Label(Entity.Date).ForeColor(Color.DarkBlue).End()
+            .Row().Content().Label(Entity.Visitor.ToString()).ForeColor(Color.Gray).End()
+            .Row().Content().Label($"★ {Entity.Rating.ToString()}").ForeColor(Color.Orange).End();
 }

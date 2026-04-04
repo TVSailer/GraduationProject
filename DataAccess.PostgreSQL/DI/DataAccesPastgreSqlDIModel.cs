@@ -16,6 +16,7 @@ public class DataAccesPostgreSqlModule : NinjectModule
         Kernel.Bind<IRepository<TeacherEntity>>().To<TeacherRepository>().InSingletonScope();
         Kernel.Bind<IRepository<VisitorEntity>>().To<VisitorRepository>().InSingletonScope();
         Kernel.Bind<IRepository<LessonEntity>>().To<LessonRepository>().InSingletonScope();
+        Kernel.Bind<IRepository<ReviewEntity>>().To<RepositoryModel<ReviewEntity>>().InSingletonScope();
         Kernel.Bind<IRepository<DateAttendanceEntity>>().To<RepositoryModel<DateAttendanceEntity>>().InSingletonScope();
     }
 }
