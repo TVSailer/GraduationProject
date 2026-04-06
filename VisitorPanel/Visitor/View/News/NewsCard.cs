@@ -1,6 +1,7 @@
-﻿using DataAccess.PostgreSQL.ModelsPrimitive;
+﻿using Domain.Entitys;
 using UserInterface.LayoutPanel;
-using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.LayoutPanel.Extension;
+using UserInterface.UiObjects.Card;
 
 namespace Visitor.View.News;
 
@@ -14,30 +15,37 @@ public class NewsCard : ObjectCard<NewsEntity>
     }
 
     public override Control Content()
+        
+            .Build();
+
+    public override IBuilder Content(BuilderLayoutPanel builderLayoutPanel)
         => new BuilderLayoutPanel().Column()
             .RowAutoSize().Content()
             .Label(Entity.Title)
-                .Size(14)
-                .ForeColor(Color.DarkBlue)
+            .Size(14)
+            .ForeColor(Color.DarkBlue)
             .End()
             .RowAutoSize().Content()
-                .Label(Entity.Date)
-                .Size(12)
-                .ForeColor(Color.Gray)
+            .Label(Entity.Date)
+            .Size(12)
+            .ForeColor(Color.Gray)
             .End()
             .RowAutoSize().Content()
-                .Label(Entity.Author)
-                .Size(12)
-                .ForeColor(Color.Gray)
+            .Label(Entity.Author)
+            .Size(12)
+            .ForeColor(Color.Gray)
             .End()
-                .RowAutoSize()
-                    .Column(48).Content()
-                        .Label($"{Entity.Content}")
-                        .Size(12)
-                        .ForeColor(Color.DarkGreen)
-                    .End()
-                    .Column(52).Content().ImageLayoutPanel(new RepositoryImage(Entity.Imgs.Select(i => i.Url).ToArray()))
-                    .End()
-                .End()
-            .Build();
+            .RowAutoSize()
+            .Column(48).Content()
+            .Label($"{Entity.Content}")
+            .Size(12)
+            .ForeColor(Color.DarkGreen)
+            .End()
+            .Column(52).Content().ImageLayoutPanel(new RepositoryImage(Entity.Imgs.Select(i => i.Url).ToArray()))
+            .End()
+            .End();
+
+    {
+        throw new NotImplementedException();
+    }
 }

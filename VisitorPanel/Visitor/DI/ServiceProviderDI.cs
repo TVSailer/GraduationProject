@@ -1,9 +1,10 @@
 using Ninject;
-using UserInterface.Interface;
+using UserInterface.DIService;
+using IServiceProvider = Domain.Service.ProviderService.BaseProvider.IServiceProvider;
 
 namespace Visitor.DI;
 
-public class ServiceProviderDi(StandardKernel container) : IServiceProvision
+public class ServiceProviderDi(StandardKernel container) : IServiceProvisionUI, IServiceProvider
 {
     public T GetService<T>() => (T)GetService(typeof(T));
 

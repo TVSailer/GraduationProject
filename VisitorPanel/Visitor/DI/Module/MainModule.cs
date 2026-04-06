@@ -14,7 +14,7 @@ public class MainModule : NinjectModule
     public override void Load()
     {
         Kernel.Bind<MementoVisitor>().ToSelf().InSingletonScope();
-        Kernel.Bind<UiView<MainFieldData>>().To<MainUi>();
+        Kernel.Bind<UiView<MainFieldData>>().To<MainPanelView>();
         Kernel.Bind<UiView<MementoVisitor>>().To<VisitorPanelUi>();
         Kernel.Bind<Repository<CategoryEntity>>().To<CategoryRepository>();
     }

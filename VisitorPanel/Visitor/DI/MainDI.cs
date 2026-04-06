@@ -1,12 +1,15 @@
 using DataAccess.PostgreSQL;
+using Domain.Entitys;
+using Domain.Service.MementoService;
+using Domain.Service.MementoService.BaseMementoService;
 using Ninject;
-using UserInterface.Interface;
-using UserInterface.View;
+using UserInterface.Service.View;
 using Visitor.DI.Module;
+using IServiceProvider = Domain.Service.ProviderService.BaseProvider.IServiceProvider;
 
 namespace Visitor.DI;
 
-public class VisitorDi
+public class MainDI
 {
     public StandardKernel? Container => field ??= ConfigurationContainer();
 
@@ -22,8 +25,10 @@ public class VisitorDi
         var serviceProvider = new ServiceProviderDi(container);
 
         container.Bind<ApplicationDbContext>().ToSelf().InSingletonScope();
-        container.Bind<IServiceProvision>().ToConstant(serviceProvider);
+        container.Bind<IServiceProvider>().ToConstant(serviceProvider);
         container.Bind<ControlView>().ToSelf().InSingletonScope();
+        container.Bind<IMementoService<VisitorEntity>>().To<MementoService<VisitorEntity>>();
+        container.Bind<IMementoService<LessonEntity>>().To<MementoService<LessonEntity>>();
 
         return container;
     }

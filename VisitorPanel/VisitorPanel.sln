@@ -5,8 +5,6 @@ VisualStudioVersion = 17.14.36915.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.PostgreSQL", "..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj", "{724788D9-5680-F0CE-91F6-BD9CFEAE3082}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validaiger", "..\Validaiger\Validaiger.csproj", "{503C9198-F606-1B43-D8D3-5B6170A51494}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visitor", "Visitor\Visitor.csproj", "{6BE0D0EA-3A07-7E2B-CD05-D62953E568C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterface", "..\UserInterfase\UserInterface.csproj", "{03382392-B22A-C756-0AFA-D6FE551591F4}"
@@ -14,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionFunc", "..\ExtensionFunc\ExtensionFunc.csproj", "{7FEFB6E8-8CCC-2824-38E2-272B5A64C258}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin", "..\AdminPanel\Admin.csproj", "{1532E3E0-F6FD-86E4-3FE7-902C20841C0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "..\Domain\Domain\Domain.csproj", "{B955029B-FDDC-C4CD-CF85-E0D5AED266C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,6 @@ Global
 		{724788D9-5680-F0CE-91F6-BD9CFEAE3082}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{724788D9-5680-F0CE-91F6-BD9CFEAE3082}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{724788D9-5680-F0CE-91F6-BD9CFEAE3082}.Release|Any CPU.Build.0 = Release|Any CPU
-		{503C9198-F606-1B43-D8D3-5B6170A51494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{503C9198-F606-1B43-D8D3-5B6170A51494}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{503C9198-F606-1B43-D8D3-5B6170A51494}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{503C9198-F606-1B43-D8D3-5B6170A51494}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6BE0D0EA-3A07-7E2B-CD05-D62953E568C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6BE0D0EA-3A07-7E2B-CD05-D62953E568C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BE0D0EA-3A07-7E2B-CD05-D62953E568C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{1532E3E0-F6FD-86E4-3FE7-902C20841C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1532E3E0-F6FD-86E4-3FE7-902C20841C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1532E3E0-F6FD-86E4-3FE7-902C20841C0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B955029B-FDDC-C4CD-CF85-E0D5AED266C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B955029B-FDDC-C4CD-CF85-E0D5AED266C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B955029B-FDDC-C4CD-CF85-E0D5AED266C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B955029B-FDDC-C4CD-CF85-E0D5AED266C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

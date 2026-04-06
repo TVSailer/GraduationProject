@@ -18,16 +18,21 @@
   <ItemGroup>
     <ProjectReference Include="..\..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj" />
     <ProjectReference Include="..\..\UserInterfase\UserInterface.csproj" />
-    <ProjectReference Include="..\..\Validaiger\Validaiger.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Enum\" />
     <Folder Include="Extension\" />
-    <Folder Include="FieldData\Manager\" />
-    <Folder Include="FieldData\DateAttendance\" />
-    <Folder Include="FieldData\Review\Button\" />
     <Folder Include="View\DateAttendance\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Domain">
+      <HintPath>..\..\Domain\Domain\bin\Debug\net8.0\Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="General">
+      <HintPath>..\..\View\bin\Debug\net8.0\General.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
