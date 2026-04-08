@@ -1,25 +1,64 @@
 ﻿using CSharpFunctionalExtensions;
 using Domain.Extension;
+using System.Text.RegularExpressions;
+using Domain.Exception;
+using Domain.ValidObject;
 
 namespace Domain.Entitys;
 
 public class VisitorEntity : Entity
 {
-    public string Name { get; set; }
-    public string Surname { get; set; }
-    public string Patronymic { get; set; }
-    public string DateBirth { get; set; }
-    public string NumberPhone { get; set; }
-    public string? Image { get; set; }
-    public AuthEntity AuthEntity { get; set; }
-    public List<LessonEntity> Lessons { get; set; } = [];
-    public List<DateAttendanceEntity> DateAttendances { get; set; } = [];
-    public List<ReviewEntity> Reviews { get; set; } = [];
+    public string Name { get; private set; }
+    public string Surname { get; private set; }
+    public string Patronymic { get; private set; }
+    public string DateBirth { get; private set; }
+    public string NumberPhone { get; private set; }
+    public string? Image { get; private set; }
+    public AuthEntity AuthEntity { get; private set; }
+    public List<LessonEntity> Lessons { get; private set; } = [];
+    public List<DateAttendanceEntity> DateAttendances { get; private set; } = [];
+    public List<ReviewEntity> Reviews { get; private set; } = [];
 
     private VisitorEntity() { }
 
-    public VisitorEntity(string name, string surname, string patronymic, string dateBirth, string numberPhone, AuthEntity authEntity)
+    public VisitorEntity(
+        NameValidObject name, 
+        SurnameValidObject surname, 
+        PatronymicValidObject patronymic, 
+        DateBirthVisitorValidObject dateBirth, 
+        NumberPhoneValidObject numberPhone, 
+        AuthEntity authEntity)
     {
+        Name = name.Text;
+        Surname = surname.Text;
+        Patronymic = patronymic.Text;
+        DateBirth = dateBirth.Text;
+        NumberPhone = numberPhone.Text;
+        AuthEntity = authEntity;
+    }
+    
+    public VisitorEntity(
+        ImageValidObject image,
+        NameValidObject name, 
+        SurnameValidObject surname, 
+        PatronymicValidObject patronymic, 
+        DateBirthVisitorValidObject dateBirth, 
+        NumberPhoneValidObject numberPhone, 
+        AuthEntity authEntity)
+    {
+        Image = image.Text;
+        Name = name.Text;
+        Surname = surname.Text;
+        Patronymic = patronymic.Text;
+        DateBirth = dateBirth.Text;
+        NumberPhone = numberPhone.Text;
+        AuthEntity = authEntity;
+    }
+
+    //TODO: delete
+    public VisitorEntity(string image, string name, string surname, string patronymic, string dateBirth, string numberPhone, AuthEntity authEntity)
+    {
+        Image = image;
         Name = name;
         Surname = surname;
         Patronymic = patronymic;
@@ -28,19 +67,55 @@ public class VisitorEntity : Entity
         AuthEntity = authEntity;
     }
 
-    public Result<LessonEntity> AddLesson(LessonEntity lesson)
+    public VisitorEntity UpdateName(NameValidObject name)
     {
-        if (Lessons.Select(l => l.Id).Contains(lesson.Id)) return Result.Failure<LessonEntity>("Урок с таким же Id уже имеется");
-        if (Lessons.Select(l => l.Title).Contains(lesson.Title)) return Result.Failure<LessonEntity>("Урок с таким же Названием уже имеется");
+        Name = name.Text;
+        return this;
+    }
+    
+    public VisitorEntity UpdateSurname(SurnameValidObject surname)
+    {
+        Surname = surname.Text;
+        return this;
+    }
+    
+    public VisitorEntity UpdatePatronymic(PatronymicValidObject patronymic)
+    {
+        Patronymic = patronymic.Text;
+        return this;
+    }
+
+    public VisitorEntity UpdateDateBirth(DateBirthVisitorValidObject date)
+    {
+        DateBirth = date.Text;
+        return this;
+    }
+    
+    public VisitorEntity UpdateNumber(NumberPhoneValidObject number)
+    {
+        NumberPhone = number.Text;
+        return this;
+    }
+
+    public VisitorEntity UpdateImage(ImageValidObject? image)
+    {
+        Image = image?.Text;
+        return this;
+    }
+
+    public Result<VisitorEntity> AddLesson(LessonEntity lesson)
+    {
+        if (Lessons.Select(l => l.Id).Contains(lesson.Id)) return Result.Failure<VisitorEntity>("Урок с таким же Id уже имеется");
+        if (Lessons.Select(l => l.Title).Contains(lesson.Title)) return Result.Failure<VisitorEntity>("Урок с таким же Названием уже имеется");
         Lessons.Add(lesson);
 
-        return lesson;
+        return this;
     }
 
     public DateTime GetDateBirth()
     {
         var date = DateBirth.ToDateTime();
-        return date.IsFailure ? throw new Exception("Неверная дата") : date.Value;
+        return date.IsFailure ? throw new EntityException("Неверная дата") : date.Value;
     }
 
     public override string ToString() => $"{Name} {Surname} {Patronymic}";

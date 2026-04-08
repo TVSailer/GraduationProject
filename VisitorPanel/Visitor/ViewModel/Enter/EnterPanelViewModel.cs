@@ -1,19 +1,20 @@
-﻿using System.Windows.Input;
-using Domain.Command;
+﻿using Domain.Command;
 using Domain.Entitys;
 using Domain.Enum;
 using Domain.Repository;
-using Domain.Service.AuthService.BaseAuthService;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.FielService.BaseFileService;
 using Domain.Service.MementoService.BaseMementoService;
 using Domain.Service.MessageService.BaseMessageService;
+using System.Windows.Input;
+using Visitor.ViewModel.Visitor;
 
 namespace Visitor.ViewModel.Enter;
 
 public class EnterPanelViewModel
 {
     private readonly IMessageService _messageService;
-    private readonly IAuthService _authService;
+    private readonly IAuthFileService _fileService;
     private readonly IMementoService<VisitorEntity> _mementoService;
     private readonly IRepository<VisitorEntity> _repositoryV;
     private readonly IControlViewService _controlViewService;
@@ -24,7 +25,7 @@ public class EnterPanelViewModel
 
     internal readonly ICommand Exit;
 
-    private void ExecuteExit(object? obj) => _controlViewService.Exit();
+    private void ExecuteExit(object? obj) => _controlViewService.CloseDialog();
     private bool CanExecuteExit(object? obj) => true;
 
     #endregion
@@ -34,32 +35,47 @@ public class EnterPanelViewModel
 
     private void ExecuteEnter(object? obj)
     {
-        _mementoService.Set(
-            _repositoryV.Get().Single(v => v.AuthEntity.Equals(Login, Password)));
+        var visitor = _repositoryV
+            .Get()
+            .ToArray()
+            .Single(v => v.AuthEntity.Equals(Login, Password));
+
+        _mementoService.Set(visitor);
+        _fileService.WriteAuth(visitor.AuthEntity);
+
+        _controlViewService.CloseDialog();
+        _controlViewService.LoadView<VisitorProfelPanelViewModel>();
     }
 
     private bool CanExecuteEnter(object? obj)
     {
-        var auths = _repositoryV.Get().Select(v => v.AuthEntity);
+        var auths = _repositoryV
+            .Get()
+            .ToArray()
+            .Select(v => v.AuthEntity)
+            .SingleOrDefault(a => a.Equals(Login, Password));
 
-        if (!_authService.Verify(auths.ToArray(), Login, Password)) 
+        if (auths is null)
+        {
             _messageService.Message("Неверный пароль или логин", TypeMessage.Error);
+            return false;
+        }
 
-         return true;
+        return true;
     }
 
     #endregion
 
     public EnterPanelViewModel(
         IMessageService messageService,
-        IAuthService authService,
+        IAuthFileService file,
         IMementoService<VisitorEntity> mementoService,
         IRepository<VisitorEntity> repositoryV,
         IControlViewService controlViewService
         )
     {
         _messageService = messageService;
-        _authService = authService;
+        _fileService = file;
         _mementoService = mementoService;
         _repositoryV = repositoryV;
         _controlViewService = controlViewService;

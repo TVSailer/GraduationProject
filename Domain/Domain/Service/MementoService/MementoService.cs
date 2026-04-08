@@ -16,10 +16,9 @@ public class MementoService<T> : IMementoService<T>
         _memento = memento;
     }
 
-    public Result<T> Get()
+    public Maybe<T> Get()
     {
         return _memento is null ? 
-            Result.Failure<T>("Memento is null") : 
-            Result.Success(_memento);
+            Maybe<T>.None : Maybe<T>.From(_memento);
     }
 }

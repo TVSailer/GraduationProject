@@ -17,9 +17,18 @@ public class EventEntity : Entity
     public CategoryEntity Category { get; set; }
     public ICollection<ImageEventEntity> Images { get; set; } = [];
 
-    public EventEntity() {}
+    private EventEntity() {}
 
-    public EventEntity(string title, string urlTitleImag, string description, string location, string registrationLink, string organizer, EventEntitySchedule schedule, CategoryEntity category, ICollection<ImageEventEntity> images)
+    public EventEntity(
+        string title, 
+        string urlTitleImag, 
+        string description, 
+        string location, 
+        string registrationLink, 
+        string organizer, 
+        EventEntitySchedule schedule, 
+        CategoryEntity category, 
+        IEnumerable<string> images)
     {
         Title = title;
         UrlTitleImag = urlTitleImag;
@@ -29,7 +38,7 @@ public class EventEntity : Entity
         Organizer = organizer;
         Schedule = schedule;
         Category = category;
-        Images = images;
+        SetImages(images);
     }
 
     public bool Include(string? category, string? title, string? stDate, string? endDate)
@@ -42,6 +51,12 @@ public class EventEntity : Entity
 
     public override string ToString()
         => $"{Title} {Schedule}";
+
+    public void SetImages(IEnumerable<string> images)
+        => Images = images.Select(i => new ImageEventEntity { Url = i }).ToList();
+
+    public IEnumerable<string> GetImages()
+        => Images.Select(i => i.Url);
 }
 
 

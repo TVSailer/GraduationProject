@@ -1,27 +1,24 @@
-﻿using DataAccess.PostgreSQL.Enum;
+﻿using Domain.Enum;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
-using UserInterface.UiLayoutPanel.CardPanel.Args;
 using UserInterface.View;
-using Visitor.FieldData.Review;
-using Visitor.FieldData.Review.Button;
+using Visitor.ViewModel.Review;
 
 namespace Visitor.View.Review;
 
-public class ReviewPanelUi : Forma
+public class ReviewPanelView(ReviewPanelViewModel viewModel) : Forma<ReviewPanelViewModel>
 {
-    private readonly ReviewDataUi _dataUi;
-    private readonly ReviewButtons _buttons;
-
-    public ReviewPanelUi(ReviewDataUi dataUi, ReviewButtons buttons)
+    public override void Initialize()
     {
-        _dataUi = dataUi;
-        _buttons = buttons;
         Size = new Size(width: 700, height: 500);
-        Controls.Add(ControlUi(new BuilderLayoutPanel()).Build());
     }
 
     public override IBuilder ControlUi(BuilderLayoutPanel builderLayoutPanel)
+    {
+        throw new NotImplementedException();
+    }
+
+    /*public override IBuilder ControlUi(BuilderLayoutPanel builderLayoutPanel)
         => builderLayoutPanel.ObjectBinding(_dataUi).Column()
             .RowAbsolute(40)
                 .Column(10).Content().Label("Оценка: ").End()
@@ -40,5 +37,5 @@ public class ReviewPanelUi : Forma
                 .Binding(_dataUi, nameof(ReviewDataUi.Comment))
                 .Multiline()
             .End()
-            .Row().Content().ButtonLayoutPanel(_buttons.GetButtons(new ClickedArgs<ReviewDataUi>(_dataUi))).End();
+            .Row().Content().ButtonLayoutPanel(_buttons.GetButtons(new ClickedArgs<ReviewDataUi>(_dataUi))).End();*/
 }

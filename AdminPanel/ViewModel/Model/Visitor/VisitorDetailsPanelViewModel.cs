@@ -7,12 +7,14 @@ using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
 using System.Windows.Input;
+using Domain.ValidObject;
 
 namespace Admin.ViewModel.Model.Visitor;
 
 public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IMessageService _messageService;
+    private readonly IRepository<AuthEntity> _repositoryA;
     private readonly IRepository<VisitorEntity> _repositoryV;
     private readonly IControlViewService _controlViewService;
     private readonly VisitorEntity _visitorEntity;
@@ -22,7 +24,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     [Patronymic] public string? Patronymic { get; set => Set(ref field, value); }
     [DateBirthday(10)] public string? DateBirth { get; set => Set(ref field, value); }
     [PhoneNumber] public string? NumberPhone { get; set => Set(ref field, value); }
-    [NullImage] public string? Image;
+    [NullImage] public string? Image { get; set => Set(ref field, value); }
 
     #region CommandExit
 
@@ -38,15 +40,34 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteUpdate(object? obj)
     {
-        _visitorEntity.Name = Name;
-        _visitorEntity.Surname = Surname;
-        _visitorEntity.Patronymic = Patronymic;
-        _visitorEntity.NumberPhone = NumberPhone;
-        _visitorEntity.DateBirth = DateBirth;
+        _visitorEntity
+            .UpdateName(NameValidObject.Create(Name))
+            .UpdateSurname(SurnameValidObject.Create(Surname))
+            .UpdatePatronymic(PatronymicValidObject.Create(Patronymic))
+            .UpdateDateBirth(DateBirthVisitorValidObject.Create(DateOnly.Parse(DateBirth)))
+            .UpdateImage(ImageValidObject.Create(Image))
+            .UpdateNumber(NumberPhoneValidObject.Create(NumberPhone));
 
+        var login = LoginValidObject.Create(Surname);
+        var password = PasswordValidObject.Create(
+            _repositoryA
+                .Get()
+                .Select(a => a.Password)
+                .ToArray());
+
+        _visitorEntity.AuthEntity
+            .UpdateLogin(login)
+            .UpdatePassword(password);
+
+        _repositoryA.Update(_visitorEntity.AuthEntity);
         _repositoryV.Update(_visitorEntity);
 
-        _messageService.Message("Данные успешно обновились", TypeMessage.Info);
+        _messageService.Message(
+            $"Новый логин: {_visitorEntity.AuthEntity.Login}" +
+            $"\n" +
+            $"Новый пароль: {password.Password}", TypeMessage.Info);
+
+        _controlViewService.Exit();
     }
 
     private bool CanExecuteUpdate(object? obj) => ValidObject();
@@ -70,11 +91,13 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     public VisitorDetailsPanelViewModel(
         IRepository<VisitorEntity> repositoryV,
         IMessageService messageService,
+        IRepository<AuthEntity> repositoryA,
         IControlViewService controlViewService,
         ISharedService sharedService)
     {
         _repositoryV = repositoryV;
         _messageService = messageService;
+        _repositoryA = repositoryA;
         _controlViewService = controlViewService;
 
         _visitorEntity = sharedService.GetData<VisitorEntity>();
@@ -84,6 +107,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
         Patronymic = _visitorEntity.Patronymic;
         NumberPhone = _visitorEntity.NumberPhone;
         DateBirth = _visitorEntity.DateBirth;
+        Image = _visitorEntity.Image;
 
         Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);

@@ -19,7 +19,6 @@ public interface IContentSelector<TParentBuilder>
     MaskedTextBoxBuilder<TParentBuilder> MaskedTextBox(string mask = "");
     ButtonBuilder<TParentBuilder> Button(string text = "");
     DataGridViewBuilder<TParentBuilder> DataGridView();
-    ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IImagePanel imagePanel);
     ChekedListBoxBuilder<TParentBuilder> ChekedListBox();
     ImagePanelBuilder<TParentBuilder> ImageLayoutPanel();
     ButtonLayerBuilder<TParentBuilder> ButtonLayoutPanel(ICommand[] data);

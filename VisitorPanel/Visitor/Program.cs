@@ -1,6 +1,7 @@
-using UserInterface.View;
+using UserInterface.Service.View;
+using UserInterface.Service.View.Base;
 using Visitor.DI;
-using Visitor.DI.Module;
+using Visitor.ViewModel.Main;
 
 namespace Visitor
 {
@@ -14,9 +15,9 @@ namespace Visitor
         {
             ApplicationConfiguration.Initialize();
 
-            var di = new VisitorDi();
-            var controlView = di.GetService<ControlView>();
-            controlView.LoadView(new MainFieldData());
+            var di = new MainDI();
+            var controlView = di.GetService<IControlView>();
+            controlView.LoadView<MainPanelViewModel>();
 
             Application.Run(controlView.Form);
         }

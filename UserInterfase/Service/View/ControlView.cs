@@ -52,6 +52,7 @@ public class ControlView(IServiceProvisionUI di) : IControlView
     {
         _showDialogForm = di.GetService<IForma<T>>();
         _showDialogForm.Show();
+
         UpdateGui();
     }
 

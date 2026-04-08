@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Domain.Exception;
 using Domain.Extension;
 
 namespace Domain.Entitys;
@@ -38,12 +39,12 @@ public class DateAttendanceEntity : Entity
     {
         if (date.Equals("dd/MM"))
             return DateTime.Parse(Date).ToString("dd/MM");
-        return string.IsNullOrEmpty(date) ? Date : throw new Exception($"неверный формат даты: {date}");
+        return string.IsNullOrEmpty(date) ? Date : throw new EntityException($"неверный формат даты: {date}");
     }
 
     public DateTime ToDateTime()
     {
         var date = Date.ToDateTime();
-        return date.IsFailure ? throw new Exception("Неверная дата") : date.Value;
+        return date.IsFailure ? throw new EntityException("Неверная дата") : date.Value;
     }
 }

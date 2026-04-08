@@ -12,7 +12,7 @@ public class NewsEntity : Entity
     public string Author { get; set; }
     public ICollection<ImageNewsEntity> Images { get; set; } = [];
 
-    public NewsEntity() { }
+    private NewsEntity() { }
 
     public NewsEntity(string title, string content, string date, CategoryEntity category, string author)
     {
@@ -22,7 +22,23 @@ public class NewsEntity : Entity
         Category = category;
         Author = author;
     }
+    public NewsEntity(string title, string content, string date, CategoryEntity category, string author, IEnumerable<string> images)
+    {
+        Title = title;
+        Content = content;
+        Date = date;
+        Category = category;
+        Author = author;
+        SetImages(images);
+    }
 
     public override string ToString() => $"Новость: {Title} {Date}";
     public DateTime DateT() => DateTime.Parse(Date);
+
+    public void SetImages(IEnumerable<string> images)
+        => Images = images.Select(i => new ImageNewsEntity { Url = i }).ToList();
+
+    public IEnumerable<string> GetImages()
+        => Images.Select(i => i.Url);
+
 }

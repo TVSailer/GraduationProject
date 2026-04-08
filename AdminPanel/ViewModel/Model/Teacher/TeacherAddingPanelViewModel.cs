@@ -3,10 +3,10 @@ using Domain.Command;
 using Domain.Entitys;
 using Domain.Enum;
 using Domain.Repository;
-using Domain.Service.AuthService.BaseAuthService;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Valid.AttributeValid;
+using Domain.ValidObject;
 
 namespace Admin.ViewModel.Model.Teacher;
 
@@ -16,7 +16,6 @@ public class TeacherAddingPanelViewModel : General.ViewModel.ViewModel
     private readonly IRepository<TeacherEntity> _repositoryT;
     private readonly IRepository<AuthEntity> _repositoryA;
     private readonly IMessageService _messageService;
-    private readonly IAuthService _authService;
     [Name] public string? Name { get; set => Set(ref field, value); }
     [Surname] public string? Surname { get; set => Set(ref field, value); }
     [Patronymic] public string? Patronymic { get; set => Set(ref field, value); }
@@ -38,20 +37,21 @@ public class TeacherAddingPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteSave(object? obj)
     {
-        var login = _authService.GenerateAuthLogin(Surname);
-        var password = _authService
-            .GenerateAuthPassword(
-                _repositoryA
+        var login = LoginValidObject.Create(Surname);
+        var password = PasswordValidObject.Create(
+           _repositoryA
                     .Get()
                     .Select(a => a.Password)
-                    .ToArray(), out var result);
+                    .ToArray());
 
         var auth = _repositoryA.Add(new AuthEntity(login, password));
+
         _repositoryT.Add(new TeacherEntity(Image, Name, Surname, Patronymic, DateBirth, NumberPhone, auth));
+
         _messageService.Message(
             $"Логин: {login}" +
             $"\n" +
-            $"Пароль: {result}", TypeMessage.Info);
+            $"Пароль: {password.Password}", TypeMessage.Info);
 
         _controlViewService.Exit();
     }
@@ -64,14 +64,12 @@ public class TeacherAddingPanelViewModel : General.ViewModel.ViewModel
         IControlViewService controlViewService, 
         IRepository<TeacherEntity> repositoryT,
         IRepository<AuthEntity> repositoryA,
-        IMessageService messageService,
-        IAuthService authService)
+        IMessageService messageService)
     {
         _controlViewService = controlViewService;
         _repositoryT = repositoryT;
         _repositoryA = repositoryA;
         _messageService = messageService;
-        _authService = authService;
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         Save = new ExecuteCommand(ExecuteSave, CanExecuteSave);

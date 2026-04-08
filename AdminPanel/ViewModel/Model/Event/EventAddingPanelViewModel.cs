@@ -108,7 +108,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
                 Organizer!,
                 Schedule,
                 Category!,
-                Images.Select(i => new ImageEventEntity { Url = i }).ToList())
+                Images)
             );
 
         _controlViewService.Exit();

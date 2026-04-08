@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.ComponentModel;
+using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using UserInterface.LayoutPanel.ContentSelection;
@@ -11,6 +12,7 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
     private const string FilesPictureBox = "Выберите изображения PictureBox Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
     private PropertyInfo? _prop;
     private object? _dataSource;
+    private bool _isFuncAdding = true;
 
     public ImageBuilder<TParentBuilder> Url(string url = "")
     {
@@ -31,12 +33,23 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
         _prop = dataSource.GetType().GetProperty(memberName);
         _dataSource = dataSource;
 
+        if (dataSource is INotifyPropertyChanged notify)
+                notify.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == memberName)
+                        Control.ImageLocation = _prop?.GetValue(_dataSource)?.ToString();
+                };
+    
+        Control.ImageLocation = _prop.GetValue(_dataSource)?.ToString();
+
         MessageErrorProvider(dataSource, memberName);
         return this;
     }
 
     private void OnAddingImg(object? send, EventArgs eventArgs)
     {
+        if (!_isFuncAdding) return;
+
         using var openFileDialog = new OpenFileDialog()
         {
             Filter = FilesPictureBox,
@@ -46,8 +59,7 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
 
         if (openFileDialog.ShowDialog() != DialogResult.OK) return;
 
-        Control.ImageLocation = openFileDialog.FileName;
-        _prop?.SetValue(_dataSource, openFileDialog.FileName);
+        _prop.SetValue(_dataSource, openFileDialog.FileName);
     }
 
     protected override PictureBox SettingControl()

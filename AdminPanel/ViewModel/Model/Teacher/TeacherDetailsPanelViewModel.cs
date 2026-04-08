@@ -1,15 +1,14 @@
-﻿using Domain.Command;
+﻿using CSharpFunctionalExtensions;
+using Domain.Command;
 using Domain.Entitys;
 using Domain.Enum;
 using Domain.Repository;
-using Domain.Service.AuthService.BaseAuthService;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MessageService.BaseMessageService;
-using Domain.Service.SharedService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
+using Domain.ValidObject;
 using System.Windows.Input;
-using CSharpFunctionalExtensions;
 
 namespace Admin.ViewModel.Model.Teacher;
 
@@ -19,7 +18,6 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
     private readonly IRepository<TeacherEntity> _repositoryT;
     private readonly IRepository<AuthEntity> _repositoryA;
     private readonly IMessageService _messageService;
-    private readonly IAuthService _authService;
     private readonly TeacherEntity _teacher;
 
     #region Property
@@ -47,20 +45,24 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteUpdate(object? obj)
     {
-        _teacher.Name = Name;
-        _teacher.Surname = Surname;
-        _teacher.Patronymic = Patronymic;
-        _teacher.DateBirth = DateBirth;
-        _teacher.Image = Image;
-        _teacher.NumberPhone = NumberPhone;
+        _teacher
+            .UpdateName(NameValidObject.Create(Name))
+            .UpdateSurname(SurnameValidObject.Create(Surname))
+            .UpdatePatronymic(PatronymicValidObject.Create(Patronymic))
+            .UpdateDateBirth(DateBirthTeacherValidObject.Create(DateOnly.Parse(DateBirth)))
+            .UpdateImage(ImageValidObject.Create(Image))
+            .UpdateNumberPhone(NumberPhoneValidObject.Create(NumberPhone));
 
-        _teacher.AuthEntity.Login = _authService.GenerateAuthLogin(Surname);
-        _teacher.AuthEntity.Password = _authService
-            .GenerateAuthPassword(
-                _repositoryA
-                    .Get()
-                    .Select(a => a.Password)
-                    .ToArray(), out var result);
+        var login = LoginValidObject.Create(Surname);
+        var password = PasswordValidObject.Create(
+            _repositoryA
+                .Get()
+                .Select(a => a.Password)
+                .ToArray());
+
+        _teacher.AuthEntity
+            .UpdateLogin(login)
+            .UpdatePassword(password);
 
         _repositoryA.Update(_teacher.AuthEntity);
         _repositoryT.Update(_teacher);
@@ -68,7 +70,7 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
         _messageService.Message(
             $"Новый логин: {_teacher.AuthEntity.Login}" +
             $"\n" +
-            $"Новый пароль: {result}", TypeMessage.Info);
+            $"Новый пароль: {password.Password}", TypeMessage.Info);
 
         _controlViewService.Exit();
     }
@@ -103,8 +105,7 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
         ISharedService sharedService,
         IRepository<TeacherEntity> repositoryT,
         IRepository<AuthEntity> repositoryA,
-        IMessageService messageService,
-        IAuthService authService)
+        IMessageService messageService)
     {
         _teacher = sharedService.GetData<TeacherEntity>();
 
@@ -119,7 +120,6 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
         _repositoryT = repositoryT;
         _repositoryA = repositoryA;
         _messageService = messageService;
-        _authService = authService;
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);

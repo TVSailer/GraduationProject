@@ -1,0 +1,71 @@
+﻿using UserInterface.LayoutPanel;
+using UserInterface.LayoutPanel.Extension;
+using UserInterface.View;
+using Visitor.ViewModel.Event;
+
+namespace Visitor.View.Event;
+
+public class EventPanelView(EventPanelViewModel viewModel) : UiView<EventPanelViewModel>
+{
+    public override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
+    {
+        return builderLayoutPanel.Column()
+            .Row()
+                .Column(20)
+                    .RowAutoSize().Content()
+                        .Label(viewModel.Title)
+                        .Size(18)
+                        .Alignment(ContentAlignment.TopCenter)
+                        .ForeColor(Color.DarkBlue)
+                    .End()
+                    .RowAutoSize().Content()
+                        .Label(viewModel.Category.ToString())
+                        .ForeColor(Color.Black)
+                        .Size(12)
+                    .End()
+                    .RowAutoSize().Content()
+                        .Label(viewModel.Location)
+                        .ForeColor(Color.Black)
+                        .Size(12)
+                    .End()
+                    .RowAutoSize().Content()
+                        .Label(viewModel.Organizer)
+                        .ForeColor(Color.Black)
+                        .Size(12)
+                    .End()
+                    .RowAutoSize().Content()
+                        .Label(viewModel.Schedule.ToString())
+                        .Size(12)
+                    .End()
+                    .Row().Content()
+                        .TextBox(viewModel.Description)
+                        .Multiline()
+                        .ReadOnly()
+                        .Size(12)
+                    .End()
+                .End()
+                .Column(40).Content()
+                    .ImageLayoutPanel()
+                    .RefreshImages(viewModel.Images)
+                .End()
+            .End()
+            .RowAbsolute(80)
+                .Column().Content()
+                    .Button("Назад")
+                    .Command(viewModel.Exit)
+                .End()
+                .Column().Content()
+                    .Button("Регистрация")
+                    .Command(viewModel.OpenLinkRegistration)
+                .End()
+                .Column().Content()
+                    .Button()
+                    .NoEnable()
+                .End()
+                .Column().Content()
+                    .Button()
+                    .NoEnable()
+                .End()
+            .End();
+    }
+}

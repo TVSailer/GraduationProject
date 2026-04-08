@@ -61,10 +61,6 @@ internal class ContentSelector<TParentBuilder>(TParentBuilder parentBuilder, Act
     public DataGridViewBuilder<TParentBuilder> DataGridView()
         => Builder<DataGridViewBuilder<TParentBuilder>, DataGridView>();
 
-    public ImagePanelBuilder<TParentBuilder> ImageLayoutPanel(IImagePanel imagePanel)
-        => Builder<ImagePanelBuilder<TParentBuilder>, FlowLayoutPanel>()
-            .Setting(imagePanel);
-
     public ChekedListBoxBuilder<TParentBuilder> ChekedListBox()
         => Builder<ChekedListBoxBuilder<TParentBuilder>, CheckedListBox>();
 

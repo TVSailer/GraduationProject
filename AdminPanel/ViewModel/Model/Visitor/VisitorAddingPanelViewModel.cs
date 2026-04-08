@@ -3,18 +3,17 @@ using Domain.Command;
 using Domain.Entitys;
 using Domain.Enum;
 using Domain.Repository;
-using Domain.Service.AuthService.BaseAuthService;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
+using Domain.ValidObject;
 
 namespace Admin.ViewModel.Model.Visitor;
 
 public class VisitorAddingPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IMessageService _messageService;
-    private readonly IAuthService _authService;
     private readonly IRepository<LessonEntity> _repositoryL;
     private readonly IRepository<AuthEntity> _repositoryA;
     private readonly IControlViewService _controlViewService;
@@ -46,17 +45,20 @@ public class VisitorAddingPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteSave(object? obj)
     {
-        var hash = _repositoryA.Get().Select(a => a.Password).ToArray();
-        var login = _authService.GenerateAuthLogin(Surname);
-        var password = _authService.GenerateAuthPassword(hash, out var result);
+        var login = LoginValidObject.Create(Surname);
+        var password = PasswordValidObject.Create(
+            _repositoryA
+                .Get()
+                .Select(a => a.Password)
+                .ToArray());
 
         _lessonEntity.Visitors.Add(
             new VisitorEntity(
-                Name, 
-                Surname, 
-                Patronymic, 
-                DateBirth, 
-                NumberPhone, 
+                NameValidObject.Create(Name), 
+                SurnameValidObject.Create(Surname), 
+                PatronymicValidObject.Create(Patronymic), 
+                DateBirthVisitorValidObject.Create(DateOnly.Parse(DateBirth)), 
+                NumberPhoneValidObject.Create(NumberPhone), 
                 new AuthEntity(login, password)));
 
         _repositoryL.Update(_lessonEntity);
@@ -64,7 +66,7 @@ public class VisitorAddingPanelViewModel : General.ViewModel.ViewModel
         _messageService.Message(
             $"Логин: {login}" +
             $"\n" +
-            $"Пароль: {result}", TypeMessage.Info);
+            $"Пароль: {password.Password}", TypeMessage.Info);
 
         _sharedService.SetData(_lessonEntity);
         _controlViewService.Exit();
@@ -78,7 +80,6 @@ public class VisitorAddingPanelViewModel : General.ViewModel.ViewModel
         IRepository<LessonEntity> repositoryL,
         IRepository<AuthEntity> repositoryA,
         IMessageService messageService,
-        IAuthService authService,
         IControlViewService controlViewService,
         ISharedService sharedService)
     {
@@ -87,7 +88,6 @@ public class VisitorAddingPanelViewModel : General.ViewModel.ViewModel
         _repositoryL = repositoryL;
         _repositoryA = repositoryA;
         _messageService = messageService;
-        _authService = authService;
         _controlViewService = controlViewService;
         _sharedService = sharedService;
 

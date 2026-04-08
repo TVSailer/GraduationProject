@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Domain.Exception;
 using Domain.Service.SharedService.BaseSharedService;
 
 namespace Domain.Service.SharedService;
@@ -11,7 +12,7 @@ public class SharedService : ISharedService
     public Maybe<T> GetMaybeData<T>() where T : class
     {
         if (_data is null) return Maybe<T>.None;
-        if (_data is not T) throw new Exception($"Object is not {typeof(T)}");
+        if (_data is not T) throw new ServiceException($"Object is not {typeof(T)}");
 
         var data = Clear<T>();
 
@@ -20,8 +21,8 @@ public class SharedService : ISharedService
 
     public T GetData<T>() where T : class
     {
-        if (_data is null) throw new Exception($"Object is null");
-        if (_data is not T) throw new Exception($"Object is not {typeof(T)}");
+        if (_data is null) throw new ServiceException($"Object is null");
+        if (_data is not T) throw new ServiceException($"Object is not {typeof(T)}");
 
         var data = Clear<T>();
 

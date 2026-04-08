@@ -1,6 +1,7 @@
-﻿using DataAccess.PostgreSQL.ModelsPrimitive;
+﻿using Domain.Entitys;
 using UserInterface.LayoutPanel;
-using UserInterface.UiLayoutPanel.CardPanel;
+using UserInterface.LayoutPanel.Extension;
+using UserInterface.UiObjects.Card;
 
 namespace Visitor.View.Lesson;
 
@@ -13,20 +14,20 @@ public class LessonCard : ObjectCard<LessonEntity>
         Margin = new Padding(5);
     }
 
-    public override Control Content()
-        => new BuilderLayoutPanel().Column()
+    public override IBuilder Content(BuilderLayoutPanel builderLayoutPanel)
+    => builderLayoutPanel.Column()
             .RowAutoSize().Content()
-                .Label(Entity.Name)
+                .Label(Entity.Title)
                     .Size(14)
                     .ForeColor(Color.DarkBlue)
                 .End()
             .RowAutoSize().Content()
-                .Label($"★ {Entity.Rating()} • {Entity.Reviews.Count} отзывов")
+                .Label($"★ {Entity.GetRating()} • {Entity.Reviews.Count} отзывов")
                     .Size(12)
                     .ForeColor(Color.Orange)
                 .End()
             .RowAutoSize().Content()
-                .Label(Entity.Teacher.FIO.ToString())
+                .Label(Entity.Teacher.ToString())
                     .Size(12)
                     .ForeColor(Color.Gray)
                 .End()
@@ -36,9 +37,8 @@ public class LessonCard : ObjectCard<LessonEntity>
                     .ForeColor(Color.Gray)
                 .End()
             .RowAutoSize().Content()
-                .Label($"{Entity.CurrentParticipants()}")
+                .Label($"{Entity.Visitors.Count}/{Entity.MaxParticipants}")
                     .Size(12)
                     .ForeColor(Color.DarkGreen)
-                .End()
-            .Build();
+                .End();
 }

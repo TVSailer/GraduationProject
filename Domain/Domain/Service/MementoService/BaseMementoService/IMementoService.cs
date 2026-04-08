@@ -6,5 +6,5 @@ public interface IMementoService<T>
     where T : class
 {
     public void Set(T memento);
-    public Result<T> Get();
+    public Maybe<T> Get();
 }

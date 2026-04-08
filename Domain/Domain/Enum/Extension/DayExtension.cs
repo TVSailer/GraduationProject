@@ -1,4 +1,6 @@
-﻿namespace Domain.Enum.Extension;
+﻿using Domain.Exception;
+
+namespace Domain.Enum.Extension;
 
 public static class DayExtension
 {
@@ -15,6 +17,6 @@ public static class DayExtension
             case Day.Sunday: return DayOfWeek.Sunday;
         }
 
-        throw new Exception();
+        throw new EnumException("Нету такого enum");
     }
 }

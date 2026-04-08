@@ -12,23 +12,13 @@ public class ImagePanelBuilder<TParentBuilder> : ControlBuilder<FlowLayoutPanel,
 {
     private ICommand? _command;
 
-    public ImagePanelBuilder<TParentBuilder> Setting(
-        IImagePanel imagePanel)
-    {
-        imagePanel.SetAction(imgs =>
-        {
-            Control.Controls.Clear();
-            RefreshImages(imgs);
-        });
-        RefreshImages(imagePanel.Images);
-        return this;
-    }
-
     public ImagePanelBuilder<TParentBuilder> Command(ICommand toggleImage)
     {
         _command = toggleImage;
         return this;
     }
+
+
 
     public ImagePanelBuilder<TParentBuilder> Binding(object bind, string nameMember)
     {
@@ -55,15 +45,20 @@ public class ImagePanelBuilder<TParentBuilder> : ControlBuilder<FlowLayoutPanel,
         RefreshImages(images);
     }
 
-    private void RefreshImages(IEnumerable<string>? images) =>
+    public ImagePanelBuilder<TParentBuilder> RefreshImages(IEnumerable<string>? images)
+    {
         images.ForEach(img => Control.Controls.Add(
-            new ImgUi(img)
-                .With(i => i.MouseClick += (_, _) =>
-                {
-                    if (_command is null) return;
-                    if (_command.CanExecute(i.Url))
-                        _command.Execute(i.Url);
-                })));
+            new ImgUi(img).With(i => i.MouseClick += (_, _) => RealizeCommand(i))));
+
+        return this;
+    }
+
+    private void RealizeCommand(ImgUi i)
+    {
+        if (_command is null) return;
+        if (_command.CanExecute(i.Url))
+            _command.Execute(i.Url);
+    }
 
     protected override FlowLayoutPanel SettingControl()
     {

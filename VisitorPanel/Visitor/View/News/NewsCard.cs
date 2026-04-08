@@ -14,38 +14,33 @@ public class NewsCard : ObjectCard<NewsEntity>
         Margin = new Padding(5);
     }
 
-    public override Control Content()
-        
-            .Build();
-
     public override IBuilder Content(BuilderLayoutPanel builderLayoutPanel)
-        => new BuilderLayoutPanel().Column()
-            .RowAutoSize().Content()
-            .Label(Entity.Title)
-            .Size(14)
-            .ForeColor(Color.DarkBlue)
+        => builderLayoutPanel.Row()
+            .Column(48)
+                .RowAutoSize().Content()
+                    .Label(Entity.Title)
+                    .Size(14)
+                    .ForeColor(Color.DarkBlue)
+                .End()
+                .RowAutoSize().Content()
+                    .Label(Entity.Date)
+                    .Size(12)
+                   .ForeColor(Color.Gray)
+                .End()
+                .RowAutoSize().Content()
+                    .Label(Entity.Author)
+                    .Size(12)
+                    .ForeColor(Color.Gray)
+                .End()
+                .Row().Content()
+                    .Label($"{Entity.Content}")
+                    .Size(12)
+                    .ForeColor(Color.DarkGreen)
+                .End()
             .End()
-            .RowAutoSize().Content()
-            .Label(Entity.Date)
-            .Size(12)
-            .ForeColor(Color.Gray)
-            .End()
-            .RowAutoSize().Content()
-            .Label(Entity.Author)
-            .Size(12)
-            .ForeColor(Color.Gray)
-            .End()
-            .RowAutoSize()
-            .Column(48).Content()
-            .Label($"{Entity.Content}")
-            .Size(12)
-            .ForeColor(Color.DarkGreen)
-            .End()
-            .Column(52).Content().ImageLayoutPanel(new RepositoryImage(Entity.Imgs.Select(i => i.Url).ToArray()))
-            .End()
+            .Column(52).Content()
+                .ImageLayoutPanel()
+                .RefreshImages(Entity.GetImages())
             .End();
 
-    {
-        throw new NotImplementedException();
-    }
 }

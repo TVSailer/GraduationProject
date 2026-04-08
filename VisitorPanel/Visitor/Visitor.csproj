@@ -27,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="C1.Win.4.6.2">
+      <HintPath>C:\Users\tereg\.nuget\packages\c1.win\10.0.20252.761\lib\net462\C1.Win.4.6.2.dll</HintPath>
+    </Reference>
     <Reference Include="Domain">
       <HintPath>..\..\Domain\Domain\bin\Debug\net8.0\Domain.dll</HintPath>
     </Reference>
