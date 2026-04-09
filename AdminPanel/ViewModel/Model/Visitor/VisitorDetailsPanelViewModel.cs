@@ -19,6 +19,8 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     private readonly IControlViewService _controlViewService;
     private readonly VisitorEntity _visitorEntity;
 
+    #region Property
+
     [Name] public string? Name { get; set => Set(ref field, value); }
     [Surname] public string? Surname { get; set => Set(ref field, value); }
     [Patronymic] public string? Patronymic { get; set => Set(ref field, value); }
@@ -26,6 +28,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     [PhoneNumber] public string? NumberPhone { get; set => Set(ref field, value); }
     [NullImage] public string? Image { get; set => Set(ref field, value); }
 
+    #endregion
     #region CommandExit
 
     internal readonly ICommand Exit;

@@ -6,7 +6,7 @@ using Visitor.ViewModel.Review;
 
 namespace Visitor.View.Review;
 
-public class ReviewPanelView(ReviewPanelViewModel viewModel) : Forma<ReviewPanelViewModel>
+public class ReviewPanelView(ReviewAddingPanelViewModel viewModel) : Forma<ReviewAddingPanelViewModel>
 {
     public override void Initialize()
     {

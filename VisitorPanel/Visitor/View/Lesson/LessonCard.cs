@@ -9,7 +9,7 @@ public class LessonCard : ObjectCard<LessonEntity>
 {
     public LessonCard()
     {
-        Size = new Size(300, 200);
+        Size = new Size(480, 200);
         Dock = DockStyle.Top;
         Margin = new Padding(5);
     }
@@ -20,6 +20,7 @@ public class LessonCard : ObjectCard<LessonEntity>
                 .Label(Entity.Title)
                     .Size(14)
                     .ForeColor(Color.DarkBlue)
+                    .Alignment(ContentAlignment.TopCenter)
                 .End()
             .RowAutoSize().Content()
                 .Label($"★ {Entity.GetRating()} • {Entity.Reviews.Count} отзывов")

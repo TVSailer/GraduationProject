@@ -16,6 +16,11 @@ public class LabelBuilder<TParentBuilder> : ControlBuilder<Label, TParentBuilder
         Control.Font = new Font("Times New Roman", size, FontStyle.Bold);
         return this;
     }
+    public LabelBuilder<TParentBuilder> BorderStyle(BorderStyle borderStyle)
+    {
+        Control.BorderStyle = borderStyle;
+        return this;
+    }
     
     public LabelBuilder<TParentBuilder> Alignment(ContentAlignment contentAlignment)
     {
@@ -35,7 +40,7 @@ public class LabelBuilder<TParentBuilder> : ControlBuilder<Label, TParentBuilder
             Font = new Font("Times New Roman", 11, FontStyle.Bold),
             AutoSize = true,
             TextAlign = ContentAlignment.TopLeft,
-            BorderStyle = BorderStyle.None,
+            BorderStyle = System.Windows.Forms.BorderStyle.None,
             Padding = new Padding(2),
             Dock = DockStyle.Fill
         }; ;

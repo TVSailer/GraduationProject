@@ -1,8 +1,17 @@
 ﻿namespace Visitor.ViewModel.Review;
 
-public class ReviewPanelViewModel : General.ViewModel.ViewModel
+public class ReviewAddingPanelViewModel : General.ViewModel.ViewModel
 {
-    public ReviewPanelViewModel()
+
+
+    public ReviewAddingPanelViewModel()
+    {
+    }
+}
+
+public class ReviewDetailsPanelViewModel : General.ViewModel.ViewModel
+{
+    public ReviewDetailsPanelViewModel()
     {
     }
 }

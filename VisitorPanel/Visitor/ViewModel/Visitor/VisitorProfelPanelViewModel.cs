@@ -59,4 +59,7 @@ public class VisitorProfelPanelViewModel : General.ViewModel.ViewModel
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
     }
+
+    public IEnumerable<string> GetDateAttendance() => _visitorEntity.DateAttendances.Select(d => d.ToString("dd/MM"));
+    public IEnumerable<string[]> GetAttendace() => _visitorEntity.GetLessonWithAttendance();
 }

@@ -10,16 +10,17 @@ namespace Visitor.ViewModel.Event;
 public class EventPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IControlViewService _controlViewService;
+    private readonly EventEntity _event;
 
     #region Property
 
-    public string Title { get; set; }
-    public CategoryEntity Category { get; set; }
-    public string Location { get; set; }
-    public string Organizer { get; set; }
-    public EventEntitySchedule Schedule { get; set; }
-    public string Description { get; set; }
-    public IEnumerable<string>? Images { get; set; }
+    public string Title => _event.Title;
+    public CategoryEntity Category => _event.Category;
+    public string Location => _event.Location;
+    public string Organizer => _event.Organizer;
+    public EventEntitySchedule Schedule => _event.Schedule;
+    public string Description => _event.Description;
+    public IEnumerable<string>? Images => _event.GetImages();
 
     #endregion
     #region CommandOpenLinkRegistration
@@ -49,16 +50,7 @@ public class EventPanelViewModel : General.ViewModel.ViewModel
         )
     {
         _controlViewService = controlViewService;
-
-        var entity = sharedService.GetData<EventEntity>();
-
-        Title = entity.Title;
-        Category = entity.Category;
-        Location = entity.Location;
-        Organizer = entity.Organizer;
-        Schedule = entity.Schedule;
-        Description = entity.Description;
-        Images = entity.GetImages();
+        _event = sharedService.GetData<EventEntity>();
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         OpenLinkRegistration = new ExecuteCommand(ExecuteOpenLinkRegistration, CanExecuteOpenLinkRegistration);
