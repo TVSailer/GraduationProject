@@ -64,7 +64,12 @@ public class VisitorBelongingLessonPanelViewModel : General.ViewModel.ViewModel
         VisitorEntities = _lessonEntity.Visitors;
     }
 
-    private bool CanExecuteLoadVisitorNotBelogingLessonPanelView(object? obj) => _lessonEntity.IsAddVisitor();
+    private bool CanExecuteLoadVisitorNotBelogingLessonPanelView(object? obj)
+    {
+        if (_lessonEntity.IsAddVisitor()) return true;
+        _messageService.Message("Превышение максимального кол-ва участников", TypeMessage.Info);
+        return false;
+    }
 
     #endregion
     #region CommandLoadVisitorAddingPanelView
@@ -78,7 +83,12 @@ public class VisitorBelongingLessonPanelViewModel : General.ViewModel.ViewModel
         VisitorEntities = _lessonEntity.Visitors;
     }
 
-    private bool CanExecuteLoadVisitorAddingPanelView(object? obj) => _lessonEntity.IsAddVisitor();
+    private bool CanExecuteLoadVisitorAddingPanelView(object? obj)
+    {
+        if (_lessonEntity.IsAddVisitor()) return true;
+        _messageService.Message("Превышение максимального кол-ва участников", TypeMessage.Info);
+        return false;
+    }
 
     #endregion
 

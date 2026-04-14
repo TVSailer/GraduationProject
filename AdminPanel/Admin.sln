@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionFunc", "..\Extensi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "..\Domain\Domain\Domain.csproj", "{B955029B-FDDC-C4CD-CF85-E0D5AED266C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "General", "..\View\General.csproj", "{23B8C596-7ABA-4DA4-A16E-AB3E547A72E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "General", "..\General\General.csproj", "{BE2460A0-6D11-E057-5BF9-EC9474DC8C8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{B955029B-FDDC-C4CD-CF85-E0D5AED266C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B955029B-FDDC-C4CD-CF85-E0D5AED266C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B955029B-FDDC-C4CD-CF85-E0D5AED266C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23B8C596-7ABA-4DA4-A16E-AB3E547A72E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23B8C596-7ABA-4DA4-A16E-AB3E547A72E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23B8C596-7ABA-4DA4-A16E-AB3E547A72E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23B8C596-7ABA-4DA4-A16E-AB3E547A72E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE2460A0-6D11-E057-5BF9-EC9474DC8C8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE2460A0-6D11-E057-5BF9-EC9474DC8C8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE2460A0-6D11-E057-5BF9-EC9474DC8C8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE2460A0-6D11-E057-5BF9-EC9474DC8C8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

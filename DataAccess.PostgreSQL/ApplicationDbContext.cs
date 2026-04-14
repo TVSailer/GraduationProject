@@ -33,7 +33,7 @@ namespace DataAccess.PostgreSQL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("host=localhost;port=5432;database=db;username=postgres;password=Sailer22_8");//ConfigurationManager.AppSettings[_appSetting]);
+            optionsBuilder.UseNpgsql("host=localhost;port=5432;database=db;username=postgres;password=Sailer22_8");
             optionsBuilder.LogTo(message => Debug.WriteLine(message: message));
         }
     }

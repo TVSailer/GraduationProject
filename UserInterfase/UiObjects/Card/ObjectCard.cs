@@ -29,6 +29,8 @@ public abstract class ObjectCard<T> : Panel
         ControlAdded += (_, e) => SetupChildControl(e.Control);
     }
 
+
+
     private void OnContextMenuOpening(object? sender, System.ComponentModel.CancelEventArgs e)
     {
         _isContextMenuShowing = true;

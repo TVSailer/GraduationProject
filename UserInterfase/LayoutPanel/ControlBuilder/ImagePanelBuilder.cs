@@ -18,8 +18,6 @@ public class ImagePanelBuilder<TParentBuilder> : ControlBuilder<FlowLayoutPanel,
         return this;
     }
 
-
-
     public ImagePanelBuilder<TParentBuilder> Binding(object bind, string nameMember)
     {
         if (bind is INotifyPropertyChanged notifyPropertyChanged)

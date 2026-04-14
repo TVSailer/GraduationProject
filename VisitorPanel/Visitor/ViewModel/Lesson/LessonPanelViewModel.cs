@@ -6,6 +6,7 @@ using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MementoService.BaseMementoService;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
+using Visitor.ViewModel.Review;
 
 namespace Visitor.ViewModel.Lesson;
 
@@ -15,6 +16,9 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     private readonly IControlViewService _controlViewService;
     private readonly IMessageService _messageService;
     private readonly IMementoService<VisitorEntity> _mementoService;
+    private readonly ISharedService _sharedService;
+
+    #region Property
 
     public string Title => _lesson.Title;
     public TeacherEntity Teacher => _lesson.Teacher;
@@ -22,16 +26,28 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     public string Location => _lesson.Location;
     public CategoryEntity Category => _lesson.Category;
     public IEnumerable<string>? Images => _lesson.GetImages();
+    public IEnumerable<LessonScheduleEntity> Schedule => _lesson.Schedule;
+    public IEnumerable<ReviewEntity> ReviewEntites => _lesson.Reviews;
 
-    public IEnumerable<ReviewEntity> ReviewEntites { get; }
-
+    #endregion
     #region CommandAddComment
 
     internal readonly ICommand AddComment;
 
     private void ExecuteAddComment(object? obj)
     {
+        var visitor = _mementoService.Get().Value;
+        var comment = _lesson.Reviews.SingleOrDefault(r => r.Visitor.Id == visitor.Id);
 
+        if (comment is null)
+        {
+            _sharedService.SetData(_lesson);
+            _controlViewService.ShowDialog<ReviewAddingPanelViewModel>();
+            return;
+        }
+
+        _sharedService.SetData(comment);
+        _controlViewService.ShowDialog<ReviewDetailsPanelViewModel>();
     }
 
     private bool CanExecuteAddComment(object? obj)
@@ -61,6 +77,7 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
         _controlViewService = controlViewService;
         _messageService = messageService;
         _mementoService = mementoService;
+        _sharedService = sharedService;
 
         _lesson = sharedService.GetData<LessonEntity>();
 

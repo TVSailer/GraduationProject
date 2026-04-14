@@ -1,5 +1,4 @@
-﻿using CSharpFunctionalExtensions;
-using Domain.Exception;
+﻿using Domain.Exception;
 
 namespace Domain.ValidObject;
 

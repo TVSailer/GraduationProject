@@ -16,7 +16,14 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
 
     public ImageBuilder<TParentBuilder> Url(string url = "")
     {
-        var bitmap = new Bitmap("D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage.png");
+        Bitmap bitmap;
+        if (string.IsNullOrEmpty(url))
+            bitmap = new Bitmap(
+                "D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage.png");
+        else
+            bitmap = new Bitmap(
+                "D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage2.png");
+
         Control.BackgroundImage = bitmap;
         Control.ImageLocation = url;
         return this;
@@ -25,6 +32,12 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
     public ImageBuilder<TParentBuilder> ErrorMessage(object dataSource, string memberName)
     {
         MessageErrorProvider(dataSource, memberName);
+        return this;
+    }
+
+    public ImageBuilder<TParentBuilder> BorderStyle(BorderStyle borderStyle)
+    {
+        Control.BorderStyle = borderStyle;
         return this;
     }
     
@@ -40,7 +53,7 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
                         Control.ImageLocation = _prop?.GetValue(_dataSource)?.ToString();
                 };
     
-        Control.ImageLocation = _prop.GetValue(_dataSource)?.ToString();
+        Url(_prop.GetValue(_dataSource)?.ToString());
 
         MessageErrorProvider(dataSource, memberName);
         return this;
@@ -71,7 +84,7 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
             Margin = new Padding(5),
             SizeMode = PictureBoxSizeMode.Zoom,
             BackColor = Color.Black,
-            BorderStyle = BorderStyle.FixedSingle,
+            BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle,
             Dock = DockStyle.Top
         };
 

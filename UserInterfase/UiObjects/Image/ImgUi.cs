@@ -1,6 +1,6 @@
-﻿using System.Drawing;
+﻿using ExtensionFunc;
+using System.Drawing;
 using System.Windows.Forms;
-using ExtensionFunc;
 
 namespace UserInterface.UiObjects.Image;
 
@@ -10,12 +10,16 @@ public sealed class ImgUi : PictureBox
     {
         Url = url;
 
-        Size = new Size(300, 200);
+        var width = ScaleWidthByHeight(url, 300);
+
+        Size = new Size(width, 300);
         Margin = new Padding(5);
         SizeMode = PictureBoxSizeMode.Zoom;
         BackColor = Color.Black;
         ImageLocation = url;
         MouseDoubleClick += (_, _) => FullSizeImage();
+        BackgroundImage =
+            new Bitmap("D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage2.png");
         MouseClick += (_, _) => BackColor = BackColor == Color.Black ? Color.Gray : Color.Black; 
     }
 
@@ -34,5 +38,12 @@ public sealed class ImgUi : PictureBox
                     .With(pb => pb.SizeMode = PictureBoxSizeMode.Zoom)
                     .With(pb => pb.ImageLocation = Url)))
             .ShowDialog();
+    }
+
+    public int ScaleWidthByHeight(string url, int targetHeight)
+    {
+        var originalImage = new Bitmap(url);
+        double scale = (double)targetHeight / originalImage.Height;
+        return (int)(originalImage.Width * scale);
     }
 }

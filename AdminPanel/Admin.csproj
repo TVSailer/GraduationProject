@@ -36,8 +36,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj" />
     <ProjectReference Include="..\ExtensionFunc\ExtensionFunc.csproj" />
+    <ProjectReference Include="..\General\General.csproj" />
     <ProjectReference Include="..\UserInterfase\UserInterface.csproj" />
-    <ProjectReference Include="..\View\General.csproj" />
   </ItemGroup>
 
 </Project>

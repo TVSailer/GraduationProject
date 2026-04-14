@@ -32,22 +32,6 @@ public class MainPanelViewModel : General.ViewModel.ViewModel
             return;
         }
 
-        if (_authFileService.Exists())
-        {
-            var auth = _authFileService.ReadAuth();
-            var visitor = _repositoryV
-                .Get()
-                .ToArray()
-                .SingleOrDefault(v => v.AuthEntity.Equals(auth.login, auth.password));
-
-            if (visitor is not null)
-            {
-                _mementoService.Set(visitor);
-                _controlViewService.LoadView<VisitorProfelPanelViewModel>();
-                return;
-            }
-        }
-
         _controlViewService.ShowDialog<EnterPanelViewModel>();
     }
 

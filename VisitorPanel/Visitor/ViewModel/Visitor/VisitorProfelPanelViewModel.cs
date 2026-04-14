@@ -5,6 +5,7 @@ using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MementoService.BaseMementoService;
 using System.Windows.Input;
 using Domain.ValidObject;
+using Visitor.ViewModel.Enter;
 
 namespace Visitor.ViewModel.Visitor;
 
@@ -42,6 +43,20 @@ public class VisitorProfelPanelViewModel : General.ViewModel.ViewModel
 
     #endregion
 
+    #region CommandChangeAccount
+
+    internal readonly ICommand ChangeAccount;
+
+    private void ExecuteChangeAccount(object? obj)
+    {
+        _controlViewService.Exit();
+        _controlViewService.ShowDialog<EnterPanelViewModel>();
+    }
+
+    private bool CanExecuteChangeAccount(object? obj) => true;
+
+    #endregion
+
     public VisitorProfelPanelViewModel(
         IControlViewService controlViewService,
         IRepository<VisitorEntity> repositoryV,
@@ -58,6 +73,7 @@ public class VisitorProfelPanelViewModel : General.ViewModel.ViewModel
         NumberPhone = _visitorEntity.NumberPhone;
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
+        ChangeAccount = new ExecuteCommand(ExecuteChangeAccount, CanExecuteChangeAccount);
     }
 
     public IEnumerable<string> GetDateAttendance() => _visitorEntity.DateAttendances.Select(d => d.ToString("dd/MM"));

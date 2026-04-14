@@ -18,6 +18,7 @@ public class EventCard : ObjectCard<EventEntity>
     => new BuilderLayoutPanel().Column()
             .RowAbsolute(300).Content()
                 .Image(Entity.UrlTitleImag)
+                .BorderStyle(BorderStyle.None)
             .End()
             .RowAutoSize().Content()
                 .Label(Entity.Title)

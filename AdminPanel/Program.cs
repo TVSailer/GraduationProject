@@ -1,5 +1,6 @@
 using Admin.DI;
 using Admin.ViewModel.Model.AdminMain;
+using CSharpFunctionalExtensions;
 using DataAccess.PostgreSQL;
 using Domain.Entitys;
 using Domain.Entitys.ComplexType;
@@ -33,8 +34,13 @@ internal static class Program
 }
 
 public class TestData {
+
     public TestData(ApplicationDbContext dbContext, IRepository<AuthEntity> repositoryA)
     {
+        dbContext.Database.EnsureDeleted();
+        dbContext.Database.EnsureCreated();
+
+
         List<string> images = [];
         for (int i = 0; i < 10; i++)
             images.Add($"C://Users/tereg/Pictures/2025-11-30/326{i}.jpg");
@@ -46,22 +52,22 @@ public class TestData {
         for (int i = 0; i < 10; i++)
         {
             dbContext.Add(new NewsEntity(
-                $"Название {i}",
-                $"Контент {i}",
+                $"Название{i}",
+                $"Контент{i}",
                 "30.11.2026",
                 category,
-                $"Автор {i}",
+                $"Автор{i}",
                 images
                 ));
 
             dbContext.Add(
                 new EventEntity(
-                    $"Название {i}",
+                    $"Название{i}",
                     images[0],
-                    $"Описание {i}",
-                    $"Локация {i}",
+                    $"Описание{i}",
+                    $"Локация{i}",
                     $"https//:k{i}",
-                    $"Огранизатор {i}",
+                    $"Огранизатор{i}",
                     new EventEntitySchedule(
                         "11:00",
                         "12:00",
@@ -70,29 +76,34 @@ public class TestData {
                     images
                 ));
 
-            var auth = new AuthEntity(
-                LoginValidObject.Create($"Фамилия {i}"), 
+            var authTeacher = new AuthEntity(
+                LoginValidObject.Create($"Фамилия{i}"), 
+                PasswordValidObject.Create(repositoryA.Get().Select(a => a.Password).ToArray())
+                );
+            
+            var authVisitor = new AuthEntity(
+                LoginValidObject.Create($"Фамилия{i}"), 
                 PasswordValidObject.Create(repositoryA.Get().Select(a => a.Password).ToArray())
                 );
 
-            dbContext.Add(auth);
+            dbContext.AddRange(authVisitor, authTeacher);
 
             var teacher = new TeacherEntity(
                 images[0],
-                $"Имя {i}",
-                $"Фамилия {i}",
-                $"Отчество {i}",
+                $"Имя{i}",
+                $"Фамилия{i}",
+                $"Отчество{i}",
                 "30.11.2005",
                 "89898342334",
-                auth
+                authTeacher
             );
 
             dbContext.Add(teacher);
 
             var lesson = new LessonEntity(
-                $"Название {i}",
-                $"Описание {i}",
-                $"Локация {i}",
+                $"Название{i}",
+                $"Описание{i}",
+                $"Локация{i}",
                 i,
                 category,
                 teacher,
@@ -117,12 +128,12 @@ public class TestData {
 
             var visitor = new VisitorEntity(
                 images[0],
-                $"Имя {i}",
-                $"Фамилия {i}",
-                $"Отчество {i}",
+                $"Имя{i}",
+                $"Фамилия{i}",
+                $"Отчество{i}",
                 "30.11.2005",
                 "89898342334",
-                auth
+                authVisitor
             );
 
             visitor.AddLesson(lesson);

@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Domain.Entitys.Compare;
 using Domain.Entitys.ImagesEntity;
+using Domain.Exception;
 
 namespace Domain.Entitys
 {
@@ -57,40 +58,40 @@ namespace Domain.Entitys
                     .Select(r => r.Id)
                     .Contains(id));
 
-        public Result<LessonEntity> AddReview(ReviewEntity review)
+        public LessonEntity AddReview(ReviewEntity review)
         {
-            if (!IsAddReview(review.Visitor)) Result.Failure<LessonEntity>("Пользователь уже имеет комментарий к уроку");
+            if (!IsAddReview(review.Visitor)) throw new EntityException("Пользователь уже имеет комментарий к уроку");
             Reviews.Add(review);
 
-            return Result.Success(this);
+            return this;
         }
 
-        public Result<LessonEntity> AddVisitor(VisitorEntity visitor)
+        public LessonEntity AddVisitor(VisitorEntity visitor)
         {
-            if (!IsAddVisitor()) return Result.Failure<LessonEntity>("Превышение максимального кол-ва поситителей");
+            if (!IsAddVisitor()) throw new EntityException("Превышение максимального кол-ва поситителей");
 
             Visitors.Add(visitor);
             Visitors.Sort(new VisitorEntityNameSurnameRelationalComparer());
 
-            return Result.Success(this);
+            return this;
         }
 
-        public Result<LessonEntity> AddDateAttendance(DateAttendanceEntity dateAttendance)
+        public LessonEntity AddDateAttendance(DateAttendanceEntity dateAttendance)
         {
-            if (IsAddDateAttendance()) return Result.Failure<LessonEntity>("По расписанию сегодня нет урока");
-            if (AttendanceDates.Select(d => d.Date).Contains(dateAttendance.Date)) return Result.Failure<LessonEntity>("Такая дата уже имется");
+            if (IsAddDateAttendance()) throw new EntityException("По расписанию сегодня нет урока");
+            if (AttendanceDates.Select(d => d.Date).Contains(dateAttendance.Date)) throw new EntityException("Такая дата уже имется");
 
             AttendanceDates.Add(dateAttendance);
             AttendanceDates.Sort(new DateAttendanceEntityRelationalComparer());
 
-            return Result.Success(this);
+            return this;
         }
 
-        public Result<LessonEntity> RemoveVisitor(VisitorEntity visitor)
+        public LessonEntity RemoveVisitor(VisitorEntity visitor)
         {
-            if (!Visitors.Select(v => v.Id).Contains(visitor.Id)) return Result.Failure<LessonEntity>("Такого поситителя нету");
+            if (!Visitors.Select(v => v.Id).Contains(visitor.Id)) throw new EntityException("Такого поситителя нету");
             Visitors.Remove(visitor);
-            return Result.Success(this);
+            return this;
         }
 
         public void SetImages(IEnumerable<string> images) 

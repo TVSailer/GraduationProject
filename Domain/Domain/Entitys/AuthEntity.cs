@@ -5,18 +5,11 @@ namespace Domain.Entitys;
 
 public class AuthEntity : Entity
 {
-    public string Login { get; set; }
-    public string Password { get; set; }
+    public string Login { get; private set; }
+    public string Password { get; private set; }
 
     private AuthEntity() { }
 
-    //Todo: delete
-    public AuthEntity(string login, string password)
-    {
-        Login = login;
-        Password = password;
-    }
-    
     public AuthEntity(LoginValidObject login, PasswordValidObject password)
     {
         Login = login.Login;
@@ -31,8 +24,8 @@ public class AuthEntity : Entity
     
     public AuthEntity UpdatePassword(PasswordValidObject password)
     {
-        if (BCrypt.Net.BCrypt.Verify(Password, password.Password)) return this;
-        Password = password.Password;
+        if (BCrypt.Net.BCrypt.Verify(password.Password, Password)) return this;
+        Password = password.Hash;
         return this;
     }
 
@@ -46,8 +39,8 @@ public class AuthEntity : Entity
         return login is not null && 
                password is not null && 
                Login == login && 
-               password == Password || 
-               BCrypt.Net.BCrypt.Verify(password, Password);
+               (password == Password || 
+               BCrypt.Net.BCrypt.Verify(password, Password));
     }
 
     public override bool Equals(object? obj)

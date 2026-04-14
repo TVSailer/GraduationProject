@@ -93,10 +93,12 @@ public class VisitorDetailsPanelView(VisitorDetailsPanelViewModel viewModel) : U
                     .Command(viewModel.Update)
                 .End()
                 .Column().Content()
-                    .Button()
+                    .Button("Удалить")
+                    .Command(viewModel.Delete)
                 .End()
                 .Column().Content()
                     .Button()
+                    .NoEnable()
                 .End()
             .End();
 }

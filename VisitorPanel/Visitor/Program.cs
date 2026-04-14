@@ -1,4 +1,7 @@
-using UserInterface.Service.View;
+using Domain.Entitys;
+using Domain.Repository;
+using Domain.Service.FielService.BaseFileService;
+using Domain.Service.MementoService.BaseMementoService;
 using UserInterface.Service.View.Base;
 using Visitor.DI;
 using Visitor.ViewModel.Main;
@@ -16,6 +19,22 @@ namespace Visitor
             ApplicationConfiguration.Initialize();
 
             var di = new MainDI();
+
+            var authFileService = di.GetService<IAuthFileService>();
+
+            if (authFileService.Exists())
+            {
+                var auth = authFileService.ReadAuth();
+                var visitor = di
+                    .GetService<IRepository<VisitorEntity>>()
+                    .Get()
+                    .ToArray()
+                    .SingleOrDefault(v => v.AuthEntity.Equals(auth.login, auth.password));
+
+                if (visitor is not null)
+                    di.GetService<IMementoService<VisitorEntity>>().Set(visitor);
+            }
+
             var controlView = di.GetService<IControlView>();
             controlView.LoadView<MainPanelViewModel>();
 

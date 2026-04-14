@@ -19,7 +19,7 @@ public class NumberPhoneValidObject
         string pattern = @"^(\+7|8)[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$";
         string cleanedPhoneNumber = Regex.Replace(text, @"\s+", "");
 
-        if (Regex.IsMatch(cleanedPhoneNumber, pattern)) throw new ValidObjectException("Не корректный номер телефона");
+        if (!Regex.IsMatch(cleanedPhoneNumber, pattern)) throw new ValidObjectException("Не корректный номер телефона");
 
         return new NumberPhoneValidObject(text);
     }
