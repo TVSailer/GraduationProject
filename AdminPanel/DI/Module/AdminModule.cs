@@ -1,5 +1,5 @@
-using Admin.View.Moduls.AdminMain;
-using Admin.ViewModel.Model.AdminMain;
+using Admin.View.AdminMain;
+using Admin.ViewModel.AdminMain;
 using Ninject.Modules;
 using UserInterface.View.Base;
 

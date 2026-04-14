@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using Domain.Valid.AttributeValid;
+using Domain.Entitys.ImagesEntity.Base;
 
 namespace Domain.Entitys.ImagesEntity;
 

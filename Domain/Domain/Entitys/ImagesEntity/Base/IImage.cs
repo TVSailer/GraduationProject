@@ -1,6 +1,4 @@
-﻿using Domain.Valid.AttributeValid;
-
-namespace Domain.Entitys.ImagesEntity;
+﻿namespace Domain.Entitys.ImagesEntity.Base;
 
 public interface IImage
 {

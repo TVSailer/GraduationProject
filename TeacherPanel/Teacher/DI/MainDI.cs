@@ -34,6 +34,8 @@ public class MainDI
             new MainModule(),
             new ReviewModule(),
             new EnterModule(),
+            new VisitorModule(),
+            new DateAttendanceModule(),
             new DataAccesPostgreSqlModule(),
             new EventModule(),
             new NewsModule(),

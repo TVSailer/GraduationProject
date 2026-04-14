@@ -1,7 +1,7 @@
-using Admin.View.Moduls.Lesson;
-using Admin.View.Moduls.Lesson.Schedule;
-using Admin.ViewModel.Model.Lesson;
-using Admin.ViewModel.Model.Lesson.Schedule;
+using Admin.View.Lesson;
+using Admin.View.Lesson.Schedule;
+using Admin.ViewModel.Lesson;
+using Admin.ViewModel.Lesson.Schedule;
 using Ninject.Modules;
 using UserInterface.View.Base;
 

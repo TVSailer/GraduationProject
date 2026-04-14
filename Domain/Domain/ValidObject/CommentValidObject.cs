@@ -13,10 +13,10 @@ public class CommentValidObject
 
     public static CommentValidObject Create(string text)
     {
-        if (text is { Length: > 200 }) throw new ValidObjectException("Коментарий дожен сожержать до 200 символов");
+        if (text is { Length: > 200 }) throw new ValidObjectException("Коментарий должен сожержать до 200 символов");
 
         var des = text.Split(" ");
-        if (des is {Length: < 5}) throw new ValidObjectException("Коментарий дожен состоять минимум из 5-ти слов");
+        if (des is {Length: < 5}) throw new ValidObjectException("Коментарий должен состоять минимум из 5-ти слов");
 
         return new CommentValidObject(text);
     }

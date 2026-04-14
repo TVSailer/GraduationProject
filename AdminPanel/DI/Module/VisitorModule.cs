@@ -1,5 +1,5 @@
-using Admin.View.Moduls.Visitor;
-using Admin.ViewModel.Model.Visitor;
+using Admin.View.Visitor;
+using Admin.ViewModel.Visitor;
 using Ninject.Modules;
 using UserInterface.View.Base;
 

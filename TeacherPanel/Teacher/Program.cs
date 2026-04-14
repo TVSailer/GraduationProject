@@ -10,11 +10,8 @@ namespace Teacher
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             ApplicationConfiguration.Initialize();
 
@@ -25,14 +22,14 @@ namespace Teacher
             if (authFileService.Exists())
             {
                 var auth = authFileService.ReadAuth();
-                var visitor = di
-                    .GetService<IRepository<VisitorEntity>>()
+                var teacher = di
+                    .GetService<IRepository<TeacherEntity>>()
                     .Get()
                     .ToArray()
                     .SingleOrDefault(v => v.AuthEntity.Equals(auth.login, auth.password));
 
-                if (visitor is not null)
-                    di.GetService<IMementoService<VisitorEntity>>().Set(visitor);
+                if (teacher is not null)
+                    di.GetService<IMementoService<TeacherEntity>>().Set(teacher);
             }
 
             var controlView = di.GetService<IControlView>();

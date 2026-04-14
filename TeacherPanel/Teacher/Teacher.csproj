@@ -36,6 +36,9 @@
     <Reference Include="Domain">
       <HintPath>..\..\DataAccess.PostgreSQL\bin\Debug\net8.0\Domain.dll</HintPath>
     </Reference>
+    <Reference Include="ExtensionFunc">
+      <HintPath>..\..\VisitorPanel\Visitor\bin\Debug\net8.0-windows\ExtensionFunc.dll</HintPath>
+    </Reference>
     <Reference Include="General">
       <HintPath>..\..\VisitorPanel\Visitor\bin\Debug\net8.0-windows\General.dll</HintPath>
     </Reference>

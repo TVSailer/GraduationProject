@@ -1,5 +1,5 @@
 using Admin.DI;
-using Admin.ViewModel.Model.AdminMain;
+using Admin.ViewModel.AdminMain;
 using CSharpFunctionalExtensions;
 using DataAccess.PostgreSQL;
 using Domain.Entitys;

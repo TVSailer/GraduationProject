@@ -1,5 +1,5 @@
-using Admin.View.Moduls.DateAttendance;
-using Admin.ViewModel.Model.DateAttendance;
+using Admin.View.DateAttendance;
+using Admin.ViewModel.DateAttendance;
 using Ninject.Modules;
 using UserInterface.View.Base;
 

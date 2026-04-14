@@ -1,5 +1,5 @@
-using Admin.View.Moduls.Teacher;
-using Admin.ViewModel.Model.Teacher;
+using Admin.View.Teacher;
+using Admin.ViewModel.Teacher;
 using Ninject.Modules;
 using UserInterface.View.Base;
 

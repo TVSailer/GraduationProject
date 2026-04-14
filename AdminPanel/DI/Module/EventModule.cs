@@ -1,5 +1,5 @@
-using Admin.View.Moduls.Event;
-using Admin.ViewModel.Model.Event;
+using Admin.View.Event;
+using Admin.ViewModel.Event;
 using Ninject.Modules;
 using UserInterface.View.Base;
 

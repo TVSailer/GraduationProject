@@ -12,6 +12,8 @@ public class LessonManagerPanelView(LessonManagerPanelViewModel viewModel) : UiV
         => builderLayoutPanel.Column()
             .Row().Content()
                 .CardFlowLayoutPanel<LessonEntity, LessonCard>()
+                .ContextMenu("Управление поситителями", viewModel.ControlVisitors)
+                .ContextMenu("Управление посищаемостью", viewModel.ControlDateAttendance)
                 .ClickedCard(viewModel.OpenLesson)
                 .Initialize(viewModel.LessonEntities)
             .End()

@@ -3,6 +3,8 @@ using Domain.Entitys;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MementoService.BaseMementoService;
 using System.Windows.Input;
+using Domain.Enum;
+using Domain.Service.MessageService.BaseMessageService;
 using Teacher.ViewModel.Enter;
 using Teacher.ViewModel.Event;
 using Teacher.ViewModel.Lesson;
@@ -14,6 +16,7 @@ namespace Teacher.ViewModel.Main;
 public class MainPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IControlViewService _controlViewService;
+    private readonly IMessageService _messageService;
     private readonly IMementoService<TeacherEntity> _mementoService;
 
     #region CommandOpenEnter
@@ -39,7 +42,12 @@ public class MainPanelViewModel : General.ViewModel.ViewModel
     internal readonly ICommand OpenLesson;
 
     private void ExecuteOpenLesson(object? obj) => _controlViewService.LoadView<LessonManagerPanelViewModel>();
-    private bool CanExecuteOpenLesson(object? obj) => true;
+    private bool CanExecuteOpenLesson(object? obj)
+    {
+        if (_mementoService.Get().HasValue) return true;
+        _messageService.Message("Выполните вход в аккаунт", TypeMessage.Info);
+        return false;
+    }
 
     #endregion
     #region CommandOpenNews
@@ -69,9 +77,11 @@ public class MainPanelViewModel : General.ViewModel.ViewModel
 
     public MainPanelViewModel(
         IControlViewService controlViewService,
+        IMessageService messageService,
         IMementoService<TeacherEntity> mementoService)
     {
         _controlViewService = controlViewService;
+        _messageService = messageService;
         _mementoService = mementoService;
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);

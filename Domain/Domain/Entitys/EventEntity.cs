@@ -2,6 +2,7 @@
 using Domain.Entitys.ComplexType;
 using Domain.Entitys.ImagesEntity;
 using Domain.Valid.AttributeValid;
+using Domain.ValidObject;
 
 namespace Domain.Entitys;
 
@@ -40,6 +41,30 @@ public class EventEntity : Entity
         Category = category;
         SetImages(images);
     }
+
+    public EventEntity(
+        TitleValidAttribute title, 
+        ImageValidObject urlTitleImag, 
+        DescriptionValidObject description, 
+        string location, 
+        string registrationLink, 
+        string organizer, 
+        EventEntitySchedule schedule, 
+        CategoryEntity category, 
+        IEnumerable<string> images)
+    {
+        Title = title.Text;
+        UrlTitleImag = urlTitleImag.Text;
+        Description = description.Text;
+        Location = location;
+        RegistrationLink = registrationLink;
+        Organizer = organizer;
+        Schedule = schedule;
+        Category = category;
+        SetImages(images);
+    }
+
+
 
     public bool Include(string? category, string? title, string? stDate, string? endDate)
     {

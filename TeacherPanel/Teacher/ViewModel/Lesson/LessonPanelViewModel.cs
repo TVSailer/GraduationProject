@@ -1,12 +1,9 @@
-﻿using System.Windows.Input;
-using Domain.Command;
+﻿using Domain.Command;
 using Domain.Entitys;
-using Domain.Enum;
 using Domain.Service.ControlViewService.BaseControlView;
-using Domain.Service.MementoService.BaseMementoService;
-using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
-using Teacher.ViewModel.Review;
+using System.Windows.Input;
+using Domain.Service.MementoService.BaseMementoService;
 
 namespace Teacher.ViewModel.Lesson;
 
@@ -14,9 +11,6 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly LessonEntity _lesson;
     private readonly IControlViewService _controlViewService;
-    private readonly IMessageService _messageService;
-    private readonly IMementoService<VisitorEntity> _mementoService;
-    private readonly ISharedService _sharedService;
 
     #region Property
 
@@ -30,34 +24,6 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     public IEnumerable<ReviewEntity> ReviewEntites => _lesson.Reviews;
 
     #endregion
-    #region CommandAddComment
-
-    internal readonly ICommand AddComment;
-
-    private void ExecuteAddComment(object? obj)
-    {
-        var visitor = _mementoService.Get().Value;
-        var comment = _lesson.Reviews.SingleOrDefault(r => r.Visitor.Id == visitor.Id);
-
-        if (comment is null)
-        {
-            _sharedService.SetData(_lesson);
-            _controlViewService.ShowDialog<ReviewAddingPanelViewModel>();
-            return;
-        }
-
-        _sharedService.SetData(comment);
-        _controlViewService.ShowDialog<ReviewDetailsPanelViewModel>();
-    }
-
-    private bool CanExecuteAddComment(object? obj)
-    {
-        if (!_mementoService.Get().HasNoValue) return true;
-        _messageService.Message("Для добавления комментария, необходимо войти в свой аккаунт", TypeMessage.Info);
-        return false;
-    }
-
-    #endregion
     #region CommandExit
 
     internal readonly ICommand Exit;
@@ -69,19 +35,11 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
 
     public LessonPanelViewModel(
         IControlViewService controlViewService,
-        IMessageService messageService,
-        IMementoService<VisitorEntity> mementoService,
-        ISharedService sharedService
-    )
+        ISharedService sharedService)
     {
         _controlViewService = controlViewService;
-        _messageService = messageService;
-        _mementoService = mementoService;
-        _sharedService = sharedService;
-
         _lesson = sharedService.GetData<LessonEntity>();
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
-        AddComment = new ExecuteCommand(ExecuteAddComment, CanExecuteAddComment);
     }
 }

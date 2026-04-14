@@ -1,5 +1,5 @@
-using Admin.View.Moduls.Review;
-using Admin.ViewModel.Model.Review;
+using Admin.View.Review;
+using Admin.ViewModel.Review;
 using Ninject.Modules;
 using UserInterface.View.Base;
 
