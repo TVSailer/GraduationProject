@@ -11,7 +11,7 @@ public class AuthFileService(string nameFile) : IAuthFileService
         using StreamWriter outputFijle = new StreamWriter(nameFile, false);
 
         outputFijle.WriteLine(auth.Login);
-        outputFijle.WriteLine(auth.Password);
+        outputFijle.WriteLine(auth.Password); 
     }
 
     public (string login, string password) ReadAuth()
@@ -28,7 +28,8 @@ public class AuthFileService(string nameFile) : IAuthFileService
 
     public bool Exists()
     {
-        if (!System.IO.File.Exists(nameFile)) return false;
-        return true;
+        return System.IO.File.Exists(nameFile);
     }
 }
+
+

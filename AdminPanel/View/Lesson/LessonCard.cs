@@ -9,14 +9,14 @@ public class LessonCard : ObjectCard<LessonEntity>
 {
     public LessonCard()
     {
-        Size = new Size(300, 125);
+        Size = new Size(450, 155);
     }
 
     public override IBuilder Content(BuilderLayoutPanel builderLayoutPanel)
         => builderLayoutPanel.Column()
-            .RowAutoSize().Content().Label(Entity.Title).ForeColor(Color.DarkBlue).End()
-            .RowAutoSize().Content().Label($"🏷️ {Entity.Category}").Size(9).ForeColor(Color.Gray).End()
-            .RowAutoSize().Content().Label($"👨‍🏫 {Entity.Teacher}").Size(9).ForeColor(Color.Gray).End()
-            .RowAutoSize().Content().Label($"👥 {Entity.Visitors.Count}/{Entity.MaxParticipants}").Size(9).ForeColor(Color.DarkGreen).End()
-            .RowAutoSize().Content().Label($"★ {Entity.GetRating()}").Size(9).ForeColor(Color.Red).End();
+            .RowAutoSize().Content().Label(Entity.Title).ForeColor(Color.DarkBlue).Size(14).End()
+            .RowAutoSize().Content().Label($"🏷️ {Entity.Category}").Size(11).ForeColor(Color.Gray).End()
+            .RowAutoSize().Content().Label($"👨‍🏫 {Entity.Teacher}").Size(11).ForeColor(Color.Gray).End()
+            .RowAutoSize().Content().Label($"👥 {Entity.Visitors.Count}/{Entity.MaxParticipants}").Size(11).ForeColor(Color.DarkGreen).End()
+            .RowAutoSize().Content().Label($"★ {Entity.GetRating()}").Size(11).ForeColor(Color.Red).End();
 }

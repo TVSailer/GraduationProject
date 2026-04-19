@@ -9,18 +9,16 @@ public sealed class ImgUi : PictureBox
     public ImgUi(string url)
     {
         Url = url;
+        var orgImage = ScaleImageByHeight(url, 300);
 
-        var width = ScaleWidthByHeight(url, 300);
-
-        Size = new Size(width, 300);
+        Size = new Size(orgImage.Width, orgImage.Height);
         Margin = new Padding(5);
         SizeMode = PictureBoxSizeMode.Zoom;
-        BackColor = Color.Black;
-        ImageLocation = url;
+        Image = orgImage;
         MouseDoubleClick += (_, _) => FullSizeImage();
         BackgroundImage =
             new Bitmap("D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage2.png");
-        MouseClick += (_, _) => BackColor = BackColor == Color.Black ? Color.Gray : Color.Black; 
+        MouseClick += (_, _) => Image = Image == orgImage ? DarkenImage(orgImage) : orgImage; 
     }
 
     public readonly string Url;
@@ -40,10 +38,31 @@ public sealed class ImgUi : PictureBox
             .ShowDialog();
     }
 
-    public int ScaleWidthByHeight(string url, int targetHeight)
+    public Bitmap ScaleImageByHeight(string url, int targetHeight)
     {
-        var originalImage = new Bitmap(url);
+        using var originalImage = new Bitmap(url);
         double scale = (double)targetHeight / originalImage.Height;
-        return (int)(originalImage.Width * scale);
+        int targetWidth = (int)(originalImage.Width * scale);
+
+        Bitmap scaledImage = new Bitmap(targetWidth, targetHeight);
+
+        using Graphics g = Graphics.FromImage(scaledImage);
+        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+        g.DrawImage(originalImage, 0, 0, targetWidth, targetHeight);
+
+        return scaledImage;
+    }
+
+    private System.Drawing.Image DarkenImage(System.Drawing.Image original)
+    {
+        Bitmap result = new Bitmap(original.Width, original.Height);
+
+        using Graphics g = Graphics.FromImage(result);
+        g.DrawImage(original, 0, 0, original.Width, original.Height);
+
+        using Brush darkBrush = new SolidBrush(Color.FromArgb(100, 0, 0, 0));
+        g.FillRectangle(darkBrush, 0, 0, original.Width, original.Height);
+
+        return result;
     }
 }
