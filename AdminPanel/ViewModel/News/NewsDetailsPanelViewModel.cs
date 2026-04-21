@@ -1,8 +1,5 @@
-﻿using System.Windows.Input;
-using Domain.Command;
+﻿using Domain.Command;
 using Domain.Entitys;
-using Domain.Entitys.ComplexType;
-using Domain.Entitys.ImagesEntity;
 using Domain.Enum;
 using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
@@ -11,57 +8,29 @@ using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
 using Domain.ValidObject;
+using System.Windows.Input;
 
-namespace Admin.ViewModel.Event;
+namespace Admin.ViewModel.News;
 
-public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
+
+public class NewsDetailsPanelViewModel : General.ViewModel.ViewModel
 {
     internal readonly IImageService _imageService;
     private readonly IMessageService _messageService;
 
-    private readonly IRepository<EventEntity> _repositoryE;
+    private readonly IRepository<NewsEntity> _repositoryN;
     private readonly IControlViewService _controlViewService;
-    private readonly EventEntity _eventEntity;
+    private readonly NewsEntity _newsEntity;
 
     public readonly CategoryEntity[] CategoryEntities;
 
     #region Property
 
     [Title] public string? Title { get; set => Set(ref field, value); }
-    [Image] public string? TitleImg { get; set => Set(ref field, value); }
     [Description] public string? Description { get; set => Set(ref field, value); }
     [Date] public string? Date { get; set => Set(ref field, value); }
-    #region TimeStart
-
-    [Time] public string? TimeStart
-    {
-        get;
-        set
-        {
-            Set(ref field, value);
-            ValidProperty(Schedule, nameof(Schedule));
-        }
-    }
-
-    #endregion
-    #region TimeEnd
-
-    [Time] public string? TimeEnd
-    {
-        get;
-        set
-        {
-            Set(ref field, value);
-            ValidProperty(Schedule, nameof(Schedule));
-        }
-    } 
-
-    #endregion
-    [Location] public string? Location { get; set => Set(ref field, value); }
-    [Organizer] public string? Organizer { get; set => Set(ref field, value); }
+    [Author] public string? Author { get; set => Set(ref field, value); }
     [RequiredCustom] public CategoryEntity? Category { get; set => Set(ref field, value); }
-    [Url] public string? RegisLink { get; set => Set(ref field, value); }
-    [ScheduleEntity] public EventEntitySchedule Schedule => new (TimeStart, TimeEnd, Date);
     public IEnumerable<string> Images { get; set => Set(ref field, value); }
     #endregion
     #region CommandToggleImage
@@ -102,17 +71,15 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteUpdate(object? obj)
     {
-        _eventEntity
+        _newsEntity
             .UpdateTitle(new TitleValidObject(Title))
-            .UpdateDescription(new DescriptionValidObject(Description))
-            .UpdateTitleImage(new ImageValidObject(TitleImg))
-            .UpdateLocation(new LocationValidObject(Location))
-            .UpdateHttpLink(new HttpLinkValidObject(RegisLink))
+            .UpdateContent(new DescriptionValidObject(Description))
+            .UpdateAuthor(new AuthorValidObject(Author))
+            .UpdateDate(DateOnly.Parse(Date))
             .UpdateCategory(Category)
-            .UpdateSchedule(Schedule)
             .UpdateImages(Images);
 
-        _repositoryE.Update(_eventEntity);
+        _repositoryN.Update(_newsEntity);
 
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);
     }
@@ -126,7 +93,7 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteDelete(object? obj)
     {
-        _repositoryE.Delete(_eventEntity.Id);
+        _repositoryN.Delete(_newsEntity.Id);
         _controlViewService.Exit();
     }
 
@@ -134,33 +101,28 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
         => _messageService.Message("Выдействительно хотите удалить?", TypeMessage.YesCancel) is TypeCommandMessage.Yes;
 
     #endregion
-    public EventDetailsPanelViewModel(
-        IRepository<EventEntity> repositoryE, 
+    public NewsDetailsPanelViewModel(
+        IRepository<NewsEntity> repositoryN, 
         IRepository<CategoryEntity> repositoryC, 
         IImageService imageService, 
         IMessageService messageService,
         IControlViewService controlViewService,
         ISharedService sharedService)
     {
-        _repositoryE = repositoryE;
+        _repositoryN = repositoryN;
         _imageService = imageService;
         _messageService = messageService;
         _controlViewService = controlViewService;
         CategoryEntities = repositoryC.Get().ToArray();
 
-        _eventEntity = sharedService.GetData<EventEntity>();
+        _newsEntity = sharedService.GetData<NewsEntity>();
 
-        Title = _eventEntity.Title;
-        RegisLink = _eventEntity.RegistrationLink;
-        Category = _eventEntity.Category;
-        TitleImg = _eventEntity.UrlTitleImag;
-        Location = _eventEntity.Location;
-        Description = _eventEntity.Description;
-        TimeStart = _eventEntity.Schedule.Start;
-        TimeEnd = _eventEntity.Schedule.End;
-        Date = _eventEntity.Schedule.Date;
-        Organizer = _eventEntity.Organizer;
-        Images = _eventEntity.Images.Select(i => i.Url);
+        Title = _newsEntity.Title;
+        Category = _newsEntity.Category;
+        Description = _newsEntity.Content;
+        Date = _newsEntity.Date;
+        Author = _newsEntity.Author;
+        Images = _newsEntity.Images.Select(i => i.Url);
 
         _imageService.Binding(this, nameof(Images));
 

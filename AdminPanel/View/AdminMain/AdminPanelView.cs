@@ -29,6 +29,7 @@ public sealed class  AdminPanelView(AdminPanelViewModel viewModel) : UiView<Admi
                 .End()
                 .RowAbsolute(60).Content()
                     .Button("📰 Управление новостями")
+                    .Command(viewModel.LoadNewsManagerPanelView)
                 .End()
                 .RowAbsolute(60).Content()
                     .Button("🎨 Управление кружками")

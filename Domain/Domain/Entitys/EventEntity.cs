@@ -7,47 +7,25 @@ namespace Domain.Entitys;
 
 public class EventEntity : Entity
 {
-    public string Title { get; set; }
-    public string UrlTitleImag { get; set; }
-    public string Description { get; set; }
-    public string Location { get; set; }
-    public string RegistrationLink { get; set; }
-    public string Organizer { get;  set; }
-    public EventEntitySchedule Schedule { get; set; }
-    public CategoryEntity Category { get; set; }
-    public ICollection<ImageEventEntity> Images { get; set; } = [];
+    public string Title { get; private set; }
+    public string UrlTitleImag { get; private set; }
+    public string Description { get; private set; }
+    public string Location { get; private set; }
+    public string RegistrationLink { get; private set; }
+    public string Organizer { get;  private set; }
+    public EventEntitySchedule Schedule { get; private set; }
+    public CategoryEntity Category { get; private set; }
+    public ICollection<ImageEventEntity> Images { get; private set; } = [];
 
     private EventEntity() {}
 
     public EventEntity(
-        string title, 
-        string urlTitleImag, 
-        string description, 
-        string location, 
-        string registrationLink, 
-        string organizer, 
-        EventEntitySchedule schedule, 
-        CategoryEntity category, 
-        IEnumerable<string> images)
-    {
-        Title = title;
-        UrlTitleImag = urlTitleImag;
-        Description = description;
-        Location = location;
-        RegistrationLink = registrationLink;
-        Organizer = organizer;
-        Schedule = schedule;
-        Category = category;
-        SetImages(images);
-    }
-
-    public EventEntity(
-        TitleValidAttribute title, 
+        TitleValidObject title, 
         ImageValidObject urlTitleImag, 
         DescriptionValidObject description, 
-        string location, 
-        string registrationLink, 
-        string organizer, 
+        LocationValidObject location, 
+        HttpLinkValidObject registrationLink, 
+        OrganizerValidObject organizer, 
         EventEntitySchedule schedule, 
         CategoryEntity category, 
         IEnumerable<string> images)
@@ -55,16 +33,62 @@ public class EventEntity : Entity
         Title = title.Text;
         UrlTitleImag = urlTitleImag.Text;
         Description = description.Text;
-        Location = location;
-        RegistrationLink = registrationLink;
-        Organizer = organizer;
+        Location = location.Text;
+        RegistrationLink = registrationLink.Text;
+        Organizer = organizer.Text;
         Schedule = schedule;
         Category = category;
-        SetImages(images);
+        UpdateImages(images);
     }
 
-
-
+    public EventEntity UpdateTitle(TitleValidObject title)
+    {
+        Title = title.Text;
+        return this;
+    }
+    
+    public EventEntity UpdateSchedule(EventEntitySchedule schedule)
+    {
+        Schedule = schedule;
+        return this;
+    }
+    
+    public EventEntity UpdateCategory(CategoryEntity category)
+    {
+        Category = category;
+        return this;
+    }
+    
+    public EventEntity UpdateTitleImage(ImageValidObject image)
+    {
+        UrlTitleImag = image.Text;
+        return this;
+    }
+    
+    public EventEntity UpdateDescription(DescriptionValidObject description)
+    {
+        Description = description.Text;
+        return this;
+    }
+    
+    public EventEntity UpdateLocation(LocationValidObject location)
+    {
+        Description = location.Text;
+        return this;
+    }
+    
+    public EventEntity UpdateHttpLink(HttpLinkValidObject http)
+    {
+        RegistrationLink = http.Text;
+        return this;
+    }
+    
+    public EventEntity UpdateOrganizer(OrganizerValidObject organizer)
+    {
+        Organizer = organizer.Text;
+        return this;
+    }
+    
     public bool Include(string? category, string? title, string? stDate, string? endDate)
     {
        return (string.IsNullOrEmpty(category) || category.Equals(Category.Category)) &&
@@ -76,7 +100,7 @@ public class EventEntity : Entity
     public override string ToString()
         => $"{Title} {Schedule}";
 
-    public void SetImages(IEnumerable<string> images)
+    public void UpdateImages(IEnumerable<string> images)
         => Images = images.Select(i => new ImageEventEntity { Url = i }).ToList();
 
     public IEnumerable<string> GetImages()

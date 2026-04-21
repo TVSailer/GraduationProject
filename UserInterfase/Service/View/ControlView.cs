@@ -9,7 +9,7 @@ namespace UserInterface.Service.View;
 public class ControlView(IServiceProvisionUI di) : IControlView
 {
     private readonly Stack<IView> _stack = new();
-    public Form Form { get; set; } = new()
+    public readonly Form Form = new()
     {
         WindowState = FormWindowState.Maximized,
         StartPosition = FormStartPosition.CenterParent,
@@ -21,21 +21,20 @@ public class ControlView(IServiceProvisionUI di) : IControlView
 
     public IView<T> LoadView<T>()
     {
-        if (_view is not null) _stack.Push(_view);
+        if (_view is not null) 
+            _stack.Push(_view);
 
         var view = di.GetService<IView<T>>();
+        view.InitializeComponents(Form);
         _view = view;
 
-        view.InitializeComponents(Form);
+        if (_stack.Count == 0)
+            Form.ShowDialog();
 
         return view;
     }
 
-    public void UpdateGui()
-    {
-        if (_view is null) throw new NullReferenceException();
-        _view.InitializeComponents(Form);
-    }
+    public void UpdateGui() => _view?.InitializeComponents(Form);
 
     public void Exit()
     {

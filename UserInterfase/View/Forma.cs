@@ -8,7 +8,6 @@ public abstract class Forma<T> : Form, IForma<T>
 {
     protected Forma()
     {
-        FormClosed += (s, e) => Close();
         StartPosition = FormStartPosition.CenterScreen;
         Initialize();
         Controls.Add(ControlUi(new BuilderLayoutPanel()).Build());

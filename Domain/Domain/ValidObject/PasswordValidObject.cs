@@ -5,20 +5,18 @@ public class PasswordValidObject
     public string Password { get; }
     public string Hash => BCrypt.Net.BCrypt.HashPassword(Password);
 
-    private PasswordValidObject(string password)
-    {
-        Password = password;
-    }
-
-    public static PasswordValidObject Create(string[]? hash)
+    public PasswordValidObject(string[]? hash)
     {
         while (true)
         {
             var password = Generation(12);
             if (hash?.Length > 0 && hash.Any(h => BCrypt.Net.BCrypt.Verify(password, h))) continue;
-            return new PasswordValidObject(password);
-        } 
+            Password = password;
+            return;
+        }
     }
+
+    public static PasswordValidObject Create(string[]? hash) => new (hash);
 
     public static string Generation(int length)
     {

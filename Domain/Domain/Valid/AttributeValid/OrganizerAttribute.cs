@@ -23,6 +23,6 @@ public class OrganizerAttribute : RequiredAttribute
             return true;
         }
         ErrorMessage = "Названиме организации не может быть пустым";
-        return true;
+        return false;
     }
 }

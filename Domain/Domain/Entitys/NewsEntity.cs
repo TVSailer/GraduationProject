@@ -1,44 +1,83 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Data;
+using CSharpFunctionalExtensions;
 using Domain.Entitys.ImagesEntity;
+using Domain.ValidObject;
 
 namespace Domain.Entitys;
 
 public class NewsEntity : Entity
 {
-    public string Title { get; set; }
-    public string Content { get; set; }
-    public string Date { get; set; }
-    public CategoryEntity Category { get; set; }
-    public string Author { get; set; }
-    public ICollection<ImageNewsEntity> Images { get; set; } = [];
+    public string Title { get; private set; }
+    public string Content { get; private set; }
+    public string Date { get; private set; }
+    public CategoryEntity Category { get; private set; }
+    public string Author { get; private set; }
+    public ICollection<ImageNewsEntity> Images { get; private set; } = [];
 
     private NewsEntity() { }
 
-    public NewsEntity(string title, string content, string date, CategoryEntity category, string author)
+    public NewsEntity(
+        TitleValidObject title,
+        DescriptionValidObject content,
+        DateOnly date,
+        CategoryEntity category,
+        AuthorValidObject author,
+        IEnumerable<string> images)
     {
-        Title = title;
-        Content = content;
-        Date = date;
+        Title = title.Text;
+        Content = content.Text;
+        Author = author.Text;
+        Date = date.ToString("dd.MM.yyyy");
         Category = category;
-        Author = author;
+        UpdateImages(images);
     }
-    public NewsEntity(string title, string content, string date, CategoryEntity category, string author, IEnumerable<string> images)
+
+    public NewsEntity UpdateTitle(TitleValidObject title)
     {
-        Title = title;
-        Content = content;
-        Date = date;
+        Title = title.Text;
+        return this;
+    }
+    
+    public NewsEntity UpdateAuthor(AuthorValidObject author)
+    {
+        Author = author.Text;
+        return this;
+    }
+
+    public NewsEntity UpdateContent(DescriptionValidObject description)
+    {
+        Content = description.Text;
+        return this;
+    }
+    
+    public NewsEntity UpdateDate(DateOnly date)
+    {
+        Date = date.ToString("dd.MM.yyyy");
+        return this;
+    }
+
+    public NewsEntity UpdateCategory(CategoryEntity category)
+    {
         Category = category;
-        Author = author;
-        SetImages(images);
+        return this;
     }
 
     public override string ToString() => $"Новость: {Title} {Date}";
-    public DateTime DateT() => DateTime.Parse(Date);
 
-    public void SetImages(IEnumerable<string> images)
-        => Images = images.Select(i => new ImageNewsEntity { Url = i }).ToList();
+    public void UpdateImages(IEnumerable<string>? images)
+    {
+        if (images is null) return;
+        Images = images.Select(i => new ImageNewsEntity { Url = i }).ToList();
+    }
 
     public IEnumerable<string> GetImages()
         => Images.Select(i => i.Url);
 
+    public bool Include(string category, string title, string startDate, string endDate)
+    {
+        return (string.IsNullOrEmpty(category) || category.Equals(Category.Category)) &&
+               Title.StartsWith(title ?? "") &&
+               DateTime.Parse(Date) >= (DateTime.TryParse(startDate, out var dateS) ? dateS : DateTime.MinValue) &&
+               DateTime.Parse(Date) <= (DateTime.TryParse(endDate, out var dateE) ? dateE : DateTime.MaxValue);
+    }
 }

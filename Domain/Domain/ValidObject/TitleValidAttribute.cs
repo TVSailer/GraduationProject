@@ -1,22 +1,27 @@
 ﻿using Domain.Exception;
+using Domain.ValidObject.BaseValidObject;
 
 namespace Domain.ValidObject;
 
-public class TitleValidAttribute
+public class TitleValidObject : IValidObject
 {
     public string Text { get; }
 
-    private TitleValidAttribute(string text)
+    public TitleValidObject(string text)
     {
+        if (string.IsNullOrEmpty(text)) throw new ValidObjectException("Названиме не может быть пустым");
+
+        if (text.Length > 20) throw new ValidObjectException("Название не может превышать 20 симмволов");
+
         Text = text;
     }
 
-    public TitleValidAttribute Create(string title)
+    public static TitleValidObject Create(string title)
     {
         if (string.IsNullOrEmpty(title)) throw new ValidObjectException("Названиме не может быть пустым");
 
         if (title.Length > 20) throw new ValidObjectException("Название не может превышать 20 симмволов");
 
-        return new TitleValidAttribute(title);
+        return new TitleValidObject(title);
     }
 }

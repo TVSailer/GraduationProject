@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Admin.ViewModel.Event;
 using Admin.ViewModel.Lesson;
+using Admin.ViewModel.News;
 using Admin.ViewModel.Teacher;
 using Admin.ViewModel.Visitor;
 using Domain.Command;
@@ -26,6 +27,14 @@ public class AdminPanelViewModel
 
     private void ExecuteLoadTeacherManagerPanelView(object? obj) => _controlViewService.LoadView<TeacherManagerPanelViewModel>();
     private bool CanExecuteLoadTeacherManagerPanelView(object? obj) => true;
+
+    #endregion
+    #region CommandLoadNewsManagerPanelView
+
+    internal readonly ICommand LoadNewsManagerPanelView;
+
+    private void ExecuteLoadNewsManagerPanelView(object? obj) => _controlViewService.LoadView<NewsManagerPanelViewModel>();
+    private bool CanExecuteLoadNewsManagerPanelView(object? obj) => true;
 
     #endregion
     #region CommandLoadLessonManagerPanelView
@@ -61,5 +70,6 @@ public class AdminPanelViewModel
         LoadTeacherManagerPanelView = new ExecuteCommand(ExecuteLoadTeacherManagerPanelView, CanExecuteLoadTeacherManagerPanelView);
         LoadLessonManagerPanelView = new ExecuteCommand(ExecuteLoadLessonManagerPanelView, CanExecuteLoadLessonManagerPanelView);
         LoadVisitorManagerPanelView = new ExecuteCommand(ExecuteLoadVisitorManagerPanelView, CanExecuteLoadVisitorManagerPanelView);
+        LoadNewsManagerPanelView = new ExecuteCommand(ExecuteLoadNewsManagerPanelView, CanExecuteLoadNewsManagerPanelView);
     }
 }

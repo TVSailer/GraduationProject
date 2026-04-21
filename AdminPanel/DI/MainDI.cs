@@ -2,12 +2,14 @@ using Admin.DI.Module;
 using DataAccess.PostgreSQL;
 using DataAccess.PostgreSQL.DI;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.FielService.BaseFileService;
 using Domain.Service.ImageService;
 using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService;
 using Domain.Service.SharedService.BaseSharedService;
 using General.Service.ControlView;
+using General.Service.File;
 using General.Service.Image;
 using General.Service.Message;
 using General.Service.ProviderUI;
@@ -29,6 +31,7 @@ public class MainDI
     {
         var container = new StandardKernel(
             new MainModule(),
+            new EnterModule(),
             new ReviewModule(),
             new DataAccesPostgreSqlModule(),
             new TeacherModule(),
@@ -50,7 +53,8 @@ public class MainDI
         container.Bind<IControlViewService>().To<ControlViewService>().InSingletonScope();
         container.Bind<ISharedService>().To<SharedService>().InSingletonScope();
         container.Bind<IMessageService>().To<MessageService>();
-        
+        container.Bind<IAuthFileService>().ToConstant(new AuthFileService("EnterAdmin")).InSingletonScope();
+
 
         return container;
     }

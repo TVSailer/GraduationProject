@@ -14,6 +14,12 @@ public class DescriptionAttribute : RequiredAttribute
                 return false;
             }
 
+            if (des.Split(" ") is { Length: < 5 })
+            {
+                ErrorMessage = "Описание должно состоять минимум из 5-ти слов";
+                return false;
+            }
+
             if (des.Length > 200)
             {
                 ErrorMessage = "Описание не может превышать 200 симмволов";

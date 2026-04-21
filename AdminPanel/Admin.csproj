@@ -34,4 +34,10 @@
     <ProjectReference Include="..\UserInterfase\UserInterface.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="View\News\NewsCard.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

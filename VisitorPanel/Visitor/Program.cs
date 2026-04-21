@@ -37,8 +37,6 @@ namespace Visitor
 
             var controlView = di.GetService<IControlView>();
             controlView.LoadView<MainPanelViewModel>();
-
-            Application.Run(controlView.Form);
-        }
+        }   
     }
 }

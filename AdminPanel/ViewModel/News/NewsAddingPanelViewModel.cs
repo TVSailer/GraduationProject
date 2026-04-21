@@ -1,19 +1,18 @@
-﻿using System.Windows.Input;
-using Domain.Command;
+﻿using Domain.Command;
 using Domain.Entitys;
-using Domain.Entitys.ComplexType;
 using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Valid.AttributeValid;
 using Domain.ValidObject;
+using System.Windows.Input;
 
-namespace Admin.ViewModel.Event;
+namespace Admin.ViewModel.News;
 
-public class EventAddingPanelViewModel : General.ViewModel.ViewModel
+public class NewsAddingPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IImageService _imageService;
-    private readonly IRepository<EventEntity> _repositoryE;
+    private readonly IRepository<NewsEntity> _repositoryE;
     private readonly IControlViewService _controlViewService;
 
     public readonly CategoryEntity[] CategoryEntities;
@@ -21,42 +20,10 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
     #region Property
 
     [Title] public string? Title { get; set => Set(ref field, value); }
-    [Image] public string? TitleImg { get; set => Set(ref field, value); }
     [Description] public string? Description { get; set => Set(ref field, value); }
     [Date] public string? Date { get; set => Set(ref field, value); } = DateTime.Now.ToShortDateString();
-    #region TimeStart
-
-    [Time]
-    public string? TimeStart
-    {
-        get;
-        set
-        {
-            Set(ref field, value);
-            ValidProperty(Schedule, nameof(Schedule));
-        }
-    } = "10:00";
-
-    #endregion
-    #region TimeEnd
-
-    [Time]
-    public string? TimeEnd
-    {
-        get;
-        set
-        {
-            Set(ref field, value);
-            ValidProperty(Schedule, nameof(Schedule));
-        }
-    } = "12:00";
-
-    #endregion
-    [Location] public string? Location { get; set => Set(ref field, value); }
-    [Organizer] public string? Organizer { get; set => Set(ref field, value); }
+    [Author] public string? Author { get; set => Set(ref field, value); }
     [RequiredCustom] public CategoryEntity? Category { get; set => Set(ref field, value); }
-    [Url] public string? RegisLink { get; set => Set(ref field, value); }
-    [ScheduleEntity] public EventEntitySchedule Schedule => new(TimeStart, TimeEnd, Date);
     public IEnumerable<string> Images { get; set => Set(ref field, value); }
     #endregion
 
@@ -99,15 +66,12 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
     private void ExecuteSave(object? obj)
     {
         _repositoryE.Add(
-            new EventEntity(
-                TitleValidObject.Create(Title),
-                ImageValidObject.Create(TitleImg),
-                DescriptionValidObject.Create(Description),
-                LocationValidObject.Create(Location),
-                HttpLinkValidObject.Create(RegisLink),
-                OrganizerValidObject.Create(Organizer),
-                Schedule,
-                Category!,
+            new NewsEntity(
+                new TitleValidObject(Title),
+                new DescriptionValidObject(Description!),
+                DateOnly.Parse(Date),
+                Category,
+                new AuthorValidObject(Author!),
                 Images)
             );
 
@@ -118,7 +82,11 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 
     #endregion
 
-    public EventAddingPanelViewModel(IRepository<EventEntity> repositoryE, IRepository<CategoryEntity> repositoryC, IImageService imageService, IControlViewService controlViewService)
+    public NewsAddingPanelViewModel(
+        IRepository<NewsEntity> repositoryE, 
+        IRepository<CategoryEntity> repositoryC, 
+        IImageService imageService, 
+        IControlViewService controlViewService)
     {
         _repositoryE = repositoryE;
         _imageService = imageService;
@@ -134,3 +102,4 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
         ToggleImage = new ExecuteCommand(ExecuteToggleImage, CanExecuteToggleImage);
     }
 }
+

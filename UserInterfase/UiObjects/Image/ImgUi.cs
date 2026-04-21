@@ -1,27 +1,109 @@
-﻿using ExtensionFunc;
+﻿using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using ExtensionFunc;
 
 namespace UserInterface.UiObjects.Image;
 
-public sealed class ImgUi : PictureBox
+public class ImgUi : PictureBox
 {
+    public readonly string Url;
+    private Bitmap _originalImage;
+    private Bitmap _scaledImage;
+    private bool _isSelected;
+
     public ImgUi(string url)
     {
         Url = url;
-        var orgImage = ScaleImageByHeight(url, 300);
-
-        Size = new Size(orgImage.Width, orgImage.Height);
+        Size = new Size(100, 100); // Временный размер, пока грузится
         Margin = new Padding(5);
         SizeMode = PictureBoxSizeMode.Zoom;
-        Image = orgImage;
+
         MouseDoubleClick += (_, _) => FullSizeImage();
-        BackgroundImage =
-            new Bitmap("D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage2.png");
-        MouseClick += (_, _) => Image = Image == orgImage ? DarkenImage(orgImage) : orgImage; 
+        MouseClick += async (_, _) => await ToggleSelection();
+
+        BackgroundImage = new Bitmap("D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage2.png");
+
+        // Асинхронная загрузка и масштабирование
+        _ = LoadImageAsync(url, 300);
     }
 
-    public readonly string Url;
+    private async Task LoadImageAsync(string url, int targetHeight)
+    {
+        try
+        {
+            // Загружаем и масштабируем изображение в фоне
+            var scaledImage = await ScaleImageByHeightAsync(url, targetHeight);
+
+            // Возвращаемся в UI поток для обновления контрола
+            if (InvokeRequired)
+            {
+                Invoke(() =>
+                {
+                    _scaledImage = scaledImage;
+                    Image = scaledImage;
+                    Size = new Size(scaledImage.Width, scaledImage.Height);
+                });
+            }
+            else
+            {
+                _scaledImage = scaledImage;
+                Image = scaledImage;
+                Size = new Size(scaledImage.Width, scaledImage.Height);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Обработка ошибок загрузки
+            Debug.WriteLine($"Ошибка загрузки изображения: {ex.Message}");
+        }
+    }
+
+    private async Task ToggleSelection()
+    {
+        _isSelected = !_isSelected;
+
+        if (_isSelected)
+        {
+            var darkenedImage = await DarkenImageAsync(_scaledImage);
+            Image = darkenedImage;
+        }
+        else Image = _scaledImage;
+    }
+
+    public async Task<Bitmap> ScaleImageByHeightAsync(string url, int targetHeight)
+    {
+        return await Task.Run(() =>
+        {
+            using var originalImage = new Bitmap(url);
+            double scale = (double)targetHeight / originalImage.Height;
+            int targetWidth = (int)(originalImage.Width * scale);
+
+            Bitmap scaledImage = new Bitmap(targetWidth, targetHeight);
+
+            using Graphics g = Graphics.FromImage(scaledImage);
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            g.DrawImage(originalImage, 0, 0, targetWidth, targetHeight);
+
+            return scaledImage;
+        });
+    }
+
+    private async Task<Bitmap> DarkenImageAsync(System.Drawing.Image original)
+    {
+        return await Task.Run(() =>
+        {
+            Bitmap result = new Bitmap(original.Width, original.Height);
+
+            using Graphics g = Graphics.FromImage(result);
+            g.DrawImage(original, 0, 0, original.Width, original.Height);
+
+            using Brush darkBrush = new SolidBrush(Color.FromArgb(100, 0, 0, 0));
+            g.FillRectangle(darkBrush, 0, 0, original.Width, original.Height);
+
+            return result;
+        });
+    }
 
     private void FullSizeImage()
     {
@@ -38,31 +120,13 @@ public sealed class ImgUi : PictureBox
             .ShowDialog();
     }
 
-    public Bitmap ScaleImageByHeight(string url, int targetHeight)
+    protected override void Dispose(bool disposing)
     {
-        using var originalImage = new Bitmap(url);
-        double scale = (double)targetHeight / originalImage.Height;
-        int targetWidth = (int)(originalImage.Width * scale);
-
-        Bitmap scaledImage = new Bitmap(targetWidth, targetHeight);
-
-        using Graphics g = Graphics.FromImage(scaledImage);
-        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        g.DrawImage(originalImage, 0, 0, targetWidth, targetHeight);
-
-        return scaledImage;
-    }
-
-    private System.Drawing.Image DarkenImage(System.Drawing.Image original)
-    {
-        Bitmap result = new Bitmap(original.Width, original.Height);
-
-        using Graphics g = Graphics.FromImage(result);
-        g.DrawImage(original, 0, 0, original.Width, original.Height);
-
-        using Brush darkBrush = new SolidBrush(Color.FromArgb(100, 0, 0, 0));
-        g.FillRectangle(darkBrush, 0, 0, original.Width, original.Height);
-
-        return result;
+        if (disposing)
+        {
+            _scaledImage?.Dispose();
+            _originalImage?.Dispose();
+        }
+        base.Dispose(disposing);
     }
 }

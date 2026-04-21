@@ -1,23 +1,19 @@
 ﻿using Domain.Exception;
+using Domain.ValidObject.BaseValidObject;
 
 namespace Domain.ValidObject;
 
-public class DescriptionValidObject
+public class DescriptionValidObject : IValidObject
 {
     public string Text { get; }
 
-    private DescriptionValidObject(string text)
+    public DescriptionValidObject(string text)
     {
+        if (text is { Length: > 200 }) throw new ValidObjectException("Описание должно сожержать до 200 символов");
+        if (text.Split(" ") is { Length: < 5 }) throw new ValidObjectException("Описание должно состоять минимум из 5-ти слов");
+
         Text = text;
     }
 
-    public static DescriptionValidObject Create(string text)
-    {
-        if (text is { Length: > 200 }) throw new ValidObjectException("Описание должно сожержать до 200 символов");
-
-        var des = text.Split(" ");
-        if (des is {Length: < 5}) throw new ValidObjectException("Описание должно состоять минимум из 5-ти слов");
-
-        return new DescriptionValidObject(text);
-    }
+    public static DescriptionValidObject Create(string text) => new DescriptionValidObject(text);
 }
