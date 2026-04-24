@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="ViewModel\Category\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="View\Category\CategoryCard.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="View\News\NewsCard.cs">
       <SubType>Component</SubType>
     </Compile>

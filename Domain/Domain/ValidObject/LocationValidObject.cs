@@ -14,14 +14,4 @@ public class LocationValidObject : IValidObject
 
         Text = text;
     }
-
-    public static LocationValidObject Create(string text)
-    {
-
-        if (string.IsNullOrEmpty(text)) throw new ValidObjectException("Название локации не может быть пустым");
-
-        if (text.Length > 20) throw new ValidObjectException("Название локации не может превышать 20 символов");
-
-        return new LocationValidObject(text);
-    }
 }

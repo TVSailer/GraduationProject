@@ -10,6 +10,7 @@ using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
+using Domain.ValidObject;
 
 namespace Admin.ViewModel.Lesson;
 
@@ -65,17 +66,16 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand Update;
 
-
     private void ExecuteUpdate(object? obj)
     {
-        _lessonEntity.Title = Title;
-        _lessonEntity.Description = Description;
-        _lessonEntity.Location = Location;
-        _lessonEntity.MaxParticipants = MaxParticipants;
-        _lessonEntity.Category = Category;
-        _lessonEntity.Teacher = Teacher;
-        _lessonEntity.Schedule = _schedule.Value;
-        _lessonEntity.SetImages(Images);
+        _lessonEntity
+            .UpdateTitle(new TitleValidObject(Title))
+            .UpdateDescription(new DescriptionValidObject(Description))
+            .UpdateLocation(new LocationValidObject(Location))
+            .UpdateMaximazeParticipant(new MaximazeParticipantValidObject(MaxParticipants))
+            .UpdateCategory(Category)
+            .UpdateTeacher(Teacher)
+            .UpdateImages(Images);
 
         _repositoryL.Update(_lessonEntity);
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);

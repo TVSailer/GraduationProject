@@ -10,6 +10,7 @@ using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
+using Domain.ValidObject;
 
 namespace Admin.ViewModel.Lesson;
 
@@ -69,10 +70,10 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
     {
         _repositoryL.Add(
             new LessonEntity(
-                Title!,
-                Description!,
-                Location!,
-                MaxParticipants,
+                new TitleValidObject(Title!),
+                new DescriptionValidObject(Description!),
+                new LocationValidObject(Location!),
+                new MaximazeParticipantValidObject(MaxParticipants),
                 Category!,
                 Teacher,
                 _schedule.Value,

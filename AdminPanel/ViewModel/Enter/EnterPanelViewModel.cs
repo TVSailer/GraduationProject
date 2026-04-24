@@ -37,7 +37,7 @@ public class EnterPanelViewModel
         var auths = _repositoryA
             .Get()
             .ToArray()
-            .Single(a => a.Equals(Login, Password));
+            .Single(a => a.Equals(Login, Password, UserRole.Admin));
 
         _fileService.WriteAuth(auths);
 
@@ -50,12 +50,12 @@ public class EnterPanelViewModel
         var auths = _repositoryA
             .Get()
             .ToArray()
-            .SingleOrDefault(a => a.Equals(Login, Password));
+            .SingleOrDefault(a => a.Equals(Login, Password, UserRole.Admin));
 
         if (auths is not null) return true;
 
         _messageService.Message("Неверный пароль или логин", TypeMessage.Error);
-        return true;
+        return false;
     }
 
     #endregion

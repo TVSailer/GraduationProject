@@ -15,14 +15,4 @@ public class OrganizerValidObject : IValidObject
 
         Text = text;
     }
-
-    public static OrganizerValidObject Create(string text)
-    {
-
-        if (string.IsNullOrEmpty(text)) throw new ValidObjectException("Имя организатора не может быть пустым");
-
-        if (text.Length > 20) throw new ValidObjectException("Имя организатора не может превышать 20 символов");
-
-        return new OrganizerValidObject(text);
-    }
 }

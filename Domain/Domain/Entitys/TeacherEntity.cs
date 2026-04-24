@@ -17,18 +17,6 @@ namespace Domain.Entitys
 
         private TeacherEntity() { }
 
-        //TODO: delete
-        public TeacherEntity(string image, string name, string surname, string patronymic, string dateBirth, string numberPhone, AuthEntity authEntity)
-        {
-            Image = image;
-            Name = name;
-            Surname = surname;
-            Patronymic = patronymic;
-            DateBirth = dateBirth;
-            NumberPhone = numberPhone;
-            AuthEntity = authEntity;
-        }
-        
         public TeacherEntity(
             ImageValidObject image, 
             NameValidObject name, 

@@ -16,8 +16,6 @@ public class PasswordValidObject
         }
     }
 
-    public static PasswordValidObject Create(string[]? hash) => new (hash);
-
     public static string Generation(int length)
     {
         var random = new Random();

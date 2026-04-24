@@ -100,8 +100,8 @@ public class EventEntity : Entity
     public override string ToString()
         => $"{Title} {Schedule}";
 
-    public void UpdateImages(IEnumerable<string> images)
-        => Images = images.Select(i => new ImageEventEntity { Url = i }).ToList();
+    public void UpdateImages(IEnumerable<string>? images)
+        => Images = images?.Select(i => new ImageEventEntity { Url = i }).ToList();
 
     public IEnumerable<string> GetImages()
         => Images.Select(i => i.Url);

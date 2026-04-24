@@ -52,7 +52,7 @@ public class ReviewDetailsPanelViewModel : General.ViewModel.ViewModel
     {
         _reviewEntity = sharedService.GetData<ReviewEntity>();
 
-        Rating = (int)_reviewEntity.Rating;
+        Rating = _reviewEntity.Rating.Estimation;
         Visitor = _reviewEntity.Visitor;
         Comment = _reviewEntity.Comment;
 

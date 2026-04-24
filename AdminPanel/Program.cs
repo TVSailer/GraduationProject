@@ -2,9 +2,13 @@ using Admin.DI;
 using Admin.ViewModel.AdminMain;
 using Admin.ViewModel.Enter;
 using Domain.Entitys;
+using Domain.Enum;
 using Domain.Repository;
+using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.FielService.BaseFileService;
-using UserInterface.Service.View.Base;
+using Domain.ValidObject;
+using System.Xml.Linq;
+using Domain.Service.AuthService.BaseAuhtService;
 
 namespace Admin;
 
@@ -20,25 +24,29 @@ internal static class Program
 
         var di = new MainDI();
 
-        var controlView = di.GetService<IControlView>();
+        //TestData(di);
+        LoadAdminPanel(di);
+    }
 
-        var authFileService = di.GetService<IAuthFileService>();
+    private static void TestData(MainDI di)
+        => di.GetService<TestData>();
 
-        if (authFileService.Exists())
+    private static void LoadAdminPanel(MainDI di)
+    {
+        var controlView = di.GetService<IControlViewService>();
+        var authService = di.GetService<IAuthService>();
+
+        if (authService.IsRoleAuth(UserRole.Admin))
         {
-            var auth = authFileService.ReadAuth();
-            var authData = di
-                .GetService<IRepository<AuthEntity>>()
-                .Get()
-                .ToArray()
-                .SingleOrDefault(v => v.Equals(auth.login, auth.password));
-
-            if (authData is not null)
+            if(authService.IsSaveAuth(UserRole.Admin))
                 controlView.LoadView<AdminPanelViewModel>();
             else controlView.ShowDialog<EnterPanelViewModel>();
         }
-        else controlView.ShowDialog<EnterPanelViewModel>();
-
-        //di.GetService<TestData>();
+        else
+        {
+            authService.CreateAuth("Admin", UserRole.Admin);
+            authService.MessageAuth();
+            controlView.ShowDialog<EnterPanelViewModel>();
+        }
     }
 }

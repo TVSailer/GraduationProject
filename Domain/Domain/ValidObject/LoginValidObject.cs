@@ -1,4 +1,5 @@
-﻿using Domain.Exception;
+﻿using Domain.Entitys;
+using Domain.Exception;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Domain.ValidObject;
@@ -16,9 +17,12 @@ public class LoginValidObject
 
         Login = login + random.Next(10000);
     }
-
-    public static LoginValidObject Create(string text)
+    
+    public LoginValidObject(AuthEntity auth)
     {
-        return new LoginValidObject(text);
+        if (string.IsNullOrEmpty(auth.Login)) throw new ValidObjectException("Логин не может быть пустым");
+        if (auth.Login is { Length: <= 2 } or { Length: > 20 }) throw new ValidObjectException("Кол-во символом должно быть в от 2 до 20");
+
+        Login = auth.Login;
     }
 }

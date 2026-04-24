@@ -1,6 +1,7 @@
 using DataAccess.PostgreSQL;
 using Domain.Entitys;
 using Domain.Entitys.ComplexType;
+using Domain.Enum;
 using Domain.Repository;
 using Domain.ValidObject;
 using Day = Domain.Enum.Day;
@@ -19,9 +20,13 @@ public class TestData {
         for (int i = 0; i < 10; i++)
             images.Add($"C://Users/tereg/Pictures/Screenshots/2025-11-30326{i}.png");
 
-        var category = new CategoryEntity("Развлечение");
+        var category = new CategoryEntity(new CategoryValidObject("Развлечение"));
 
         dbContext.Add(category);
+        dbContext.AddRange(
+            new UserRoleEntity(UserRole.Admin), 
+            new UserRoleEntity(UserRole.Teacher),
+            new UserRoleEntity(UserRole.Visitor));
 
         for (int i = 0; i < 10; i++)
         {
@@ -52,33 +57,35 @@ public class TestData {
 
             var authTeacher = new AuthEntity(
                 new LoginValidObject($"Фамилия{i}"), 
-                new PasswordValidObject(repositoryA.Get().Select(a => a.Password).ToArray())
+                new PasswordValidObject(repositoryA.Get().Select(a => a.Password).ToArray()),
+                UserRole.Teacher
             );
             
             var authVisitor = new AuthEntity(
                 new LoginValidObject($"Фамилия{i}"), 
-                new PasswordValidObject(repositoryA.Get().Select(a => a.Password).ToArray())
+                new PasswordValidObject(repositoryA.Get().Select(a => a.Password).ToArray()),
+                UserRole.Visitor
             );
 
             dbContext.AddRange(authVisitor, authTeacher);
 
             var teacher = new TeacherEntity(
-                images[0],
-                $"Имя{i}",
-                $"Фамилия{i}",
-                $"Отчество{i}",
-                "30.11.2005",
-                "89898342334",
+                new ImageValidObject(images[0]),
+                new NameValidObject($"Имя{i}"),
+                new SurnameValidObject( $"Фамилия{i}"),
+                new PatronymicValidObject($"Отчество{i}"),
+                new DateBirthTeacherValidObject(DateOnly.Parse("30.11.2005")),
+                new NumberPhoneValidObject("89898342334"),
                 authTeacher
             );
 
             dbContext.Add(teacher);
 
             var lesson = new LessonEntity(
-                $"Название{i}",
-                $"Описание{i} Описание{i} Описание{i} Описание{i} Описание{i}",
-                $"Локация{i}",
-                i,
+                new TitleValidObject($"Название{i}"),
+                new DescriptionValidObject($"Описание{i} Описание{i} Описание{i} Описание{i} Описание{i}"),
+                new LocationValidObject($"Локация{i}"),
+                new MaximazeParticipantValidObject(i +1),
                 category,
                 teacher,
                 [
@@ -101,19 +108,19 @@ public class TestData {
             dbContext.Add(lesson);
 
             var visitor = new VisitorEntity(
-                images[0],
-                $"Имя{i}",
-                $"Фамилия{i}",
-                $"Отчество{i}",
-                "30.11.2005",
-                "89898342334",
+                new ImageValidObject(images[0]),
+                new NameValidObject($"Имя{i}"),
+                new SurnameValidObject($"Фамилия{i}"),
+                new PatronymicValidObject($"Отчество{i}"),
+                new DateBirthVisitorValidObject(DateOnly.Parse("30.11.2005")),
+                new NumberPhoneValidObject("89898342334"),
                 authVisitor
             );
 
             visitor.AddLesson(lesson);
 
             dbContext.Add(visitor);
-            dbContext.SaveChanges();
         }
+        dbContext.SaveChanges();
     }
 }

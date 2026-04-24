@@ -15,13 +15,4 @@ public class TitleValidObject : IValidObject
 
         Text = text;
     }
-
-    public static TitleValidObject Create(string title)
-    {
-        if (string.IsNullOrEmpty(title)) throw new ValidObjectException("Названиме не может быть пустым");
-
-        if (title.Length > 20) throw new ValidObjectException("Название не может превышать 20 симмволов");
-
-        return new TitleValidObject(title);
-    }
 }

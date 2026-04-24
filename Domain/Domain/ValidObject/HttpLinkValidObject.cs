@@ -15,13 +15,4 @@ public class HttpLinkValidObject : IValidObject
 
         Text = text;
     }
-
-    public static HttpLinkValidObject Create(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text)) throw new ValidObjectException("URL не может быть пустым");
-
-        if (!Uri.TryCreate(text, UriKind.Absolute, out _)) throw new ValidObjectException("Введите корректный URL");
-
-        return new HttpLinkValidObject(text);
-    }
 }

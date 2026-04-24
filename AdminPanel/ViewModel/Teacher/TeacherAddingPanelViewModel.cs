@@ -4,6 +4,8 @@ using Domain.Entitys;
 using Domain.Enum;
 using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.EntityService;
+using Domain.Service.EntityService.TeacherService;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Valid.AttributeValid;
 using Domain.ValidObject;
@@ -13,9 +15,7 @@ namespace Admin.ViewModel.Teacher;
 public class TeacherAddingPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IControlViewService _controlViewService;
-    private readonly IRepository<TeacherEntity> _repositoryT;
-    private readonly IRepository<AuthEntity> _repositoryA;
-    private readonly IMessageService _messageService;
+    private readonly ITeacherService _teacherService;
     [Name] public string? Name { get; set => Set(ref field, value); }
     [Surname] public string? Surname { get; set => Set(ref field, value); }
     [Patronymic] public string? Patronymic { get; set => Set(ref field, value); }
@@ -37,21 +37,13 @@ public class TeacherAddingPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteSave(object? obj)
     {
-        var login = LoginValidObject.Create(Surname);
-        var password = PasswordValidObject.Create(
-           _repositoryA
-                    .Get()
-                    .Select(a => a.Password)
-                    .ToArray());
-
-        var auth = _repositoryA.Add(new AuthEntity(login, password));
-
-        _repositoryT.Add(new TeacherEntity(Image, Name, Surname, Patronymic, DateBirth, NumberPhone, auth));
-
-        _messageService.Message(
-            $"Логин: {login}" +
-            $"\n" +
-            $"Пароль: {password.Password}", TypeMessage.Info);
+        _teacherService.Add(
+            new ImageValidObject(Image),
+            new NameValidObject(Name),
+            new SurnameValidObject(Surname),
+            new PatronymicValidObject(Patronymic),
+            new DateBirthTeacherValidObject(DateOnly.Parse(DateBirth)),
+            new NumberPhoneValidObject(NumberPhone));
 
         _controlViewService.Exit();
     }
@@ -62,14 +54,10 @@ public class TeacherAddingPanelViewModel : General.ViewModel.ViewModel
 
     public TeacherAddingPanelViewModel(
         IControlViewService controlViewService, 
-        IRepository<TeacherEntity> repositoryT,
-        IRepository<AuthEntity> repositoryA,
-        IMessageService messageService)
+        ITeacherService teacherService)
     {
         _controlViewService = controlViewService;
-        _repositoryT = repositoryT;
-        _repositoryA = repositoryA;
-        _messageService = messageService;
+        _teacherService = teacherService;
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         Save = new ExecuteCommand(ExecuteSave, CanExecuteSave);

@@ -100,12 +100,12 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
     {
         _repositoryE.Add(
             new EventEntity(
-                TitleValidObject.Create(Title),
-                ImageValidObject.Create(TitleImg),
-                DescriptionValidObject.Create(Description),
-                LocationValidObject.Create(Location),
-                HttpLinkValidObject.Create(RegisLink),
-                OrganizerValidObject.Create(Organizer),
+                new TitleValidObject(Title),
+                new ImageValidObject(TitleImg),
+                new DescriptionValidObject(Description),
+                new LocationValidObject(Location),
+                new HttpLinkValidObject(RegisLink),
+                new OrganizerValidObject(Organizer),
                 Schedule,
                 Category!,
                 Images)

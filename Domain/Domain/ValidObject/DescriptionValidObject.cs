@@ -14,6 +14,4 @@ public class DescriptionValidObject : IValidObject
 
         Text = text;
     }
-
-    public static DescriptionValidObject Create(string text) => new DescriptionValidObject(text);
 }

@@ -55,18 +55,6 @@ public class VisitorEntity : Entity
         AuthEntity = authEntity;
     }
 
-    //TODO: delete
-    public VisitorEntity(string image, string name, string surname, string patronymic, string dateBirth, string numberPhone, AuthEntity authEntity)
-    {
-        Image = image;
-        Name = name;
-        Surname = surname;
-        Patronymic = patronymic;
-        DateBirth = dateBirth;
-        NumberPhone = numberPhone;
-        AuthEntity = authEntity;
-    }
-
     public VisitorEntity UpdateName(NameValidObject name)
     {
         Name = name.Text;
@@ -91,7 +79,7 @@ public class VisitorEntity : Entity
         return this;
     }
     
-    public VisitorEntity UpdateNumber(NumberPhoneValidObject number)
+    public VisitorEntity UpdateNumberPhone(NumberPhoneValidObject number)
     {
         NumberPhone = number.Text;
         return this;

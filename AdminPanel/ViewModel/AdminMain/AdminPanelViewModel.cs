@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Admin.ViewModel.Category;
 using Admin.ViewModel.Event;
 using Admin.ViewModel.Lesson;
 using Admin.ViewModel.News;
@@ -52,6 +53,14 @@ public class AdminPanelViewModel
     private bool CanExecuteLoadVisitorManagerPanelView(object? obj) => true;
 
     #endregion
+    #region CommandLoadCategoryPanel
+
+    internal readonly ICommand LoadCategoryPanelView;
+
+    private void ExecuteLoadCategoryPanelView(object? obj) => _controlViewService.ShowDialog<CategoryPanelViewModel>();
+    private bool CanExecuteLoadCategoryPanelView(object? obj) => true;
+
+    #endregion
     #region CommandExit
 
     internal readonly ICommand Exit;
@@ -71,5 +80,6 @@ public class AdminPanelViewModel
         LoadLessonManagerPanelView = new ExecuteCommand(ExecuteLoadLessonManagerPanelView, CanExecuteLoadLessonManagerPanelView);
         LoadVisitorManagerPanelView = new ExecuteCommand(ExecuteLoadVisitorManagerPanelView, CanExecuteLoadVisitorManagerPanelView);
         LoadNewsManagerPanelView = new ExecuteCommand(ExecuteLoadNewsManagerPanelView, CanExecuteLoadNewsManagerPanelView);
+        LoadCategoryPanelView = new ExecuteCommand(ExecuteLoadCategoryPanelView, CanExecuteLoadCategoryPanelView);
     }
 }

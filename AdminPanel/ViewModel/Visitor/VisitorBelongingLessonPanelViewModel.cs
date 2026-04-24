@@ -16,7 +16,7 @@ public class VisitorBelongingLessonPanelViewModel : General.ViewModel.ViewModel
     private readonly IControlViewService _controlViewService;
     private readonly IMessageService _messageService;
 
-    private LessonEntity _lessonEntity;
+    private readonly LessonEntity _lessonEntity;
 
     public ICollection<VisitorEntity> VisitorEntities { get; private set => Set(ref field, value); }
 
@@ -52,7 +52,7 @@ public class VisitorBelongingLessonPanelViewModel : General.ViewModel.ViewModel
     private bool CanExecuteExit(object? obj) => true;
 
     #endregion
-    #region CommandLoadVisitorNotBelogingLessonPanelView
+    #region CommandLoadVisitorNotBeloginmgLessonPanelView
 
     internal readonly ICommand LoadVisitorNotBelogingLessonPanelView;
 

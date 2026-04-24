@@ -7,14 +7,14 @@ namespace Domain.Entitys;
 public class ReviewEntity : Entity
 {
     public string Date { get; private set; } 
-    public Estimation Rating { get; private set; }
+    public EstimationEntity Rating { get; private set; }
     public string Comment { get; private set; }
     public VisitorEntity Visitor { get; private set; }
     public LessonEntity Lesson { get; private set; }
 
     private ReviewEntity() { }
 
-    public ReviewEntity(Estimation rating, CommentValidObject comment, VisitorEntity visitor, LessonEntity lesson)
+    public ReviewEntity(EstimationEntity rating, CommentValidObject comment, VisitorEntity visitor, LessonEntity lesson)
     {
         Rating = rating;
         Comment = comment.Text;
@@ -24,7 +24,7 @@ public class ReviewEntity : Entity
         Date = DateTime.Now.ToString(format: "dd/MM/yyyy");
     }
 
-    public ReviewEntity UpdateRating(Estimation rating)
+    public ReviewEntity UpdateRating(EstimationEntity rating)
     {
         Rating = rating;
         return this;

@@ -3,6 +3,7 @@ using Domain.Command;
 using Domain.Entitys;
 using Domain.Enum;
 using Domain.Repository;
+using Domain.Service.AuthService.BaseAuhtService;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
@@ -14,7 +15,7 @@ namespace Admin.ViewModel.Visitor;
 public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IMessageService _messageService;
-    private readonly IRepository<AuthEntity> _repositoryA;
+    private readonly IAuthService _authService;
     private readonly IRepository<VisitorEntity> _repositoryV;
     private readonly IControlViewService _controlViewService;
     private readonly VisitorEntity _visitorEntity;
@@ -44,31 +45,16 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     private void ExecuteUpdate(object? obj)
     {
         _visitorEntity
-            .UpdateName(NameValidObject.Create(Name))
-            .UpdateSurname(SurnameValidObject.Create(Surname))
-            .UpdatePatronymic(PatronymicValidObject.Create(Patronymic))
-            .UpdateDateBirth(DateBirthVisitorValidObject.Create(DateOnly.Parse(DateBirth)))
-            .UpdateImage(ImageValidObject.Create(Image))
-            .UpdateNumber(NumberPhoneValidObject.Create(NumberPhone));
+            .UpdateName(new NameValidObject(Name))
+            .UpdateSurname(new SurnameValidObject(Surname))
+            .UpdatePatronymic(new PatronymicValidObject(Patronymic))
+            .UpdateDateBirth(new DateBirthVisitorValidObject(DateOnly.Parse(DateBirth)))
+            .UpdateImage(new ImageValidObject(Image))
+            .UpdateNumberPhone(new NumberPhoneValidObject(NumberPhone));
 
-        var login = LoginValidObject.Create(Surname);
-        var password = PasswordValidObject.Create(
-            _repositoryA
-                .Get()
-                .Select(a => a.Password)
-                .ToArray());
-
-        _visitorEntity.AuthEntity
-            .UpdateLogin(login)
-            .UpdatePassword(password);
-
-        _repositoryA.Update(_visitorEntity.AuthEntity);
+        _authService.UpdateAuth(_visitorEntity.AuthEntity);
         _repositoryV.Update(_visitorEntity);
-
-        _messageService.Message(
-            $"Новый логин: {_visitorEntity.AuthEntity.Login}" +
-            $"\n" +
-            $"Новый пароль: {password.Password}", TypeMessage.Info);
+        _authService.MessageAuth();
 
         _controlViewService.Exit();
     }
@@ -92,15 +78,15 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     #endregion
 
     public VisitorDetailsPanelViewModel(
+        IAuthService authService,
         IRepository<VisitorEntity> repositoryV,
         IMessageService messageService,
-        IRepository<AuthEntity> repositoryA,
         IControlViewService controlViewService,
         ISharedService sharedService)
     {
+        _authService = authService;
         _repositoryV = repositoryV;
         _messageService = messageService;
-        _repositoryA = repositoryA;
         _controlViewService = controlViewService;
 
         _visitorEntity = sharedService.GetData<VisitorEntity>();

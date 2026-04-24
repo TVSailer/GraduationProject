@@ -2,44 +2,87 @@
 using Domain.Entitys.Compare;
 using Domain.Entitys.ImagesEntity;
 using Domain.Exception;
+using Domain.ValidObject;
 
 namespace Domain.Entitys
 {
     public class LessonEntity : Entity
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Location { get; set; }
-        public int MaxParticipants { get; set; }
-        public CategoryEntity Category { get; set; }
-        public TeacherEntity Teacher { get; set; }
-        public List<LessonScheduleEntity> Schedule { get; set; } = [];
-        public List<ReviewEntity> Reviews { get; set; } = [];
-        public List<VisitorEntity> Visitors { get; set; } = [];
-        public List<DateAttendanceEntity> AttendanceDates { get; set; } = [];
-        public List<ImageLessonEntity> Images { get; set; } = [];
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public string Location { get; private set; }
+        public int MaxParticipants { get; private set; }
+        public CategoryEntity Category { get; private set; }
+        public TeacherEntity Teacher { get; private set; }
+        public List<LessonScheduleEntity> Schedule { get; private set; } = [];
+        public List<ReviewEntity> Reviews { get; private set; } = [];
+        public List<VisitorEntity> Visitors { get; private set; } = [];
+        public List<DateAttendanceEntity> AttendanceDates { get; private set; } = [];
+        public List<ImageLessonEntity> Images { get; private set; } = [];
 
         private LessonEntity() { }
 
         public LessonEntity(
-            string title, 
-            string description, 
-            string location, 
-            int maxParticipants, 
+            TitleValidObject title, 
+            DescriptionValidObject description, 
+            LocationValidObject location, 
+            MaximazeParticipantValidObject maxParticipants, 
             CategoryEntity category, 
             TeacherEntity teacher, 
             List<LessonScheduleEntity> schedule,
             IEnumerable<string> images)
         {
             Schedule = schedule;
-            Title = title;
-            Description = description;
-            Location = location;
-            MaxParticipants = maxParticipants;
+            Title = title.Text;
+            Description = description.Text;
+            Location = location.Text;
+            MaxParticipants = maxParticipants.Value;
             Category = category;
             Teacher = teacher;
 
-            SetImages(images);
+            UpdateImages(images);
+        }
+
+        public LessonEntity UpdateTeacher(TeacherEntity teacher)
+        {
+            Teacher = teacher;
+            return this;
+        }
+
+        public LessonEntity UpdateSchedule(List<LessonScheduleEntity> schedule)
+        {
+            Schedule = schedule;
+            return this;
+        }
+
+        public LessonEntity UpdateTitle(TitleValidObject title)
+        {
+            Title = title.Text;
+            return this;
+        }
+        
+        public LessonEntity UpdateDescription(DescriptionValidObject description)
+        {
+            Description = description.Text;
+            return this;
+        }
+        
+        public LessonEntity UpdateLocation(LocationValidObject location)
+        {
+            Location = location.Text;
+            return this;
+        }
+        
+        public LessonEntity UpdateMaximazeParticipant(MaximazeParticipantValidObject maxPart)
+        {
+            MaxParticipants = maxPart.Value;
+            return this;
+        }
+        
+        public LessonEntity UpdateCategory(CategoryEntity category)
+        {
+            Category = category;
+            return this;
         }
 
         public override string ToString() => Title;
@@ -94,7 +137,7 @@ namespace Domain.Entitys
             return this;
         }
 
-        public void SetImages(IEnumerable<string> images) 
+        public void UpdateImages(IEnumerable<string> images) 
             => Images = images.Select(i => new ImageLessonEntity { Url = i }).ToList();
         
         public IEnumerable<string> GetImages() 
@@ -102,7 +145,7 @@ namespace Domain.Entitys
 
         public double GetRating()
         {
-            double rat = Reviews.Aggregate<ReviewEntity, double>(0, (current, review) => current + (int)review.Rating);
+            double rat = Reviews.Aggregate<ReviewEntity, double>(0, (current, review) => current + review.Rating.Estimation);
             return rat == 0 ? 0 : rat / Reviews.Count;
         }
 
@@ -123,42 +166,6 @@ namespace Domain.Entitys
                 Title.StartsWith(title ?? "") &&
                 Teacher.Name.StartsWith(teacherName ?? "") &&
                 Teacher.Surname.StartsWith(teacherSurname ?? "");
-
-
-        #region Equals
-
-        protected bool Equals(LessonEntity other)
-        {
-            return base.Equals(other) && Title == other.Title;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((LessonEntity)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (base.GetHashCode() * 397) ^ Title.GetHashCode();
-            }
-        }
-
-        public static bool operator ==(LessonEntity? left, LessonEntity? right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(LessonEntity? left, LessonEntity? right)
-        {
-            return !Equals(left, right);
-        }
-
-        #endregion
     }
 }
 

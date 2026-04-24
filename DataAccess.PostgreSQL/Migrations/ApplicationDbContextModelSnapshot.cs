@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace DataAccess.Postgres.Migrations
+namespace DataAccess.PostgreSQL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -53,7 +53,12 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<long>("UserRoleId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserRoleId");
 
                     b.ToTable("Auths");
                 });
@@ -95,6 +100,26 @@ namespace DataAccess.Postgres.Migrations
                     b.HasIndex("LessonId");
 
                     b.ToTable("DateAttendances");
+                });
+
+            modelBuilder.Entity("Domain.Entitys.EstimationEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Estimation")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EstimationName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EstimationEntity");
                 });
 
             modelBuilder.Entity("Domain.Entitys.EventEntity", b =>
@@ -340,8 +365,8 @@ namespace DataAccess.Postgres.Migrations
                     b.Property<long>("LessonId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
+                    b.Property<long>("RatingId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("VisitorId")
                         .HasColumnType("bigint");
@@ -349,6 +374,8 @@ namespace DataAccess.Postgres.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LessonId");
+
+                    b.HasIndex("RatingId");
 
                     b.HasIndex("VisitorId");
 
@@ -395,6 +422,27 @@ namespace DataAccess.Postgres.Migrations
                     b.HasIndex("AuthEntityId");
 
                     b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("Domain.Entitys.UserRoleEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserRoleEntity");
                 });
 
             modelBuilder.Entity("Domain.Entitys.VisitorEntity", b =>
@@ -466,6 +514,17 @@ namespace DataAccess.Postgres.Migrations
                         .HasForeignKey("VisitorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entitys.AuthEntity", b =>
+                {
+                    b.HasOne("Domain.Entitys.UserRoleEntity", "UserRole")
+                        .WithMany()
+                        .HasForeignKey("UserRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserRole");
                 });
 
             modelBuilder.Entity("Domain.Entitys.DateAttendanceEntity", b =>
@@ -560,6 +619,12 @@ namespace DataAccess.Postgres.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entitys.EstimationEntity", "Rating")
+                        .WithMany()
+                        .HasForeignKey("RatingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entitys.VisitorEntity", "Visitor")
                         .WithMany("Reviews")
                         .HasForeignKey("VisitorId")
@@ -567,6 +632,8 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired();
 
                     b.Navigation("Lesson");
+
+                    b.Navigation("Rating");
 
                     b.Navigation("Visitor");
                 });
