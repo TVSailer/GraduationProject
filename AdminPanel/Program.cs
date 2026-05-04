@@ -1,14 +1,9 @@
 using Admin.DI;
 using Admin.ViewModel.AdminMain;
 using Admin.ViewModel.Enter;
-using Domain.Entitys;
 using Domain.Enum;
-using Domain.Repository;
-using Domain.Service.ControlViewService.BaseControlView;
-using Domain.Service.FielService.BaseFileService;
-using Domain.ValidObject;
-using System.Xml.Linq;
 using Domain.Service.AuthService.BaseAuhtService;
+using Domain.Service.ControlViewService.BaseControlView;
 
 namespace Admin;
 
@@ -24,7 +19,7 @@ internal static class Program
 
         var di = new MainDI();
 
-        //TestData(di);
+        TestData(di);
         LoadAdminPanel(di);
     }
 

@@ -25,8 +25,8 @@ public class ScheduleViewModel : General.ViewModel.ViewModel
 
     public List<LessonScheduleEntity> Schedule { get; } = [];
 
-    [Time] public string StartTime { get => field ?? "11:00"; set => Set(ref field, value); }
-    [Time] public string EndTime { get => field ?? "12:00"; set => Set(ref field, value); }
+    [Time] public string? StartTime { get => field ?? "11:00"; set => Set(ref field, value); }
+    [Time] public string? EndTime { get => field ?? "12:00"; set => Set(ref field, value); }
     [RequiredCustom] public string DayOfWeek { get; set => Set(ref field, value); }
 
     #region CommandAddSchedule

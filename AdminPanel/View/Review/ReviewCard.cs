@@ -15,5 +15,5 @@ public class ReviewCard : ObjectCard<ReviewEntity>
         => builderLayoutPanel.Column()
             .Row().Content().Label(Entity.Date).ForeColor(Color.DarkBlue).End()
             .Row().Content().Label(Entity.Visitor.ToString()).ForeColor(Color.Gray).End()
-            .Row().Content().Label($"★ {Entity.Rating.ToString()}").ForeColor(Color.Orange).End();
+            .Row().Content().Label($"★ {(int)Entity.RatingId}").ForeColor(Color.Orange).End();
 }

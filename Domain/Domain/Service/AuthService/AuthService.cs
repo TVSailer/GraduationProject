@@ -10,7 +10,7 @@ namespace Domain.Service.AuthService;
 
 public class AuthService(
     IRepository<AuthEntity> repositoryA, 
-    IMessageAuthDataService messageAuthDataService, 
+    IMessageService messageService, 
     IAuthFileService authFileService) : IAuthService
 {
     private LoginValidObject _login;
@@ -44,23 +44,39 @@ public class AuthService(
 
     public bool IsSaveAuth(UserRole role)
     {
-        if (authFileService.Exists())
-        {
-            var auth = authFileService.ReadAuth();
+        if (!authFileService.Exists()) return false;
 
-            return repositoryA
-                .Get()
-                .AsEnumerable()
-                .Any(v => v.Equals(auth.login, auth.password, role));
-        }
-        return false;
+        var auth = authFileService.ReadAuth();
+
+        return repositoryA
+            .Get()
+            .AsEnumerable()
+            .Any(v => v.Equals(auth.login, auth.password, role));
+    }
+
+    public bool IsSaveAuth(UserRole role, out AuthEntity? entity)
+    {
+        entity = null;
+        if (!authFileService.Exists()) return false;
+        var auth = authFileService.ReadAuth();
+
+        entity = repositoryA
+            .Get()
+            .AsEnumerable()
+            .Single(v => v.Equals(auth.login, auth.password, role));
+
+        return true;
     }
 
     public bool IsRoleAuth(UserRole role) 
         => repositoryA
             .Get()
             .AsEnumerable()
-            .Select(a => a.UserRoleId).Contains((long)role);
+            .Select(a => a.UserRoleId).Contains(role);
 
-    public void MessageAuth() => messageAuthDataService.Message(_login, _password);
+    public void MessageAuth() => 
+        messageService.Message(
+        $"Логин: {_login.Login}" +
+        $"\n" +
+        $"Пароль: {_password.Password}", TypeMessage.Info);
 }

@@ -3,6 +3,7 @@ using Domain.Entitys;
 using Domain.Entitys.ComplexType;
 using Domain.Enum;
 using Domain.Repository;
+using Domain.Service.FielService.BaseFileService;
 using Domain.ValidObject;
 using Day = Domain.Enum.Day;
 
@@ -10,7 +11,7 @@ namespace Admin;
 
 public class TestData {
 
-    public TestData(ApplicationDbContext dbContext, IRepository<AuthEntity> repositoryA)
+    public TestData(ApplicationDbContext dbContext, IRepository<AuthEntity> repositoryA, IImageFileService imageFileService)
     {
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
@@ -22,7 +23,19 @@ public class TestData {
 
         var category = new CategoryEntity(new CategoryValidObject("Развлечение"));
 
-        dbContext.Add(category);
+        dbContext.AddRange(
+            new EstimationEntity(Estimation.Badly),
+            new EstimationEntity(Estimation.Moderately),
+            new EstimationEntity(Estimation.Satisfactory),
+            new EstimationEntity(Estimation.Good),
+            new EstimationEntity(Estimation.Excellent)
+            );
+
+        dbContext.AddRange(category,
+            new CategoryEntity(new CategoryValidObject("Туризм")),
+            new CategoryEntity(new CategoryValidObject("IT")));
+
+
         dbContext.AddRange(
             new UserRoleEntity(UserRole.Admin), 
             new UserRoleEntity(UserRole.Teacher),
@@ -119,6 +132,7 @@ public class TestData {
 
             visitor.AddLesson(lesson);
 
+            dbContext.Add(new ReviewEntity(Estimation.Good, new CommentValidObject("норм норм норм норм норпм"), visitor, lesson));
             dbContext.Add(visitor);
         }
         dbContext.SaveChanges();

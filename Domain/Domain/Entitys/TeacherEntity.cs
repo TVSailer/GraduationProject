@@ -6,14 +6,14 @@ namespace Domain.Entitys
 {
     public class TeacherEntity : Entity
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Patronymic { get; set; }
-        public string Image { get; set; }
-        public string DateBirth { get; set; }
-        public string NumberPhone { get; set; }
-        public AuthEntity AuthEntity { get; set; }
-        public ICollection<LessonEntity> Lessons { get; set; } = [];
+        public string Name { get; private set; }
+        public string Surname { get; private set; }
+        public string Patronymic { get; private set; }
+        public string Image { get; private set; }
+        public string DateBirth { get; private set; }
+        public string NumberPhone { get; private set; }
+        public AuthEntity AuthEntity { get; private set; }
+        public ICollection<LessonEntity> Lessons { get; private set; } = [];
 
         private TeacherEntity() { }
 
@@ -26,7 +26,7 @@ namespace Domain.Entitys
             NumberPhoneValidObject numberPhone, 
             AuthEntity authEntity)
         {
-            Image = image.Text;
+            Image = image.FileName;
             Name = name.Text;
             Surname = surname.Text;
             Patronymic = patronymic.Text;
@@ -67,7 +67,7 @@ namespace Domain.Entitys
 
         public TeacherEntity UpdateImage(ImageValidObject image)
         {
-            Image = image?.Text;
+            Image = image?.FileName;
             return this;
         }
 

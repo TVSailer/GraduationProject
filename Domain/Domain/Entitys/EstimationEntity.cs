@@ -1,19 +1,21 @@
-﻿using CSharpFunctionalExtensions;
-using Domain.Enum;
+﻿using Domain.Enum;
 using Domain.Extension;
 
 namespace Domain.Entitys;
 
-public class EstimationEntity : Entity
+public class EstimationEntity
 {
+    public Estimation Id { get; private set; }
     public string EstimationName { get; private set; }
-    public int Estimation { get; private set; }
+    public string EstimationDesctiption { get; private set; }
 
     private EstimationEntity() { }
 
+
     public EstimationEntity(Estimation estimation)
     {
-        EstimationName = estimation.ToDescriptionString();
-        Estimation = (int)estimation;
+        Id = estimation;
+        EstimationName = estimation.ToString();
+        EstimationDesctiption = estimation.ToDescriptionString();
     }
 }

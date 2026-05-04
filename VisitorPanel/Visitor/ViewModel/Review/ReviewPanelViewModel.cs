@@ -56,7 +56,7 @@ public class ReviewAddingPanelViewModel : General.ViewModel.ViewModel
         var lesson = _sharedService.GetData<LessonEntity>();
         var visitor = _mementoService.Get().Value;
         var estimation = Estimation.FromDescriptionString<Estimation>();
-        var comment = CommentValidObject.Create(Comment);
+        var comment = new CommentValidObject(Comment);
 
         var review = new ReviewEntity(estimation, comment, visitor, lesson);
 

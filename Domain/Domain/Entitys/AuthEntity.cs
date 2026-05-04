@@ -1,7 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using Domain.Enum;
-using Domain.Extension;
 using Domain.ValidObject;
 
 namespace Domain.Entitys;
@@ -10,9 +8,7 @@ public class AuthEntity : Entity
 {
     public string Login { get; private set; }
     public string Password { get; private set; }
-
-    [ForeignKey(nameof(UserRoleEntity))]
-    public long UserRoleId { get; private set; }
+    public UserRole UserRoleId { get; private set; }
     public UserRoleEntity UserRole { get; private set; }
 
     private AuthEntity() { }
@@ -21,7 +17,7 @@ public class AuthEntity : Entity
     {
         Login = login.Login;
         Password = password.Hash;
-        UserRoleId = (int)role;
+        UserRoleId = role;
     }
     
     public AuthEntity UpdateLogin(LoginValidObject login)
@@ -46,21 +42,31 @@ public class AuthEntity : Entity
                (password == Password || BCrypt.Net.BCrypt.Verify(password, Password));
     }
     
-    public bool Equals(string? login, string? password, UserRoleEntity role)
+    protected bool Equals(AuthEntity other)
     {
-        return login is not null && 
-               password is not null && 
-               UserRole.Name == role.Name &&
-               Login == login && 
-               (password == Password || BCrypt.Net.BCrypt.Verify(password, Password));
+        return base.Equals(other) &&
+               Login == other.Login &&
+               UserRole.Equals(other.UserRole) &&
+               (other.Password == Password || BCrypt.Net.BCrypt.Verify(other.Password, Password));
     }
-    
-    public bool Equals(string? login, string? password, string role)
+
+    public override bool Equals(object? obj)
     {
-        return login is not null && 
-               password is not null && 
-               UserRole.Name == role &&
-               Login == login && 
-               (password == Password || BCrypt.Net.BCrypt.Verify(password, Password));
+        if (obj is null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+        return Equals((AuthEntity)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hashCode = base.GetHashCode();
+            hashCode = (hashCode * 397) ^ Login.GetHashCode();
+            hashCode = (hashCode * 397) ^ Password.GetHashCode();
+            hashCode = (hashCode * 397) ^ UserRole.GetHashCode();
+            return hashCode;
+        }
     }
 }

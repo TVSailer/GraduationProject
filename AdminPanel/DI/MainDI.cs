@@ -1,28 +1,8 @@
 using Admin.DI.Module;
-using DataAccess.PostgreSQL;
 using DataAccess.PostgreSQL.DI;
-using Domain.Service.AuthService;
-using Domain.Service.AuthService.BaseAuhtService;
-using Domain.Service.ControlViewService.BaseControlView;
-using Domain.Service.EntityService.TeacherService;
-using Domain.Service.FielService.BaseFileService;
-using Domain.Service.ImageService;
-using Domain.Service.ImageService.BaseServiceImage;
-using Domain.Service.MessageService;
-using Domain.Service.MessageService.BaseMessageService;
-using Domain.Service.SharedService;
-using Domain.Service.SharedService.BaseSharedService;
-using General.Service.ControlView;
-using General.Service.File;
-using General.Service.Image;
-using General.Service.Message;
 using General.Service.ProviderUI;
 using Ninject;
 using UserInterface.DIService;
-using UserInterface.Service.FileDialog;
-using UserInterface.Service.FileDialog.BaseFileDialog;
-using UserInterface.Service.View;
-using UserInterface.Service.View.Base;
 using IServiceProvider = Domain.Service.ProviderService.BaseProvider.IServiceProvider;
 
 namespace Admin.DI;
@@ -35,6 +15,8 @@ public class MainDI
     {
         var container = new StandardKernel(
             new MainModule(),
+            new DomainModule(),
+            new UserInterfaceModule(),
             new CategoryModule(),
             new EnterModule(),
             new ReviewModule(),
@@ -47,22 +29,8 @@ public class MainDI
             new NewsModule());
 
         var serviceProvider = new ServiceProviderUI(container);
-
-        container.Bind<ApplicationDbContext>().ToConstant(new ApplicationDbContext("DBConnectionString")).InSingletonScope();
-        container.Bind<IServiceProvisionUI>().ToConstant(serviceProvider).InSingletonScope();
         container.Bind<IServiceProvider>().ToConstant(serviceProvider).InSingletonScope();
-        container.Bind<IImageDialogService>().To<ImageDialogService>().InSingletonScope();
-        container.Bind<IImageSelectionService>().To<ImageSelectionService>();
-        container.Bind<IImageService>().To<ImageService>();
-        container.Bind<IControlView>().To<ControlView>().InSingletonScope();
-        container.Bind<IControlViewService>().To<ControlViewService>().InSingletonScope();
-        container.Bind<ISharedService>().To<SharedService>().InSingletonScope();
-        container.Bind<IMessageService>().To<MessageService>();
-        container.Bind<IAuthFileService>().ToConstant(new AuthFileService("EnterAdmin")).InSingletonScope();
-        container.Bind<IMessageAuthDataService>().To<MessageAuthDataService>();
-        container.Bind<IAuthService>().To<AuthService>();
-        container.Bind<ITeacherService>().To<TeacherService>();
-
+        container.Bind<IServiceProvisionUI>().ToConstant(serviceProvider).InSingletonScope();
 
         return container;
     }

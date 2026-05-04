@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Text.Json;
+using CSharpFunctionalExtensions;
 using Domain.Entitys.Compare;
 using Domain.Entitys.ImagesEntity;
 using Domain.Exception;
@@ -85,6 +86,7 @@ namespace Domain.Entitys
             return this;
         }
 
+
         public override string ToString() => Title;
 
         public bool IsAddVisitor() 
@@ -145,7 +147,7 @@ namespace Domain.Entitys
 
         public double GetRating()
         {
-            double rat = Reviews.Aggregate<ReviewEntity, double>(0, (current, review) => current + review.Rating.Estimation);
+            double rat = Reviews.Aggregate<ReviewEntity, double>(0, (current, review) => current + (int)review.RatingId);
             return rat == 0 ? 0 : rat / Reviews.Count;
         }
 

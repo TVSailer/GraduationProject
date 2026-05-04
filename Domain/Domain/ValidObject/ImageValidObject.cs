@@ -1,22 +1,32 @@
 ﻿using Domain.Exception;
-using Domain.ValidObject.BaseValidObject;
 
 namespace Domain.ValidObject;
 
-public class ImageValidObject : IValidObject
+public class ImageValidObject
 {
-    public string Text { get; }
+    private const string NameMainFolder = "AdminPanel";
+    private const string NameImageFolder = "Images";
 
-    public ImageValidObject(string text)
+    public string FileName { get; }
+    public string PathFile { get; }
+    
+    public ImageValidObject(string path)
     {
-        if (string.IsNullOrEmpty(text)) throw new ValidObjectException("Адресс изображения не может быть пустым");
-        if (!(text.EndsWith(".bmp", StringComparison.OrdinalIgnoreCase) ||
-              text.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) ||
-              text.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
-              text.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
-              text.EndsWith(".png", StringComparison.OrdinalIgnoreCase))) throw new ValidObjectException("Не корректное расширение изображения");
+        if (string.IsNullOrEmpty(path)) throw new ValidObjectException("Адресс изображения не может быть пустым");
+        if (!(path.EndsWith(".bmp", StringComparison.OrdinalIgnoreCase) ||
+              path.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) ||
+              path.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+              path.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+              path.EndsWith(".png", StringComparison.OrdinalIgnoreCase))) throw new ValidObjectException("Не корректное расширение изображения");
 
-        Text = text;
+        var pathDesc = Path.Combine(
+            Environment.GetFolderPath(
+                Environment.SpecialFolder.ApplicationData), NameMainFolder, NameImageFolder);
+
+        FileName = Guid.NewGuid() + Path.GetExtension(path);
+        PathFile = Path.Combine(pathDesc, FileName);
     }
 }
+
+
 

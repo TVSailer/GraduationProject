@@ -1,18 +1,19 @@
-﻿using CSharpFunctionalExtensions;
-using Domain.Enum;
+﻿using Domain.Enum;
 using Domain.Extension;
 
 namespace Domain.Entitys;
 
-public class UserRoleEntity : Entity
+public class UserRoleEntity
 {
+    public UserRole Id { get; private set; }
     public string Name { get; private set; }
     public string Description { get; private set; }
+
     private UserRoleEntity() {}
 
     public UserRoleEntity(UserRole role)
     {
-        Id = (int)role;
+        Id = role;
         Name = role.ToString();
         Description = role.ToDescriptionString();
     }

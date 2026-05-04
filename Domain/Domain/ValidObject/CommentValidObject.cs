@@ -6,7 +6,7 @@ public class CommentValidObject
 {
     public string Text { get; }
 
-    private CommentValidObject(string text)
+    public CommentValidObject(string text)
     {
         if (text is { Length: > 200 }) throw new ValidObjectException("Коментарий должен сожержать до 200 символов");
 

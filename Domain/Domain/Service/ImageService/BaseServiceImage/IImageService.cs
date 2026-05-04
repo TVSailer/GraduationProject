@@ -6,4 +6,5 @@ public interface IImageService
     public void OnAddImage();
     public void ToggleImage(string? url);
     public void Binding(object obj, string nameMember);
+    public IEnumerable<string> SaveImagesToDisk();
 }

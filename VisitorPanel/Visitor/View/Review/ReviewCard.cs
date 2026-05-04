@@ -22,6 +22,6 @@ public class ReviewCard : ObjectCard<ReviewEntity>
         => builderLayoutPanel.Column()
             .Row(15).Content().Label(Entity.Visitor.ToString()).Size(12).End()
             .Row(15).Content().Label(Entity.Date).Size(12).End()
-            .Row(15).Content().Label(Rating((int)Entity.Rating)).ForeColor(Color.Orange).Size(16).End()
+            .Row(15).Content().Label(Rating((int)Entity.RatingId)).ForeColor(Color.Orange).Size(16).End()
             .Row(55).Content().Label(Entity.Comment).Size(12).End();
 }

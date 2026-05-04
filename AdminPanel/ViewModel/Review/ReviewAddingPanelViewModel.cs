@@ -16,7 +16,7 @@ public class ReviewDetailsPanelViewModel : General.ViewModel.ViewModel
     private readonly IControlViewService _controlViewService;
     private readonly ReviewEntity _reviewEntity;
 
-    public int Rating { get; set => Set(ref field, value); }
+    public string Rating { get; set => Set(ref field, value); }
     public VisitorEntity? Visitor { get; set => Set(ref field, value); }
     public string? Comment { get; set => Set(ref field, value); }
 
@@ -52,7 +52,7 @@ public class ReviewDetailsPanelViewModel : General.ViewModel.ViewModel
     {
         _reviewEntity = sharedService.GetData<ReviewEntity>();
 
-        Rating = _reviewEntity.Rating.Estimation;
+        Rating = _reviewEntity.Rating.EstimationName;
         Visitor = _reviewEntity.Visitor;
         Comment = _reviewEntity.Comment;
 

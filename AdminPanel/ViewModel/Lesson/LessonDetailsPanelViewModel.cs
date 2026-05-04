@@ -75,7 +75,8 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
             .UpdateMaximazeParticipant(new MaximazeParticipantValidObject(MaxParticipants))
             .UpdateCategory(Category)
             .UpdateTeacher(Teacher)
-            .UpdateImages(Images);
+            .UpdateSchedule(_schedule.Value)
+            .UpdateImages(_imageService.SaveImagesToDisk());
 
         _repositoryL.Update(_lessonEntity);
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);

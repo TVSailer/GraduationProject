@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using Domain.Extension;
-using System.Text.RegularExpressions;
 using Domain.Exception;
+using Domain.Extension;
 using Domain.ValidObject;
 
 namespace Domain.Entitys;
@@ -46,7 +45,7 @@ public class VisitorEntity : Entity
         NumberPhoneValidObject numberPhone, 
         AuthEntity authEntity)
     {
-        Image = image.Text;
+        Image = image.FileName;
         Name = name.Text;
         Surname = surname.Text;
         Patronymic = patronymic.Text;
@@ -87,7 +86,7 @@ public class VisitorEntity : Entity
 
     public VisitorEntity UpdateImage(ImageValidObject? image)
     {
-        Image = image?.Text;
+        Image = image?.FileName;
         return this;
     }
 

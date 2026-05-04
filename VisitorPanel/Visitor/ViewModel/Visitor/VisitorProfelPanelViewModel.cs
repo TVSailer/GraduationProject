@@ -25,7 +25,7 @@ public class VisitorProfelPanelViewModel : General.ViewModel.ViewModel
         {
             if (value == field) return;
             Set(ref field, value);
-            _visitorEntity.UpdateImage(ImageValidObject.Create(value));
+            _visitorEntity.UpdateImage(new ImageValidObject(value));
             _repositoryV.Update(_visitorEntity);
         }
     }

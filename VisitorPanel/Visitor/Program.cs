@@ -1,5 +1,7 @@
 using Domain.Entitys;
+using Domain.Enum;
 using Domain.Repository;
+using Domain.Service.AuthService.BaseAuhtService;
 using Domain.Service.FielService.BaseFileService;
 using Domain.Service.MementoService.BaseMementoService;
 using UserInterface.Service.View.Base;
@@ -20,23 +22,23 @@ namespace Visitor
 
             var di = new MainDI();
 
-            var authFileService = di.GetService<IAuthFileService>();
-
-            if (authFileService.Exists())
-            {
-                var auth = authFileService.ReadAuth();
-                var visitor = di
-                    .GetService<IRepository<VisitorEntity>>()
-                    .Get()
-                    .ToArray()
-                    .SingleOrDefault(v => v.AuthEntity.Equals(auth.login, auth.password));
-
-                if (visitor is not null)
-                    di.GetService<IMementoService<VisitorEntity>>().Set(visitor);
-            }
-
+            var authService = di.GetService<IAuthService>();
             var controlView = di.GetService<IControlView>();
-            controlView.LoadView<MainPanelViewModel>();
-        }   
+            var repositoryV = di.GetService<IRepository<VisitorEntity>>();
+
+            LoadVisitor(authService, di, repositoryV, controlView);
+            
+        }
+
+        private static void LoadVisitor(IAuthService authService, MainDI di, IRepository<VisitorEntity> repositoryV, IControlView controlView)
+        {
+            if (authService.IsSaveAuth(UserRole.Visitor, out var authEntity))
+                di.GetService<IMementoService<VisitorEntity>>().Set(
+                    repositoryV
+                        .Get()
+                        .AsEnumerable()
+                        .Single(v => v.AuthEntity.Equals(authEntity)));
+            else controlView.LoadView<MainPanelViewModel>();
+        }
     }
 }

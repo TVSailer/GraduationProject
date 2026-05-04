@@ -9,6 +9,8 @@ public class DataAccesPostgreSqlModule : NinjectModule
 {
     public override void Load()
     {
+        Kernel.Bind<ApplicationDbContext>().ToConstant(new ApplicationDbContext("DBConnectionString")).InSingletonScope();
+
         Kernel.Bind<IRepository<EventEntity>>().To<EventRepository>().InSingletonScope();
         Kernel.Bind<IRepository<CategoryEntity>>().To<RepositoryModel<CategoryEntity>>().InSingletonScope();
         Kernel.Bind<IRepository<AuthEntity>>().To<AuthRepository>().InSingletonScope();
@@ -16,7 +18,7 @@ public class DataAccesPostgreSqlModule : NinjectModule
         Kernel.Bind<IRepository<TeacherEntity>>().To<TeacherRepository>().InSingletonScope();
         Kernel.Bind<IRepository<VisitorEntity>>().To<VisitorRepository>().InSingletonScope();
         Kernel.Bind<IRepository<LessonEntity>>().To<LessonRepository>().InSingletonScope();
-        Kernel.Bind<IRepository<ReviewEntity>>().To<RepositoryModel<ReviewEntity>>().InSingletonScope();
+        Kernel.Bind<IRepository<ReviewEntity>>().To<ReviewmRepository>().InSingletonScope();
         Kernel.Bind<IRepository<DateAttendanceEntity>>().To<RepositoryModel<DateAttendanceEntity>>().InSingletonScope();
     }
 }

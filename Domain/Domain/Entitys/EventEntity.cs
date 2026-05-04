@@ -31,7 +31,7 @@ public class EventEntity : Entity
         IEnumerable<string> images)
     {
         Title = title.Text;
-        UrlTitleImag = urlTitleImag.Text;
+        UrlTitleImag = urlTitleImag.FileName;
         Description = description.Text;
         Location = location.Text;
         RegistrationLink = registrationLink.Text;
@@ -61,7 +61,7 @@ public class EventEntity : Entity
     
     public EventEntity UpdateTitleImage(ImageValidObject image)
     {
-        UrlTitleImag = image.Text;
+        UrlTitleImag = image.FileName;
         return this;
     }
     

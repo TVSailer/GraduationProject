@@ -38,7 +38,7 @@ public class EnterPanelViewModel
         var visitor = _repositoryV
             .Get()
             .ToArray()
-            .Single(v => v.AuthEntity.Equals(Login, Password));
+            .Single(v => v.AuthEntity.Equals(Login, Password, UserRole.Visitor));
 
         _mementoService.Set(visitor);
         _fileService.WriteAuth(visitor.AuthEntity);
@@ -53,7 +53,7 @@ public class EnterPanelViewModel
             .Get()
             .ToArray()
             .Select(v => v.AuthEntity)
-            .SingleOrDefault(a => a.Equals(Login, Password));
+            .SingleOrDefault(a => a.Equals(Login, Password, UserRole.Visitor));
 
         if (auths is null)
         {

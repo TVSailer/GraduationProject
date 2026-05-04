@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.PostgreSQL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260422093055_UpdateDatabase")]
-    partial class UpdateDatabase
+    [Migration("20260428101506_Hren")]
+    partial class Hren
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,8 +56,8 @@ namespace DataAccess.PostgreSQL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("UserRoleId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserRoleId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -107,14 +107,12 @@ namespace DataAccess.PostgreSQL.Migrations
 
             modelBuilder.Entity("Domain.Entitys.EstimationEntity", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("Estimation")
+                    b.Property<int>("Id")
                         .HasColumnType("integer");
+
+                    b.Property<string>("EstimationDesctiption")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("EstimationName")
                         .IsRequired()
@@ -368,8 +366,8 @@ namespace DataAccess.PostgreSQL.Migrations
                     b.Property<long>("LessonId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RatingId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("RatingId")
+                        .HasColumnType("integer");
 
                     b.Property<long>("VisitorId")
                         .HasColumnType("bigint");
@@ -429,11 +427,8 @@ namespace DataAccess.PostgreSQL.Migrations
 
             modelBuilder.Entity("Domain.Entitys.UserRoleEntity", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .IsRequired()
