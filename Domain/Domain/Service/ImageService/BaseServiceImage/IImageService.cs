@@ -3,6 +3,7 @@
 public interface IImageService
 {
     public void OnDeleteImage();
+    public void TryAdd(IEnumerable<string>? urls);
     public void OnAddImage();
     public void ToggleImage(string? url);
     public void Binding(object obj, string nameMember);

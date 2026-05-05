@@ -1,19 +1,16 @@
-﻿using System.Windows.Input;
-using Domain.Command;
-using Domain.Entitys;
-using Domain.Enum;
-using Domain.Repository;
+﻿using Domain.Command;
 using Domain.Service.ControlViewService.BaseControlView;
-using Domain.Service.EntityService;
 using Domain.Service.EntityService.TeacherService;
-using Domain.Service.MessageService.BaseMessageService;
 using Domain.Valid.AttributeValid;
 using Domain.ValidObject;
+using System.Windows.Input;
+using Domain.Service.FielService.BaseFileService;
 
 namespace Admin.ViewModel.Teacher;
 
 public class TeacherAddingPanelViewModel : General.ViewModel.ViewModel
 {
+    private readonly IImageFileService _imageFileService;
     private readonly IControlViewService _controlViewService;
     private readonly ITeacherService _teacherService;
     [Name] public string? Name { get; set => Set(ref field, value); }
@@ -38,7 +35,7 @@ public class TeacherAddingPanelViewModel : General.ViewModel.ViewModel
     private void ExecuteSave(object? obj)
     {
         _teacherService.Add(
-            new ImageValidObject(Image),
+            new ImageValidObject(_imageFileService.SaveImageToDick(Image)),
             new NameValidObject(Name),
             new SurnameValidObject(Surname),
             new PatronymicValidObject(Patronymic),
@@ -53,9 +50,11 @@ public class TeacherAddingPanelViewModel : General.ViewModel.ViewModel
     #endregion
 
     public TeacherAddingPanelViewModel(
+        IImageFileService imageFileService,
         IControlViewService controlViewService, 
         ITeacherService teacherService)
     {
+        _imageFileService = imageFileService;
         _controlViewService = controlViewService;
         _teacherService = teacherService;
 

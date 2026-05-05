@@ -75,7 +75,7 @@ public class NewsDetailsPanelView(NewsDetailsPanelViewModel viewModel) : UiView<
                 .End()
                 .Column(55).Content()
                     .ImageLayoutPanel()
-                    .Command(viewModel.ToggleImage)
+                    .CommandToggleImage(viewModel.ToggleImage)
                     .Binding(viewModel, nameof(viewModel.Images))
                 .End()
             .End()

@@ -3,23 +3,25 @@ using Domain.Entitys;
 using Domain.Entitys.ComplexType;
 using Domain.Enum;
 using Domain.Repository;
-using Domain.Service.FielService.BaseFileService;
+using Domain.Service.ImageService.BaseServiceImage;
 using Domain.ValidObject;
 using Day = Domain.Enum.Day;
 
 namespace Admin;
 
 public class TestData {
+    public IEnumerable<string> _images { get; set; } = [];
 
-    public TestData(ApplicationDbContext dbContext, IRepository<AuthEntity> repositoryA, IImageFileService imageFileService)
+    public TestData(ApplicationDbContext dbContext, IRepository<AuthEntity> repositoryA, IImageService imageService)
     {
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
 
-
-        List<string> images = [];
-        for (int i = 0; i < 10; i++)
-            images.Add($"C://Users/tereg/Pictures/Screenshots/2025-11-30326{i}.png");
+        
+        imageService.Binding(this, nameof(_images));
+        imageService.OnAddImage();
+        var images = imageService.SaveImagesToDisk();
+        
 
         var category = new CategoryEntity(new CategoryValidObject("Развлечение"));
 
@@ -55,7 +57,7 @@ public class TestData {
             dbContext.Add(
                 new EventEntity(
                     new TitleValidObject($"Название{i}"),
-                    new ImageValidObject(images[0]),
+                    new ImageValidObject(images.ToList()[0]),
                     new DescriptionValidObject($"Описание{i} Описание{i} Описание{i} Описание{i} Описание{i}"),
                     new LocationValidObject($"Локация{i}"),
                     new HttpLinkValidObject($"https://k{i}"),
@@ -83,7 +85,7 @@ public class TestData {
             dbContext.AddRange(authVisitor, authTeacher);
 
             var teacher = new TeacherEntity(
-                new ImageValidObject(images[0]),
+                new ImageValidObject(images.ToList()[0]),
                 new NameValidObject($"Имя{i}"),
                 new SurnameValidObject( $"Фамилия{i}"),
                 new PatronymicValidObject($"Отчество{i}"),
@@ -121,7 +123,7 @@ public class TestData {
             dbContext.Add(lesson);
 
             var visitor = new VisitorEntity(
-                new ImageValidObject(images[0]),
+                new ImageValidObject(images.ToList()[0]),
                 new NameValidObject($"Имя{i}"),
                 new SurnameValidObject($"Фамилия{i}"),
                 new PatronymicValidObject($"Отчество{i}"),

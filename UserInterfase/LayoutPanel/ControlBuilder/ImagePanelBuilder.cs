@@ -12,7 +12,7 @@ public class ImagePanelBuilder<TParentBuilder> : ControlBuilder<FlowLayoutPanel,
 {
     private ICommand? _command;
 
-    public ImagePanelBuilder<TParentBuilder> Command(ICommand toggleImage)
+    public ImagePanelBuilder<TParentBuilder> CommandToggleImage(ICommand toggleImage)
     {
         _command = toggleImage;
         return this;

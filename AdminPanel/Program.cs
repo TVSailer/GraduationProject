@@ -19,7 +19,7 @@ internal static class Program
 
         var di = new MainDI();
 
-        TestData(di);
+        //TestData(di);
         LoadAdminPanel(di);
     }
 

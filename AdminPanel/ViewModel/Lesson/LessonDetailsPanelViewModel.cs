@@ -104,6 +104,14 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
     private bool CanExecuteSchedule(object? obj) => true;
 
     #endregion
+    #region CommandToggleImage
+
+    internal readonly ICommand ToggleImage;
+
+    private void ExecuteToggleImage(object? obj) => _imageService.ToggleImage((string)obj);
+    private bool CanExecuteToggleImage(object? obj) => obj is string;
+
+    #endregion
 
     public LessonDetailsPanelViewModel(
         IRepository<LessonEntity> repositoryL,
@@ -125,16 +133,15 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
         _messageService = messageService;
         _imageService = imageService;
 
-        _imageService.Binding(this, nameof(Images));
-
         Title = _lessonEntity.Title;
         Description = _lessonEntity.Description;
         Location = _lessonEntity.Location;
         MaxParticipants = _lessonEntity.MaxParticipants;
         Teacher = _lessonEntity.Teacher;
         Category = _lessonEntity.Category;
-        Images = _lessonEntity.GetImages();
 
+        _imageService.TryAdd(_lessonEntity.GetImages());
+        _imageService.Binding(this, nameof(Images));
         _schedule = Maybe.From(() => _lessonEntity.Schedule);
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
@@ -142,5 +149,6 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
         RemoveImages = new ExecuteCommand(ExecuteRemoveImages, CanExecuteRemoveImages);
         Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);
         Schedule = new ExecuteCommand(ExecuteSchedule, CanExecuteSchedule);
+        ToggleImage = new ExecuteCommand(ExecuteToggleImage, CanExecuteToggleImage);
     }
 }

@@ -86,6 +86,7 @@ public class LessonAddingPanelView(LessonAddingPanelViewModel viewModel) : UiVie
                 .End()
                 .Column().Content()
                     .ImageLayoutPanel()
+                    .CommandToggleImage(viewModel.ToggleImage)
                     .Binding(viewModel, nameof(viewModel.Images))
                 .End()
             .End()

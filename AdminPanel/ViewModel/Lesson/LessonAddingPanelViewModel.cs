@@ -108,6 +108,14 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
     private bool CanExecuteSchedule(object? obj) => true;
 
     #endregion
+    #region CommandToggleImage
+
+    internal readonly ICommand ToggleImage;
+
+    private void ExecuteToggleImage(object? obj) => _imageService.ToggleImage((string)obj);
+    private bool CanExecuteToggleImage(object? obj) => obj is string;
+
+    #endregion
 
     public LessonAddingPanelViewModel(
         IRepository<LessonEntity> repositoryL,
@@ -134,5 +142,6 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
         RemoveImages = new ExecuteCommand(ExecuteRemoveImages, CanExecuteRemoveImages);
         Save = new ExecuteCommand(ExecuteSave, CanExecuteSave);
         Schedule = new ExecuteCommand(ExecuteSchedule, CanExecuteSchedule);
+        ToggleImage = new ExecuteCommand(ExecuteToggleImage, CanExecuteToggleImage);
     }
 }

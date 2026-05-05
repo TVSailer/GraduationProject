@@ -125,7 +125,7 @@ public class EventAddingPanelView(EventAddingPanelViewModel viewModel) : UiView<
                 .End()
                 .Column().Content()
                     .ImageLayoutPanel()
-                    .Command(viewModel.ToggleImage)
+                    .CommandToggleImage(viewModel.ToggleImage)
                     .Binding(viewModel, nameof(viewModel.Images))
                 .End()
             .End()

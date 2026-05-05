@@ -124,7 +124,7 @@ public class EventDetailsPanelView(EventDetailsPanelViewModel viewModel) : UiVie
                 .End()
                 .Column(55).Content()
                     .ImageLayoutPanel()
-                    .Command(viewModel.ToggleImage)
+                    .CommandToggleImage(viewModel.ToggleImage)
                     .Binding(viewModel, nameof(viewModel.Images))
                 .End()
             .End()

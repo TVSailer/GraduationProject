@@ -76,7 +76,7 @@ public class NewsAddingPanelView(NewsAddingPanelViewModel viewModel) : UiView<Ne
                 .End()
                 .Column().Content()
                     .ImageLayoutPanel()
-                    .Command(viewModel.ToggleImage)
+                    .CommandToggleImage(viewModel.ToggleImage)
                     .Binding(viewModel, nameof(viewModel.Images))
                 .End()
             .End()

@@ -5,6 +5,7 @@ using Domain.Enum;
 using Domain.Repository;
 using Domain.Service.AuthService.BaseAuhtService;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.FielService.BaseFileService;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
@@ -17,6 +18,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     private readonly IMessageService _messageService;
     private readonly IAuthService _authService;
     private readonly IRepository<VisitorEntity> _repositoryV;
+    private readonly IImageFileService _imageFileService;
     private readonly IControlViewService _controlViewService;
     private readonly VisitorEntity _visitorEntity;
 
@@ -27,7 +29,15 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     [Patronymic] public string? Patronymic { get; set => Set(ref field, value); }
     [DateBirthday(10)] public string? DateBirth { get; set => Set(ref field, value); }
     [PhoneNumber] public string? NumberPhone { get; set => Set(ref field, value); }
-    [NullImage] public string? Image { get; set => Set(ref field, value); }
+    [NullImage] public string? Image
+    {
+        get;
+        set
+        {
+            _imageFileService.DeleteImageFromDisk(field);
+            Set(ref field, value);
+        }
+    }
 
     #endregion
     #region CommandExit
@@ -49,7 +59,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
             .UpdateSurname(new SurnameValidObject(Surname))
             .UpdatePatronymic(new PatronymicValidObject(Patronymic))
             .UpdateDateBirth(new DateBirthVisitorValidObject(DateOnly.Parse(DateBirth)))
-            .UpdateImage(new ImageValidObject(Image))
+            .UpdateImage(new ImageValidObject(_imageFileService.SaveImageToDick(Image)))
             .UpdateNumberPhone(new NumberPhoneValidObject(NumberPhone));
 
         _authService.UpdateAuth(_visitorEntity.AuthEntity);
@@ -80,12 +90,14 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     public VisitorDetailsPanelViewModel(
         IAuthService authService,
         IRepository<VisitorEntity> repositoryV,
+        IImageFileService imageFileService,
         IMessageService messageService,
         IControlViewService controlViewService,
         ISharedService sharedService)
     {
         _authService = authService;
         _repositoryV = repositoryV;
+        _imageFileService = imageFileService;
         _messageService = messageService;
         _controlViewService = controlViewService;
 
@@ -96,7 +108,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
         Patronymic = _visitorEntity.Patronymic;
         NumberPhone = _visitorEntity.NumberPhone;
         DateBirth = _visitorEntity.DateBirth;
-        Image = _visitorEntity.Image;
+        Image = imageFileService.GetFullPath(_visitorEntity.Image);
 
         Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);

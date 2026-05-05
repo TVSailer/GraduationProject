@@ -22,11 +22,11 @@ public class ImageService(IMessageService messageService,  IImageFileService ima
     public void ToggleImage(string key)
         => Images[key] = !Images[key];
 
-    private void TryAdd(IEnumerable<string>? urls)
+    public void TryAdd(IEnumerable<string>? urls)
     {
         if (urls is null) return;
 
-        foreach (var url in urls)
+        foreach (var url in urls.Select(imageFileService.GetFullPath))
             Images.TryAdd(url, false);
         OnChangeImg?.Invoke(Images.Select(i => i.Key));
     }
@@ -47,8 +47,9 @@ public class ImageService(IMessageService messageService,  IImageFileService ima
     public void Binding(object obj, string nameMember)
     {
         var prop = obj.GetType().GetProperty(nameMember);
-        var data = (IEnumerable<string>)prop.GetValue(obj);
-        TryAdd(data.Select(imageFileService.GetFullPath));
+        prop.SetValue(obj, Images.Select(i => i.Key));
+        //var data = (IEnumerable<string>)prop.GetValue(obj);
+        //TryAdd(data?.Select(imageFileService.GetFullPath));
         OnChangeImg += images => prop.SetValue(obj, images);
     }
 }

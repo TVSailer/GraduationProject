@@ -4,11 +4,7 @@ namespace Domain.ValidObject;
 
 public class ImageValidObject
 {
-    private const string NameMainFolder = "AdminPanel";
-    private const string NameImageFolder = "Images";
-
     public string FileName { get; }
-    public string PathFile { get; }
     
     public ImageValidObject(string path)
     {
@@ -19,12 +15,7 @@ public class ImageValidObject
               path.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
               path.EndsWith(".png", StringComparison.OrdinalIgnoreCase))) throw new ValidObjectException("Не корректное расширение изображения");
 
-        var pathDesc = Path.Combine(
-            Environment.GetFolderPath(
-                Environment.SpecialFolder.ApplicationData), NameMainFolder, NameImageFolder);
-
-        FileName = Guid.NewGuid() + Path.GetExtension(path);
-        PathFile = Path.Combine(pathDesc, FileName);
+        FileName = path;
     }
 }
 

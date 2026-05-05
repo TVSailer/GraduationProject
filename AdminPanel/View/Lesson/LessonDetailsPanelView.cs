@@ -86,6 +86,7 @@ public class LessonDetailsPanelView(LessonDetailsPanelViewModel viewModel) : UiV
                .End()
                .Column().Content()
                    .ImageLayoutPanel()
+                   .CommandToggleImage(viewModel.ToggleImage)
                    .Binding(viewModel, nameof(viewModel.Images))
                .End()
            .End()
