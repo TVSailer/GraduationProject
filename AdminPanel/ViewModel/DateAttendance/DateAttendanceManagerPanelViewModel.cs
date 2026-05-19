@@ -2,6 +2,7 @@
 using Domain.Command;
 using Domain.Entitys;
 using Domain.Enum;
+using Domain.Service.AttendanceService.BaseAttendanceService;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
@@ -13,6 +14,7 @@ public class DateAttendanceManagerPanelViewModel : General.ViewModel.ViewModel
     private readonly ISharedService _sharedService;
     private readonly IControlViewService _controlViewService;
     private readonly IMessageService _messageService;
+    private readonly IAttendanceService _attendanceService;
     private readonly LessonEntity _lessonEntity;
 
     #region CommandExit
@@ -45,21 +47,23 @@ public class DateAttendanceManagerPanelViewModel : General.ViewModel.ViewModel
     public DateAttendanceManagerPanelViewModel(
         ISharedService sharedService,
         IControlViewService controlViewService,
-        IMessageService messageService
+        IMessageService messageService,
+        IAttendanceService attendanceService
     )
     {
         _lessonEntity = sharedService.GetData<LessonEntity>();
         _sharedService = sharedService;
         _controlViewService = controlViewService;
         _messageService = messageService;
+        _attendanceService = attendanceService;
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         Add = new ExecuteCommand(ExecuteAdd, CanExecuteAdd);
     }
 
     public IEnumerable<string[]> GetVisitorWithAttendance()
-        => _lessonEntity.GetVisitorWithAttendance();
+        => _attendanceService.GetVisitorWithAttendance(_lessonEntity);
 
     public IEnumerable<string> GetDateAttendance()
-        => _lessonEntity.GetDateAttendance("dd/MM");
+        => _lessonEntity.AttendanceDates.Select(d => d.ToString("dd/MM"));
 }

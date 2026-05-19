@@ -6,6 +6,11 @@ public class SurnameAttribute : RequiredAttribute
 {
     public override bool IsValid(object? value)
     {
+        if (value is null)
+        {
+            ErrorMessage = "Фамилия не может быть пустым";
+            return false;
+        }
         if (value is string name)
         {
             if (string.IsNullOrEmpty(name))

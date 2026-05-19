@@ -6,6 +6,11 @@ public class NameAttribute : RequiredAttribute
 {
     public override bool IsValid(object? value)
     {
+        if (value is null)
+        {
+            ErrorMessage = "Имя не может быть пустым";
+            return false;
+        }
         if (value is string name)
         {
             if (string.IsNullOrEmpty(name))

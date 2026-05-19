@@ -6,6 +6,7 @@ public class PatronymicAttribute : RequiredAttribute
 {
     public override bool IsValid(object? value)
     {
+        if (value is null) return true;
         if (value is string name)
         {
             if (string.IsNullOrEmpty(name)) return true;

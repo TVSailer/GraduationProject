@@ -1,10 +1,9 @@
-using Domain.Entitys;
-using Domain.Repository;
-using Domain.Service.FielService.BaseFileService;
-using Domain.Service.MementoService.BaseMementoService;
+using Domain.Enum;
+using Domain.Service.AuthService.BaseAuhtService;
+using Domain.Service.ControlViewService.BaseControlView;
 using Teacher.DI;
+using Teacher.ViewModel.Enter;
 using Teacher.ViewModel.Main;
-using UserInterface.Service.View.Base;
 
 namespace Teacher
 {
@@ -17,25 +16,22 @@ namespace Teacher
 
             var di = new MainDI();
 
-            var authFileService = di.GetService<IAuthFileService>();
+            LoadTeahcerPanel(di);
+        }
 
-            if (authFileService.Exists())
+        private static void LoadTeahcerPanel(MainDI di)
+        {
+            var controlView = di.GetService<IControlViewService>();
+            var authService = di.GetService<IAuthService>();
+
+            if (authService.IsRoleAuth(UserRole.Teacher))
             {
-                var auth = authFileService.ReadAuth();
-                var teacher = di
-                    .GetService<IRepository<TeacherEntity>>()
-                    .Get()
-                    .ToArray()
-                    .SingleOrDefault(v => v.AuthEntity.Equals(auth.login, auth.password));
-
-                if (teacher is not null)
-                    di.GetService<IMementoService<TeacherEntity>>().Set(teacher);
+                if (authService.IsSaveAuth(UserRole.Teacher))
+                    controlView.LoadView<MainPanelViewModel>();
+                else controlView.ShowDialog<EnterPanelViewModel>();
             }
-
-            var controlView = di.GetService<IControlView>();
-            controlView.LoadView<MainPanelViewModel>();
-
-            Application.Run(controlView.Form);
+            else
+                controlView.ShowDialog<EnterPanelViewModel>();
         }
     }
 }

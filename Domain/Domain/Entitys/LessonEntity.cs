@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using Domain.Entitys.Compare;
 using Domain.Entitys.ImagesEntity;
 using Domain.Exception;
@@ -149,18 +148,6 @@ namespace Domain.Entitys
         {
             double rat = Reviews.Aggregate<ReviewEntity, double>(0, (current, review) => current + (int)review.RatingId);
             return rat == 0 ? 0 : rat / Reviews.Count;
-        }
-
-        public IEnumerable<string> GetDateAttendance(string format = "") => AttendanceDates.Select(d => d.ToString(format));
-
-        public IEnumerable<string[]> GetVisitorWithAttendance()
-        {
-            foreach (var visitor in Visitors)
-            {
-                var data = new List<string> { visitor.ToString() };
-                data.AddRange(AttendanceDates.Select(date => date.Visitors.Select(v => v.Id).Contains(visitor.Id) ? "нб" : ""));
-                yield return data.ToArray();
-            }
         }
 
         public bool Include(string? title, string? category, string? teacherName, string? teacherSurname)

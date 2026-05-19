@@ -43,6 +43,7 @@ public class ImageFileService : IImageFileService
 
     public string GetFullPath(string? fileName)
     {
+        if (fileName is null) return "";
         var fullPath = Path.Combine(_appDataPath, fileName);
         return System.IO.File.Exists(fullPath) ? fullPath : throw new ServiceException("Не найден файл");
     }

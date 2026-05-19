@@ -83,7 +83,7 @@ public class TeacherAddingPanelView(TeacherAddingPanelViewModel viewModel) : UiV
                     .Command(viewModel.Exit)
                 .End()
                 .Column().Content()
-                    .Button("Добавить")
+                    .Button("Сохранить")
                     .Command(viewModel.Save)
                 .End()
                 .Column().Content()

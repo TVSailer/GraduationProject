@@ -50,7 +50,8 @@ public class ReviewDetailsPanelViewModel : General.ViewModel.ViewModel
         ISharedService sharedService
     )
     {
-        _reviewEntity = sharedService.GetData<ReviewEntity>();
+        var review = sharedService.GetData<ReviewEntity>();
+        _reviewEntity = repositoryR.Get().AsEnumerable().Single(r => r.Id == review.Id);
 
         Rating = _reviewEntity.Rating.EstimationName;
         Visitor = _reviewEntity.Visitor;

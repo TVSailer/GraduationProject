@@ -1,3 +1,5 @@
+using Domain.Service.AttendanceService;
+using Domain.Service.AttendanceService.BaseAttendanceService;
 using Domain.Service.AuthService;
 using Domain.Service.AuthService.BaseAuhtService;
 using Domain.Service.ControlViewService.BaseControlView;
@@ -12,7 +14,6 @@ using General.Service.ControlView;
 using General.Service.File;
 using General.Service.Message;
 using Ninject.Modules;
-using System.ComponentModel;
 
 namespace Admin.DI.Module;
 
@@ -28,5 +29,6 @@ public class DomainModule() : NinjectModule
         Kernel.Bind<IAuthFileService>().ToConstant(new AuthFileService("EnterAdmin")).InSingletonScope();
         Kernel.Bind<IAuthService>().To<AuthService>();
         Kernel.Bind<ITeacherService>().To<TeacherService>();
+        Kernel.Bind<IAttendanceService>().To<AttendanceService>();
     }
 }

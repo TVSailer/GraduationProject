@@ -43,6 +43,7 @@ public class ReviewDetailsPanelView(ReviewDetailsPanelViewModel viewModel) : UiV
                         .End()
                         .Column(40).Content()
                             .TextBox()
+                            .Multiline()
                             .Binding(viewModel, nameof(viewModel.Comment))
                             .ReadOnly()
                         .End()

@@ -8,7 +8,7 @@ public class DateBirthVisitorValidObject
 
     public DateBirthVisitorValidObject(DateOnly date)
     {
-        if (date.Year > DateTime.Today.Year - 18) throw new ValidObjectException($"Посититель не может быть младше 5 лет!");
+        if (date.Year > DateTime.Today.Year - 10) throw new ValidObjectException($"Посититель не может быть младше 10 лет!");
         if (date.Year < DateTime.Today.Year - 100) throw new ValidObjectException("Посититель не может быть старше 100 лет");
 
         Text = date.ToString("dd.MM.yyyy");
