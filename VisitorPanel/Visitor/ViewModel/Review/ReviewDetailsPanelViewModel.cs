@@ -76,7 +76,7 @@ public class ReviewDetailsPanelViewModel : General.ViewModel.ViewModel
         _reviewEntity = sharedService.GetData<ReviewEntity>();
 
         Comment = _reviewEntity.Comment;
-        Estimation = _reviewEntity.Rating.Estimation.ToDescriptionString();
+        Estimation = _reviewEntity.Rating.EstimationDesctiption;
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         UpdateComment = new ExecuteCommand(ExecuteUpdateComment, CanExecuteUpdateComment);

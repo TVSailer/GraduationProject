@@ -16,6 +16,12 @@ public class AuthService(
     private LoginValidObject _login;
     private PasswordValidObject _password;
 
+    public AuthEntity GetAuth(UserRole role, string login, string password)
+        => repositoryA
+            .Get()
+            .ToArray()
+            .Single(a => a.Equals(login, password, role));
+
     public AuthEntity CreateAuth(string text, UserRole role)
     {
         _login = new LoginValidObject(text);
@@ -58,14 +64,12 @@ public class AuthService(
     {
         entity = null;
         if (!authFileService.Exists()) return false;
+
         var auth = authFileService.ReadAuth();
 
-        entity = repositoryA
-            .Get()
-            .AsEnumerable()
-            .Single(v => v.Equals(auth.login, auth.password, role));
+        entity = repositoryA.Get().AsEnumerable().SingleOrDefault(a => a.Equals(auth.login, auth.password, role));
 
-        return true;
+        return entity is not null;
     }
 
     public bool IsRoleAuth(UserRole role) 

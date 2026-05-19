@@ -44,15 +44,15 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     private void ExecuteUpdate(object? obj)
     {
         _visitorEntity
-            .UpdateName(NameValidObject.Create(Name))
-            .UpdateSurname(SurnameValidObject.Create(Surname))
-            .UpdatePatronymic(PatronymicValidObject.Create(Patronymic))
-            .UpdateDateBirth(DateBirthVisitorValidObject.Create(DateOnly.Parse(DateBirth)))
-            .UpdateImage(ImageValidObject.Create(Image))
-            .UpdateNumber(NumberPhoneValidObject.Create(NumberPhone));
+            .UpdateName(new NameValidObject(Name))
+            .UpdateSurname(new SurnameValidObject(Surname))
+            .UpdatePatronymic(new PatronymicValidObject(Patronymic))
+            .UpdateDateBirth(new DateBirthVisitorValidObject(DateOnly.Parse(DateBirth)))
+            .UpdateImage(new ImageValidObject(Image))
+            .UpdateNumberPhone(new NumberPhoneValidObject(NumberPhone));
 
-        var login = LoginValidObject.Create(Surname);
-        var password = PasswordValidObject.Create(
+        var login = new LoginValidObject(Surname);
+        var password = new PasswordValidObject(
             _repositoryA
                 .Get()
                 .Select(a => a.Password)

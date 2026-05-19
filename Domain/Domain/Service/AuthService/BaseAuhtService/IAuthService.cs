@@ -5,6 +5,7 @@ namespace Domain.Service.AuthService.BaseAuhtService;
 
 public interface IAuthService
 {
+    public AuthEntity GetAuth(UserRole role, string login, string password);
     public AuthEntity CreateAuth(string text, UserRole role);
     public AuthEntity UpdateAuth(AuthEntity auth);
     public void MessageAuth();

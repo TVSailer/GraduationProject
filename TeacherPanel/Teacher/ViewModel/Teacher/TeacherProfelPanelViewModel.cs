@@ -3,6 +3,7 @@ using Domain.Command;
 using Domain.Entitys;
 using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.FielService.BaseFileService;
 using Domain.Service.MementoService.BaseMementoService;
 using Domain.ValidObject;
 using Teacher.ViewModel.Enter;
@@ -12,6 +13,7 @@ namespace Teacher.ViewModel.Teacher;
 public class TeacherProfelPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IControlViewService _controlViewService;
+    private readonly IImageFileService _imageFileService;
     private readonly IRepository<TeacherEntity> _repositoryV;
     private readonly TeacherEntity _teacherEntity;
 
@@ -20,12 +22,12 @@ public class TeacherProfelPanelViewModel : General.ViewModel.ViewModel
     public string FIO;
     public string? Image
     {
-        get;
+        get => _imageFileService.GetFullPath(field);
         set
         {
             if (value == field) return;
             Set(ref field, value);
-            _teacherEntity.UpdateImage(ImageValidObject.Create(value));
+            _teacherEntity.UpdateImage(new ImageValidObject(value));
             _repositoryV.Update(_teacherEntity);
         }
     }
@@ -59,10 +61,12 @@ public class TeacherProfelPanelViewModel : General.ViewModel.ViewModel
 
     public TeacherProfelPanelViewModel(
         IControlViewService controlViewService,
+        IImageFileService imageFileService,
         IRepository<TeacherEntity> repositoryV,
         IMementoService<TeacherEntity> sharedService)
     {
         _controlViewService = controlViewService;
+        _imageFileService = imageFileService;
         _repositoryV = repositoryV;
 
         _teacherEntity = sharedService.Get().Value;

@@ -3,6 +3,7 @@ using Domain.Command;
 using Domain.Entitys;
 using Domain.Enum;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.FielService.BaseFileService;
 using Domain.Service.MementoService.BaseMementoService;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
@@ -15,6 +16,7 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     private readonly LessonEntity _lesson;
     private readonly IControlViewService _controlViewService;
     private readonly IMessageService _messageService;
+    private readonly IImageFileService _imageFileService;
     private readonly IMementoService<VisitorEntity> _mementoService;
     private readonly ISharedService _sharedService;
 
@@ -25,7 +27,7 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     public string Description => _lesson.Description;
     public string Location => _lesson.Location;
     public CategoryEntity Category => _lesson.Category;
-    public IEnumerable<string>? Images => _lesson.GetImages();
+    public IEnumerable<string>? Images => _lesson.GetImages().Select(i => _imageFileService.GetFullPath(i));
     public IEnumerable<LessonScheduleEntity> Schedule => _lesson.Schedule;
     public IEnumerable<ReviewEntity> ReviewEntites => _lesson.Reviews;
 
@@ -70,12 +72,14 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     public LessonPanelViewModel(
         IControlViewService controlViewService,
         IMessageService messageService,
+        IImageFileService imageFileService,
         IMementoService<VisitorEntity> mementoService,
         ISharedService sharedService
     )
     {
         _controlViewService = controlViewService;
         _messageService = messageService;
+        _imageFileService = imageFileService;
         _mementoService = mementoService;
         _sharedService = sharedService;
 

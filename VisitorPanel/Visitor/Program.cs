@@ -22,23 +22,25 @@ namespace Visitor
 
             var di = new MainDI();
 
+            
+
+            LoadVisitor(di);
+            
+        }
+
+        private static void LoadVisitor(MainDI di)
+        {
             var authService = di.GetService<IAuthService>();
             var controlView = di.GetService<IControlView>();
             var repositoryV = di.GetService<IRepository<VisitorEntity>>();
 
-            LoadVisitor(authService, di, repositoryV, controlView);
-            
-        }
-
-        private static void LoadVisitor(IAuthService authService, MainDI di, IRepository<VisitorEntity> repositoryV, IControlView controlView)
-        {
             if (authService.IsSaveAuth(UserRole.Visitor, out var authEntity))
                 di.GetService<IMementoService<VisitorEntity>>().Set(
                     repositoryV
                         .Get()
                         .AsEnumerable()
                         .Single(v => v.AuthEntity.Equals(authEntity)));
-            else controlView.LoadView<MainPanelViewModel>();
+            controlView.LoadView<MainPanelViewModel>();
         }
     }
 }

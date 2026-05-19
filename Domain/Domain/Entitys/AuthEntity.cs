@@ -37,7 +37,7 @@ public class AuthEntity : Entity
     {
         return login is not null && 
                password is not null && 
-               UserRole.Name == role.ToString() &&
+               UserRoleId == role &&
                Login == login && 
                (password == Password || BCrypt.Net.BCrypt.Verify(password, Password));
     }

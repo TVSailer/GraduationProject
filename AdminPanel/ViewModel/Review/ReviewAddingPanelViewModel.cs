@@ -53,7 +53,7 @@ public class ReviewDetailsPanelViewModel : General.ViewModel.ViewModel
         var review = sharedService.GetData<ReviewEntity>();
         _reviewEntity = repositoryR.Get().AsEnumerable().Single(r => r.Id == review.Id);
 
-        Rating = _reviewEntity.Rating.EstimationName;
+        Rating = _reviewEntity.Rating.EstimationDesctiption;
         Visitor = _reviewEntity.Visitor;
         Comment = _reviewEntity.Comment;
 

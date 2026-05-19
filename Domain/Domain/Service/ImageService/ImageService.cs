@@ -48,8 +48,6 @@ public class ImageService(IMessageService messageService,  IImageFileService ima
     {
         var prop = obj.GetType().GetProperty(nameMember);
         prop.SetValue(obj, Images.Select(i => i.Key));
-        //var data = (IEnumerable<string>)prop.GetValue(obj);
-        //TryAdd(data?.Select(imageFileService.GetFullPath));
         OnChangeImg += images => prop.SetValue(obj, images);
     }
 }

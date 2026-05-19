@@ -56,7 +56,7 @@ public class ReviewDetailsPanelViewModel : General.ViewModel.ViewModel
     {
         _repositoryR.Update(_reviewEntity
             .UpdateRating(Estimation.FromDescriptionString<Estimation>())
-            .UpdateComment(CommentValidObject.Create(Comment)));
+            .UpdateComment(new CommentValidObject(Comment)));
 
         _controlViewService.CloseDialog();
     }
@@ -76,7 +76,7 @@ public class ReviewDetailsPanelViewModel : General.ViewModel.ViewModel
         _reviewEntity = sharedService.GetData<ReviewEntity>();
 
         Comment = _reviewEntity.Comment;
-        Estimation = _reviewEntity.Rating.ToDescriptionString();
+        Estimation = _reviewEntity.Rating.EstimationDesctiption;
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         UpdateComment = new ExecuteCommand(ExecuteUpdateComment, CanExecuteUpdateComment);

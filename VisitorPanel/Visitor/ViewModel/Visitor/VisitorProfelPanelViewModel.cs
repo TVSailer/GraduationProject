@@ -4,6 +4,7 @@ using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.MementoService.BaseMementoService;
 using System.Windows.Input;
+using Domain.Service.FielService.BaseFileService;
 using Domain.ValidObject;
 using Visitor.ViewModel.Enter;
 
@@ -12,6 +13,7 @@ namespace Visitor.ViewModel.Visitor;
 public class VisitorProfelPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IControlViewService _controlViewService;
+    private readonly IImageFileService _imageFileService;
     private readonly IRepository<VisitorEntity> _repositoryV;
     private readonly VisitorEntity _visitorEntity;
 
@@ -20,7 +22,7 @@ public class VisitorProfelPanelViewModel : General.ViewModel.ViewModel
     public string FIO;
     public string? Image
     {
-        get;
+        get => _imageFileService.GetFullPath(_visitorEntity.Image);
         set
         {
             if (value == field) return;
@@ -59,10 +61,12 @@ public class VisitorProfelPanelViewModel : General.ViewModel.ViewModel
 
     public VisitorProfelPanelViewModel(
         IControlViewService controlViewService,
+        IImageFileService imageFileService,
         IRepository<VisitorEntity> repositoryV,
         IMementoService<VisitorEntity> sharedService)
     {
         _controlViewService = controlViewService;
+        _imageFileService = imageFileService;
         _repositoryV = repositoryV;
 
         _visitorEntity = sharedService.Get().Value;

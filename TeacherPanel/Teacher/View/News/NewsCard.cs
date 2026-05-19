@@ -1,4 +1,6 @@
 ﻿using Domain.Entitys;
+using Domain.Service.FielService.BaseFileService;
+using General.Service.File;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.UiObjects.Card;
@@ -7,11 +9,15 @@ namespace Teacher.View.News;
 
 public class NewsCard : ObjectCard<NewsEntity>
 {
+    private readonly IImageFileService _imageFileService;
+
     public NewsCard()
     {
         Height = 500;
         Dock = DockStyle.Top;
         Margin = new Padding(5);
+
+        _imageFileService = new ImageFileService();
     }
 
     public override IBuilder Content(BuilderLayoutPanel builderLayoutPanel)
@@ -40,7 +46,7 @@ public class NewsCard : ObjectCard<NewsEntity>
             .End()
             .Column(52).Content()
                 .ImageLayoutPanel()
-                .RefreshImages(Entity.GetImages())
+                .RefreshImages(Entity.GetImages().Select(i => _imageFileService.GetFullPath(i)))
             .End();
 
 }

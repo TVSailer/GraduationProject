@@ -24,23 +24,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\General\General.csproj" />
+    <ProjectReference Include="..\..\UserInterfase\UserInterface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="BCrypt.Net-Next">
       <HintPath>..\..\VisitorPanel\Visitor\bin\Debug\net8.0-windows\BCrypt.Net-Next.dll</HintPath>
     </Reference>
     <Reference Include="CSharpFunctionalExtensions">
       <HintPath>..\..\VisitorPanel\Visitor\bin\Debug\net8.0-windows\CSharpFunctionalExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="DataAccess.PostgreSQL">
-      <HintPath>..\..\DataAccess.PostgreSQL\bin\Debug\net8.0\DataAccess.PostgreSQL.dll</HintPath>
-    </Reference>
-    <Reference Include="Domain">
-      <HintPath>..\..\DataAccess.PostgreSQL\bin\Debug\net8.0\Domain.dll</HintPath>
-    </Reference>
     <Reference Include="ExtensionFunc">
       <HintPath>..\..\VisitorPanel\Visitor\bin\Debug\net8.0-windows\ExtensionFunc.dll</HintPath>
-    </Reference>
-    <Reference Include="General">
-      <HintPath>..\..\VisitorPanel\Visitor\bin\Debug\net8.0-windows\General.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore">
       <HintPath>..\..\VisitorPanel\Visitor\bin\Debug\net8.0-windows\Microsoft.EntityFrameworkCore.dll</HintPath>
@@ -59,9 +57,6 @@
     </Reference>
     <Reference Include="Ninject.Extensions.Factory">
       <HintPath>..\..\VisitorPanel\Visitor\bin\Debug\net8.0-windows\Ninject.Extensions.Factory.dll</HintPath>
-    </Reference>
-    <Reference Include="UserInterface">
-      <HintPath>..\..\VisitorPanel\Visitor\bin\Debug\net8.0-windows\UserInterface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

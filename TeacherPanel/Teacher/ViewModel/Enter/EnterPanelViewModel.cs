@@ -3,10 +3,12 @@ using Domain.Command;
 using Domain.Entitys;
 using Domain.Enum;
 using Domain.Repository;
+using Domain.Service.AuthService.BaseAuhtService;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.FielService.BaseFileService;
 using Domain.Service.MementoService.BaseMementoService;
 using Domain.Service.MessageService.BaseMessageService;
+using Teacher.ViewModel.Main;
 using Teacher.ViewModel.Teacher;
 
 namespace Teacher.ViewModel.Enter;
@@ -15,6 +17,7 @@ public class EnterPanelViewModel
 {
     private readonly IMessageService _messageService;
     private readonly IAuthFileService _fileService;
+    private readonly IAuthService _authService;
     private readonly IMementoService<TeacherEntity> _mementoService;
     private readonly IRepository<TeacherEntity> _repositoryT;
     private readonly IControlViewService _controlViewService;
@@ -35,16 +38,16 @@ public class EnterPanelViewModel
 
     private void ExecuteEnter(object? obj)
     {
-        var visitor = _repositoryT
+        var teacher = _repositoryT
             .Get()
             .ToArray()
-            .Single(v => v.AuthEntity.Equals(Login, Password));
+            .Single(v => v.AuthEntity.Equals(Login, Password, UserRole.Teacher));
 
-        _mementoService.Set(visitor);
-        _fileService.WriteAuth(visitor.AuthEntity);
+        _mementoService.Set(teacher);
+        _fileService.WriteAuth(teacher.AuthEntity);
 
         _controlViewService.CloseDialog();
-        _controlViewService.LoadView<TeacherProfelPanelViewModel>();
+        _controlViewService.LoadView<MainPanelViewModel>();
     }
 
     private bool CanExecuteEnter(object? obj)
@@ -53,7 +56,7 @@ public class EnterPanelViewModel
             .Get()
             .ToArray()
             .Select(v => v.AuthEntity)
-            .SingleOrDefault(a => a.Equals(Login, Password));
+            .SingleOrDefault(a => a.Equals(Login, Password, UserRole.Teacher));
 
         if (auths is null)
         {
@@ -69,6 +72,7 @@ public class EnterPanelViewModel
     public EnterPanelViewModel(
         IMessageService messageService,
         IAuthFileService file,
+        IAuthService authService,
         IMementoService<TeacherEntity> mementoService,
         IRepository<TeacherEntity> repositoryT,
         IControlViewService controlViewService
@@ -76,6 +80,7 @@ public class EnterPanelViewModel
     {
         _messageService = messageService;
         _fileService = file;
+        _authService = authService;
         _mementoService = mementoService;
         _repositoryT = repositoryT;
         _controlViewService = controlViewService;
