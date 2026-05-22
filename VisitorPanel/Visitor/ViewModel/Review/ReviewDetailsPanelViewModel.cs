@@ -73,7 +73,8 @@ public class ReviewDetailsPanelViewModel : General.ViewModel.ViewModel
         _controlViewService = controlViewService;
         _repositoryR = repositoryR;
 
-        _reviewEntity = sharedService.GetData<ReviewEntity>();
+        var reviewEntity = sharedService.GetData<ReviewEntity>();
+        _reviewEntity = repositoryR.Get().AsEnumerable().Single(r => r.Id == reviewEntity.Id);
 
         Comment = _reviewEntity.Comment;
         Estimation = _reviewEntity.Rating.EstimationDesctiption;

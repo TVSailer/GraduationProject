@@ -12,4 +12,5 @@ public interface IAuthService
     public bool IsSaveAuth(UserRole role);
     public bool IsSaveAuth(UserRole role, out AuthEntity? entity);
     public bool IsRoleAuth(UserRole role);
+    public void Delete(AuthEntity authEntity);
 }

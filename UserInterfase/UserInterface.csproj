@@ -28,10 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExtensionFunc\ExtensionFunc.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="System.Drawing.Common">
       <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\8.0.24\ref\net8.0\System.Drawing.Common.dll</HintPath>
     </Reference>
@@ -51,6 +47,10 @@
 
   <ItemGroup>
     <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExtensionFunc\ExtensionFunc.csproj" />
   </ItemGroup>
 
 </Project>

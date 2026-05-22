@@ -17,6 +17,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IMessageService _messageService;
     private readonly IAuthService _authService;
+    private readonly IRepository<AuthEntity> _repositoryA;
     private readonly IRepository<VisitorEntity> _repositoryV;
     private readonly IImageFileService _imageFileService;
     private readonly IControlViewService _controlViewService;
@@ -79,6 +80,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     private void ExecuteDelete(object? obj)
     {
         _repositoryV.Delete(_visitorEntity.Id);
+        _authService.Delete(_visitorEntity.AuthEntity);
         _controlViewService.Exit();
     }
 
@@ -89,6 +91,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
 
     public VisitorDetailsPanelViewModel(
         IAuthService authService,
+        IRepository<AuthEntity> repositoryA,
         IRepository<VisitorEntity> repositoryV,
         IImageFileService imageFileService,
         IMessageService messageService,
@@ -96,6 +99,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
         ISharedService sharedService)
     {
         _authService = authService;
+        _repositoryA = repositoryA;
         _repositoryV = repositoryV;
         _imageFileService = imageFileService;
         _messageService = messageService;

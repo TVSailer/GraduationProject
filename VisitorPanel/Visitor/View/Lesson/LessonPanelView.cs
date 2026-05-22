@@ -56,7 +56,7 @@ public class LessonPanelView(LessonPanelViewModel viewModel) : UiView<LessonPane
                     .Command(viewModel.Exit)
                 .End()
                 .Column().Content()
-                    .Button("Добавить комментарий")
+                    .Button(viewModel.NameButtonComment())
                     .Command(viewModel.AddComment)
                 .End()
                 .Column().Content()

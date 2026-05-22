@@ -1,10 +1,11 @@
-﻿using System.Windows.Input;
-using Domain.Command;
+﻿using Domain.Command;
 using Domain.Entitys;
 using Domain.Entitys.ComplexType;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.FielService.BaseFileService;
 using Domain.Service.SharedService.BaseSharedService;
+using System.Diagnostics;
+using System.Windows.Input;
 
 namespace Teacher.ViewModel.Event;
 
@@ -31,7 +32,11 @@ public class EventPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteOpenLinkRegistration(object? obj)
     {
-
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = _event.RegistrationLink,
+            UseShellExecute = true
+        });
     }
 
     private bool CanExecuteOpenLinkRegistration(object? obj) => true;

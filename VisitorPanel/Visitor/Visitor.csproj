@@ -16,14 +16,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\ExtensionFunc\ExtensionFunc.csproj" />
     <ProjectReference Include="..\..\General\General.csproj" />
     <ProjectReference Include="..\..\UserInterfase\UserInterface.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Domain">
-      <HintPath>..\..\Domain\Domain\bin\Debug\net8.0\Domain.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

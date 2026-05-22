@@ -47,7 +47,7 @@ public class ImageService(IMessageService messageService,  IImageFileService ima
     public void Binding(object obj, string nameMember)
     {
         var prop = obj.GetType().GetProperty(nameMember);
-        prop.SetValue(obj, Images.Select(i => i.Key));
+        TryAdd((IEnumerable<string>)prop.GetValue(obj));
         OnChangeImg += images => prop.SetValue(obj, images);
     }
 }

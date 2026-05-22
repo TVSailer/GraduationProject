@@ -76,20 +76,20 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     private bool CanExecuteUpdate(object? obj) => ValidObject();
 
     #endregion
-    #region CommandDelete
+    //#region CommandDelete
 
-    internal readonly ICommand Delete;
+    //internal readonly ICommand Delete;
 
-    private void ExecuteDelete(object? obj)
-    {
-        _repositoryV.Delete(_visitorEntity.Id);
-        _controlViewService.Exit();
-    }
+    //private void ExecuteDelete(object? obj)
+    //{
+    //    _repositoryV.Delete(_visitorEntity.Id);
+    //    _controlViewService.Exit();
+    //}
 
-    private bool CanExecuteDelete(object? obj)
-        => _messageService.Message("Выдействительно хотите удалить?", TypeMessage.YesCancel) is TypeCommandMessage.Yes;
+    //private bool CanExecuteDelete(object? obj)
+    //    => _messageService.Message("Выдействительно хотите удалить?", TypeMessage.YesCancel) is TypeCommandMessage.Yes;
 
-    #endregion
+    //#endregion
 
     public VisitorDetailsPanelViewModel(
         IRepository<VisitorEntity> repositoryV,
@@ -114,7 +114,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
 
         Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
-        Delete = new ExecuteCommand(ExecuteDelete, CanExecuteDelete);
+        //Delete = new ExecuteCommand(ExecuteDelete, CanExecuteDelete);
     }
 
     public IEnumerable<string> GetDateAttendance() => _visitorEntity.DateAttendances.Select(d => d.ToString("dd/MM"));

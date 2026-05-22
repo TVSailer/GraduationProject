@@ -80,8 +80,6 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
                 _imageService.SaveImagesToDisk())
         );
 
-        _imageService.SaveImagesToDisk();
-
         _messageService.Message("Данные успешно добавились", TypeMessage.Info);
         _controlViewService.Exit();
     }

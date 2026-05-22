@@ -88,4 +88,7 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         AddComment = new ExecuteCommand(ExecuteAddComment, CanExecuteAddComment);
     }
+
+    public string NameButtonComment()
+        => _mementoService.Get().HasValue && _lesson.Reviews.Any(r => r.Visitor.Id == _mementoService.Get().Value.Id) ? "Редактировать комментарий" : "Добавить комментарий";
 }

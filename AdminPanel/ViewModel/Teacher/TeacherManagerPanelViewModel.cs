@@ -13,7 +13,7 @@ public class TeacherManagerPanelViewModel : General.ViewModel.ViewModel
     private readonly IRepository<TeacherEntity> _repository;
     private readonly IControlViewService _controlViewService;
     private readonly ISharedService _sharedService;
-    public IEnumerable<TeacherEntity> Teachers { get; private set; }
+    public IEnumerable<TeacherEntity> Teachers { get; set => Set(ref field, value); }
 
     public string? Name { get; set => Set(ref field, value, Search); }
     public string? Surname { get; set => Set(ref field, value, Search); }
@@ -88,6 +88,6 @@ public class TeacherManagerPanelViewModel : General.ViewModel.ViewModel
     private void Search() =>
         Teachers = _repository
             .Get()
-            .ToEnumerable()
+            .AsEnumerable()
             .Where(e => e.Include(Name, Surname));
 }

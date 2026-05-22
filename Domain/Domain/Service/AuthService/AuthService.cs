@@ -83,4 +83,9 @@ public class AuthService(
         $"Логин: {_login.Login}" +
         $"\n" +
         $"Пароль: {_password.Password}", TypeMessage.Info);
+
+    public void Delete(AuthEntity authEntity)
+    {
+        repositoryA.Delete(authEntity.Id);
+    }
 }

@@ -41,6 +41,7 @@ public class TeacherService(IRepository<TeacherEntity> repositoryT, IAuthService
             throw new ServiceException("Для удаления преподователь не должен вести ни каких урков!");
 
         repositoryT.Delete(teacher.Id);
+        authService.Delete(teacher.AuthEntity);
     }
 
     public bool CanExecuteDelete(TeacherEntity teacher)

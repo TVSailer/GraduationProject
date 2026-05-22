@@ -30,7 +30,7 @@ public class ImageFileService : IImageFileService
     public string SaveImageToDick(string? path)
     {
         if (path is null) throw new ServiceException("Передаваемое значение не может быть пустым");
-        if (IsFileInAppData(path)) return Path.GetFileName(path);
+        if (IsFileInAppData(path)) return path;
         Directory.CreateDirectory(_appDataPath);
 
         var fileName = Guid.NewGuid() + Path.GetExtension(path);
@@ -38,32 +38,33 @@ public class ImageFileService : IImageFileService
 
         System.IO.File.Copy(path, destPath, true);
 
-        return fileName;
+        return destPath;
     }
 
     public string GetFullPath(string? fileName)
     {
         if (fileName is null) return "";
+        return fileName;
         var fullPath = Path.Combine(_appDataPath, fileName);
         return System.IO.File.Exists(fullPath) ? fullPath : throw new ServiceException("Не найден файл");
     }
 
-    public void DeleteImageFromDisk(string? fileName)
+    public void DeleteImageFromDisk(string? path)
     {
-        if (!IsFileInAppData(fileName)) return;
-        var fullPath = Path.Combine(_appDataPath, fileName);
+        if (!IsFileInAppData(path)) return;
+        //var fullPath = Path.Combine(_appDataPath, path);
 
-        if (System.IO.File.Exists(fullPath))
-            System.IO.File.Delete(fullPath);
+        if (System.IO.File.Exists(path))
+            System.IO.File.Delete(path);
     }
 
-    public bool IsFileInAppData(string? filePath)
+    public bool IsFileInAppData(string? path)
     {
-        if (filePath is null) return false;
+        if (path is null) return false;
 
-        var normalizedFilePath = Path.GetFullPath(filePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        //var normalizedFilePath = Path.GetFullPath(path).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         var normalizedAppDataPath = Path.GetFullPath(_appDataPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
-        return normalizedFilePath.StartsWith(normalizedAppDataPath, StringComparison.OrdinalIgnoreCase);
+        return path.StartsWith(normalizedAppDataPath, StringComparison.OrdinalIgnoreCase);
     }
 }

@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain\Domain.csproj" />
+    <ProjectReference Include="..\ExtensionFunc\ExtensionFunc.csproj" />
     <ProjectReference Include="..\UserInterfase\UserInterface.csproj" />
   </ItemGroup>
 

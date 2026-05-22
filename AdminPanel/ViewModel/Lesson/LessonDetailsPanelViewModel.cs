@@ -139,8 +139,8 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
         MaxParticipants = _lessonEntity.MaxParticipants;
         Teacher = _lessonEntity.Teacher;
         Category = _lessonEntity.Category;
+        Images = _lessonEntity.GetImages();
 
-        _imageService.TryAdd(_lessonEntity.GetImages());
         _imageService.Binding(this, nameof(Images));
         _schedule = Maybe.From(() => _lessonEntity.Schedule);
 

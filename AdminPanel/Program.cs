@@ -17,8 +17,7 @@ internal static class Program
     {
         ApplicationConfiguration.Initialize();
 
-        var di = new MainDI();
-
+        var di = new MainDI(); 
         //TestData(di);
         LoadAdminPanel(di);
     }

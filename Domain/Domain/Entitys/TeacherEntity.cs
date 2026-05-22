@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using Domain.ValidObject;
-using System.Text.RegularExpressions;
 
 namespace Domain.Entitys
 {
@@ -8,7 +7,7 @@ namespace Domain.Entitys
     {
         public string Name { get; private set; }
         public string Surname { get; private set; }
-        public string Patronymic { get; private set; }
+        public string? Patronymic { get; private set; }
         public string Image { get; private set; }
         public string DateBirth { get; private set; }
         public string NumberPhone { get; private set; }
