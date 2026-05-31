@@ -80,7 +80,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand AddImages;
 
-    private void ExecuteAddImages(object? obj) => _imageService.OnAddImage();
+    private void ExecuteAddImages(object? obj) => _imageService.AddImage();
     private bool CanExecuteAddImages(object? obj) => true;
 
     #endregion
@@ -88,7 +88,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => _imageService.OnDeleteImage();
+    private void ExecuteRemoveImages(object? obj) => _imageService.UpdateListImages();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -96,8 +96,10 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand Save;
 
-    private void ExecuteSave(object? obj)
+    private async void ExecuteSave(object? obj)
     {
+        var images = _imageService.UpdateImagesFromCloudDisk();
+
         _repositoryE.Add(
             new EventEntity(
                 new TitleValidObject(Title),
@@ -108,7 +110,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
                 new OrganizerValidObject(Organizer),
                 Schedule,
                 Category!,
-                Images)
+                await images)
             );
 
         _controlViewService.Exit();
@@ -124,7 +126,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
         _imageService = imageService;
         _controlViewService = controlViewService;
 
-        _imageService.Binding(this, nameof(Images));
+        _imageService.BindingImages(this, nameof(Images));
         CategoryEntities = repositoryC.Get().ToArray();
 
         Save = new ExecuteCommand(ExecuteSave, CanExecuteSave);

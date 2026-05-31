@@ -3,6 +3,8 @@ using Domain.Service.AttendanceService.BaseAttendanceService;
 using Domain.Service.AuthService;
 using Domain.Service.AuthService.BaseAuhtService;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.DebugService;
+using Domain.Service.DebugService.BaseDebugService;
 using Domain.Service.EntityService.TeacherService;
 using Domain.Service.FielService.BaseFileService;
 using Domain.Service.ImageService;
@@ -11,9 +13,11 @@ using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService;
 using Domain.Service.SharedService.BaseSharedService;
 using General.Service.ControlView;
+using General.Service.DebugService;
 using General.Service.File;
 using General.Service.Message;
 using Ninject.Modules;
+using YandexDisk.Client.Http;
 
 namespace Admin.DI.Module;
 
@@ -30,5 +34,7 @@ public class DomainModule() : NinjectModule
         Kernel.Bind<IAuthService>().To<AuthService>();
         Kernel.Bind<ITeacherService>().To<TeacherService>();
         Kernel.Bind<IAttendanceService>().To<AttendanceService>();
+        Kernel.Bind<ILogSaver>().To<YandexDiskDebugLogService>().InSingletonScope();
+        Kernel.Bind<IDebugLogService>().To<DebugLogService>().InSingletonScope();
     }
 }

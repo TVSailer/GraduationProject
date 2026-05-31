@@ -33,6 +33,7 @@ public class NewsDetailsPanelViewModel : General.ViewModel.ViewModel
     [RequiredCustom] public CategoryEntity? Category { get; set => Set(ref field, value); }
     public IEnumerable<string> Images { get; set => Set(ref field, value); }
     #endregion
+
     #region CommandToggleImage
 
     internal readonly ICommand ToggleImage;
@@ -53,7 +54,7 @@ public class NewsDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand AddImages;
 
-    private void ExecuteAddImages(object? obj) => _imageService.OnAddImage();
+    private void ExecuteAddImages(object? obj) => _imageService.AddImage();
     private bool CanExecuteAddImages(object? obj) => true;
 
     #endregion
@@ -61,7 +62,11 @@ public class NewsDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => _imageService.OnDeleteImage();
+    private void ExecuteRemoveImages(object? obj)
+    {
+        _imageService.UpdateListImages();
+    }
+
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -69,22 +74,25 @@ public class NewsDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand Update;
 
-    private void ExecuteUpdate(object? obj)
+    private async void ExecuteUpdate(object? obj)
     {
+        var images = _imageService.UpdateImagesFromCloudDisk();
+
         _newsEntity
             .UpdateTitle(new TitleValidObject(Title))
             .UpdateContent(new DescriptionValidObject(Description))
             .UpdateAuthor(new AuthorValidObject(Author))
             .UpdateDate(DateOnly.Parse(Date))
             .UpdateCategory(Category)
-            .UpdateImages(Images);
+            .UpdateImages(await images);
 
         _repositoryN.Update(_newsEntity);
 
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);
     }
 
-    private bool CanExecuteUpdate(object? obj) => ValidObject();
+    private bool CanExecuteUpdate(object? obj)
+        => _messageService.Message("Данные безвозратно изменяться!", TypeMessage.YesCancel) == TypeCommandMessage.Yes && ValidObject();
 
     #endregion
     #region CommandDelete
@@ -93,6 +101,7 @@ public class NewsDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteDelete(object? obj)
     {
+        _imageService.ClearImages();
         _repositoryN.Delete(_newsEntity.Id);
         _controlViewService.Exit();
     }
@@ -122,9 +131,8 @@ public class NewsDetailsPanelViewModel : General.ViewModel.ViewModel
         Description = _newsEntity.Content;
         Date = _newsEntity.Date;
         Author = _newsEntity.Author;
-        Images = _newsEntity.Images.Select(i => i.Url);
 
-        _imageService.Binding(this, nameof(Images));
+        _imageService.BindingImages(this, nameof(Images), _newsEntity.Images.Select(i => i.Url));
 
         Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);
         RemoveImages = new ExecuteCommand(ExecuteRemoveImages, CanExecuteRemoveImages);

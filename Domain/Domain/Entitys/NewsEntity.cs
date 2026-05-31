@@ -67,7 +67,7 @@ public class NewsEntity : Entity
     public void UpdateImages(IEnumerable<string>? images)
     {
         if (images is null) return;
-        Images = images.Select(i => new ImageNewsEntity { Url = i }).ToList();
+        Images = images.Select(i => new ImageNewsEntity(new ImageValidObject(i))).ToList();
     }
 
     public IEnumerable<string> GetImages()

@@ -109,11 +109,24 @@ public class VisitorEntity : Entity
 
     public IEnumerable<string[]> GetLessonWithAttendance()
     {
+        var uniqueDates = DateAttendances
+            .Select(d => d.Date)
+            .Distinct()
+            .OrderBy(d => d)
+            .ToArray();
+
         foreach (var lesson in Lessons)
         {
-            var data = new List<string> { lesson.Title };
-            data.AddRange(DateAttendances.Select(date => date.Lesson.Id.Equals(lesson.Id) ? "нб" : ""));
-            yield return data.ToArray();
+            var result = new string[1 + uniqueDates.Length];
+            result[0] = lesson.Title;
+
+            for (int i = 0; i < uniqueDates.Length; i++)
+                result[i + 1] = DateAttendances
+                    .Any(da => da.Date == uniqueDates[i] &&
+                               da.Lesson.Id.Equals(lesson.Id))
+                    ? "нб" : "";
+
+            yield return result;
         }
     }
 

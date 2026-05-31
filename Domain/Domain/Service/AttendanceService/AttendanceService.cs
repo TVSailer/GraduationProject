@@ -8,22 +8,36 @@ public class AttendanceService(IRepository<VisitorEntity> repositoryV, IReposito
 {
     public IEnumerable<string[]> GetVisitorWithAttendance(LessonEntity lesson)
     {
-        var attendanceByDate = repositoryD
-            .Get()
-            .AsEnumerable()
-            .Where(d => lesson.AttendanceDates
-                .Contains(d))
-            .Select(date => date.Visitors.Select(v => v.Id).ToHashSet())
+        var lessonDates = lesson.AttendanceDates
+            .OrderBy(d => d.Date)
             .ToArray();
 
-        foreach (var visitor in repositoryV
-                     .Get()
-                     .AsEnumerable()
-                     .Where(v => lesson.Visitors.Contains(v)))
-            yield return Enumerable.Range(0, attendanceByDate.Length + 1)
-                .Select(i => i == 0
-                    ? visitor.ToString()
-                    : attendanceByDate[i - 1].Contains(visitor.Id) ? "нб" : "")
-                .ToArray();
+        var allDates = repositoryD
+            .Get()
+            .AsEnumerable()
+            .Where(d => d.Lesson.Id == lesson.Id)
+            .ToDictionary(d => d.Date);
+
+        var attendanceByDate = lessonDates
+            .Select(lessonDate => allDates.TryGetValue(lessonDate.Date, out var date)
+                ? date.Visitors.Select(v => v.Id).ToHashSet()
+                : new HashSet<long>())
+            .ToArray();
+
+        var visitors = repositoryV
+            .Get()
+            .AsEnumerable()
+            .Where(v => lesson.Visitors.Contains(v));
+
+        foreach (var visitor in visitors)
+        {
+            var result = new string[1 + lessonDates.Length];
+            result[0] = visitor.ToString();
+
+            for (int i = 0; i < lessonDates.Length; i++)
+                result[i + 1] = attendanceByDate[i].Contains(visitor.Id) ? "нб" : "";
+
+            yield return result;
+        }
     }
 }

@@ -2,19 +2,31 @@
 using Domain.Entitys;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.EntityService.TeacherService;
+using Domain.Service.FielService.BaseFileService;
 using Domain.Service.SharedService.BaseSharedService;
+using Domain.Service.TaskService.BaseTaskService;
 using Domain.Valid.AttributeValid;
 using Domain.ValidObject;
+using General.Service.File;
 using System.Windows.Input;
-using Domain.Service.FielService.BaseFileService;
+using Domain.Enum;
+using Domain.Repository;
+using Domain.Service.AuthService.BaseAuhtService;
+using Domain.Service.ImageService.BaseServiceImage;
+using Domain.Service.MessageService.BaseMessageService;
 
 namespace Admin.ViewModel.Teacher;
 
 public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
 {
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+
     private readonly ITeacherService _teacherService;
+    private readonly IAuthService _authService;
+    private readonly IRepository<TeacherEntity> _repositoryT;
+    private readonly IMessageService _messageService;
     private readonly IControlViewService _controlViewService;
-    private readonly IImageFileService _imageFileService;
+    private readonly IImageService _imageService;
     private readonly TeacherEntity _teacher;
 
     #region Property
@@ -24,16 +36,7 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
     [Patronymic] public string? Patronymic { get; set => Set(ref field, value); }
     [DateBirthday] public string? DateBirth { get; set => Set(ref field, value); }
     [PhoneNumber] public string? NumberPhone { get; set => Set(ref field, value); }
-    [Image] public string? Image
-    {
-        get;
-        set
-        {
-            _imageFileService.DeleteImageFromDisk(field);
-            Set(ref field, value);
-        }
-    }
-
+    [Image] public string? ImageLocal { get; set => Set(ref field, value); }
     #endregion
 
     #region CommandExit
@@ -44,21 +47,39 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
     private bool CanExecuteExit(object? obj) => true;
 
     #endregion
+
+    #region CommandUpdateAuth
+
+    internal readonly ICommand UpdateAuth;
+
+    private void ExecuteUpdateAuth(object? obj)
+    {
+        _authService.UpdateAuth(_teacher.AuthEntity);
+        _repositoryT.Update(_teacher);
+        _authService.MessageAuth();
+    }
+
+    private bool CanExecuteUpdateAuth(object? obj) => true;
+
+    #endregion
     #region CommandUpdate
 
     internal readonly ICommand Update;
     private void ExecuteUpdate(object? obj)
     {
+        var image = _imageService.UpdateImageFromCloudDisk(ImageLocal);
+
         _teacher
-            .UpdateImage(new ImageValidObject(_imageFileService.SaveImageToDick(Image)))
             .UpdateName(new NameValidObject(Name))
             .UpdateSurname(new SurnameValidObject(Surname))
             .UpdatePatronymic(new PatronymicValidObject(Patronymic))
             .UpdateDateBirth(new DateBirthTeacherValidObject(DateOnly.Parse(DateBirth)))
+            .UpdateImage(new ImageValidObject(image.Result.CloudPath))
             .UpdateNumberPhone(new NumberPhoneValidObject(NumberPhone));
 
-        _teacherService.Update(_teacher);
-        _controlViewService.Exit();
+        _repositoryT.Update(_teacher);
+
+        _messageService.Message("Данные успешно обновились", TypeMessage.Info);
     }
     private bool CanExecuteUpdate(object? obj) => ValidObject();
 
@@ -80,13 +101,19 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
 
     public TeacherDetailsPanelViewModel(
         ITeacherService teacherService,
+        IAuthService authService,
+        IRepository<TeacherEntity> repositoryT,
+        IMessageService messageService,
         IControlViewService controlViewService,
-        IImageFileService imageFileService,
+        IImageService imageService,
         ISharedService sharedService)
     {
         _teacherService = teacherService;
+        _authService = authService;
+        _repositoryT = repositoryT;
+        _messageService = messageService;
         _controlViewService = controlViewService;
-        _imageFileService = imageFileService;
+        _imageService = imageService;
 
         _teacher = sharedService.GetData<TeacherEntity>();
 
@@ -95,11 +122,13 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
         Patronymic = _teacher.Patronymic;
         NumberPhone = _teacher.NumberPhone;
         DateBirth = _teacher.DateBirth;
-        Image = imageFileService.GetFullPath(_teacher.Image);
+
+        imageService.BindingImage(this, nameof(ImageLocal), _teacher.Image);
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);
         Delete = new ExecuteCommand(ExecuteDelete, CanExecuteDelete);
+        UpdateAuth = new ExecuteCommand(ExecuteUpdateAuth, CanExecuteUpdateAuth);
     }
 
     public IEnumerable<object[]> GetDataGridLesson() 

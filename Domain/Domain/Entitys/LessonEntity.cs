@@ -139,7 +139,7 @@ namespace Domain.Entitys
         }
 
         public void UpdateImages(IEnumerable<string> images) 
-            => Images = images.Select(i => new ImageLessonEntity { Url = i }).ToList();
+            => Images = images.Select(i => new ImageLessonEntity(new ImageValidObject(i))).ToList();
         
         public IEnumerable<string> GetImages() 
             => Images.Select(i => i.Url);

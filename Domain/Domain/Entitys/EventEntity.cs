@@ -15,7 +15,7 @@ public class EventEntity : Entity
     public string Organizer { get;  private set; }
     public EventEntitySchedule Schedule { get; private set; }
     public CategoryEntity Category { get; private set; }
-    public ICollection<ImageEventEntity> Images { get; private set; } = [];
+    public ICollection<ImageEventEntity>? Images { get; private set; } = [];
 
     private EventEntity() {}
 
@@ -101,7 +101,7 @@ public class EventEntity : Entity
         => $"{Title} {Schedule}";
 
     public void UpdateImages(IEnumerable<string>? images)
-        => Images = images?.Select(i => new ImageEventEntity { Url = i }).ToList();
+        => Images = images?.Select(i => new ImageEventEntity(new ImageValidObject(i))).ToList();
 
     public IEnumerable<string> GetImages()
         => Images.Select(i => i.Url);

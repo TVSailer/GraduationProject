@@ -49,7 +49,7 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand AddImages;
 
-    private void ExecuteAddImages(object? obj) => _imageService.OnAddImage();
+    private void ExecuteAddImages(object? obj) => _imageService.AddImage();
     private bool CanExecuteAddImages(object? obj) => true;
 
     #endregion
@@ -57,7 +57,7 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => _imageService.OnDeleteImage();
+    private void ExecuteRemoveImages(object? obj) => _imageService.UpdateListImages();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -66,8 +66,10 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
     internal readonly ICommand Save;
 
 
-    private void ExecuteSave(object? obj)
+    private async void ExecuteSave(object? obj)
     {
+        var images = _imageService.UpdateImagesFromCloudDisk();
+
         _repositoryL.Add(
             new LessonEntity(
                 new TitleValidObject(Title!),
@@ -77,7 +79,7 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
                 Category!,
                 Teacher,
                 _schedule.Value,
-                _imageService.SaveImagesToDisk())
+                await images)
         );
 
         _messageService.Message("Данные успешно добавились", TypeMessage.Info);
@@ -133,7 +135,7 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
         _messageService = messageService;
         _imageService = imageService;
 
-        _imageService.Binding(this, nameof(Images));
+        _imageService.BindingImages(this, nameof(Images));
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         AddImages = new ExecuteCommand(ExecuteAddImages, CanExecuteAddImages);

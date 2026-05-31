@@ -50,7 +50,7 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand AddImages;
 
-    private void ExecuteAddImages(object? obj) => _imageService.OnAddImage();
+    private void ExecuteAddImages(object? obj) => _imageService.AddImage();
     private bool CanExecuteAddImages(object? obj) => true;
 
     #endregion
@@ -58,7 +58,7 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => _imageService.OnDeleteImage();
+    private void ExecuteRemoveImages(object? obj) => _imageService.UpdateListImages();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -66,8 +66,10 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand Update;
 
-    private void ExecuteUpdate(object? obj)
+    private async void ExecuteUpdate(object? obj)
     {
+        var images = _imageService.UpdateImagesFromCloudDisk();
+
         _lessonEntity
             .UpdateTitle(new TitleValidObject(Title))
             .UpdateDescription(new DescriptionValidObject(Description))
@@ -76,7 +78,7 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
             .UpdateCategory(Category)
             .UpdateTeacher(Teacher)
             .UpdateSchedule(_schedule.Value)
-            .UpdateImages(_imageService.SaveImagesToDisk());
+            .UpdateImages(await images);
 
         _repositoryL.Update(_lessonEntity);
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);
@@ -84,7 +86,7 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private bool CanExecuteUpdate(object? obj)
     {
-        if (_schedule.HasValue) return ValidObject();
+        if (_schedule.HasValue) return _messageService.Message("Данные безвозратно изменяться!", TypeMessage.YesCancel) == TypeCommandMessage.Yes && ValidObject();
         _messageService.Message("Добавте расписание", TypeMessage.Error);
         return false;
     }
@@ -114,7 +116,7 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
     #endregion
 
     public LessonDetailsPanelViewModel(
-        IRepository<LessonEntity> repositoryL,
+        IRepository<LessonEntity> repositoryL, 
         IRepository<CategoryEntity> repositoryC,
         IRepository<TeacherEntity> repositoryT,
         IControlViewService controlViewService,
@@ -139,9 +141,8 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
         MaxParticipants = _lessonEntity.MaxParticipants;
         Teacher = _lessonEntity.Teacher;
         Category = _lessonEntity.Category;
-        Images = _lessonEntity.GetImages();
 
-        _imageService.Binding(this, nameof(Images));
+        _imageService.BindingImages(this, nameof(Images), _lessonEntity.Images.Select(i => i.Url));
         _schedule = Maybe.From(() => _lessonEntity.Schedule);
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);

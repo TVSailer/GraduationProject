@@ -71,8 +71,8 @@ public class TeacherDetailsPanelView(TeacherDetailsPanelViewModel viewModel) : U
                     .Row().End()
                 .End()
                 .ColumnAutoSize().Content()
-                     .Image(viewModel.Image)
-                     .Binding(viewModel, nameof(viewModel.Image))
+                     .Image(viewModel.ImageLocal)
+                     .Binding(viewModel, nameof(viewModel.ImageLocal))
                 .End()
                 .Column().Content()
                     .DataGridView()
@@ -91,11 +91,12 @@ public class TeacherDetailsPanelView(TeacherDetailsPanelViewModel viewModel) : U
                     .Command(viewModel.Update)
                 .End()
                 .Column().Content()
+                    .Button("Изменить пароль")
+                    .Command(viewModel.UpdateAuth)
+                .End()
+                .Column().Content()
                     .Button("Удалить")
                     .Command(viewModel.Delete)
                 .End()
-                .Column().Content()
-                    .Button()
-                .End()
-            .End();
+             .End();
 }

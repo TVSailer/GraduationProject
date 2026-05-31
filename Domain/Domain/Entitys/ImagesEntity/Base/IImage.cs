@@ -2,5 +2,5 @@
 
 public interface IImage
 {
-    public string? Url { get; set; }
+    public string Url { get; protected set; }
 }

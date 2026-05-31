@@ -1,8 +1,6 @@
-﻿using System.Windows.Input;
-using Domain.Command;
+﻿using Domain.Command;
 using Domain.Entitys;
 using Domain.Entitys.ComplexType;
-using Domain.Entitys.ImagesEntity;
 using Domain.Enum;
 using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
@@ -11,14 +9,14 @@ using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
 using Domain.Valid.AttributeValid;
 using Domain.ValidObject;
+using System.Windows.Input;
 
 namespace Admin.ViewModel.Event;
 
 public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 {
-    internal readonly IImageService _imageService;
+    private readonly IImageService _imageService;
     private readonly IMessageService _messageService;
-
     private readonly IRepository<EventEntity> _repositoryE;
     private readonly IControlViewService _controlViewService;
     private readonly EventEntity _eventEntity;
@@ -84,7 +82,7 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand AddImages;
 
-    private void ExecuteAddImages(object? obj) => _imageService.OnAddImage();
+    private void ExecuteAddImages(object? obj) => _imageService.AddImage();
     private bool CanExecuteAddImages(object? obj) => true;
 
     #endregion
@@ -92,7 +90,7 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => _imageService.OnDeleteImage();
+    private void ExecuteRemoveImages(object? obj) => _imageService.UpdateListImages();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -102,22 +100,26 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteUpdate(object? obj)
     {
+        var images = _imageService.UpdateImagesFromCloudDisk();
+        var image = _imageService.UpdateImageFromCloudDisk(TitleImg);
+
         _eventEntity
             .UpdateTitle(new TitleValidObject(Title))
             .UpdateDescription(new DescriptionValidObject(Description))
-            .UpdateTitleImage(new ImageValidObject(TitleImg))
+            .UpdateTitleImage(new ImageValidObject(image.Result.CloudPath))
             .UpdateLocation(new LocationValidObject(Location))
             .UpdateHttpLink(new HttpLinkValidObject(RegisLink))
             .UpdateCategory(Category)
             .UpdateSchedule(Schedule)
-            .UpdateImages(Images);
+            .UpdateImages(images.Result);
 
         _repositoryE.Update(_eventEntity);
 
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);
     }
 
-    private bool CanExecuteUpdate(object? obj) => ValidObject();
+    private bool CanExecuteUpdate(object? obj) 
+        => _messageService.Message("Данные безвозратно изменяться!", TypeMessage.YesCancel) == TypeCommandMessage.Yes && ValidObject();
 
     #endregion
     #region CommandDelete
@@ -126,12 +128,13 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteDelete(object? obj)
     {
+        _imageService.ClearImages();
         _repositoryE.Delete(_eventEntity.Id);
         _controlViewService.Exit();
     }
 
     private bool CanExecuteDelete(object? obj)
-        => _messageService.Message("Выдействительно хотите удалить?", TypeMessage.YesCancel) is TypeCommandMessage.Yes;
+        => _messageService.Message("Вы действительно хотите удалить?", TypeMessage.YesCancel) is TypeCommandMessage.Yes;
 
     #endregion
     public EventDetailsPanelViewModel(
@@ -160,9 +163,9 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
         TimeEnd = _eventEntity.Schedule.End;
         Date = _eventEntity.Schedule.Date;
         Organizer = _eventEntity.Organizer;
-        Images = _eventEntity.Images.Select(i => i.Url);
 
-        _imageService.Binding(this, nameof(Images));
+        _imageService.BindingImages(this, nameof(Images), _eventEntity.Images.Select(i => i.Url));
+        _imageService.BindingImage(this, nameof(TitleImg), _eventEntity.UrlTitleImag);
 
         Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);
         RemoveImages = new ExecuteCommand(ExecuteRemoveImages, CanExecuteRemoveImages);

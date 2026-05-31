@@ -6,12 +6,15 @@ using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Valid.AttributeValid;
 using Domain.ValidObject;
 using System.Windows.Input;
+using Domain.Enum;
+using Domain.Service.MessageService.BaseMessageService;
 
 namespace Admin.ViewModel.News;
 
 public class NewsAddingPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IImageService _imageService;
+    private readonly IMessageService _messageService;
     private readonly IRepository<NewsEntity> _repositoryE;
     private readonly IControlViewService _controlViewService;
 
@@ -47,7 +50,7 @@ public class NewsAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand AddImages;
 
-    private void ExecuteAddImages(object? obj) => _imageService.OnAddImage();
+    private void ExecuteAddImages(object? obj) => _imageService.AddImage();
     private bool CanExecuteAddImages(object? obj) => true;
 
     #endregion
@@ -55,7 +58,7 @@ public class NewsAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => _imageService.OnDeleteImage();
+    private void ExecuteRemoveImages(object? obj) => _imageService.UpdateListImages();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -63,8 +66,10 @@ public class NewsAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand Save;
 
-    private void ExecuteSave(object? obj)
+    private async void ExecuteSave(object? obj)
     {
+        var images = _imageService.UpdateImagesFromCloudDisk();
+
         _repositoryE.Add(
             new NewsEntity(
                 new TitleValidObject(Title),
@@ -72,9 +77,10 @@ public class NewsAddingPanelViewModel : General.ViewModel.ViewModel
                 DateOnly.Parse(Date),
                 Category,
                 new AuthorValidObject(Author!),
-                Images)
+                await images)
             );
 
+        _messageService.Message("Данные успешно добавились", TypeMessage.Info);
         _controlViewService.Exit();
     }
 
@@ -86,13 +92,15 @@ public class NewsAddingPanelViewModel : General.ViewModel.ViewModel
         IRepository<NewsEntity> repositoryE, 
         IRepository<CategoryEntity> repositoryC, 
         IImageService imageService, 
+        IMessageService messageService,
         IControlViewService controlViewService)
     {
         _repositoryE = repositoryE;
         _imageService = imageService;
+        _messageService = messageService;
         _controlViewService = controlViewService;
 
-        _imageService.Binding(this, nameof(Images));
+        _imageService.BindingImages(this, nameof(Images));
         CategoryEntities = repositoryC.Get().ToArray();
 
         Save = new ExecuteCommand(ExecuteSave, CanExecuteSave);

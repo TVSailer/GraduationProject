@@ -18,9 +18,9 @@ public class TestData {
         dbContext.Database.EnsureCreated();
 
         
-        imageService.Binding(this, nameof(_images));
-        imageService.OnAddImage();
-        var images = imageService.SaveImagesToDisk();
+        imageService.BindingImages(this, nameof(_images));
+        imageService.AddImage();
+        var images = imageService.SaveImagesToDisk().Select(r => r.Result).Select(p => p.CloudPath);
         
 
         var category = new CategoryEntity(new CategoryValidObject("Развлечение"));
