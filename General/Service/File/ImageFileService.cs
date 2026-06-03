@@ -13,7 +13,6 @@ public class ImageFileService(ILogSaver debugLog) : IImageFileService
 {
     private const string TitleManager = "Выберите изображения мероприятия";
     private const string FilesPictureBox = "Выберите изображения PictureBox Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
-    private const string Token = "y0__wgBEM-k-rgGGNuOQiDKrpHOF-xTZypvzN7RuIc98EIRpZBt0qkG";
     private const string TargetFolder = "Images";
     private const string LocalFolder = "ImageGraduareProject\\";
 
