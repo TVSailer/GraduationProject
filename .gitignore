@@ -366,3 +366,6 @@ FodyWeavers.xsd
 /AdminPanel/AdminPanel/Admin/App.config
 /DataAccess.PostgreSQL/App.config
 /AdminPanel/App.config
+/AdminPanel/appsettings.json
+/DataAccess.PostgreSQL/DatabaseSetting.cs
+/General/Service/File/YandexDiskSettings.cs
