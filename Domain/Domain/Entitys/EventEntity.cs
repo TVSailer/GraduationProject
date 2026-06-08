@@ -73,7 +73,7 @@ public class EventEntity : Entity
     
     public EventEntity UpdateLocation(LocationValidObject location)
     {
-        Description = location.Text;
+        Location = location.Text;
         return this;
     }
     

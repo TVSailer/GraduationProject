@@ -1,9 +1,7 @@
 ﻿using Domain.Enum;
-using Domain.Service.DebugService;
 using Domain.Service.DebugService.BaseDebugService;
 using Domain.Service.FielService.BaseFileService;
 using Domain.Service.MessageService.BaseMessageService;
-using General.Service.Message;
 using System.Diagnostics;
 using System.Windows.Forms;
 using YandexDisk.Client.Http;
@@ -109,8 +107,6 @@ public class ImageFileService : IImageFileService
         Debug.WriteLine($"Файл загружен: {pathLocal} -> {pathYandexDisk}");
     }
 
-
-
     private async Task DownloadImageToMemory(string nameImageYandexDisk, string pathLocalImage, CancellationToken cancellationToken)
     {
         const int maxRetries = 5;
@@ -129,7 +125,7 @@ public class ImageFileService : IImageFileService
                 if (link == null)
                     throw new InvalidOperationException("Получена пустая ссылка для скачивания");
 
-                await using var stream = await api.Files.DownloadAsync(link, cancellationToken);
+                await using var stream = await api.Files.DownloadAsync(link, cancellationToken).ConfigureAwait(false);
 
                 var fileStream = new FileStream(
                     pathLocalImage,
@@ -270,16 +266,22 @@ public class ImageFileService : IImageFileService
         await _cleanupLock.WaitAsync();
         try
         {
-            foreach (var file in _tempFiles.ToList())
-            {
-                await TryDeleteFile(file);
-            }
-            _tempFiles.Clear();
+            await ClearTempFiles();
         }
         finally
         {
             _cleanupLock.Release();
         }
+    }
+
+    public async Task ClearTempFiles()
+    {
+        foreach (var file in _tempFiles.ToList())
+        {
+            await TryDeleteFile(file);
+        }
+
+        _tempFiles.Clear();
     }
 
     public void Dispose()

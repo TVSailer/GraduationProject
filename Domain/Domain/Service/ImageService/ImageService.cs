@@ -7,7 +7,13 @@ using System.Diagnostics;
 
 namespace Domain.Service.ImageService;
 
-public class ImageService : IImageService, IDisposable
+public class SelecteRemoveImage(bool isToggle = false, bool isRemove = false)
+{
+    public bool IsToggle;
+    public bool IsRemove;
+}
+
+public class ImageService : IImageService
 {
     private readonly IMessageService _messageService;
     private readonly IImageFileService _imageFileService;
@@ -17,7 +23,7 @@ public class ImageService : IImageService, IDisposable
     private CustomPropertyInfo<string>? _propertyInfoImageLocalPath;
 
     public event Action<IEnumerable<string>>? OnChangeImg;
-    public readonly Dictionary<PathImageValidObject, bool> Images = [];
+    public readonly Dictionary<PathImageValidObject, SelecteRemoveImage> Images = [];
 
     public ImageService(IMessageService messageService, IImageFileService imageFileService)
     {
@@ -30,27 +36,30 @@ public class ImageService : IImageService, IDisposable
         var images = _imageFileService.ShowOpenFileDialog();
         if (images == null) return;
         foreach (var image in images)
-            Images.TryAdd(new PathImageValidObject(image), false);
+            Images.TryAdd(new PathImageValidObject(image), new SelecteRemoveImage());
 
         NotifyImagesChanged();
     }
 
-    public void UpdateListImages()
+    public void RemoveIsValueImages()
     {
-        if (!Images.Any(kvp => kvp.Value)) return;
+        if (!Images.Any(kvp => kvp.Value.IsToggle)) return;
+
+        foreach (var selecteRemoveImage in Images.Where(i => i.Value.IsToggle))
+            selecteRemoveImage.Value.IsRemove = true;
 
         NotifyImagesChanged();
     }
 
     public IEnumerable<Task<PathImageValidObject>> SaveImagesToDisk()
-        => _imageFileService.SaveImagesToDisk(
-            Images.Where(i => !i.Value).Select(i => i.Key),
+        => _imageFileService.SaveImagesToDisk(  
+            Images.Where(i => !i.Value.IsRemove).Select(i => i.Key),
             _cancellationTokenSource.Token);
 
     public void ToggleImage(string path)
     {
         var key = Images.Keys.Single(i => i.LocalPath == path);
-        Images[key] = !Images[key];
+        Images[key].IsToggle = !Images[key].IsToggle;
     }
 
     public Task BindingImages(object obj, string nameMember, IEnumerable<string>? images = null)
@@ -73,7 +82,7 @@ public class ImageService : IImageService, IDisposable
             try
             {
                 var fullPath = await _imageFileService.GetFullPath(image, _cancellationTokenSource.Token);
-                Images.TryAdd(fullPath, false);
+                Images.TryAdd(fullPath, new SelecteRemoveImage());
                 NotifyImagesChanged();
             }
             catch (OperationCanceledException)
@@ -134,7 +143,7 @@ public class ImageService : IImageService, IDisposable
 
         foreach (var pathImageTask in SaveImagesToDisk())
         {
-            var pathImage = await pathImageTask;
+            var pathImage = await pathImageTask.ConfigureAwait(false);
 
             if (pathImage.CloudPath is null)
                 throw new InvalidOperationException("PathImage must have a CloudPath");
@@ -147,10 +156,10 @@ public class ImageService : IImageService, IDisposable
 
     private async Task DeleteImagesFromDisk()
     {
-        foreach (var kvp in Images.Where(i => i.Value).Select(i => i.Key).ToList())
+        foreach (var kvp in Images.Where(i => i.Value.IsRemove).Select(i => i.Key).ToList())
         {
-            await _imageFileService.DeleteImageFromDisk(kvp, _cancellationTokenSource.Token);
             Images.Remove(kvp);
+            await _imageFileService.DeleteImageFromDisk(kvp, _cancellationTokenSource.Token);
         }
     }
 
@@ -182,7 +191,7 @@ public class ImageService : IImageService, IDisposable
     }
 
     private void NotifyImagesChanged()
-        => OnChangeImg?.Invoke(Images.Select(i => i.Key.LocalPath));
+        => OnChangeImg?.Invoke(Images.Where(i => !i.Value.IsRemove).Select(i => i.Key.LocalPath));
 }
 
 // Вспомогательный extension method для fire-and-forget операций

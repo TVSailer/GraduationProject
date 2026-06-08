@@ -74,7 +74,12 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand Exit;
 
-    private void ExecuteExit(object? obj) => _controlViewService.Exit();
+    private void ExecuteExit(object? obj)
+    {
+        _controlViewService.Exit();
+        _imageService.Dispose();
+    }
+
     private bool CanExecuteExit(object? obj) => true;
 
     #endregion
@@ -90,8 +95,12 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => _imageService.UpdateListImages();
-    private bool CanExecuteRemoveImages(object? obj) => true;
+    private async void ExecuteRemoveImages(object? obj)
+    {
+        _imageService.RemoveIsValueImages();
+    }
+
+    private bool CanExecuteRemoveImages(object? obj) => _messageService.Message("Вы действительно хотите удалить изображение?", TypeMessage.YesCancel) == TypeCommandMessage.Yes;
 
     #endregion
     #region CommandUpdate
@@ -100,20 +109,23 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private async void ExecuteUpdate(object? obj)
     {
-        var images = await _imageService.UpdateImagesFromCloudDisk();
-        var image = await _imageService.UpdateImageFromCloudDisk();
-
         _eventEntity
             .UpdateTitle(new TitleValidObject(Title))
             .UpdateDescription(new DescriptionValidObject(Description))
-            .UpdateTitleImage(new ImageValidObject(image.CloudPath))
             .UpdateLocation(new LocationValidObject(Location))
             .UpdateHttpLink(new HttpLinkValidObject(RegisLink))
             .UpdateCategory(Category)
-            .UpdateSchedule(Schedule)
+            .UpdateSchedule(Schedule);
+
+        var images = await _imageService.UpdateImagesFromCloudDisk();
+
+        var image = await _imageService.UpdateImageFromCloudDisk();
+
+        _eventEntity
+            .UpdateTitleImage(new ImageValidObject(image.CloudPath))
             .UpdateImages(images);
 
-        _repositoryE.UpdateAsync(_eventEntity);
+        await _repositoryE.UpdateAsync(_eventEntity);
 
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);
     }

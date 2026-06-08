@@ -58,7 +58,7 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => _imageService.UpdateListImages();
+    private void ExecuteRemoveImages(object? obj) => _imageService.RemoveIsValueImages();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion
@@ -68,8 +68,6 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private async void ExecuteUpdate(object? obj)
     {
-        var images = _imageService.UpdateImagesFromCloudDisk();
-
         _lessonEntity
             .UpdateTitle(new TitleValidObject(Title))
             .UpdateDescription(new DescriptionValidObject(Description))
@@ -77,10 +75,13 @@ public class LessonDetailsPanelViewModel : General.ViewModel.ViewModel
             .UpdateMaximazeParticipant(new MaximazeParticipantValidObject(MaxParticipants))
             .UpdateCategory(Category)
             .UpdateTeacher(Teacher)
-            .UpdateSchedule(_schedule.Value)
-            .UpdateImages(await images);
+            .UpdateSchedule(_schedule.Value);
 
-        _repositoryL.Update(_lessonEntity);
+        var images = await _imageService.UpdateImagesFromCloudDisk();
+
+        _lessonEntity.UpdateImages(images);
+
+        await _repositoryL.UpdateAsync(_lessonEntity);
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);
     }
 

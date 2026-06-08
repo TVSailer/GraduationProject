@@ -64,7 +64,7 @@ public class NewsDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteRemoveImages(object? obj)
     {
-        _imageService.UpdateListImages();
+        _imageService.RemoveIsValueImages();
     }
 
     private bool CanExecuteRemoveImages(object? obj) => true;
@@ -76,17 +76,18 @@ public class NewsDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private async void ExecuteUpdate(object? obj)
     {
-        var images = _imageService.UpdateImagesFromCloudDisk();
-
         _newsEntity
             .UpdateTitle(new TitleValidObject(Title))
             .UpdateContent(new DescriptionValidObject(Description))
             .UpdateAuthor(new AuthorValidObject(Author))
             .UpdateDate(DateOnly.Parse(Date))
-            .UpdateCategory(Category)
-            .UpdateImages(await images);
+            .UpdateCategory(Category);
 
-        _repositoryN.Update(_newsEntity);
+        var images = await _imageService.UpdateImagesFromCloudDisk();
+
+        _newsEntity.UpdateImages(images);
+
+        await _repositoryN.UpdateAsync(_newsEntity);
 
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);
     }

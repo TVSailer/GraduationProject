@@ -2,9 +2,9 @@
 
 namespace Domain.Service.ImageService.BaseServiceImage;
 
-public interface IImageService
+public interface IImageService : IDisposable
 {
-    public void UpdateListImages();
+    public void RemoveIsValueImages();
     public void AddImage();
     public void ToggleImage(string? path);
     public Task BindingImages(object obj, string nameMember, IEnumerable<string>? images = null);

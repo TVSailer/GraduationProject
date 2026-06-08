@@ -57,7 +57,7 @@ public class LessonAddingPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand RemoveImages;
 
-    private void ExecuteRemoveImages(object? obj) => _imageService.UpdateListImages();
+    private void ExecuteRemoveImages(object? obj) => _imageService.RemoveIsValueImages();
     private bool CanExecuteRemoveImages(object? obj) => true;
 
     #endregion

@@ -5,6 +5,8 @@ using Domain.Service.AuthService.BaseAuhtService;
 using Domain.Service.FielService.BaseFileService;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.ValidObject;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Domain.Service.AuthService;
 
@@ -72,11 +74,26 @@ public class AuthService(
         return entity is not null;
     }
 
-    public bool IsRoleAuth(UserRole role) 
-        => repositoryA
-            .Get()
-            .AsEnumerable()
-            .Select(a => a.UserRoleId).Contains(role);
+    public bool IsRoleAuth(UserRole role)
+    {
+        var maxRetries = 5;
+        for (int i = 0; i < maxRetries; i++)
+        {
+            try
+            {
+                return repositoryA
+                    .Get()
+                    .AsEnumerable()
+                    .Select(a => a.UserRoleId).Contains(role);
+            }
+            catch (System.Exception ex) when (i < maxRetries - 1)
+            {
+                Debug.WriteLine($"✗ Попытка найти роль {i + 1}/{maxRetries}: {ex.Message}");
+            }
+        }
+
+        return false;
+    }
 
     public void MessageAuth() => 
         messageService.Message(
