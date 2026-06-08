@@ -10,14 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Resources\**" />
-    <None Remove="Resources\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4">
       <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Ninject" Version="3.3.6" />
     <PackageReference Include="ninject.extensions.conventions" Version="3.3.0" />
@@ -25,11 +26,13 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="Resources\" />
     <Folder Include="ViewModel\Category\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccess.PostgreSQL\DataAccess.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Domain\Domain\Domain.csproj" />
     <ProjectReference Include="..\ExtensionFunc\ExtensionFunc.csproj" />
     <ProjectReference Include="..\General\General.csproj" />
     <ProjectReference Include="..\UserInterfase\UserInterface.csproj" />
@@ -43,5 +46,4 @@
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
-
 </Project>

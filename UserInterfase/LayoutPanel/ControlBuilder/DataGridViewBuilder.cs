@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using UserInterface.LayoutPanel.ContentSelection;
 
@@ -14,25 +15,24 @@ public class DataGridViewBuilder<TParentBuilder> : ControlBuilder<DataGridView, 
 
     public DataGridViewBuilder<TParentBuilder> SetColumn(string name)
     {
-        Control.Columns.Add(name.GetHashCode().ToString(), name);
+        int index = Control.Columns.Add(name.GetHashCode().ToString(), name);
+        Control.Columns[index].SortMode = DataGridViewColumnSortMode.NotSortable;
 
         return this;
     }
-    
+
     public DataGridViewBuilder<TParentBuilder> SetColumn(IEnumerable<string> names)
     {
         foreach (var name in names)
-            Control.Columns.Add(name.GetHashCode().ToString(), name);
-        
+            SetColumn(name);
+
+        Control.SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect;
         return this;
     }
-    
+
     public DataGridViewBuilder<TParentBuilder> SetColumn(string[] names)
     {
-        foreach (var name in names)
-            Control.Columns.Add(name.GetHashCode().ToString(), name);
-        
-        return this;
+        return SetColumn((IEnumerable<string>)names);
     }
 
     protected override DataGridView SettingControl()
@@ -40,12 +40,12 @@ public class DataGridViewBuilder<TParentBuilder> : ControlBuilder<DataGridView, 
         return new DataGridView
         {
             AutoSize = true,
+            MultiSelect = false,
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells,
             AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders,
-            SelectionMode = DataGridViewSelectionMode.FullRowSelect,
             AllowUserToAddRows = false,
             ScrollBars = ScrollBars.Both,
-            Font = new Font("Times New Roman", 11, FontStyle.Bold),
+            Font = new Font("Times New Roman", 14, FontStyle.Bold),
             Margin = new Padding(5),
         };
     }

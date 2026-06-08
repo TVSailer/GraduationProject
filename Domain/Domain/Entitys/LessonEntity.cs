@@ -95,6 +95,10 @@ namespace Domain.Entitys
             => Schedule.Any(s => s.TryRangeScheduleNow()) &&
                AttendanceDates.All(d => d.ToDateTime() != DateTime.Today);
 
+        public bool IsUpdateDateAttendance() =>
+            Schedule.Any(s => s.TryRangeScheduleNow()) &&
+            AttendanceDates.Any(d => d.Date == DateTime.Now.ToString("dd.MM.yyyy"));
+
         public bool IsAddReview(VisitorEntity visitor)
             => !visitor.Reviews
                 .Select(r => r.Id)

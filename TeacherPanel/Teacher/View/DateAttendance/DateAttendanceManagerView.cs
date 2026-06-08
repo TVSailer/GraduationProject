@@ -22,7 +22,7 @@ public class DateAttendanceManagerPanelView(DateAttendanceManagerPanelViewModel 
                     .Command(viewModel.Exit)
                 .End()
                 .Column().Content()
-                    .Button("Добавить")
+                    .Button(viewModel.NameButton)
                     .Command(viewModel.Add)
                 .End()
                 .Column().Content()

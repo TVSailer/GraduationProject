@@ -9,7 +9,7 @@ public class AttendanceService(IRepository<VisitorEntity> repositoryV, IReposito
     public IEnumerable<string[]> GetVisitorWithAttendance(LessonEntity lesson)
     {
         var lessonDates = lesson.AttendanceDates
-            .OrderBy(d => d.Date)
+            .OrderBy(d => d.ToDateTime())
             .ToArray();
 
         var allDates = repositoryD

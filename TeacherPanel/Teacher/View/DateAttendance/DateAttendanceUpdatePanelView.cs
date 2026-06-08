@@ -1,27 +1,22 @@
-﻿using Admin.ViewModel.DateAttendance;
+﻿using Teacher.ViewModel.DateAttendance;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.View;
 
-namespace Admin.View.DateAttendance;
+namespace Teacher.View.DateAttendance;
 
-public class DateAttendanceAddingPanelView(DateAttendanceAddingPanelViewModel viewModel) : Forma<DateAttendanceAddingPanelViewModel>
+public class DateAttendanceUpdatePanelView(DateAttendanceUdpatePanelViewModel viewModel) : Forma<DateAttendanceUdpatePanelViewModel>
 {
     public override void Initialize()
     {
-        Text = "Учет посещаемости";
         Size = new Size(800, 800);
     }
 
     public override IBuilder ControlUi(BuilderLayoutPanel builderLayoutPanel)
         => builderLayoutPanel.Column()
-            .RowAbsolute(50).Content()
-                .Label($"Дата учета посещяемости: {viewModel.Date}")
-                .Size(14)
-            .End()
             .Row().Content()
                 .ChekedListBox()
-                .SetData(viewModel.VisitorEntities.Keys.ToArray())
+                .SetData(viewModel.VisitorEntities)
                 .CommandCheckedItem(viewModel.SelectItem)
             .End()
             .RowAbsolute(80)
@@ -32,9 +27,9 @@ public class DateAttendanceAddingPanelView(DateAttendanceAddingPanelViewModel vi
                 .Column()
                 .End()
                 .Column().Content()
-                    .Button("Сохранить")
-                    .Command(viewModel.Add)
+                    .Button("Обновить")
+                    .Command(viewModel.Update)
                 .End()
             .End()
-        ;
+    ;
 }

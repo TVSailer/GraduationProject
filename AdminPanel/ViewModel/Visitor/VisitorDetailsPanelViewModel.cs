@@ -64,7 +64,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteUpdate(object? obj)
     {
-        var image = _imageService.UpdateImageFromCloudDisk(ImageLocal);
+        var image = _imageService.UpdateImageFromCloudDisk();
 
         _visitorEntity
             .UpdateImage(new ImageValidObject(image.Result.CloudPath))
@@ -88,6 +88,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteDelete(object? obj)
     {
+        _imageService.ClearImage();
         _repositoryV.Delete(_visitorEntity.Id);
         _authService.Delete(_visitorEntity.AuthEntity);
         _controlViewService.Exit();
@@ -129,6 +130,7 @@ public class VisitorDetailsPanelViewModel : General.ViewModel.ViewModel
     }
 
     public IEnumerable<string> GetDateAttendance() => _visitorEntity.DateAttendances
+        .OrderBy(d => d.ToDateTime())
         .Select(d => d.ToString("dd/MM"))
         .Distinct()
         ;

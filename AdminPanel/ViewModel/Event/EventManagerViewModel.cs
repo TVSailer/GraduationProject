@@ -58,7 +58,7 @@ namespace Admin.ViewModel.Event
         private void ExecuteLoadAddingPanel(object obj)
         {
             _controlViewService.LoadView<EventAddingPanelViewModel>();
-            EventsEntities = _repositoryE.Get();
+            EventsEntities = _repositoryE.Get().AsEnumerable();
         }
 
         private bool CanExecuteLoadAddingPanel(object obj) => true;
@@ -72,7 +72,7 @@ namespace Admin.ViewModel.Event
         {
             _sharedService.SetData(obj);
             _controlViewService.LoadView<EventDetailsPanelViewModel>();
-            EventsEntities = _repositoryE.Get();
+            EventsEntities = _repositoryE.Get().AsEnumerable();
         }
 
         private bool CanExecuteLoadDetailsPanel(object? obj) => obj is EventEntity ? true : throw new ArgumentException();

@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Input;
-using ExtensionFunc;
 using UserInterface.LayoutPanel.ContentSelection;
 
 namespace UserInterface.LayoutPanel.ControlBuilder;
@@ -24,6 +23,14 @@ public class ChekedListBoxBuilder<TParentBuilder> : ControlBuilder<CheckedListBo
     public ChekedListBoxBuilder<TParentBuilder> SetData(object[] items)
     {
         Control.Items.AddRange(items);
+        return this;
+    }
+    
+    public ChekedListBoxBuilder<TParentBuilder> SetData<T>(Dictionary<T, bool> items) where T : notnull
+    {
+        foreach (var item in items)
+            Control.Items.Add(item.Key, item.Value);
+        
         return this;
     }
 

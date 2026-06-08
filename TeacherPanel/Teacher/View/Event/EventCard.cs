@@ -1,15 +1,21 @@
-﻿using Domain.Entitys;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Domain.Entitys;
+using Domain.Service.DebugService;
 using Domain.Service.FielService.BaseFileService;
+using General.Service.DebugService;
 using General.Service.File;
+using General.Service.Message;
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.UiObjects.Card;
 
 namespace Teacher.View.Event;
 
-public class EventCard : ObjectCard<EventEntity>
+public class EventCard : ObjectCard<EventEntity>, INotifyPropertyChanged
 {
     private readonly IImageFileService _imageFileService;
+    public string Image { get; set; }
 
     public EventCard()
     {
@@ -17,14 +23,20 @@ public class EventCard : ObjectCard<EventEntity>
         Dock = DockStyle.Top;
         Margin = new Padding(5);
 
-        _imageFileService = new ImageFileService();
+        _imageFileService = new ImageFileService(
+            new YandexDiskDebugLogService(
+                new DebugLogService()),
+            new MessageService(),
+            new DebugLogService());
     }
 
     public override IBuilder Content(BuilderLayoutPanel builderLayoutPanel)
-    => new BuilderLayoutPanel().Column()
+    {
+        var b = new BuilderLayoutPanel().Column()
             .RowAbsolute(300).Content()
-                .Image(_imageFileService.GetFullPath(Entity.UrlTitleImag))
+                .Image()
                 .BorderStyle(BorderStyle.None)
+                .Binding(this, nameof(Image))
             .End()
             .RowAutoSize().Content()
                 .Label(Entity.Title)
@@ -46,4 +58,23 @@ public class EventCard : ObjectCard<EventEntity>
                 .Size(12)
                 .ForeColor(Color.DarkGreen)
             .End();
+
+        _ = AddImage(_imageFileService.GetFullPath(Entity.UrlTitleImag, CancellationToken.None));
+
+        return b;
+    }
+
+    public async Task AddImage(Task<PathImageValidObject> pathImageTask)
+    {
+        var path = await pathImageTask;
+        Image = path.LocalPath;
+        OnPropertyChanged(nameof(Image));
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 }

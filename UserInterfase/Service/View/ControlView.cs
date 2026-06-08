@@ -14,6 +14,7 @@ public class ControlView(IServiceProvisionUI di) : IControlView
         WindowState = FormWindowState.Maximized,
         StartPosition = FormStartPosition.CenterParent,
         BackColor = Color.White,
+        Icon = new Icon(Path.Combine(Directory.GetCurrentDirectory(), "Resource", "ICO.ico"))
     };
 
     private IForma? _showDialogForm;

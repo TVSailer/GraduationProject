@@ -1,10 +1,10 @@
 ﻿using Domain.Command;
 using Domain.Entitys;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.FielService.BaseFileService;
+using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Service.SharedService.BaseSharedService;
 using System.Windows.Input;
-using Domain.Service.FielService.BaseFileService;
-using Domain.Service.MementoService.BaseMementoService;
 
 namespace Teacher.ViewModel.Lesson;
 
@@ -21,7 +21,7 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     public string Description => _lesson.Description;
     public string Location => _lesson.Location;
     public CategoryEntity Category => _lesson.Category;
-    public IEnumerable<string>? Images => _lesson.GetImages().Select(i => _imageFileService.GetFullPath(i));
+    public IEnumerable<string>? Images { get; set => Set(ref field, value); }
     public IEnumerable<LessonScheduleEntity> Schedule => _lesson.Schedule;
     public IEnumerable<ReviewEntity> ReviewEntites => _lesson.Reviews;
 
@@ -37,12 +37,13 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
 
     public LessonPanelViewModel(
         IControlViewService controlViewService,
-        IImageFileService imageFileService,
+        IImageService imageFileService,
         ISharedService sharedService)
     {
         _controlViewService = controlViewService;
-        _imageFileService = imageFileService;
         _lesson = sharedService.GetData<LessonEntity>();
+
+        imageFileService.BindingImages(this, nameof(Images), _lesson.GetImages());
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
     }

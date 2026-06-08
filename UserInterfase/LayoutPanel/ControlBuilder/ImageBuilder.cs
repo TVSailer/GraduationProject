@@ -18,11 +18,9 @@ public class ImageBuilder<TParentBuilder> : ControlBuilder<PictureBox, TParentBu
     {
         Bitmap bitmap;
         if (string.IsNullOrEmpty(url))
-            bitmap = new Bitmap(
-                "D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage.png");
+            bitmap = new Bitmap(Path.Combine(Directory.GetCurrentDirectory(), "Resource", "BackgroundImage.png"));
         else
-            bitmap = new Bitmap(
-                "D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage2.png");
+            bitmap = new Bitmap(Path.Combine(Directory.GetCurrentDirectory(), "Resource", "BackgroundImage2.png"));
 
         Control.BackgroundImage = bitmap;
         Control.ImageLocation = url;

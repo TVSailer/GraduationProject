@@ -98,19 +98,20 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
 
     private async void ExecuteSave(object? obj)
     {
-        var images = _imageService.UpdateImagesFromCloudDisk();
+        var images = await _imageService.UpdateImagesFromCloudDisk();
+        var image = await _imageService.UpdateImageFromCloudDisk();
 
         _repositoryE.Add(
             new EventEntity(
                 new TitleValidObject(Title),
-                new ImageValidObject(TitleImg),
+                new ImageValidObject(image.CloudPath),
                 new DescriptionValidObject(Description),
                 new LocationValidObject(Location),
                 new HttpLinkValidObject(RegisLink),
                 new OrganizerValidObject(Organizer),
                 Schedule,
                 Category!,
-                await images)
+                images)
             );
 
         _controlViewService.Exit();
@@ -127,6 +128,7 @@ public class EventAddingPanelViewModel : General.ViewModel.ViewModel
         _controlViewService = controlViewService;
 
         _imageService.BindingImages(this, nameof(Images));
+        _imageService.BindingImage(this, nameof(TitleImg));
         CategoryEntities = repositoryC.Get().ToArray();
 
         Save = new ExecuteCommand(ExecuteSave, CanExecuteSave);

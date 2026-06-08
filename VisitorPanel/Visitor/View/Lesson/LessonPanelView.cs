@@ -43,7 +43,7 @@ public class LessonPanelView(LessonPanelViewModel viewModel) : UiView<LessonPane
                 .End()
                 .Column(55).Content()
                     .ImageLayoutPanel()
-                    .RefreshImages(viewModel.Images)
+                    .Binding(viewModel, nameof(viewModel.Images))
                 .End()
                 .Column(20).Content()
                     .CardTableLayoutPanel<ReviewEntity, ReviewCard>()

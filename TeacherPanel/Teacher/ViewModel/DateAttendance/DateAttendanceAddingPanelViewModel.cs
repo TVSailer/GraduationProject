@@ -76,12 +76,11 @@ public class DateAttendanceAddingPanelViewModel : General.ViewModel.ViewModel
         IMessageService messageService
         )
     {
-        repositoryV
-            .Get()
-            .AsEnumerable()
+        _lessonEntity = sharedService.GetData<LessonEntity>();
+
+        _lessonEntity.Visitors
             .ForEach(v => VisitorEntities.Add(v, false));
 
-        _lessonEntity = sharedService.GetData<LessonEntity>();
         _repositoryD = repositoryD;
         _controlViewService = controlViewService;
         _messageService = messageService;

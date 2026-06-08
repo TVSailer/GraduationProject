@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Input;
-using UserInterface.Command;
 using UserInterface.LayoutPanel.ContentSelection;
 using Font = System.Drawing.Font;
 

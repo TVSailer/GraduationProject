@@ -35,6 +35,7 @@ public class TextBoxBuilder<TParentBuilder> : ControlBuilder<TextBox, TParentBui
     public TextBoxBuilder<TParentBuilder> ReadOnly(bool readOnly = true)
     {
         Control.ReadOnly = readOnly;
+        Control.Enabled = false;
         return this;
     }
 

@@ -6,6 +6,8 @@ using Domain.Service.AttendanceService.BaseAttendanceService;
 using Domain.Service.AuthService;
 using Domain.Service.AuthService.BaseAuhtService;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.DebugService;
+using Domain.Service.DebugService.BaseDebugService;
 using Domain.Service.FielService.BaseFileService;
 using Domain.Service.ImageService;
 using Domain.Service.ImageService.BaseServiceImage;
@@ -15,6 +17,7 @@ using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService;
 using Domain.Service.SharedService.BaseSharedService;
 using General.Service.ControlView;
+using General.Service.DebugService;
 using General.Service.File;
 using General.Service.Message;
 using Ninject;
@@ -22,6 +25,7 @@ using Teacher.DI.Module;
 using UserInterface.DIService;
 using UserInterface.Service.View;
 using UserInterface.Service.View.Base;
+using YandexDisk.Client.Http;
 
 namespace Teacher.DI;
 
@@ -56,6 +60,8 @@ public class MainDI
         container.Bind<IAuthFileService>().ToConstant(new AuthFileService("EnterTeacher")).InSingletonScope();
         container.Bind<IAuthService>().To<AuthService>();
         container.Bind<IAttendanceService>().To<AttendanceService>();
+        container.Bind<ILogSaver>().To<YandexDiskDebugLogService>();
+        container.Bind<IDebugLogService>().To<DebugLogService>();
 
         return container;
     }

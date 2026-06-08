@@ -1,18 +1,17 @@
-﻿using Domain.Command;
+﻿using System.Diagnostics;
+using System.Windows.Input;
+using Domain.Command;
 using Domain.Entitys;
 using Domain.Entitys.ComplexType;
 using Domain.Service.ControlViewService.BaseControlView;
-using Domain.Service.FielService.BaseFileService;
+using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Service.SharedService.BaseSharedService;
-using System.Diagnostics;
-using System.Windows.Input;
 
 namespace Visitor.ViewModel.Event;
 
 public class EventPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IControlViewService _controlViewService;
-    private readonly IImageFileService _imageFileService;
     private readonly EventEntity _event;
 
     #region Property
@@ -23,7 +22,7 @@ public class EventPanelViewModel : General.ViewModel.ViewModel
     public string Organizer => _event.Organizer;
     public EventEntitySchedule Schedule => _event.Schedule;
     public string Description => _event.Description;
-    public IEnumerable<string>? Images => _event.GetImages().Select(i => _imageFileService.GetFullPath(i));
+    public IEnumerable<string>? Images { get; set => Set(ref field, value); }
 
     #endregion
     #region CommandOpenLinkRegistration
@@ -53,13 +52,14 @@ public class EventPanelViewModel : General.ViewModel.ViewModel
 
     public EventPanelViewModel(
         IControlViewService controlViewService,
-        IImageFileService imageFileService,
+        IImageService imageFileService,
         ISharedService sharedService
         )
     {
         _controlViewService = controlViewService;
-        _imageFileService = imageFileService;
         _event = sharedService.GetData<EventEntity>();
+
+        imageFileService.BindingImages(this, nameof(Images), _event.GetImages());
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         OpenLinkRegistration = new ExecuteCommand(ExecuteOpenLinkRegistration, CanExecuteOpenLinkRegistration);

@@ -33,14 +33,12 @@ public class VisitorProfelPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand Exit;
 
-    private void ExecuteExit(object? obj)
+    private async void ExecuteExit(object? obj)
     {
-        if (Image != _imageFileService.GetFullPath(_visitorEntity.Image))
-        {
-            _imageFileService.DeleteImageFromDisk(_visitorEntity.Image);
-            _visitorEntity.UpdateImage(new ImageValidObject(_imageFileService.SaveImageToDick(Image)));
-            _repositoryV.Update(_visitorEntity);
-        }
+        var path = await _imageService.UpdateImageFromCloudDisk();
+
+        _visitorEntity.UpdateImage(new ImageValidObject(path.CloudPath));
+        _repositoryV.Update(_visitorEntity);
         _controlViewService.Exit();
     }
 
@@ -64,22 +62,21 @@ public class VisitorProfelPanelViewModel : General.ViewModel.ViewModel
 
     public VisitorProfelPanelViewModel(
         IControlViewService controlViewService,
-        IImageFileService imageFileService,
         IImageService imageService,
         IRepository<VisitorEntity> repositoryV,
         IMementoService<VisitorEntity> sharedService)
     {
         _controlViewService = controlViewService;
-        _imageFileService = imageFileService;
         _imageService = imageService;
         _repositoryV = repositoryV;
 
         _visitorEntity = sharedService.Get().Value;
 
         FIO = _visitorEntity.ToString();
-        Image = _imageFileService.GetFullPath(_visitorEntity.Image);
         DateBurth = _visitorEntity.DateBirth;
         NumberPhone = _visitorEntity.NumberPhone;
+
+        imageService.BindingImage(this, nameof(Image), _visitorEntity.Image);
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         ChangeAccount = new ExecuteCommand(ExecuteChangeAccount, CanExecuteChangeAccount);

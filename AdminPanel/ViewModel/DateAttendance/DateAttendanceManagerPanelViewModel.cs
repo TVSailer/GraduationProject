@@ -11,6 +11,11 @@ namespace Admin.ViewModel.DateAttendance;
 
 public class DateAttendanceManagerPanelViewModel : General.ViewModel.ViewModel
 {
+    private const string NAME_BUTTON_ADD = "Добавить";
+    private const string NAME_BUTTON_UPDATE = "Обновить";
+
+    public string NameButton = NAME_BUTTON_ADD;
+
     private readonly ISharedService _sharedService;
     private readonly IControlViewService _controlViewService;
     private readonly IMessageService _messageService;
@@ -32,13 +37,22 @@ public class DateAttendanceManagerPanelViewModel : General.ViewModel.ViewModel
     private void ExecuteAdd(object? obj)
     {
         _sharedService.SetData(_lessonEntity);
+        if (NameButton == NAME_BUTTON_UPDATE)
+        {
+            _controlViewService.ShowDialog<DateAttendanceUdpatePanelViewModel>();
+            return;
+        }
+        
+        NameButton = NAME_BUTTON_UPDATE;
         _controlViewService.ShowDialog<DateAttendanceAddingPanelViewModel>();
     }
 
     private bool CanExecuteAdd(object? obj)
     {
+        if (NameButton == NAME_BUTTON_UPDATE) return true;
+
         if (_lessonEntity.IsAddDateAttendance()) return true;
-        _messageService.Message("По расписанию сегодня нет урока или вы уже отмечали прогулы", TypeMessage.Error);
+        _messageService.Message("По расписанию сегодня нет урока", TypeMessage.Warning);
         return false;
     }
 
@@ -57,6 +71,9 @@ public class DateAttendanceManagerPanelViewModel : General.ViewModel.ViewModel
         _messageService = messageService;
         _attendanceService = attendanceService;
 
+        if (_lessonEntity.IsUpdateDateAttendance())
+            NameButton = NAME_BUTTON_UPDATE;
+        
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         Add = new ExecuteCommand(ExecuteAdd, CanExecuteAdd);
     }
@@ -65,5 +82,5 @@ public class DateAttendanceManagerPanelViewModel : General.ViewModel.ViewModel
         => _attendanceService.GetVisitorWithAttendance(_lessonEntity);
 
     public IEnumerable<string> GetDateAttendance()
-        => _lessonEntity.AttendanceDates.Select(d => d.ToString("dd/MM"));
+        => _lessonEntity.AttendanceDates.OrderBy(d => d.ToDateTime()).Select(d => d.ToString("dd/MM"));
 }

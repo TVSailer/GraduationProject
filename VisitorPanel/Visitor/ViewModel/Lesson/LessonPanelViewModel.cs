@@ -1,12 +1,12 @@
-﻿using System.Windows.Input;
-using Domain.Command;
+﻿using Domain.Command;
 using Domain.Entitys;
 using Domain.Enum;
 using Domain.Service.ControlViewService.BaseControlView;
-using Domain.Service.FielService.BaseFileService;
+using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Service.MementoService.BaseMementoService;
 using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
+using System.Windows.Input;
 using Visitor.ViewModel.Review;
 
 namespace Visitor.ViewModel.Lesson;
@@ -16,7 +16,6 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     private readonly LessonEntity _lesson;
     private readonly IControlViewService _controlViewService;
     private readonly IMessageService _messageService;
-    private readonly IImageFileService _imageFileService;
     private readonly IMementoService<VisitorEntity> _mementoService;
     private readonly ISharedService _sharedService;
 
@@ -25,9 +24,7 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     public string Title => _lesson.Title;
     public TeacherEntity Teacher => _lesson.Teacher;
     public string Description => _lesson.Description;
-    public string Location => _lesson.Location;
-    public CategoryEntity Category => _lesson.Category;
-    public IEnumerable<string>? Images => _lesson.GetImages().Select(i => _imageFileService.GetFullPath(i));
+    public IEnumerable<string>? Images { get; set => Set(ref field, value); }
     public IEnumerable<LessonScheduleEntity> Schedule => _lesson.Schedule;
     public IEnumerable<ReviewEntity> ReviewEntites => _lesson.Reviews;
 
@@ -55,7 +52,7 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     private bool CanExecuteAddComment(object? obj)
     {
         if (!_mementoService.Get().HasNoValue) return true;
-        _messageService.Message("Для добавления комментария, необходимо войти в свой аккаунт", TypeMessage.Info);
+        _messageService.Message("Для добавления комментария, необходимо войти в свой профиль", TypeMessage.Info);
         return false;
     }
 
@@ -72,18 +69,19 @@ public class LessonPanelViewModel : General.ViewModel.ViewModel
     public LessonPanelViewModel(
         IControlViewService controlViewService,
         IMessageService messageService,
-        IImageFileService imageFileService,
+        IImageService imageService,
         IMementoService<VisitorEntity> mementoService,
         ISharedService sharedService
     )
     {
         _controlViewService = controlViewService;
         _messageService = messageService;
-        _imageFileService = imageFileService;
         _mementoService = mementoService;
         _sharedService = sharedService;
 
         _lesson = sharedService.GetData<LessonEntity>();
+
+        imageService.BindingImages(this, nameof(Images), _lesson.GetImages());
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         AddComment = new ExecuteCommand(ExecuteAddComment, CanExecuteAddComment);

@@ -2,11 +2,10 @@
 using UserInterface.LayoutPanel;
 using UserInterface.LayoutPanel.Extension;
 using UserInterface.View;
-using UserInterface.View.Base;
 
 namespace Admin.View.DateAttendance;
 
-public class DateAttendanceManagerPanelView(DateAttendanceManagerPanelViewModel viewModel) : UiView<DateAttendanceManagerPanelViewModel>, IView<DateAttendanceManagerPanelViewModel>
+public class DateAttendanceManagerPanelView(DateAttendanceManagerPanelViewModel viewModel) : UiView<DateAttendanceManagerPanelViewModel>
 {
     public override IBuilder CreateUi(BuilderLayoutPanel builderLayoutPanel)
         => builderLayoutPanel.Column()
@@ -23,7 +22,7 @@ public class DateAttendanceManagerPanelView(DateAttendanceManagerPanelViewModel 
                     .Command(viewModel.Exit)
                 .End()
                 .Column().Content()
-                    .Button("Добавить")
+                    .Button(viewModel.NameButton)
                     .Command(viewModel.Add)
                 .End()
                 .Column().Content()

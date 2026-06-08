@@ -11,5 +11,6 @@ public class DateAttendanceModule : NinjectModule
     {
         Kernel.Bind<IView<DateAttendanceManagerPanelViewModel>>().To<DateAttendanceManagerPanelView>();
         Kernel.Bind<IForma<DateAttendanceAddingPanelViewModel>>().To<DateAttendanceAddingPanelView>();
+        Kernel.Bind<IForma<DateAttendanceUdpatePanelViewModel>>().To<DateAttendanceUpdatePanelView>();
     }
 }

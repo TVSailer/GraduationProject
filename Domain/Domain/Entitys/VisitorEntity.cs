@@ -107,12 +107,19 @@ public class VisitorEntity : Entity
 
     public override string ToString() => $"{Name} {Surname} {Patronymic}";
 
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
+        if (obj is not VisitorEntity visitor) return false;
+        return visitor.Id == Id;
+    }
+
     public IEnumerable<string[]> GetLessonWithAttendance()
     {
         var uniqueDates = DateAttendances
+            .OrderBy(d => d.ToDateTime())
             .Select(d => d.Date)
             .Distinct()
-            .OrderBy(d => d)
             .ToArray();
 
         foreach (var lesson in Lessons)

@@ -4,6 +4,7 @@ using Domain.Entitys;
 using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
 using Domain.Service.FielService.BaseFileService;
+using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Service.MementoService.BaseMementoService;
 using Domain.ValidObject;
 using Teacher.ViewModel.Enter;
@@ -13,25 +14,14 @@ namespace Teacher.ViewModel.Teacher;
 public class TeacherProfelPanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IControlViewService _controlViewService;
-    private readonly IImageFileService _imageFileService;
+    private readonly IImageService _imageService;
     private readonly IRepository<TeacherEntity> _repositoryV;
     private readonly TeacherEntity _teacherEntity;
 
     #region Property
 
     public string FIO;
-    public string? Image
-    {
-        get => _imageFileService.GetFullPath(field);
-        set
-        {
-            if (value == field) return;
-            Set(ref field, value);
-            _teacherEntity.UpdateImage(new ImageValidObject(value));
-            _repositoryV.Update(_teacherEntity);
-        }
-    }
-
+    public string? Image { get; set => Set(ref field, value); }
     public string DateBurth { get; set; }
     public string NumberPhone { get; set; }
 
@@ -40,11 +30,18 @@ public class TeacherProfelPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand Exit;
 
-    private void ExecuteExit(object? obj) => _controlViewService.Exit();
+    private async void ExecuteExit(object? obj)
+    {
+        var image = await _imageService.UpdateImageFromCloudDisk();
+
+        _teacherEntity.UpdateImage(new ImageValidObject(image.CloudPath));
+        _repositoryV.Update(_teacherEntity);
+        _controlViewService.Exit();
+    }
+
     private bool CanExecuteExit(object? obj) => true;
 
     #endregion
-
     #region CommandChangeAccount
 
     internal readonly ICommand ChangeAccount;
@@ -61,12 +58,12 @@ public class TeacherProfelPanelViewModel : General.ViewModel.ViewModel
 
     public TeacherProfelPanelViewModel(
         IControlViewService controlViewService,
-        IImageFileService imageFileService,
+        IImageService imageService,
         IRepository<TeacherEntity> repositoryV,
         IMementoService<TeacherEntity> sharedService)
     {
         _controlViewService = controlViewService;
-        _imageFileService = imageFileService;
+        _imageService = imageService;
         _repositoryV = repositoryV;
 
         _teacherEntity = sharedService.Get().Value;
@@ -75,6 +72,8 @@ public class TeacherProfelPanelViewModel : General.ViewModel.ViewModel
         Image = _teacherEntity.Image;
         DateBurth = _teacherEntity.DateBirth;
         NumberPhone = _teacherEntity.NumberPhone;
+
+        imageService.BindingImage(this, nameof(Image), _teacherEntity.Image);
 
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
         ChangeAccount = new ExecuteCommand(ExecuteChangeAccount, CanExecuteChangeAccount);

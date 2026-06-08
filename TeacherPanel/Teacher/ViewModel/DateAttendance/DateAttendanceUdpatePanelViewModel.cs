@@ -1,27 +1,23 @@
-﻿using Domain.Command;
+﻿using System.Windows.Input;
+using Domain.Command;
 using Domain.Entitys;
-using Domain.Enum;
 using Domain.Repository;
 using Domain.Service.ControlViewService.BaseControlView;
-using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService.BaseSharedService;
-using System.Windows.Input;
 
-namespace Admin.ViewModel.DateAttendance;
+namespace Teacher.ViewModel.DateAttendance;
 
-public class DateAttendanceAddingPanelViewModel : General.ViewModel.ViewModel
+public class DateAttendanceUdpatePanelViewModel : General.ViewModel.ViewModel
 {
     private readonly IRepository<DateAttendanceEntity> _repositoryD;
     private readonly IControlViewService _controlViewService;
-    private readonly IMessageService _messageService;
-    private readonly LessonEntity _lessonEntity;
+    private readonly DateAttendanceEntity _dateAttendance;
 
     public readonly Dictionary<VisitorEntity, bool> VisitorEntities = [];
 
     #region CommandExit
 
     internal readonly ICommand Exit;
-    public readonly string Date = DateTime.Now.ToString("dd.MM.yyyy");
 
     private void ExecuteExit(object? obj) => _controlViewService.CloseDialog();
     private bool CanExecuteExit(object? obj) => true;
@@ -29,26 +25,20 @@ public class DateAttendanceAddingPanelViewModel : General.ViewModel.ViewModel
     #endregion
     #region CommandAdd
 
-    internal readonly ICommand Add;
+    internal readonly ICommand Update;
 
-    private void ExecuteAdd(object? obj)
+    private void ExecuteUpdate(object? obj)
     {
-        var date = new DateAttendanceEntity(_lessonEntity);
-        date.AddRangeVisitor(VisitorEntities
+        _dateAttendance.UpdateRangeVisitor(VisitorEntities
             .Where(c => c.Value)
             .Select(v => v.Key)
             .ToArray());
 
-        _repositoryD.Add(date);
+        _repositoryD.Update(_dateAttendance);
         _controlViewService.CloseDialog();
     }
 
-    private bool CanExecuteAdd(object? obj)
-    {
-        if (_lessonEntity.IsAddDateAttendance()) return true;
-        _messageService.Message("По расписанию сейчас нет урока", TypeMessage.Error);
-        return false;
-    }
+    private bool CanExecuteUpdate(object? obj) => true;
 
     #endregion
     #region CommandSelectItem
@@ -68,22 +58,22 @@ public class DateAttendanceAddingPanelViewModel : General.ViewModel.ViewModel
 
     #endregion
 
-    public DateAttendanceAddingPanelViewModel(
+    public DateAttendanceUdpatePanelViewModel(
         ISharedService sharedService,
         IRepository<DateAttendanceEntity> repositoryD,
-        IControlViewService controlViewService,
-        IMessageService messageService
-        )
+        IControlViewService controlViewService
+    )
     {
-        _lessonEntity = sharedService.GetData<LessonEntity>();
+        var lessonEntity = sharedService.GetData<LessonEntity>();
         _repositoryD = repositoryD;
         _controlViewService = controlViewService;
-        _messageService = messageService;
 
-        _lessonEntity.Visitors.ForEach(v => VisitorEntities.Add(v, false));
+        var dateAttendanceLesson = lessonEntity.AttendanceDates.Single(d => d.Date == DateTime.Now.ToString("dd.MM.yyyy"));
+        _dateAttendance = _repositoryD.Get().AsEnumerable().Single(d => d.Id == dateAttendanceLesson.Id);
+        lessonEntity.Visitors.ForEach(v => VisitorEntities.Add(v, _dateAttendance.Visitors.Contains(v)));
 
         SelectItem = new ExecuteCommand(ExecuteSelectItem, CanExecuteSelectItem);
         Exit = new ExecuteCommand(ExecuteExit, CanExecuteExit);
-        Add = new ExecuteCommand(ExecuteAdd, CanExecuteAdd);
+        Update = new ExecuteCommand(ExecuteUpdate, CanExecuteUpdate);
     }
 }

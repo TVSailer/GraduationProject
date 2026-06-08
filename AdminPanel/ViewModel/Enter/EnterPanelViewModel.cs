@@ -41,8 +41,8 @@ public class EnterPanelViewModel
 
         _fileService.WriteAuth(auths);
 
-        _controlViewService.CloseDialog();
         _controlViewService.LoadView<AdminPanelViewModel>();
+        _controlViewService.CloseDialog();
     }
 
     private bool CanExecuteEnter(object? obj)

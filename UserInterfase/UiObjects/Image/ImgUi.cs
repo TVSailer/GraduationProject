@@ -22,7 +22,9 @@ public class ImgUi : PictureBox
         MouseDoubleClick += (_, _) => FullSizeImage();
         MouseClick += async (_, _) => await ToggleSelection();
 
-        BackgroundImage = new Bitmap("D://Документы/Projects_CSharp/GraduationProject/UserInterfase/Resource/BackgroundImage2.png");
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "Resource", "BackgroundImage2.png");
+
+        BackgroundImage = new Bitmap(path);
 
         // Асинхронная загрузка и масштабирование
         _ = LoadImageAsync(url, 300);
@@ -34,7 +36,7 @@ public class ImgUi : PictureBox
         {
             // Загружаем и масштабируем изображение в фоне
             var scaledImage = await ScaleImageByHeightAsync(url, targetHeight);
-
+            if (scaledImage is null) return;
             // Возвращаемся в UI поток для обновления контрола
             if (InvokeRequired)
             {
@@ -71,10 +73,15 @@ public class ImgUi : PictureBox
         else Image = _scaledImage;
     }
 
-    public async Task<Bitmap> ScaleImageByHeightAsync(string url, int targetHeight)
+    public async Task<Bitmap?> ScaleImageByHeightAsync(string url, int targetHeight)
     {
         return await Task.Run(() =>
         {
+            if (!File.Exists(url))
+            {
+                Debug.WriteLine("Такого файла нет");
+                return null;
+            }
             using var originalImage = new Bitmap(url);
             double scale = (double)targetHeight / originalImage.Height;
             int targetWidth = (int)(originalImage.Width * scale);

@@ -1,4 +1,5 @@
 using Admin.DI.Module;
+using DataAccess.PostgreSQL;
 using DataAccess.PostgreSQL.DI;
 using General.Service.ProviderUI;
 using Ninject;

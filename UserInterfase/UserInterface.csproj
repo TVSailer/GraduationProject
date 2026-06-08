@@ -20,11 +20,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ICO.ico" />
+    <None Remove="Resource\BackgroundImage.png" />
+    <None Remove="Resource\BackgroundImage2.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="View\Forma.cs" />
     <Compile Include="View\Base\IForma.cs" />
     <Compile Include="View\Base\IView.cs" />
     <Compile Include="View\Base\IViewBuilder.cs" />
     <Compile Include="View\View.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resource\BackgroundImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\BackgroundImage2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\ICO.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

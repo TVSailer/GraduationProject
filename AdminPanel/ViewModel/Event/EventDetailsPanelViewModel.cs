@@ -98,22 +98,22 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     internal readonly ICommand Update;
 
-    private void ExecuteUpdate(object? obj)
+    private async void ExecuteUpdate(object? obj)
     {
-        var images = _imageService.UpdateImagesFromCloudDisk();
-        var image = _imageService.UpdateImageFromCloudDisk(TitleImg);
+        var images = await _imageService.UpdateImagesFromCloudDisk();
+        var image = await _imageService.UpdateImageFromCloudDisk();
 
         _eventEntity
             .UpdateTitle(new TitleValidObject(Title))
             .UpdateDescription(new DescriptionValidObject(Description))
-            .UpdateTitleImage(new ImageValidObject(image.Result.CloudPath))
+            .UpdateTitleImage(new ImageValidObject(image.CloudPath))
             .UpdateLocation(new LocationValidObject(Location))
             .UpdateHttpLink(new HttpLinkValidObject(RegisLink))
             .UpdateCategory(Category)
             .UpdateSchedule(Schedule)
-            .UpdateImages(images.Result);
+            .UpdateImages(images);
 
-        _repositoryE.Update(_eventEntity);
+        _repositoryE.UpdateAsync(_eventEntity);
 
         _messageService.Message("Данные успешно обновились", TypeMessage.Info);
     }
@@ -128,6 +128,7 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteDelete(object? obj)
     {
+        _imageService.ClearImage();
         _imageService.ClearImages();
         _repositoryE.Delete(_eventEntity.Id);
         _controlViewService.Exit();
@@ -156,7 +157,6 @@ public class EventDetailsPanelViewModel : General.ViewModel.ViewModel
         Title = _eventEntity.Title;
         RegisLink = _eventEntity.RegistrationLink;
         Category = _eventEntity.Category;
-        TitleImg = _eventEntity.UrlTitleImag;
         Location = _eventEntity.Location;
         Description = _eventEntity.Description;
         TimeStart = _eventEntity.Schedule.Start;

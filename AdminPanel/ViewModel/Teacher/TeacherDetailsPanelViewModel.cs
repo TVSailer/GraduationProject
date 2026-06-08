@@ -67,7 +67,7 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
     internal readonly ICommand Update;
     private void ExecuteUpdate(object? obj)
     {
-        var image = _imageService.UpdateImageFromCloudDisk(ImageLocal);
+        var image = _imageService.UpdateImageFromCloudDisk();
 
         _teacher
             .UpdateName(new NameValidObject(Name))
@@ -90,6 +90,7 @@ public class TeacherDetailsPanelViewModel : General.ViewModel.ViewModel
 
     private void ExecuteDelete(object? obj)
     {
+        _imageService.ClearImage();
         _teacherService.ExecuteDelete(_teacher);
         _controlViewService.Exit();
     }

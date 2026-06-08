@@ -9,8 +9,8 @@ public class DataAccesPostgreSqlModule : NinjectModule
 {
     public override void Load()
     {
-        Kernel.Bind<ApplicationDbContext>().ToConstant(new ApplicationDbContext("DBConnectionString")).InSingletonScope();
-
+        Kernel.Bind<ApplicationDbContext>().ToSelf().InSingletonScope();
+        Kernel.Bind<DatabaseSetting>().ToSelf();
         Kernel.Bind<IRepository<EventEntity>>().To<EventRepository>().InSingletonScope();
         Kernel.Bind<IRepository<CategoryEntity>>().To<RepositoryModel<CategoryEntity>>().InSingletonScope();
         Kernel.Bind<IRepository<AuthEntity>>().To<AuthRepository>().InSingletonScope();

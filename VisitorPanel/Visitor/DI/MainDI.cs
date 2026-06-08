@@ -4,6 +4,8 @@ using Domain.Entitys;
 using Domain.Service.AuthService;
 using Domain.Service.AuthService.BaseAuhtService;
 using Domain.Service.ControlViewService.BaseControlView;
+using Domain.Service.DebugService;
+using Domain.Service.DebugService.BaseDebugService;
 using Domain.Service.FielService.BaseFileService;
 using Domain.Service.ImageService;
 using Domain.Service.ImageService.BaseServiceImage;
@@ -13,6 +15,7 @@ using Domain.Service.MessageService.BaseMessageService;
 using Domain.Service.SharedService;
 using Domain.Service.SharedService.BaseSharedService;
 using General.Service.ControlView;
+using General.Service.DebugService;
 using General.Service.File;
 using General.Service.Message;
 using Ninject;
@@ -20,6 +23,7 @@ using UserInterface.DIService;
 using UserInterface.Service.View;
 using UserInterface.Service.View.Base;
 using Visitor.DI.Module;
+using YandexDisk.Client.Http;
 using IServiceProvider = Domain.Service.ProviderService.BaseProvider.IServiceProvider;
 
 namespace Visitor.DI;
@@ -53,6 +57,8 @@ public class MainDI
         container.Bind<IMementoService<LessonEntity>>().To<MementoService<LessonEntity>>().InSingletonScope();
         container.Bind<IAuthFileService>().ToConstant(new AuthFileService("EnterVisitor")).InSingletonScope();
         container.Bind<IImageFileService>().To<ImageFileService>();
+        container.Bind<ILogSaver>().To<YandexDiskDebugLogService>();
+        container.Bind<IDebugLogService>().To<DebugLogService>();
 
         return container;
     }

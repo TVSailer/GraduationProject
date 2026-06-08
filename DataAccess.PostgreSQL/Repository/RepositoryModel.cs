@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DataAccess.PostgreSQL.Repository;
 
@@ -33,5 +34,31 @@ internal class RepositoryModel<T>(ApplicationDbContext DbContext) : IRepository<
         var entity = _dbSet.Single(l => l.Id == idEntity);
         _dbSet.Remove(entity);
         DbContext.SaveChanges();
+    }
+
+    public Task<EntityEntry<T>> AddAsync(T entity)
+    {
+        if (entity is null) throw new ArgumentNullException();
+        var result = _dbSet.AddAsync(entity);
+        DbContext.SaveChangesAsync();
+        return result.AsTask();
+    }
+
+    public Task UpdateAsync(T entity)
+    {
+        if (entity is null) throw new ArgumentNullException();
+        _dbSet.Update(entity);
+        DbContext.SaveChangesAsync();
+
+        return Task.CompletedTask;
+    }
+
+    public Task DeleteAsync(long idEntity)
+    {
+        var entity = _dbSet.Single(l => l.Id == idEntity);
+        _dbSet.Remove(entity);
+        DbContext.SaveChangesAsync();
+
+        return Task.CompletedTask;
     }
 }
