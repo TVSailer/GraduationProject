@@ -4,6 +4,7 @@ using Domain.Service.FielService.BaseFileService;
 using Domain.Service.MessageService.BaseMessageService;
 using System.Diagnostics;
 using System.Windows.Forms;
+using Domain.ValidObject;
 using YandexDisk.Client.Http;
 using YandexDisk.Client.Protocol;
 
@@ -61,6 +62,7 @@ public class ImageFileService : IImageFileService
     {
         if (path == null) throw new ArgumentNullException(nameof(path));
         if (!string.IsNullOrEmpty(path.CloudPath)) return path;
+        if (path.LocalPath is null) throw new ArgumentNullException(nameof(path.LocalPath));
 
         var pathYandexDisk = $"/{TargetFolder}/{Guid.NewGuid()}{Path.GetExtension(path.LocalPath)}";
 

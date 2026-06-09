@@ -1,7 +1,18 @@
-﻿namespace General.Service.File;
+﻿namespace Domain.ValidObject;
 
-public class PathImageValidObject(string localPath, string? cloudPath = null)
+public class PathImageValidObject
 {
-    public string LocalPath { get; } = localPath;
-    public string? CloudPath { get; } = cloudPath;
+    public readonly string? LocalPath;
+    public readonly string? CloudPath;
+
+    public PathImageValidObject(string localPath, string? cloudPath = null)
+    {
+        LocalPath = localPath;
+        CloudPath = cloudPath;
+    }
+    
+    public PathImageValidObject(string? cloudPath)
+    {
+        CloudPath = cloudPath;
+    }
 }

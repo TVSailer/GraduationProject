@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using Domain.Entitys;
 using Domain.Service.DebugService;
 using Domain.Service.FielService.BaseFileService;
+using Domain.ValidObject;
 using General.Service.DebugService;
 using General.Service.File;
 using General.Service.Message;

@@ -2,87 +2,94 @@
 using Domain.Service.FielService.BaseFileService;
 using Domain.Service.ImageService.BaseServiceImage;
 using Domain.Service.MessageService.BaseMessageService;
-using General.Service.File;
 using System.Diagnostics;
+using Domain.ValidObject;
 
 namespace Domain.Service.ImageService;
 
-public class SelecteRemoveImage(bool isToggle = false, bool isRemove = false)
+public class InfoImage
 {
-    public bool IsToggle;
-    public bool IsRemove;
+    public PathImageValidObject Path { get; set; }
+
+    public bool IsToggle { get; set; }
+    public bool IsRemove { get; set; }
+
+    public InfoImage(string localPath, string cloudPath = null)
+    {
+        Path = new PathImageValidObject(localPath, cloudPath);
+    }
+
+    public InfoImage(PathImageValidObject path)
+    {
+        Path = path;
+    }
 }
 
-public class ImageService : IImageService
+public class ImageService(IMessageService messageService, IImageFileService imageFileService)
+    : IImageService
 {
-    private readonly IMessageService _messageService;
-    private readonly IImageFileService _imageFileService;
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
     private PathImageValidObject? _imagePath;
     private CustomPropertyInfo<string>? _propertyInfoImageLocalPath;
 
     public event Action<IEnumerable<string>>? OnChangeImg;
-    public readonly Dictionary<PathImageValidObject, SelecteRemoveImage> Images = [];
-
-    public ImageService(IMessageService messageService, IImageFileService imageFileService)
-    {
-        _messageService = messageService;
-        _imageFileService = imageFileService;
-    }
+    public readonly List<InfoImage> Images = [];
 
     public void AddImage()
     {
-        var images = _imageFileService.ShowOpenFileDialog();
+        var images = imageFileService.ShowOpenFileDialog();
         if (images == null) return;
-        foreach (var image in images)
-            Images.TryAdd(new PathImageValidObject(image), new SelecteRemoveImage());
+        foreach (var localPath in images)
+            Images.Add(new InfoImage(localPath));
 
         NotifyImagesChanged();
     }
 
     public void RemoveIsValueImages()
     {
-        if (!Images.Any(kvp => kvp.Value.IsToggle)) return;
+        if (!Images.Any(i => i.IsToggle)) return;
 
-        foreach (var selecteRemoveImage in Images.Where(i => i.Value.IsToggle))
-            selecteRemoveImage.Value.IsRemove = true;
+        foreach (var selecteRemoveImage in Images.Where(i => i.IsToggle))
+            selecteRemoveImage.IsRemove = true;
 
         NotifyImagesChanged();
     }
 
     public IEnumerable<Task<PathImageValidObject>> SaveImagesToDisk()
-        => _imageFileService.SaveImagesToDisk(  
-            Images.Where(i => !i.Value.IsRemove).Select(i => i.Key),
+        => imageFileService.SaveImagesToDisk(  
+            Images.Where(i => !i.IsRemove).Select(i => i.Path),
             _cancellationTokenSource.Token);
 
     public void ToggleImage(string path)
     {
-        var key = Images.Keys.Single(i => i.LocalPath == path);
-        Images[key].IsToggle = !Images[key].IsToggle;
+        var key = Images.Single(i => i.Path.LocalPath == path);
+        key.IsToggle = !key.IsToggle;
     }
 
-    public Task BindingImages(object obj, string nameMember, IEnumerable<string>? images = null)
+    public Task BindingImages(object obj, string nameMember, IEnumerable<string>? cloudPaths = null)
     {
         var prop = obj.GetType().GetProperty(nameMember)
             ?? throw new ArgumentException($"Property '{nameMember}' not found on type '{obj.GetType().Name}'");
 
         OnChangeImg += imagesList => prop.SetValue(obj, imagesList);
 
-        if (images is null) return Task.CompletedTask;
+        if (cloudPaths is null) return Task.CompletedTask;
 
-        LoadImagesAsync(images).FireAndForget();
+        foreach (var cloudPath in cloudPaths)
+            Images.Add(new InfoImage(new PathImageValidObject(cloudPath)));
+
+        LoadImagesAsync().FireAndForget();
         return Task.CompletedTask;
     }
 
-    private async Task LoadImagesAsync(IEnumerable<string> images)
+    private async Task LoadImagesAsync()
     {
-        foreach (var image in images)
+        foreach (var image in Images)
         {
             try
             {
-                var fullPath = await _imageFileService.GetFullPath(image, _cancellationTokenSource.Token);
-                Images.TryAdd(fullPath, new SelecteRemoveImage());
+                image.Path = await imageFileService.GetFullPath(image.Path.CloudPath, _cancellationTokenSource.Token);
                 NotifyImagesChanged();
             }
             catch (OperationCanceledException)
@@ -91,7 +98,7 @@ public class ImageService : IImageService
             }
             catch (System.Exception ex)
             {
-                _messageService.Message($"Ошибка загрузки изображения: {ex.Message}", TypeMessage.Error);
+                messageService.Message($"Ошибка загрузки изображения: {ex.Message}", TypeMessage.Error);
             }
         }
     }
@@ -102,7 +109,7 @@ public class ImageService : IImageService
 
         try
         {
-            _imagePath = await _imageFileService.GetFullPath(url, _cancellationTokenSource.Token);
+            _imagePath = await imageFileService.GetFullPath(url, _cancellationTokenSource.Token);
             if (_imagePath is not null)
                 _propertyInfoImageLocalPath.SetValue(_imagePath.LocalPath);
         }
@@ -112,7 +119,7 @@ public class ImageService : IImageService
         }
         catch (System.Exception ex)
         {
-            _messageService.Message($"Ошибка загрузки фото: {ex.Message}", TypeMessage.Error);
+            messageService.Message($"Ошибка загрузки фото: {ex.Message}", TypeMessage.Error);
         }
     }
 
@@ -128,9 +135,9 @@ public class ImageService : IImageService
             return _imagePath;
 
         if (_imagePath is not null)
-            await _imageFileService.DeleteImageFromDisk(_imagePath, _cancellationTokenSource.Token);
+            await imageFileService.DeleteImageFromDisk(_imagePath, _cancellationTokenSource.Token);
 
-        return await _imageFileService.SaveImageToDick(
+        return await imageFileService.SaveImageToDick(
             new PathImageValidObject(imageLocalPath),
             _cancellationTokenSource.Token);
     }
@@ -156,18 +163,18 @@ public class ImageService : IImageService
 
     private async Task DeleteImagesFromDisk()
     {
-        foreach (var kvp in Images.Where(i => i.Value.IsRemove).Select(i => i.Key).ToList())
+        foreach (var kvp in Images.Where(i => i.IsRemove && i.Path.LocalPath is not null).ToList())
         {
             Images.Remove(kvp);
-            await _imageFileService.DeleteImageFromDisk(kvp, _cancellationTokenSource.Token);
+            await imageFileService.DeleteImageFromDisk(kvp.Path, _cancellationTokenSource.Token);
         }
     }
 
     public Task ClearImages()
     {
-        foreach (var kvp in Images.Keys.ToList())
+        foreach (var kvp in Images.ToArray())
         {
-            _imageFileService.DeleteImageFromDisk(kvp, _cancellationTokenSource.Token).FireAndForget();
+            imageFileService.DeleteImageFromDisk(kvp.Path, _cancellationTokenSource.Token).FireAndForget();
             Images.Remove(kvp);
         }
 
@@ -177,7 +184,7 @@ public class ImageService : IImageService
     public Task ClearImage()
     {
         if (_imagePath is not null)
-            _imageFileService.DeleteImageFromDisk(_imagePath, _cancellationTokenSource.Token).FireAndForget();
+            imageFileService.DeleteImageFromDisk(_imagePath, _cancellationTokenSource.Token).FireAndForget();
 
         return Task.CompletedTask;
     }
@@ -191,7 +198,7 @@ public class ImageService : IImageService
     }
 
     private void NotifyImagesChanged()
-        => OnChangeImg?.Invoke(Images.Where(i => !i.Value.IsRemove).Select(i => i.Key.LocalPath));
+        => OnChangeImg?.Invoke(Images.Where(i => !i.IsRemove && i.Path.LocalPath is not null).Select(i => i.Path.LocalPath)!);
 }
 
 // Вспомогательный extension method для fire-and-forget операций

@@ -1,4 +1,4 @@
-﻿using General.Service.File;
+﻿using Domain.ValidObject;
 
 namespace Domain.Service.FielService.BaseFileService;
 

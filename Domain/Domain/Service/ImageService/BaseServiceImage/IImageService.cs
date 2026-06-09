@@ -1,4 +1,4 @@
-﻿using General.Service.File;
+﻿using Domain.ValidObject;
 
 namespace Domain.Service.ImageService.BaseServiceImage;
 
@@ -7,7 +7,7 @@ public interface IImageService : IDisposable
     public void RemoveIsValueImages();
     public void AddImage();
     public void ToggleImage(string? path);
-    public Task BindingImages(object obj, string nameMember, IEnumerable<string>? images = null);
+    public Task BindingImages(object obj, string nameMember, IEnumerable<string>? cloudPaths = null);
     public IEnumerable<Task<PathImageValidObject>> SaveImagesToDisk();
     public Task BindingImage(object obj, string nameMember, string url = null);
     public Task<PathImageValidObject> UpdateImageFromCloudDisk();
